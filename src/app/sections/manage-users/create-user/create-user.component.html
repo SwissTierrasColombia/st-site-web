@@ -1,0 +1,128 @@
+<div class="app-body">
+    <main class="main d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <div class="card-group">
+                        <div class="card p-4">
+                            <div class="card-body">
+                                <form #formulariologin="ngForm">
+                                    <i class="material-icons cursor m-2" (click)="volver()">backspace</i>
+                                    <h1 class="text-center">Registro usuarios <br> Ventanilla unica</h1>
+                                    <p class="text-muted">Ingresé los siguientes datos.</p>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">
+                                                    perm_identity
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <input type="text" name="firstName" class="form-control" placeholder="Nombres"
+                                            autocomplete="firstName" [(ngModel)]="registerData.firstName" required>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">
+                                                    list_alt
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <input type="text" name="lastName" class="form-control" placeholder="Apellidos"
+                                            autocomplete="lastName" [(ngModel)]="registerData.lastName" required>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">
+                                                    account_circle
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <input type="text" name="username" class="form-control"
+                                            placeholder="Nombre de usuario" autocomplete="username"
+                                            [(ngModel)]="registerData.username" required>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="material-icons">
+                                                    email
+                                                </i></span>
+                                        </div>
+                                        <input type="email" name="email" class="form-control"
+                                            placeholder="Correo electronico" autocomplete="email"
+                                            [(ngModel)]="registerData.email" required>
+                                    </div>
+
+                                    <div class="input-group mb-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">
+                                                    security
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <input type="password" name="password" class="form-control"
+                                            placeholder="Contraseña" autocomplete="current-password"
+                                            [(ngModel)]="registerData.password" required>
+                                    </div>
+                                    <div class="input-group mb-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">
+                                                    lock
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <input type="password" name="confirmationPassword" class="form-control"
+                                            placeholder="Confirmar contraseña" autocomplete="current-password"
+                                            [(ngModel)]="registerData.confirmationPassword" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">people_outline</i>
+                                            </span>
+                                        </div>
+                                        <select class="custom-select" name="multipleRoles" multiple required
+                                            [(ngModel)]="registerData.roles">
+                                            <option *ngFor="let item of roles" name="item.role" value="{{item._id}}">
+                                                {{item.role}}</option>
+                                        </select>
+                                    </div>
+                                    <small id="roles" class="form-text text-muted">Seleccione los roles para
+                                        este usuario</small>
+                                    <div class="input-group mt-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">
+                                                    perm_identity
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <select class="custom-select" name="multipleEntities" multiple required
+                                            [(ngModel)]="registerData.entities">
+                                            <option *ngFor="let item of entities" name="item.entity"
+                                                value="{{item._id}}">
+                                                {{item.entity}}</option>
+                                        </select>
+                                    </div>
+                                    <small id="entities" class="form-text text-muted">Seleccione las entidades para
+                                        este usuario</small>
+                                    <div class="row mt-4">
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-primary px-4"
+                                                (click)="register()">Registrar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- <pre>{{registerData | json}}</pre> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

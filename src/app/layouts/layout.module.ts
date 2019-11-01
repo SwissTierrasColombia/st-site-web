@@ -1,34 +1,26 @@
-// Libraries
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 import { RouterModule } from '@angular/router';
-
-// Components
-import { MainHeaderComponent } from './components/main-header/main-header.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
-import { MainFooterComponent } from './components/main-footer/main-footer.component';
-
-// Translate
-import { AppTranslateModule } from '../modules/app-translate.module';
-
-// Models
-
+import { MainHeaderComponent } from './main-header/main-header.component';
+import { MainFooterComponent } from './main-footer/main-footer.component';
+import { SidebarLeftComponent } from './sidebar-left/sidebar-left.component';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
-    declarations: [
-        MainHeaderComponent,
-        MainLayoutComponent,
-        MainFooterComponent
-    ],
-    imports: [
-        CommonModule,
-        AppTranslateModule,
-        RouterModule.forChild([]),
-    ],
-    exports: [
-
-    ],
-    providers: [
-
-    ]
+  declarations: [
+    AuthLayoutComponent,
+    MainLayoutComponent,
+    MainHeaderComponent,
+    MainFooterComponent,
+    SidebarLeftComponent
+  ],
+  imports: [
+    CommonModule,
+    BrowserAnimationsModule,
+    RouterModule.forChild([]),
+    CollapseModule.forRoot()
+  ]
 })
 export class LayoutModule { }

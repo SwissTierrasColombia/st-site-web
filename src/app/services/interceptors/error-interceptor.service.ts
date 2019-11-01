@@ -3,38 +3,45 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
-// Libraries
-import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class ErrorInterceptorService implements HttpInterceptor {
 
-  constructor(private translate: TranslateService, private router: Router) {
+  constructor(public toastaService: ToastrService, private router: Router, private spinner: NgxSpinnerService) {
 
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     return next.handle(request).pipe(catchError(err => {
+
+      this.spinner.hide();
+
+      const error = err.error.message || err.statusText;
 
       switch (err.status) {
         case 400:
-          break;
         case 401:
+        case 404:
+        case 422:
+          this.toastaService.error(error);
           break;
         case 403:
-          break;
-        case 404:
-          break;
-        case 422:
+          if (err.error.hasOwnProperty('tokenExpiration')) {
+            sessionStorage.removeItem(environment.nameTokenSession);
+            this.router.navigate(['/autenticacion']);
+          } else {
+            this.toastaService.error(error);
+          }
           break;
         default:
-
+          this.toastaService.error('No se a podido conectar con el servidor', 'Actualiza la pagina');
           break;
       }
+
       return throwError(err);
     }));
   }
-
 }

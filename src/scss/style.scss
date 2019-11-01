@@ -1,0 +1,14 @@
+// if you'd like to use it without importing all of bootstrap it requires
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "animate";
+@import "toastr";
+
+// If you want to override variables do it here
+@import "variables";
+
+//custom styles
+@import "modal";
+@import "cards";
+@import "custom";

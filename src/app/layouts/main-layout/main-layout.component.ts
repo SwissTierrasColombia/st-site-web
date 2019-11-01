@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppService } from 'src/app/services/template/app.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainLayoutComponent implements OnInit {
 
-  constructor() { }
+  constructor(private appService: AppService) { }
 
   ngOnInit() {
   }
-
+  getClasses() {
+    const classes = {
+      'pinned-sidebar': this.appService.getSidebarStat().isSidebarPinned,
+      'toggeled-sidebar': this.appService.getSidebarStat().isSidebarToggeled
+    }
+    return classes;
+  }
+  toggleSidebar() {
+    this.appService.toggleSidebar();
+  }
 }

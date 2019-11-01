@@ -1,26 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.component';
+import { HomeComponent } from './home/home.component';
 
-// Layouts
-import { MainLayoutComponent } from '../../layouts/main-layout/main-layout.component';
 
-// Components
-import { WelcomeComponent } from './welcome/welcome.component';
-
-// Guards
-
-const routes: Routes = [
+const routes: Routes = [{
+  path: 'inicio',
+  component: MainLayoutComponent,
+  children: [
     {
-        path: 'home',
-        component: MainLayoutComponent,
-        children: [
-            { path: '', component: WelcomeComponent },
-        ]
+      path: '', component: HomeComponent
     }
-];
+  ]
+}];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 export class HomeRoutingModule { }

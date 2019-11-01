@@ -1,5 +1,12 @@
-<app-main-header></app-main-header>
-
-<router-outlet></router-outlet>
-
-<app-main-footer></app-main-footer>
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="wrapper default-theme" [ngClass]="getClasses()">
+    <app-main-header></app-main-header>
+    <main>
+        <app-sidebar-left></app-sidebar-left>
+        <div class="pages container-fluid pt-4 pb-4 pl-4 pr-4 ">
+            <router-outlet></router-outlet>
+            <app-main-footer class="mt-5"></app-main-footer>
+        </div>
+        <div class="overlay" (click)="toggleSidebar()"></div>
+    </main>
+</div>

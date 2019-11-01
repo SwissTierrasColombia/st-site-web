@@ -29,7 +29,10 @@
               "src/i18n"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/scss/style.scss",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
             "scripts": []
           },
@@ -95,7 +98,10 @@
               "src/i18n"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/scss/style.scss",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
             "scripts": []
           }

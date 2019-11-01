@@ -1,0 +1,41 @@
+<div class="card">
+    <div class="card-header">
+        Lista de roles registrados
+    </div>
+    <div class="card-body">
+        <!-- *ngFor="let item of listUsers | paginate: { itemsPerPage: limit, currentPage: page }" -->
+        <div class="container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Actualizar</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of roles; let id= index">
+                        <td>{{id+1}}</td>
+                        <td>{{item.role}}</td>
+                        <td> <span tooltip="Actualizar nombre del rol" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor" (click)="updateRol(item)">
+                                    update
+                                </i>
+                            </span>
+                        </td>
+                        <td> <span tooltip="Eliminar rol" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor" (click)="deleteRol(item)">
+                                    delete
+                                </i>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <button type="button" class="btn btn-secondary btn-block" (click)="createRole()">Registrar rol</button>
+    </div>
+</div>

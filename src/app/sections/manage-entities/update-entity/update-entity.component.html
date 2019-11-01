@@ -1,0 +1,28 @@
+<div class="card">
+        <div class="card-header">
+            <div class="row">
+                <i class="material-icons cursor m-2" (click)="volver()">backspace</i>
+                <div class="col-11">
+                    <h4 class="text-center">Actualizando entidad {{nomBeforeEntity}}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Nombre de la entidad: </span>
+                        </div>
+                        <input class="form-control" id="nomEntity" type="text" name="nomEntity"
+                            [(ngModel)]="nomEntity">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mt-2">
+            <button type="button" class="btn btn-secondary btn-block" (click)="UpdateEntity()">Actualizar entidad</button>
+        </div>
+    </div>

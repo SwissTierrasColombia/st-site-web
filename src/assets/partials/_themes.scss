@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Poppins&display=swap");
+
+$bg-color: #f2f3f8;
+$navbar-bg-color: #242939;
+$navbar-color: #6e7899;
+$sidebar-bg-color: #242939;
+$sidebar-color: #ffffff;
+$sidebar-icon-color: #c4cff9;
+$border-color: #242939;
+
+body {
+  font-family: "Poppins", "Roboto", sans-serif;
+  font-size: 0.9rem;
+}
+
+.wrapper.default-theme {
+  background: $bg-color;
+
+  nav.navbar {
+    background: $navbar-bg-color;
+    border-color: rgba($navbar-color, 0.3);
+
+    .navbar-brand {
+      color: lighten($navbar-color, 25%);
+    }
+
+    .left-nav {
+      input.navbar-search {
+        background: #282f48;
+        color: $navbar-color;
+        &::placeholder {
+          color: rgba($navbar-color, 0.6);
+        }
+      }
+    }
+
+    .right-nav {
+      background: $navbar-bg-color;
+    }
+
+    .nav-link {
+      color: $navbar-color;
+
+      i {
+        border-color: $navbar-color;
+        background: #282f48;
+      }
+
+      &:hover {
+        color: lighten($navbar-color, 15%);
+      }
+    }
+
+    .nav-alert {
+      border-color: #2f3546;
+
+      &.notifications {
+        background-color: #ff61c5;
+        box-shadow: 0px 0px 4px #ff61c5;
+      }
+
+      &.messages {
+        background-color: #61b8ff;
+        box-shadow: 0px 0px 4px #61b8ff;
+      }
+    }
+  }
+
+  main {
+    .overlay {
+      background: #242939;
+    }
+
+    .sidebar {
+      background: $sidebar-bg-color;
+
+      > div {
+        border-color: rgba($sidebar-color, 0.1);
+      }
+
+      a.sidebar-link {
+        color: $sidebar-color;
+      }
+
+      .sidebar-profile {
+        .name {
+          color: $sidebar-color;
+        }
+
+        .role {
+          color: rgba($sidebar-color, 0.8);
+        }
+      }
+
+      .sidebar-menu {
+        .menu-header {
+          color: rgba($sidebar-color, 0.5);
+        }
+
+        .menu-items {
+          a {
+            color: rgba($sidebar-color, 0.7);
+
+            i {
+              color: $sidebar-icon-color;
+              color: #abb7da;
+              color: rgba(140, 165, 239, 0.6);
+              border: none;
+              width: auto;
+              font-size: 1rem;
+            }
+
+            &:hover,
+            &.active {
+              background: #6f6f79;
+              color: rgba($sidebar-color, 0.9);
+
+              i {
+                color: #dee5fb;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .form-control {
+    font-size: 0.9rem;
+  }
+
+  .text-lightning {
+    color: #98a4c7;
+  }
+}

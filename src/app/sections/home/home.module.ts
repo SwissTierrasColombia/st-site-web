@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// Routing
+import { HomeComponent } from './home/home.component';
 import { HomeRoutingModule } from './home-routing.module';
-
-// Components
-import { WelcomeComponent } from './welcome/welcome.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  FormsModule, ReactiveFormsModule
+} from '@angular/forms';
 
 @NgModule({
-    declarations: [
-        WelcomeComponent
-    ],
-    imports: [
-        CommonModule,
-        HomeRoutingModule,
-    ],
-    providers: [
-
-    ]
+  declarations: [
+    HomeComponent
+  ],
+  imports: [
+    CommonModule,
+    HomeRoutingModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule
+  ]
 })
 export class HomeModule { }
