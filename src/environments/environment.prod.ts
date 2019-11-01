@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  languageSelected: 'en',
+  nameTokenSession: 'token_access'
 };
