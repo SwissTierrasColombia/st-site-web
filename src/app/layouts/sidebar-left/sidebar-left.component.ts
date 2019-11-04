@@ -28,11 +28,36 @@ export class SidebarLeftComponent implements OnInit {
     this.listMenu = [
       {
         titulo: "Inicio",
+        subitems: [
+          {
+            subtitulo: 'Pagina principal',
+            link: '/inicio'
+          }
+        ],
+      },
+      {
+        titulo: "Tramites",
+        subitems: [
+          {
+            subtitulo: 'Tramite 1',
+            link: '/inicio'
+          },
+          {
+            subtitulo: 'Tramite 2',
+            link: '/inicio'
+          },
+          {
+            subtitulo: 'Tramite 3',
+            link: '/inicio'
+          }
+        ],
       }
     ];
   }
 
   ngOnInit() {
+    console.log('listMenu', this.listMenu);
+
     this.rol = JwtHelper.getUserPublicInformation();
     if (this.rol.hasOwnProperty("roles")) {
       const role = this.rol.roles.find(elem => {
