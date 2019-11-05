@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './guards/auth-guard.service';
+import { RoleAdminGuard } from './guards/role-admin-guard.service';
 
 
 const routes: Routes = [{
   path: '',
-  redirectTo: '/inicio',
+  redirectTo: '/autenticacion/login',
+  canActivate: [AuthGuard, RoleAdminGuard],
   pathMatch: 'full'
 }
   /*   ,

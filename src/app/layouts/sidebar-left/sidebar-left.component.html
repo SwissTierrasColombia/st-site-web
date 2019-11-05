@@ -11,7 +11,7 @@
       </p>
       <small class="text-uppercase role">{{ rol.roles[0].role }}</small>
     </div>
-    <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="logout()">
+    <button type="button" class="btn btn-dark btn-sm btn-block" (click)="logout()">
       Cerrar sesión
     </button>
   </div>
@@ -19,7 +19,7 @@
     <div class="profile-details text-center pb-4">
       <small class="text-uppercase role">No haz iniciado sesión</small>
     </div>
-    <button type="button" class="btn btn-secondary btn-sm btn-block" [routerLink]="['/autenticacion/login']">
+    <button type="button" class="btn btn-dark btn-sm btn-block" [routerLink]="['/autenticacion/login']">
       Iniciar sesión
     </button>
   </div>

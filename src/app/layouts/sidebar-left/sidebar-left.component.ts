@@ -27,15 +27,6 @@ export class SidebarLeftComponent implements OnInit {
     this.navbarOpen = [false, false, false, false, false, false];
     this.listMenu = [
       {
-        titulo: "Inicio",
-        subitems: [
-          {
-            subtitulo: "Pagina principal",
-            link: "/inicio"
-          }
-        ]
-      },
-      {
         titulo: "Tramites",
         subitems: [
           {
