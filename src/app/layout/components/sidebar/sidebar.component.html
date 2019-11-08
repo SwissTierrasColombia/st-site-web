@@ -45,13 +45,13 @@
       <li class="nested" [class.expand]="showMenu === listMenu[0].insumos">
         <ul class="submenu">
           <li>
-            <a href="javascript:void(0)">
+            <a [routerLink]="['/insumos/solicitud']">
               <i class="fa fa-monument"></i>&nbsp;
               <span>Solicitud</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/cargue']">
+            <a [routerLink]="['/insumos/cargue']">
               <i class="fa fa-monument"></i>&nbsp;
               <span>Cargue</span>
             </a>

@@ -16,7 +16,7 @@ const routes: Routes = [
             { path: 'grid', loadChildren: () => import('./grid/grid.module').then(m => m.GridModule) },
             { path: 'components', loadChildren: () => import('./bs-component/bs-component.module').then(m => m.BsComponentModule) },
             { path: 'blank-page', loadChildren: () => import('./blank-page/blank-page.module').then(m => m.BlankPageModule) },
-            { path: 'cargue', loadChildren: () => import('./sections/insumos/insumos.module').then(m => m.InsumosModule) }
+            { path: 'insumos', loadChildren: () => import('./sections/insumos/insumos.module').then(m => m.InsumosModule) }
         ]
     }
 ];
