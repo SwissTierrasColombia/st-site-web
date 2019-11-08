@@ -4,7 +4,9 @@
 const apiBaseUrl = 'http://192.168.98.61:8090';
 export const environment = {
   production: false,
+  apiBaseUrl,
   apiBaseUrlPrefix: apiBaseUrl + '/api',
+  nameTokenSession: 'access_token_st',
 };
 
 /*

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from 'src/app/router.animations';
-import { InsumosService } from 'src/app/services/insumos.service';
+import { InsumosService } from 'src/app/services/insumos/insumos.service';
 
 @Component({
   selector: 'app-cargue',
@@ -98,7 +98,7 @@ export class CargueComponent implements OnInit {
     const datagenerateDB = this.generateDatabase[0];
     this.insumosService.generateDatabase(datagenerateDB).subscribe(
       data => {
-        console.log('error: ', data);
+        console.log('data', data);
       }
     );
   }
