@@ -4,12 +4,12 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class JwtHelper {
 
     static closeSession(router) {
-        sessionStorage.removeItem(environment.nameTokenSession);
-        router.navigate(['/autenticacion']);
+        localStorage.removeItem(environment.nameTokenSession);
+        router.navigate(['/login']);
     }
 
     static getUserPublicInformation() {
-        const token = sessionStorage.getItem(environment.nameTokenSession);
+        const token = localStorage.getItem(environment.nameTokenSession);
         const helper = new JwtHelperService();
 
         let decodedToken = null;

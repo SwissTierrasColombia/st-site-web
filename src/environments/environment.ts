@@ -7,6 +7,8 @@ export const environment = {
   apiBaseUrl,
   apiBaseUrlPrefix: apiBaseUrl + '/api',
   nameTokenSession: 'access_token_st',
+  clientUsername: 'st-web-develop-dvKDKgQr',
+  clientPassword: '12345'
 };
 
 /*

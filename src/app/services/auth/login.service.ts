@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,33 +9,31 @@ import { environment } from 'src/environments/environment';
 
 export class LoginService {
   data = [];
-  apiURL: string;
-  baseUrl: string;
+  url: string;
 
   constructor(private httpClient: HttpClient) {
-    this.apiURL = environment.apiBaseUrlPrefix;
-    this.baseUrl = environment.apiBaseUrl;
+    this.url = environment.apiBaseUrlPrefix;
   }
-  login(username: string, password: string) {
-    const data = {
-      username,
-      password
-    };
-    return this.httpClient.post<any>(this.apiURL + '/st/account/login', data, { observe: 'response' });
+  login(username: string, password: string): Observable<any> {
+    const encoded = btoa(environment.clientUsername + ':' + environment.clientPassword);
+    const body = new HttpParams()
+      .set('username', username)
+      .set('password', password)
+      .set('grant_type', 'password');
+
+    return this.httpClient.post(this.url + '/security/oauth/token',
+      body.toString(),
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+          .set('Authorization', 'Basic ' + encoded)
+      }
+    );
   }
   getSessions() {
-    return this.httpClient.get<any>(this.baseUrl + '/auth/session', { observe: 'response' });
+    return this.httpClient.get<any>(this.url + '/auth/session', { observe: 'response' });
   }
   logout() {
-    sessionStorage.removeItem(environment.nameTokenSession);
-  }
-  registerUser(data: any) {
-    return this.httpClient.post<any>(this.apiURL + '/st/account/register', data, { observe: 'response' });
-  }
-  restorePassword(data: any) {
-    return this.httpClient.put(this.apiURL + '/st/account/restore', data);
-  }
-  updatePassword(data: any) {
-    return this.httpClient.put(this.apiURL + '/st/account/update', data);
+    localStorage.removeItem(environment.nameTokenSession);
   }
 }
