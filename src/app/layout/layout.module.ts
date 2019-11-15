@@ -10,6 +10,7 @@ import { HeaderComponent } from './components/header/header.component';
 import {
     FormsModule, ReactiveFormsModule
 } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
     imports: [
         CommonModule,
@@ -18,6 +19,7 @@ import {
         NgbDropdownModule,
         FormsModule,
         ReactiveFormsModule,
+        NgxSpinnerModule
     ],
     declarations: [
         LayoutComponent,

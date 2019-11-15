@@ -5,9 +5,10 @@ import { ChartsModule as Ng2Charts } from 'ng2-charts';
 import { ChartsRoutingModule } from './charts-routing.module';
 import { ChartsComponent } from './charts.component';
 import { PageHeaderModule } from '../../shared';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
-    imports: [CommonModule, Ng2Charts, ChartsRoutingModule, PageHeaderModule],
+    imports: [CommonModule, Ng2Charts, ChartsRoutingModule, PageHeaderModule, NgxSpinnerModule],
     declarations: [ChartsComponent]
 })
 export class ChartsModule {}

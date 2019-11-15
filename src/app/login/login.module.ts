@@ -7,6 +7,7 @@ import {
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import { LoginComponent } from './login.component';
         TranslateModule,
         LoginRoutingModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgxSpinnerModule
     ],
     declarations: [LoginComponent]
 })

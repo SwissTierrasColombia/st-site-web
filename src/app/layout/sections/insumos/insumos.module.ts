@@ -7,9 +7,11 @@ import { SolicitudComponent } from './solicitud/solicitud.component';
 import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   declarations: [CargueComponent, SolicitudComponent],
   imports: [CommonModule, PageHeaderModule, InsumosRoutingModule,
-    FormsModule, ReactiveFormsModule]
+    FormsModule, ReactiveFormsModule,
+    NgxSpinnerModule]
 })
 export class InsumosModule { }

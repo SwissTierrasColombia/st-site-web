@@ -4,7 +4,8 @@
 @import "utils";
 @import "rtl";
 @import "responsive";
-
+@import 'ngx-toastr/ngx-toastr';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @media print {
     .breadcrumb {
         display: none !important;
