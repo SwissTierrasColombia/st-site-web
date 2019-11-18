@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GestionComponent } from './gestion/gestion.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
+import { OperatorAssignmentComponent } from './operator-assignment/operator-assignment.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'workspace',
     component: WorkspaceComponent
+  },
+  {
+    path: 'operador',
+    component: OperatorAssignmentComponent
   }
 
 ];
