@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
+import { JwtHelper } from 'src/app/helpers/jwt';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,10 +15,14 @@ export class SidebarComponent implements OnInit {
   pushRightClass: string;
   showMenu: string;
   listMenu: any;
+  user: any;
 
   @Output() collapsedEvent = new EventEmitter<boolean>();
 
   constructor(private translate: TranslateService, public router: Router) {
+    this.user = {
+      first_name: 'user'
+    };
     this.router.events.subscribe(val => {
       if (
         val instanceof NavigationEnd &&
@@ -44,6 +49,7 @@ export class SidebarComponent implements OnInit {
     this.collapsed = false;
     this.showMenu = '';
     this.pushRightClass = 'push-right';
+    this.user = JwtHelper.getUserPublicInformation();
   }
 
   eventCalled() {

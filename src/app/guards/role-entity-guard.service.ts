@@ -20,12 +20,12 @@ export class RoleEntityGuard implements CanActivate {
         return elem._id === this.roles.Administrador || elem._id === this.roles.Entidad;
       });
       if (!role) {
-        this.router.navigate(['/inicio'])
+        this.router.navigate(['/inicio']);
       } else {
         return true;
       }
     } else {
-      this.router.navigate(['/inicio'])
+      this.router.navigate(['/inicio']);
     }
   }
 }

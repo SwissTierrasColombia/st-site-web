@@ -36,7 +36,7 @@
               src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg"
               alt="Generic placeholder image">
             <div class="media-body">
-              <h5 class="mt-0 mb-1">John Smith</h5>
+              <h5 class="mt-0 mb-1"> {{user.first_name}}</h5>
               <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
               <p class="last"> Lorem ipsum dolor sit amet, consectetur...</p>
             </div>
@@ -46,7 +46,7 @@
               src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg"
               alt="Generic placeholder image">
             <div class="media-body">
-              <h5 class="mt-0 mb-1">John Smith</h5>
+              <h5 class="mt-0 mb-1"> {{user.first_name}}</h5>
               <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
               <p class="last"> Lorem ipsum dolor sit amet, consectetur...</p>
             </div>
@@ -56,7 +56,7 @@
               src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg"
               alt="Generic placeholder image" />
             <div class="media-body">
-              <h5 class="mt-0 mb-1">John Smith</h5>
+              <h5 class="mt-0 mb-1"> {{user.first_name}}</h5>
               <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
               <p class="last"> Lorem ipsum dolor sit amet, consectetur...</p>
             </div>
@@ -83,40 +83,9 @@
       </a>
   </div>
   </li>
-  <!-- <li class="nav-item dropdown" ngbDropdown>
-    <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
-      <i class="fa fa-language"></i> {{ 'Language' | translate }} <b class="caret"></b>
-    </a>
-    <div class="dropdown-menu-right" ngbDropdownMenu>
-      <a class="dropdown-item" href="javascript:void(0)" (click)="changeLang('en')">
-        {{ 'English' | translate }}
-      </a>
-      <a class="dropdown-item" href="javascript:void(0)" (click)="changeLang('fr')">
-        {{ 'French' | translate }}
-      </a>
-      <a class="dropdown-item" href="javascript:void(0)" (click)="changeLang('ur')">
-        {{ 'Urdu' | translate }}
-      </a>
-      <a class="dropdown-item" href="javascript:void(0)" (click)="changeLang('es')">
-        {{ 'Spanish' | translate }}
-      </a>
-      <a class="dropdown-item" href="javascript:void(0)" (click)="changeLang('it')">
-        {{ 'Italian' | translate }}
-      </a>
-      <a class="dropdown-item" href="javascript:void(0)" (click)="changeLang('fa')">
-        {{ 'Farsi' | translate }}
-      </a>
-      <a class="dropdown-item" href="javascript:void(0)" (click)="changeLang('de')">
-        {{ 'German' | translate }}
-      </a>
-      <a class="dropdown-item" href="javascript:void(0)" (click)="changeLang('zh-CHS')">
-        {{ 'Simplified Chinese' | translate }}
-      </a>
-    </div> 
-  </li>-->
   <li class="nav-item dropdown" ngbDropdown>
     <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
-      <i class="fa fa-user"></i> John Smith <b class="caret"></b>
+      <i class="fa fa-user"></i>  {{user.first_name}} <b class="caret"></b>
     </a>
     <div class="dropdown-menu-right" ngbDropdownMenu>
       <a class="dropdown-item" href="javascript:void(0)">

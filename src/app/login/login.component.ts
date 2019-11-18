@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
             data => {
                 console.log('hice login', data);
                 localStorage.setItem(environment.nameTokenSession, data.access_token);
-                this.router.navigate(['dashboard']);
+                this.router.navigate(['inicio']);
             }
         );
     }

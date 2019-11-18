@@ -17,6 +17,12 @@
       <li class="nested" [class.expand]="showMenu === listMenu[0].gestion">
         <ul class="submenu">
           <li>
+            <a href="" [routerLink]="['/gestion/municipio']">
+              <i class="fa fa-monument"></i>&nbsp;
+              <span>Gestión Municipio</span>
+            </a>
+          </li>
+          <li>
             <a href="javascript:void(0)">
               <i class="fa fa-monument"></i>&nbsp;
               <span>Tareas</span>
@@ -190,7 +196,7 @@
         <a [routerLink]="['/components']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-th-list"></i>&nbsp;
             <span>{{ 'Component' | translate }}</span>
-        </a> 
+        </a>
     <a [routerLink]="['/blank-page']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-file-o"></i>&nbsp;
       <span>{{ 'Blank Page' | translate }}</span>
@@ -246,7 +252,7 @@
       </div>
       <div class="nested-menu">
         <a class="list-group-item" (click)="addExpandClass('profile')">
-          <span><i class="fa fa-user"></i>&nbsp; John Smith</span>
+          <span><i class="fa fa-user"></i>&nbsp; {{user.first_name}}</span>
         </a>
         <li class="nested" [class.expand]="showMenu === 'profile'">
           <ul class="submenu">

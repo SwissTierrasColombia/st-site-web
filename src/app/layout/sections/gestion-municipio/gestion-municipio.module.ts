@@ -1,14 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxSpinnerModule } from 'ngx-spinner';
+import {
+  FormsModule, ReactiveFormsModule
+} from '@angular/forms';
+import { GestionMunicipioRoutingModule } from './gestion-municipio-routing.module';
 
-
+import { GestionComponent } from './gestion/gestion.component';
+import { PageHeaderModule } from 'src/app/shared';
 
 @NgModule({
-  declarations: [],
+  declarations: [GestionComponent],
   imports: [
     CommonModule,
-    NgxSpinnerModule
+    FormsModule,
+    ReactiveFormsModule,
+    GestionMunicipioRoutingModule,
+    PageHeaderModule
   ]
 })
 export class GestionMunicipioModule { }

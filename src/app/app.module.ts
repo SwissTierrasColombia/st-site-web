@@ -13,7 +13,7 @@ import { ErrorInterceptorService } from './services/interceptors/error-intercept
 import { ResponseInterceptorService } from './services/interceptors/response.interceptor.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
     imports: [

@@ -10,6 +10,7 @@ import {
 import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   declarations: [CargueComponent, SolicitudComponent],
+  
   imports: [CommonModule, PageHeaderModule, InsumosRoutingModule,
     FormsModule, ReactiveFormsModule,
     NgxSpinnerModule]

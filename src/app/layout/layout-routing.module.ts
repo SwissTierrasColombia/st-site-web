@@ -7,8 +7,8 @@ const routes: Routes = [
         path: '',
         component: LayoutComponent,
         children: [
-            { path: '', redirectTo: 'dashboard', pathMatch: 'prefix' },
-            { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
+            { path: '', redirectTo: 'inicio', pathMatch: 'prefix' },
+            { path: 'inicio', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
             { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
             { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
             { path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },
@@ -16,7 +16,11 @@ const routes: Routes = [
             { path: 'grid', loadChildren: () => import('./grid/grid.module').then(m => m.GridModule) },
             { path: 'components', loadChildren: () => import('./bs-component/bs-component.module').then(m => m.BsComponentModule) },
             { path: 'blank-page', loadChildren: () => import('./blank-page/blank-page.module').then(m => m.BlankPageModule) },
-            { path: 'insumos', loadChildren: () => import('./sections/insumos/insumos.module').then(m => m.InsumosModule) }
+            { path: 'insumos', loadChildren: () => import('./sections/insumos/insumos.module').then(m => m.InsumosModule) },
+            {
+                path: 'gestion', loadChildren: () =>
+                    import('./sections/gestion-municipio/gestion-municipio.module').then(m => m.GestionMunicipioModule)
+            }
         ]
     }
 ];
