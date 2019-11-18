@@ -16,13 +16,13 @@ export class InsumosService {
   public postFileImagen(file: File) {
     const formData = new FormData();
     formData.append('filesXTF[]', file);
-    return this.httpClient.post(this.url + '/ili/ilivalidator/validate', formData);
+    return this.httpClient.post(this.url + '/ili/ilivalidator/v1/validate', formData);
   }
   /**
    * generateDatabase
    */
   public generateSchemaDatabase(data: any) {
-    return this.httpClient.post(this.url + '/ili/ili2pg/schema-import', data);
+    return this.httpClient.post(this.url + '/ili/ili2pg/v1/schema-import', data);
   }
   public generateImportDatabase(formXTF: File, data: any) {
     const form = new FormData();
@@ -33,7 +33,7 @@ export class InsumosService {
     form.append('databaseUsername', data.databaseUsername);
     form.append('databasePassword', data.databasePassword);
     form.append('databaseName', data.databaseName);
-    return this.httpClient.post(this.url + '/ili/ili2pg/import', form);
+    return this.httpClient.post(this.url + '/ili/ili2pg/v1/import', form);
   }
   /**
    * saveFileRepositoryDoc
