@@ -7,9 +7,10 @@ import { GestionMunicipioRoutingModule } from './gestion-municipio-routing.modul
 
 import { GestionComponent } from './gestion/gestion.component';
 import { PageHeaderModule } from 'src/app/shared';
+import { WorkspaceComponent } from './workspace/workspace.component';
 
 @NgModule({
-  declarations: [GestionComponent],
+  declarations: [GestionComponent, WorkspaceComponent],
   imports: [
     CommonModule,
     FormsModule,

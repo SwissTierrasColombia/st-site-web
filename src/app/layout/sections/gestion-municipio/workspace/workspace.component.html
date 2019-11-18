@@ -1,0 +1,76 @@
+<div [@routerTransition]>
+  <app-page-header [heading]="'Hoja de trabajo'" [icon]="'fa-star'"></app-page-header>
+
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Sistema de Transición para el Barrido Predial en Colombia</h3>
+    </div>
+    <div class="card-body">
+      <form action="" method="post">
+        <div class="row mb-2">
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Departamento</label>
+              </div>
+              <select class="custom-select" name="departments" id="departments" [(ngModel)]="selectDepartment">
+                <option value='0' selected>Seleccione el departamento</option>
+                <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Municipio</label>
+              </div>
+              <select class="custom-select" name="" id="">
+                <option selected>Seleccione el Municipio</option>
+                <option value="">OVEJAS</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="alert alert-primary text-center" role="alert">
+              Recuerde que los campos marcados con * son obligatorios.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button type="button" class="btn btn-dark">Mostrar</button>
+    </div>
+  </div>
+  <div class="card mt-2">
+    <div class="card-body">
+      <div class="row">
+        <h5 class="card-title">Hoja de tarea</h5>
+        <table class="table table-striped table-inverse table-responsive">
+          <thead class="thead-inverse">
+            <tr>
+              <th>ID</th>
+              <th>Proyecto</th>
+              <th>Numero de predios</th>
+              <th>Fecha de Inicio</th>
+              <th>Fecha de Fin</th>
+              <th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td scope="row"></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
