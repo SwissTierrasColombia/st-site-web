@@ -8,8 +8,10 @@ import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { IntegracionComponent } from './integracion/integracion.component';
 @NgModule({
-  declarations: [CargueComponent, SolicitudComponent],
+  declarations: [CargueComponent, SolicitudComponent, IntegracionComponent],
+  
   imports: [CommonModule, PageHeaderModule, InsumosRoutingModule,
     FormsModule, ReactiveFormsModule,
     NgxSpinnerModule]

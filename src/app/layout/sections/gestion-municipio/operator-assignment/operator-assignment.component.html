@@ -1,10 +1,9 @@
-<div>
-  <app-page-header [heading]="'Solicitud de insumos'" [icon]="'fa-star'">
-  </app-page-header>
+<div [@routerTransition]>
+  <app-page-header [heading]="'Gestión de municipio'" [icon]="'fa-star'"></app-page-header>
 
   <div class="card">
     <div class="card-header text-center">
-      <h3>Solicitud de insumos</h3>
+      <h3>Gestión de municipio</h3>
     </div>
     <div class="card-body">
       <form action="" method="post">
@@ -72,15 +71,12 @@
             <div class="form-group form-check">
               <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1"
                 [(ngModel)]="splitZones">
-              <label class="form-check-label" for="exampleCheck1">Selección de Zonas</label>
+              <label class="form-check-label" for="exampleCheck1">Dividir en Zonas de Trabajo</label>
             </div>
           </div>
           <div *ngIf="splitZones" class='col-12 col-sm-6 mb-1'>
             <div class="input-group">
-              <select class="custom-select" name="" id="">
-                <option selected>Seleccione la zona de trabajo</option>
-                <option value="">4</option>
-              </select>
+              <input class="form-control" type="text">
             </div>
           </div>
         </div>
@@ -106,6 +102,16 @@
           <div class="col-12">
             <div class="input-group">
               <div class="input-group-prepend">
+                <div class="input-group-text">* Alcance / Observaciones</div>
+              </div>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12">
+            <div class="input-group">
+              <div class="input-group-prepend">
                 <label class="input-group-text">* Orden de Trabajo / Documento Soporte
                   <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                 </label>
@@ -118,39 +124,6 @@
           <div class="col-12">
             <div class="alert alert-primary text-center" role="alert">
               Recuerde que los campos marcados con * son obligatorios.
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <h4>Gestor</h4>
-          <div class="col-12">
-            <div class="form-group form-check">
-              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck2">
-              <label class="form-check-label" for="exampleCheck1">Solicitud Insumos Catastrales</label>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-group form-check">
-              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck2">
-              <label class="form-check-label" for="exampleCheck1">Solicitud Insumos No Estructurados</label>
-            </div>
-          </div>
-          <div class='col-12 mb-1'>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label class="input-group-text">* Fecha Máxima de Entrega</label>
-              </div>
-              <input class="form-control" type="date">
-            </div>
-          </div>
-        </div>
-        <div class="row mt-2 mb-2">
-          <div class="col-12">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text">* Observaciones de la solicitud</div>
-              </div>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
           </div>
         </div>

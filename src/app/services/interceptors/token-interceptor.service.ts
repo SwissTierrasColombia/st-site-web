@@ -7,24 +7,24 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-    constructor(private spinner: NgxSpinnerService) {
+  constructor(private spinner: NgxSpinnerService) {
 
-    }
+  }
 
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const token = localStorage.getItem(environment.nameTokenSession);
-        if (token) {
-            request = request.clone({
-                setHeaders: {
-                    Authorization: 'Bearer ' + token
-                }
-            });
+    const token = localStorage.getItem(environment.nameTokenSession);
+    if (token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: 'Bearer ' + token
         }
-
-        this.spinner.show();
-
-        return next.handle(request);
+      });
     }
+
+    this.spinner.show();
+
+    return next.handle(request);
+  }
 
 }

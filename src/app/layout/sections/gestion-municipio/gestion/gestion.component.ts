@@ -3,17 +3,16 @@ import { ManagersService } from 'src/app/services/gestion-municipio/managers.ser
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 
 @Component({
-  selector: 'app-solicitud',
-  templateUrl: './solicitud.component.html',
-  styleUrls: ['./solicitud.component.scss']
+  selector: 'app-gestion',
+  templateUrl: './gestion.component.html',
+  styleUrls: ['./gestion.component.scss']
 })
-export class SolicitudComponent implements OnInit {
+export class GestionComponent implements OnInit {
   activeManagers: any;
   docsSoport: File;
   selectManager: number;
   departments: any;
   selectDepartment: number;
-  splitZones: boolean;
   constructor(
     private serviceManagers: ManagersService,
     private serviceWorkspaces: WorkspacesService
@@ -22,8 +21,8 @@ export class SolicitudComponent implements OnInit {
     this.selectManager = 0;
     this.departments = [];
     this.selectDepartment = 0;
-    this.splitZones = false;
   }
+
   ngOnInit() {
     this.serviceManagers.getManagers()
       .subscribe(

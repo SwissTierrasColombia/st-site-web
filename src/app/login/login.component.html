@@ -13,7 +13,7 @@
                         <input name="password" type="password" [(ngModel)]="loginData.password" class="form-control input-underline input-lg" id="password" placeholder="Contraseña" required>
                     </div>
                 </div>
-                <a class="btn rounded-btn" [routerLink]="['/dashboard']" (click)="onLoggedin()">{{ 'Log in' | translate }}</a>
+                <a class="btn rounded-btn" [routerLink]="['/inicio']" (click)="onLoggedin()">{{ 'Log in' | translate }}</a>
                 &nbsp;
                 <a class="btn rounded-btn" [routerLink]="['/signup']">{{ 'Register' | translate }}</a>
             </form>

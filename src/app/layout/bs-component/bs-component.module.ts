@@ -30,7 +30,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
         FormsModule,
         ReactiveFormsModule,
         NgbModule,
-        PageHeaderModule, 
+        PageHeaderModule,
         NgxSpinnerModule
     ],
     declarations: [
