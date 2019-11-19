@@ -1,101 +1,224 @@
-  <div class="card bg-light mb-3">
-    <div class="card-header text-center"><b>Validar isumos</b></div>
-    <div class="card-body">
-      <h4 class="card-title">Validar archivo XTF</h4>
-      <p class="card-text">Por favor cargue el archivo XTF a validar</p>
-      <input type="file" accept=".xtf" (change)="cargandoImagen($event.target.files)" multiple>
-    </div>
-    <div _ngcontent-hhg-c4="" class="alert alert-success" *ngIf='respuestaValidador[0].isValid === true'>
-      <strong _ngcontent-hhg-c4="" class="ng-tns-c4-0">
-        El archivo XTF</strong> validado correctamente. </div>
-    <div _ngcontent-hbo-c4="" class="alert alert-danger" *ngIf='respuestaValidador[0].isValid === false'>
-      <strong _ngcontent-hbo-c4="" class="ng-tns-c4-0">
-        El archivo XTF </strong> No es valido. </div>
-  </div>
-  <!-- {{questionsForm | json}} -->
-  <div class="card bg-light mb-3">
-    <div class="card-header text-center"><b>Generar base de datos</b></div>
-    <div class="card-body">
-      <h4 class="card-title">Modelo LADM 2.9.6</h4>
-      <p class="card-text">Tenga en cuenta que debe existir la base de datos, esto generara el esquema de la base de
-        datos con el modelo LADM 2.9.6</p>
-      <form action="" method="post">
-        <div class="form-group" *ngFor="let item of questionsForm">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">{{item.title}}</span>
-            </div>
-            <input class="form-control" id="{{item.id}}" type="{{item.typeInput}}" name="{{item.name}}"
-              [(ngModel)]="item.value">
-          </div>
-        </div>
-      </form>
-      <button type="button" class="btn btn-primary btn-sm btn-block" (click)='crearEsquema()'>Crear esquema de la base
-        de datos</button>
-      <div _ngcontent-hhg-c4="" class="alert alert-success" *ngIf='validSchema.imported === true'>
-        <strong _ngcontent-hhg-c4="" class="ng-tns-c4-0">
-          Se ha generado el esquema</strong> de la base de datos correctamente. </div>
-      <div _ngcontent-hbo-c4="" class="alert alert-danger" *ngIf='validSchema.imported === false'>
-        <strong _ngcontent-hbo-c4="" class="ng-tns-c4-0">
-          No se pudo generar</strong> la estructura de la base de datos. </div>
-    </div>
-  </div>
+<div>
+  <app-page-header [heading]="'Solicitud de insumos'" [icon]="'fa-star'">
+  </app-page-header>
 
-  <div class="card bg-light mb-3">
-    <div class="card-header text-center"><b>Importar base de datos</b></div>
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Solicitud de insumos</h3>
+    </div>
     <div class="card-body">
-      <h4 class="card-title">Modelo LADM 2.9.6</h4>
-      <p class="card-text">Tenga en cuenta que debe existir la base de datos, esto importa el esquema de la base de
-        datos con el modelo LADM 2.9.6 a partir del archivo XTF</p>
       <form action="" method="post">
-        <div class="form-group" *ngFor="let item of importQuestionsForm; let id = index;">
-          <div class="input-group" *ngIf="item.typeInput === 'file'">
-            <div class="input-group-prepend">
-              <span class="input-group-text">{{item.title}}</span>
+        <div class="row mb-2">
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Departamento</label>
+              </div>
+              <select class="custom-select" name="departments" id="departments" [(ngModel)]="selectDepartment">
+                <option value='0' selected>Seleccione el departamento</option>
+                <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
+              </select>
             </div>
-            <input type="file" accept=".xtf" (change)="cargandoXTF($event.target.files)" multiple>
           </div>
-          <div class="input-group" *ngIf="item.typeInput != 'file'">
-            <div class="input-group-prepend">
-              <span class="input-group-text">{{item.title}}</span>
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Municipio</label>
+              </div>
+              <select class="custom-select" name="" id="">
+                <option selected>Seleccione el Municipio</option>
+                <option value="">OVEJAS</option>
+              </select>
             </div>
-            <input class="form-control" id="{{item.id}}{{id}}" type="{{item.typeInput}}" name="{{item.name}}{{id}}"
-              [(ngModel)]="item.value">
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class='col-12 col-sm-6 mb-2'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Gestor</label>
+              </div>
+              <input class="form-control" type="text" disabled="true">
+            </div>
+          </div>
+          <div class='col-12 col-sm-6 mb-2'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Operador</label>
+              </div>
+              <input class="form-control" type="text" disabled="true">
+            </div>
+          </div>
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Numero de predios esperados</label>
+              </div>
+              <input class="form-control" type="text">
+            </div>
+          </div>
+          <div class='col-12 col-sm-6 mt-2 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Área de Trabajo</label>
+              </div>
+              <input class="form-control" type="text">
+            </div>
+          </div>
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="form-group form-check">
+              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1"
+                [(ngModel)]="splitZones">
+              <label class="form-check-label" for="exampleCheck1">Selección de Zonas</label>
+            </div>
+          </div>
+          <div *ngIf="splitZones" class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <select class="custom-select" name="" id="">
+                <option selected>Seleccione la zona de trabajo</option>
+                <option value="">4</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Fecha de Inicio</label>
+              </div>
+              <input class="form-control" type="date">
+            </div>
+          </div>
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Fecha Final</label>
+              </div>
+              <input class="form-control" type="date">
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Orden de Trabajo / Documento Soporte
+                  <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                </label>
+              </div>
+              <input class="form-control" type="file" accept="pdf" (change)="docSoport($event.target.files)" multiple>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <h4>Gestor</h4>
+          <div class="col-12">
+            <div class="form-group form-check">
+              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck2">
+              <label class="form-check-label" for="exampleCheck1">Solicitud Insumos Catastrales</label>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group form-check">
+              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck2">
+              <label class="form-check-label" for="exampleCheck1">Solicitud Insumos No Estructurados</label>
+            </div>
+          </div>
+          <div class='col-12 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Fecha Máxima de Entrega</label>
+              </div>
+              <input class="form-control" type="date">
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2 mb-2">
+          <div class="col-12">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">* Observaciones de la solicitud</div>
+              </div>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
           </div>
         </div>
       </form>
-      <button type="button" class="btn btn-primary btn-sm btn-block" (click)='crearDB()'>Crear base de datos a partir de
-        archivo XTF</button>
     </div>
-    <div _ngcontent-hhg-c4="" class="alert alert-success" *ngIf='validImportDB.imported === true'>
-      <strong _ngcontent-hhg-c4="" class="ng-tns-c4-0">
-        Se ha importando</strong> la base de datos apartir del archivo XTF. </div>
-    <div _ngcontent-hbo-c4="" class="alert alert-danger" *ngIf='validImportDB.imported === false'>
-      <strong _ngcontent-hbo-c4="" class="ng-tns-c4-0">
-        No se pudo crear</strong> la base de datos. </div>
   </div>
+</div>
 
-  <div class="card bg-light mb-3">
-    <div class="card-header text-center"><b>Cargar archivo</b></div>
-    <div class="card-body">
-      <h4 class="card-title">Repositorio Documental</h4>
-      <p class="card-text">Este archivo sera subido en el repositorio documental</p>
-      <form action="" method="post">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Seleccione el archivo</span>
-            </div>
-            <input type="file" accept="*" (change)="saveFileRepository($event.target.files)" multiple>
-          </div>
-        </div>
-      </form>
-      <button type="button" class="btn btn-primary btn-sm btn-block" (click)='sendFileRepository()'>Subir archivo</button>
-    </div>
-    <div _ngcontent-hhg-c4="" class="alert alert-success" *ngIf='validSaveRepository.status === true'>
-      <strong _ngcontent-hhg-c4="" class="ng-tns-c4-0">
-        Se ha subido</strong> el archivo al repositorio documental. </div>
-    <div _ngcontent-hbo-c4="" class="alert alert-danger" *ngIf='validSaveRepository.status === false'>
-      <strong _ngcontent-hbo-c4="" class="ng-tns-c4-0">
-        No se pudo cargar</strong> el archivo al repositorio documental. </div>
+<div class="card bg-light mb-3">
+  <div class="card-header text-center"><b>Validar archivo XTF</b></div>
+  <div class="card-body">
+    <h4 class="card-title">Archivo con los datos en el modelo de insumos (Formato XTF)</h4>
+    <p class="card-text">Por favor cargue el archivo XTF a validar</p>
+    <input type="file" accept=".xtf" (change)="loadFile($event.target.files)" multiple>
   </div>
+  <div _ngcontent-hhg-c4="" class="alert alert-success" *ngIf='respuestaValidador[0].isValid === true'>
+    <strong _ngcontent-hhg-c4="" class="ng-tns-c4-0">
+      El archivo XTF</strong> validado correctamente.
+    <i class="fa fa-file-archive-o" aria-hidden="true">Descargue aquí informe de validación de archivo</i>
+  </div>
+  <div _ngcontent-hbo-c4="" class="alert alert-danger" *ngIf='respuestaValidador[0].isValid === false'>
+    <strong _ngcontent-hbo-c4="" class="ng-tns-c4-0">
+      El archivo XTF </strong> No es valido.
+    <i class="fa fa-file-archive-o" aria-hidden="true">Descargue aquí informe de validación de archivo</i>
+  </div>
+</div>
+<div class="card bg-light mb-3">
+  <div class="card-header text-center"><b>Cargue de Insumos</b></div>
+  <div class="card-body">
+    <div class="col-12">
+      <div class="form-group form-check">
+        <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck2">
+        <label class="form-check-label" for="exampleCheck1">Archivo XTF validado</label>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="form-group form-check">
+        <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck2">
+        <label class="form-check-label" for="exampleCheck1">Cartografia de referencia</label>
+      </div>
+    </div>
+    <div class='col-12 col-sm-6  mb-1'>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label class="input-group-text">* Tipo</label>
+        </div>
+        <select class="custom-select" name="" id="">
+          <option selected>Seleccione el Tipo de archivo</option>
+          <option value="">URL</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="form-group form-check">
+        <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck2">
+        <label class="form-check-label" for="exampleCheck1">PLan de ordenamiento territorial</label>
+      </div>
+    </div>
+    <div class='col-12 col-sm-6  mb-1'>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label class="input-group-text">* Tipo</label>
+        </div>
+        <select class="custom-select" name="" id="">
+          <option selected>Seleccione el Tipo de archivo</option>
+          <option value="">URL</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-12">
+    <div class="alert alert-primary text-center" role="alert">
+      Recuerde que los campos marcados con * son obligatorios.
+    </div>
+  </div>
+</div>
+<div class="card-footer text-muted text-center">
+  <button type="button" class="btn btn-dark">Guardar</button>
+</div>
