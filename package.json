@@ -32,8 +32,6 @@
     "@angular/router": "~8.2.12",
     "@auth0/angular-jwt": "^3.0.1",
     "@ng-bootstrap/ng-bootstrap": "^5.1.1",
-    "@ngx-translate/core": "^11.0.1",
-    "@ngx-translate/http-loader": "^4.0.0",
     "chart.js": "2.7.3",
     "core-js": "2.5.7",
     "font-awesome": "4.7.0",

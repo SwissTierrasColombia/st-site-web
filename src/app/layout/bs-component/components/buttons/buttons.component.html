@@ -2,22 +2,22 @@
     <div class="col col-sm-6">
         <div class="card">
             <div class="card-header">
-                Radio Button group (<strong>Using ngModel</strong>)
+                Grupo de botones de radio (<strong>Usando ngModel</strong>)
             </div>
             <div class="card-body">
                 <div class="btn-group btn-group-toggle mb-3" ngbRadioGroup name="radioBasic" [(ngModel)]="model">
                     <label ngbButtonLabel class="btn-primary">
-                        <input ngbButton type="radio" [value]="1"> Left (pre-checked)
+                        <input ngbButton type="radio" [value]="1"> Izquierda (pre-comprobada)
                     </label>
                     <label ngbButtonLabel class="btn-primary">
-                        <input ngbButton type="radio" value="middle"> Middle
+                        <input ngbButton type="radio" value="middle"> Medio
                     </label>
                     <label ngbButtonLabel class="btn-primary">
-                        <input ngbButton type="radio" [value]="false"> Right
+                        <input ngbButton type="radio" [value]="false"> Derecho
                     </label>
                 </div>
                 <div class="alert alert-info mb-0">
-                    <strong>Selected Value: </strong>{{model}}
+                    <strong>Valor seleccionado: </strong>{{model}}
                 </div>
             </div>
         </div>

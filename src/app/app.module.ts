@@ -3,7 +3,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LanguageTranslationModule } from './shared/modules/language-translation/language-translation.module'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,7 +21,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         BrowserAnimationsModule,
         ToastrModule.forRoot(), // ToastrModule added
         HttpClientModule,
-        LanguageTranslationModule,
         AppRoutingModule,
         NgxSpinnerModule,
         MatProgressSpinnerModule

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { JwtHelper } from 'src/app/helpers/jwt';
 
@@ -12,7 +11,7 @@ import { JwtHelper } from 'src/app/helpers/jwt';
 export class HeaderComponent implements OnInit {
   public pushRightClass: string;
   user: any;
-  constructor(private translate: TranslateService, public router: Router) {
+  constructor(public router: Router) {
     this.user = {
       first_name: 'user'
     };
@@ -51,8 +50,5 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem(environment.nameTokenSession);
   }
 
-  changeLang(language: string) {
-    this.translate.use(language);
-  }
 
 }

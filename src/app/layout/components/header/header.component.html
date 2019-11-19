@@ -6,29 +6,12 @@
   </button>
   <div class="collapse navbar-collapse">
     <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="{{ 'Search' | translate }}">
+      <input class="form-control mr-sm-2" type="text" placeholder="Buscar">
     </form>
     <ul class="navbar-nav ml-auto">
-      <!-- <li class="nav-item d-none d-xl-block">
-                <a
-                    href="https://github.com/start-angular/SB-Admin-BS4-Angular-7/archive/master.zip"
-                    class="nav-link btn mt-1" role="button"
-                    style="padding: .375rem 1rem !important;border-color: #999;"
-                >
-                    {{ 'Download Now' | translate }}
-                </a>
-            </li> &nbsp; -->
-      <!-- <li class="nav-item">
-                <a href="javascript:void(0)" class="nav-link mt-1"
-                    style="padding: 0.375rem 1rem !important; border-color: #999;"
-                    (click)="rltAndLtr()"
-                >
-                    RTL/LTR
-                </a>
-            </li> &nbsp; -->
       <li class="nav-item dropdown" ngbDropdown>
         <a class="nav-link" href="javascript:void(0)" ngbDropdownToggle>
-          <i class="fa fa-envelope"></i> <b class="caret"></b><span class="sr-only">(current)</span>
+          <i class="fa fa-envelope"></i> <b class="caret"></b><span class="sr-only">(corriente)</span>
         </a>
         <ul class="dropdown-menu-right messages" ngbDropdownMenu>
           <li class="media">
@@ -37,8 +20,8 @@
               alt="Generic placeholder image">
             <div class="media-body">
               <h5 class="mt-0 mb-1"> {{user.first_name}}</h5>
-              <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-              <p class="last"> Lorem ipsum dolor sit amet, consectetur...</p>
+              <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer a las 4:32 p.m.</p>
+              <p class="last"> Algún mensaje, puede ir aquí...</p>
             </div>
           </li>
           <li class="media">
@@ -47,8 +30,8 @@
               alt="Generic placeholder image">
             <div class="media-body">
               <h5 class="mt-0 mb-1"> {{user.first_name}}</h5>
-              <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-              <p class="last"> Lorem ipsum dolor sit amet, consectetur...</p>
+              <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer a las 4:32 p.m</p>
+              <p class="last"> Algún mensaje, puede ir aquí...</p>
             </div>
           </li>
           <li class="media">
@@ -57,8 +40,8 @@
               alt="Generic placeholder image" />
             <div class="media-body">
               <h5 class="mt-0 mb-1"> {{user.first_name}}</h5>
-              <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-              <p class="last"> Lorem ipsum dolor sit amet, consectetur...</p>
+              <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer a las 4:32 p.m</p>
+              <p class="last"> Algún mensaje, puede ir aquí...</p>
             </div>
           </li>
         </ul>
@@ -89,16 +72,16 @@
     </a>
     <div class="dropdown-menu-right" ngbDropdownMenu>
       <a class="dropdown-item" href="javascript:void(0)">
-        <i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}
+        <i class="fa fa-fw fa-user"></i> Perfil
       </a>
       <a class="dropdown-item" href="javascript:void(0)">
-        <i class="fa fa-fw fa-envelope"></i> {{ 'Inbox' | translate }}
+        <i class="fa fa-fw fa-envelope"></i> Bandeja de entrada
       </a>
       <a class="dropdown-item" href="javascript:void(0)">
-        <i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}
+        <i class="fa fa-fw fa-gear"></i> Configuración
       </a>
       <a class="dropdown-item" [routerLink]="['/login']" (click)="onLoggedout()">
-        <i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }}
+        <i class="fa fa-fw fa-power-off"></i> Cerrar sesión
       </a>
     </div>
   </li>
