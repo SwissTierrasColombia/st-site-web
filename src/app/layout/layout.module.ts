@@ -8,7 +8,6 @@ import { HeaderComponent } from './components/header/header.component';
 import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
-import { NgxSpinnerModule } from 'ngx-spinner';
 import { FooterComponent } from './components/footer/footer.component';
 @NgModule({
   imports: [
@@ -17,7 +16,6 @@ import { FooterComponent } from './components/footer/footer.component';
     NgbDropdownModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxSpinnerModule
   ],
   declarations: [
     LayoutComponent,

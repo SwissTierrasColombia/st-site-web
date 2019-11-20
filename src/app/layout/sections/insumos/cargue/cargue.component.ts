@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { routerTransition } from 'src/app/router.animations';
+import { slideToLeft } from 'src/app/router.animations';
 import { InsumosService } from 'src/app/services/insumos/insumos.service';
 import { ToastrService } from 'ngx-toastr';
 import { ManagersService } from 'src/app/services/gestion-municipio/managers.service';
@@ -8,7 +8,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
   selector: 'app-cargue',
   templateUrl: './cargue.component.html',
   styleUrls: ['./cargue.component.scss'],
-  animations: [routerTransition()]
+  animations: [slideToLeft()]
 })
 export class CargueComponent implements OnInit {
   activeManagers: any;

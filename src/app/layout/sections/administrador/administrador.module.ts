@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 
@@ -8,7 +7,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   declarations: [],
   imports: [
     CommonModule,
-    NgxSpinnerModule
   ]
 })
 export class AdministradorModule { }

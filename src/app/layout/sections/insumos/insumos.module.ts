@@ -7,13 +7,13 @@ import { SolicitudComponent } from './solicitud/solicitud.component';
 import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
-import { NgxSpinnerModule } from 'ngx-spinner';
 import { IntegracionComponent } from './integracion/integracion.component';
 @NgModule({
   declarations: [CargueComponent, SolicitudComponent, IntegracionComponent],
-  
-  imports: [CommonModule, PageHeaderModule, InsumosRoutingModule,
+
+  imports: [
+    CommonModule, PageHeaderModule, InsumosRoutingModule,
     FormsModule, ReactiveFormsModule,
-    NgxSpinnerModule]
+  ]
 })
 export class InsumosModule { }

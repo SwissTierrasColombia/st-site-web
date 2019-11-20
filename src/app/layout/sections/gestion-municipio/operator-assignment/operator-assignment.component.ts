@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ManagersService } from 'src/app/services/gestion-municipio/managers.service';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-
+import { routerTransition } from 'src/app/router.animations';
 @Component({
   selector: 'app-operator-assignment',
   templateUrl: './operator-assignment.component.html',
-  styleUrls: ['./operator-assignment.component.scss']
+  styleUrls: ['./operator-assignment.component.scss'],
+  animations: [routerTransition()]
+
 })
 export class OperatorAssignmentComponent implements OnInit {
 

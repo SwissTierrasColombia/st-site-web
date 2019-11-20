@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ManagersService } from 'src/app/services/gestion-municipio/managers.service';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
+import { slideToLeft } from 'src/app/router.animations';
 
 @Component({
   selector: 'app-solicitud',
   templateUrl: './solicitud.component.html',
-  styleUrls: ['./solicitud.component.scss']
+  styleUrls: ['./solicitud.component.scss'],
+  animations: [slideToLeft()]
 })
 export class SolicitudComponent implements OnInit {
   activeManagers: any;

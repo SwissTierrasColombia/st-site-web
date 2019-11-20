@@ -18,4 +18,30 @@ export class WorkspacesService {
   public getDepartments() {
     return this.httpClient.get(this.url + '/workspaces/v1/departments');
   }
+  /**
+   * GetMunicipalitiesByDeparment
+   */
+  public GetMunicipalitiesByDeparment(idDepartament: string) {
+    return this.httpClient.get(this.url + '/workspaces/v1/departments/' + idDepartament + '/municipalities');
+  }
+  /**
+   * getWorkSpaceByMunicipality
+   */
+  public getWorkSpaceByMunicipality(idMunicipality: string) {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/municipalities/' + idMunicipality);
+  }
+  /**
+   * CreateWorkspace
+   */
+  public createWorkspace(data: any) {
+    const form = new FormData();
+    form.append('supportFile', data.supportFile);
+    form.append('managerCode', data.managerCode);
+    form.append('municipalityId', data.municipalityId);
+    form.append('observations', data.observations);
+    form.append('numberAlphanumericParcels', data.numberAlphanumericParcels);
+    form.append('startDate', data.startDate);
+    form.append('municipalityArea', data.municipalityArea);
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces', form);
+  }
 }
