@@ -3,7 +3,7 @@
 
   <div class="card">
     <div class="card-header text-center">
-      <h3>Hoja de trabajo</h3>
+      <h3>Proyecto</h3>
     </div>
     <div class="card-body">
       <form action="" method="post">
@@ -62,6 +62,7 @@
                 <th>Fecha de Inicio</th>
                 <th>Observaciones</th>
                 <th>Estado</th>
+                <th>Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -73,6 +74,16 @@
                 <td scope="row">{{item.startDate}}</td>
                 <td scope="row">{{item.observations}}</td>
                 <td scope="row">{{item.isActive ? 'Activo':'Inactivo'}}</td>
+                <td *ngIf="item.isActive === true">
+                  <i class="material-icons cursor" (click)="updateWorkSpace(item.id)">
+                    system_update_alt
+                  </i>
+                </td>
+                <td *ngIf="item.isActive === false">
+                  <i class="material-icons cursor" (click)="viewWorkSpace(item.id)">
+                    remove_red_eye
+                  </i>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -158,8 +169,8 @@
       <div class="row mb-2">
         <div class="col-12">
           <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">* Alcance / Observaciones</div>
+            <div class="input-group-prepend input-group-text">
+              <div class="">* Alcance / Observaciones</div>
             </div>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observaciones"
               [(ngModel)]="dataCreateWorkSpace.observations"></textarea>

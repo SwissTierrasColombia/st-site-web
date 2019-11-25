@@ -14,6 +14,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MomentModule } from 'ngx-moment';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +25,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AppRoutingModule,
     NgxSpinnerModule,
     MatProgressSpinnerModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MomentModule
   ],
   declarations: [AppComponent],
   providers: [AuthGuard,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { slideToLeft } from 'src/app/router.animations';
 import { ManagersService } from 'src/app/services/gestion-municipio/managers.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-workspace',
@@ -23,7 +24,8 @@ export class WorkspaceComponent implements OnInit {
   listWorkSpace: any;
   constructor(
     private serviceManagers: ManagersService,
-    private serviceWorkspaces: WorkspacesService
+    private serviceWorkspaces: WorkspacesService,
+    private router: Router,
   ) {
     this.activeManagers = [];
     this.departments = [];
@@ -93,6 +95,12 @@ export class WorkspaceComponent implements OnInit {
         this.searchWorkSpace();
       }
     );
+  }
+  updateWorkSpace(idWorkspace: number) {
+    this.router.navigate(['gestion/workspace/' + idWorkspace + '/operador']);
+  }
+  viewWorkSpace(idWorkspace: number) {
+    this.router.navigate(['gestion/workspace/' + idWorkspace + '/ver/operador']);
   }
 
 }

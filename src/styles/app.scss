@@ -4,10 +4,19 @@
 @import "utils";
 @import "rtl";
 @import "responsive";
-@import 'ngx-toastr/ngx-toastr';
+@import "ngx-toastr/ngx-toastr";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @media print {
-    .breadcrumb {
-        display: none !important;
-    }
+  .breadcrumb {
+    display: none !important;
+  }
+}
+.cursor {
+  cursor: pointer;
+}
+.input-group-text {
+  font-weight: bold;
+}
+.col-form-label {
+  font-weight: bold;
 }

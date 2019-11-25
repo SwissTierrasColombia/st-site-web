@@ -44,4 +44,28 @@ export class WorkspacesService {
     form.append('municipalityArea', data.municipalityArea);
     return this.httpClient.post(this.url + '/workspaces/v1/workspaces', form);
   }
+  /**
+   * GetWorkSpace
+   */
+  public getWorkSpace(idWorkspace: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/' + idWorkspace);
+  }
+  /**
+   * updateWorkSpace
+   */
+  public updateWorkSpace(idWorkspace: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/workspaces/' + idWorkspace, data);
+  }
+  /**
+   * getSupportsByWorkSpace
+   */
+  public getSupportsByWorkSpace(idWorkspace: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/supports');
+  }
+  /**
+   * assingOperatorToWorkSpace
+   */
+  public assingOperatorToWorkSpace(idWorkspace: number, data: FormData) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/operators', data);
+  }
 }
