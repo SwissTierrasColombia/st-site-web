@@ -68,4 +68,16 @@ export class WorkspacesService {
   public assingOperatorToWorkSpace(idWorkspace: number, data: FormData) {
     return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/operators', data);
   }
+  /**
+   * getWorkSpaceActiveByMunicipality
+   */
+  public getWorkSpaceActiveByMunicipality(idMunicipality: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/municipalities/' + idMunicipality);
+  }
+  /**
+   * createRequest
+   */
+  public createRequest(idMunicipality: number, data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/providers/municipalities/' + idMunicipality + '/requests', data);
+  }
 }
