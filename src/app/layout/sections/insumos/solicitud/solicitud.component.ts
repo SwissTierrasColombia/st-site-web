@@ -3,6 +3,7 @@ import { ManagersService } from 'src/app/services/gestion-municipio/managers.ser
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { slideToLeft } from 'src/app/router.animations';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-solicitud',
@@ -29,7 +30,8 @@ export class SolicitudComponent implements OnInit {
   count: number;
   constructor(
     private serviceWorkspaces: WorkspacesService,
-    private serviceProviders: ProvidersService
+    private serviceProviders: ProvidersService,
+    private toastr: ToastrService,
   ) {
     this.count = 0;
     this.observations = '';
@@ -142,8 +144,8 @@ export class SolicitudComponent implements OnInit {
   }
   submitInfo() {
     this.serviceWorkspaces.createRequest(this.selectMunicipality, this.listsupplies).subscribe(
-      data => {
-        console.log(data);
+      _ => {
+        this.toastr.success('Solicitud enviada correctamente');
       }
     );
   }
