@@ -78,11 +78,12 @@ export class OperatorViewComponent implements OnInit {
       this.serviceWorkspaces.getWorkSpace(values[0]).subscribe(
         response => {
           this.dataWorkSpace = response;
-          console.log('this.dataWorkSpace', this.dataWorkSpace);
-          this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
-          this.dataOperatorsWorkSpace.operatorName = this.dataWorkSpace.operators[0].operator.name;
-          this.dataOperatorsWorkSpace.startDate = this.formatDate(this.dataOperatorsWorkSpace.startDate);
-          this.dataOperatorsWorkSpace.endDate = this.formatDate(this.dataOperatorsWorkSpace.endDate);
+          if (this.dataWorkSpace.operators.lenght > 0) {
+            this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
+            this.dataOperatorsWorkSpace.operatorName = this.dataWorkSpace.operators[0].operator.name;
+            this.dataOperatorsWorkSpace.startDate = this.formatDate(this.dataOperatorsWorkSpace.startDate);
+            this.dataOperatorsWorkSpace.endDate = this.formatDate(this.dataOperatorsWorkSpace.endDate);
+          }
         }
       );
     });

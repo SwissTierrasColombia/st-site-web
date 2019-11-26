@@ -87,10 +87,12 @@ export class OperatorAssignmentComponent implements OnInit {
       this.serviceWorkspaces.getWorkSpace(values[0]).subscribe(
         response => {
           this.dataWorkSpace = response;
-          console.log('this.dataWorkSpace', this.dataWorkSpace);
-          this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
-          this.dataOperatorsWorkSpace.startDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.startDate);
-          this.dataOperatorsWorkSpace.endDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.endDate);
+          if (this.dataWorkSpace.operators.length > 0) {
+            // console.log('this.dataWorkSpace', this.dataWorkSpace);
+            this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
+            this.dataOperatorsWorkSpace.startDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.startDate);
+            this.dataOperatorsWorkSpace.endDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.endDate);
+          }
         }
       );
     });
