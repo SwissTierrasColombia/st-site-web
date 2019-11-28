@@ -57,6 +57,12 @@
             </a>
           </li>
           <li>
+            <a [routerLink]="['/insumos/solicitud']">
+              <i class="fa fa-monument"></i>&nbsp;
+              <span>Solicitudes</span>
+            </a>
+          </li>
+          <li>
             <a [routerLink]="['/insumos/cargue']">
               <i class="fa fa-monument"></i>&nbsp;
               <span>Cargue</span>
@@ -156,18 +162,16 @@
               <span>Roles</span>
             </a>
           </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="fa fa-monument"></i>&nbsp;
-              <span>Entidades</span>
-            </a>
-          </li>
         </ul>
       </li>
     </div>
     <a [routerLink]="" class="list-group-item">
       <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
       <span>Instalación Asistente <br> LADM</span>
+    </a>
+    <a [routerLink]="['/poc']" class="list-group-item">
+      <i class="fa fa-fw fa-envelope"></i>&nbsp;
+      <span>POC</span>
     </a>
     <div class="header-fields">
       <div class="nested-menu">

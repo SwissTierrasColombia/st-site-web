@@ -68,9 +68,6 @@ export class SolicitudComponent implements OnInit {
         this.departments = response;
       });
   }
-  clone(obj: any) {
-    return JSON.parse(JSON.stringify(obj))
-  }
   changeDepartament() {
     this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment.toString()).subscribe(
       data => {
