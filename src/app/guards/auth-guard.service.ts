@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     let result = false;
-    const token = localStorage.getItem(environment.nameTokenSession);
+    const token = sessionStorage.getItem(environment.nameTokenSession);
     if (token) {
       const helper = new JwtHelperService();
       let decodedToken = null;
@@ -39,14 +39,14 @@ export class AuthGuard implements CanActivate {
             resolve(result);
           },
           () => {
-            localStorage.removeItem(environment.nameTokenSession);
+            sessionStorage.removeItem(environment.nameTokenSession);
             result = false;
             this.route.navigate(['/login']);
             reject(result);
           });
       });
     } else {
-      localStorage.removeItem(environment.nameTokenSession);
+      sessionStorage.removeItem(environment.nameTokenSession);
       result = false;
       this.route.navigate(['/login']);
     }

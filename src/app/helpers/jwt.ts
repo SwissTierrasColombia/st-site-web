@@ -4,12 +4,12 @@ import { environment } from 'src/environments/environment';
 export class JwtHelper {
 
   static closeSession(router) {
-    localStorage.removeItem(environment.nameTokenSession);
+    sessionStorage.removeItem(environment.nameTokenSession);
     router.navigate(['/login']);
   }
 
   static getUserPublicInformation() {
-    const token = localStorage.getItem(environment.nameTokenSession);
+    const token = sessionStorage.getItem(environment.nameTokenSession);
     const helper = new JwtHelperService();
     let decodedToken = null;
     try {

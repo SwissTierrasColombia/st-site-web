@@ -8,12 +8,17 @@ import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
 import { IntegracionComponent } from './integracion/integracion.component';
+import { SolicitudesComponent } from './solicitudes/solicitudes.component';
+import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
 @NgModule({
-  declarations: [CargueComponent, SolicitudComponent, IntegracionComponent],
+  declarations: [CargueComponent, SolicitudComponent, IntegracionComponent, SolicitudesComponent],
 
   imports: [
     CommonModule, PageHeaderModule, InsumosRoutingModule,
     FormsModule, ReactiveFormsModule,
+  ],
+  providers: [
+    TypeDataSuppliesModel
   ]
 })
 export class InsumosModule { }

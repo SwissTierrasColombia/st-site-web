@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CargueComponent } from './cargue/cargue.component';
 import { SolicitudComponent } from './solicitud/solicitud.component';
 import { IntegracionComponent } from './integracion/integracion.component';
+import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 
 
 const routes: Routes = [
@@ -11,7 +12,11 @@ const routes: Routes = [
     component: SolicitudComponent
   },
   {
-    path: 'cargue',
+    path: 'solicitudes',
+    component: SolicitudesComponent
+  },
+  {
+    path: 'cargue/:idInsumo',
     component: CargueComponent
   },
   {

@@ -34,6 +34,6 @@ export class LoginService {
     return this.httpClient.get<any>(this.url + '/auth/session', { observe: 'response' });
   }
   logout() {
-    localStorage.removeItem(environment.nameTokenSession);
+    sessionStorage.removeItem(environment.nameTokenSession);
   }
 }

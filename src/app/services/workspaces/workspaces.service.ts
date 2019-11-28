@@ -80,4 +80,10 @@ export class WorkspacesService {
   public createRequest(idMunicipality: number, data: any) {
     return this.httpClient.post(this.url + '/workspaces/v1/providers/municipalities/' + idMunicipality + '/requests', data);
   }
+  /**
+   * getPendingRequestByProvider
+   */
+  public getPendingRequestByProvider() {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/pending-requests');
+  }
 }
