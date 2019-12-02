@@ -67,40 +67,57 @@
                   <div [ngSwitch]="supp.typeSupplyId">
                     <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
                       <div class="input-group">
-                        <input id="file{{idOut}}{{idInt}}" name="file{{idOut}}{{idInt}}" class="form-control"
-                          type="file" (change)="docSoport($event.target.files,idOut, idInt )" multiple>
+                        <input [accept]="'.'+supp.format" id="file{{idOut}}{{idInt}}" name="file{{idOut}}{{idInt}}"
+                          class="form-control" type="file" (change)="docSoport($event.target.files,idOut, idInt )"
+                          multiple>
                       </div>
-                      <!-- <div class="input-group">
+                      <div *ngIf="supp.xtf && dataRequestPending[idOut].suppliesRequested[idInt].file != null"
+                        id="xtf{{idOut}}{{idInt}}">
+                        <button type="button" class="btn btn-dark mb-2 mt-2" (click)="validarXTF(idOut, idInt)">
+                          Validar XTF
+                        </button>
+                        <div _ngcontent-hhg-c4="" class="alert alert-success"
+                          *ngIf='respuestaValidador[0].isValid === true'>
+                          <strong _ngcontent-hhg-c4="" class="ng-tns-c4-0">
+                            El archivo XTF</strong> validado correctamente. </div>
+                        <div _ngcontent-hbo-c4="" class="alert alert-danger"
+                          *ngIf='respuestaValidador[0].isValid === false'>
+                          <strong _ngcontent-hbo-c4="" class="ng-tns-c4-0">
+                            El archivo XTF </strong> No es valido. </div>
+                      </div>
+                      <div class="input-group">
                         <div class="input-group-prepend input-group-text">
-                          <div>* Justifique</div>
+                          <div>* Observación</div>
                         </div>
-                        <input class="form-control" id="justificationFIle{{idOut}}{{idInt}}" type="text"
-                          name="justificationFile{{idOut}}{{idInt}}" [(ngModel)]="supp.justification">
-                      </div> -->
+                        <textarea class="form-control" id="observations{{idOut}}{{idInt}}" type="text"
+                          name="observations{{idOut}}{{idInt}}" [(ngModel)]="supp.observations" rows="2"></textarea>
+                      </div>
                     </div>
                     <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
                       <div class="input-group">
                         <div class="input-group-prepend input-group-text">
                           <div>* URL</div>
                         </div>
-                        <input class="form-control" id="url{{idOut}}{{idInt}}" type="url" name="url{{idOut}}{{idInt}}"
-                          [(ngModel)]="supp.url">
+                        <input (change)="intoValidURL(idOut, idInt)" class="form-control" id="url{{idOut}}{{idInt}}"
+                          type="url" name="url{{idOut}}{{idInt}}" [(ngModel)]="supp.url">
                       </div>
-                      <!-- <div class="input-group">
+                      <div class="input-group">
                         <div class="input-group-prepend input-group-text">
-                          <div>* Justifique</div>
+                          <div>* Observación</div>
                         </div>
-                        <input class="form-control" id="justificationUrl{{idOut}}{{idInt}}" type="text"
-                          name="justificationUrl{{idOut}}{{idInt}}" [(ngModel)]="supp.justification">
-                      </div> -->
+                        <textarea class="form-control" id="observations{{idOut}}{{idInt}}" type="text"
+                          name="observations{{idOut}}{{idInt}}" [(ngModel)]="supp.observations" rows="2"></textarea>
+                      </div>
                     </div>
                     <div *ngSwitchCase="typeDataFieldModel.typeDataNone">
                       <div class="input-group">
                         <div class="input-group-prepend input-group-text">
                           <div>* Justifique</div>
                         </div>
-                        <input class="form-control" id="justificationNone{{idOut}}{{idInt}}" type="text"
-                          name="justificationNone{{idOut}}{{idInt}}" [(ngModel)]="supp.justification">
+                        <textarea (change)="intoValidJustification(idOut, idInt)" class="form-control"
+                          id="justificationNone{{idOut}}{{idInt}}" type="text"
+                          name="justificationNone{{idOut}}{{idInt}}" [(ngModel)]="supp.justification"
+                          rows="2"></textarea>
                       </div>
                     </div>
                     <div *ngSwitchDefault>
@@ -112,14 +129,22 @@
             </div>
             <div class="col-12 col-sm-2 mb-2">
               <button type="button" class="btn" id="boton{{idOut}}{{idInt}}"
-                [ngClass]="{'btn-success':supp.success.status == true, 'btn-dark':!supp.success.status }"
-                (click)="send(supp)">
-                Enviar
+                [ngClass]="{'btn-success':supp.delivered == true, 'btn-dark':!supp.delivered }"
+                (click)="send(item.id, supp)" [disabled]="supp.button.status">
+                {{supp.delivered ? 'Enviado':'Enviar'}}
               </button>
             </div>
           </div>
         </div>
-
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <div class="alert alert-warning text-center" role="alert">
+          Recuerde que los campos marcados con * son obligatorios.
+          <strong>Si el boton de enviar es de color verde, el insumo ya fue enviado.</strong>
+          Si envia nuevamente el insumo, <strong style="color: red;">este sera remplazado.</strong>
+        </div>
       </div>
     </div>
     <div class="card-footer text-muted">

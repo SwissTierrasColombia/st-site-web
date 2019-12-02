@@ -86,4 +86,16 @@ export class WorkspacesService {
   public getPendingRequestByProvider() {
     return this.httpClient.get(this.url + '/workspaces/v1/providers/pending-requests');
   }
+  /**
+   * loadSupplyFromRequest
+   */
+  public loadSupplyFromRequest(idInsumo: string, data: FormData) {
+    return this.httpClient.put(this.url + '/workspaces/v1/providers/requests/' + idInsumo, data);
+  }
+  /**
+   * closeRequest
+   */
+  public closeRequest(idInsumo: number) {
+    return this.httpClient.put(this.url + '/workspaces/v1/providers/requests/' + idInsumo + '/close', {});
+  }
 }
