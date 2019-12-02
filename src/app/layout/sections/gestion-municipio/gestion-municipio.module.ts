@@ -5,13 +5,17 @@ import {
 } from '@angular/forms';
 import { GestionMunicipioRoutingModule } from './gestion-municipio-routing.module';
 
-import { GestionComponent } from './gestion/gestion.component';
 import { PageHeaderModule } from 'src/app/shared';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { OperatorAssignmentComponent } from './operator-assignment/operator-assignment.component';
+import { OperatorViewComponent } from './operator-view/operator-view.component';
 
 @NgModule({
-  declarations: [GestionComponent, WorkspaceComponent, OperatorAssignmentComponent],
+  declarations: [
+    WorkspaceComponent,
+    OperatorAssignmentComponent,
+    OperatorViewComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,

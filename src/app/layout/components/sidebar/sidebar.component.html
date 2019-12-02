@@ -17,15 +17,9 @@
       <li class="nested" [class.expand]="showMenu === listMenu[0].gestion">
         <ul class="submenu">
           <li>
-            <a href="" [routerLink]="['/gestion/municipio']">
-              <i class="fa fa-monument"></i>&nbsp;
-              <span>Gestión Municipio</span>
-            </a>
-          </li>
-          <li>
             <a href="" [routerLink]="['/gestion/workspace']">
               <i class="fa fa-monument"></i>&nbsp;
-              <span>Hoja de trabajo</span>
+              <span>Espacio de trabajo</span>
             </a>
           </li>
           <li>
@@ -63,9 +57,9 @@
             </a>
           </li>
           <li>
-            <a [routerLink]="['/insumos/cargue']">
+            <a [routerLink]="['/insumos/solicitudes']">
               <i class="fa fa-monument"></i>&nbsp;
-              <span>Cargue</span>
+              <span>Solicitudes</span>
             </a>
           </li>
           <li>
@@ -162,18 +156,16 @@
               <span>Roles</span>
             </a>
           </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="fa fa-monument"></i>&nbsp;
-              <span>Entidades</span>
-            </a>
-          </li>
         </ul>
       </li>
     </div>
     <a [routerLink]="" class="list-group-item">
       <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
       <span>Instalación Asistente <br> LADM</span>
+    </a>
+    <a [routerLink]="['/poc']" class="list-group-item">
+      <i class="fa fa-fw fa-plus-circle"></i>&nbsp;
+      <span>Prueba de concepto</span>
     </a>
     <div class="header-fields">
       <div class="nested-menu">

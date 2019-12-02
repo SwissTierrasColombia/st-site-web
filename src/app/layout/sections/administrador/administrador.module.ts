@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { CreateUserComponent } from './create-user/create-user.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [CreateUserComponent],
   imports: [
     CommonModule,
-    NgxSpinnerModule
   ]
 })
 export class AdministradorModule { }

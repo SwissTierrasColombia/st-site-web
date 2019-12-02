@@ -8,7 +8,7 @@ import { HeaderComponent } from './components/header/header.component';
 import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { FooterComponent } from './components/footer/footer.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,12 +16,12 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NgbDropdownModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxSpinnerModule
   ],
   declarations: [
     LayoutComponent,
     SidebarComponent,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   ]
 })
 export class LayoutModule { }

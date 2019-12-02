@@ -1,4 +1,4 @@
-<div>
+<div [@routerTransition]>
   <app-page-header [heading]="'Solicitud de insumos'" [icon]="'fa-star'">
   </app-page-header>
 
@@ -14,7 +14,8 @@
               <div class="input-group-prepend">
                 <label class="input-group-text" aria-required="true">* Departamento</label>
               </div>
-              <select class="custom-select" name="departments" id="departments" [(ngModel)]="selectDepartment">
+              <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
+                [(ngModel)]="selectDepartment">
                 <option value='0' selected>Seleccione el departamento</option>
                 <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
               </select>
@@ -25,9 +26,10 @@
               <div class="input-group-prepend">
                 <label class="input-group-text">* Municipio</label>
               </div>
-              <select class="custom-select" name="" id="">
-                <option selected>Seleccione el Municipio</option>
-                <option value="">OVEJAS</option>
+              <select (change)="changeMunucipality()" class="custom-select" name="munucipalities" id="munucipalities"
+                [(ngModel)]="selectMunicipality">
+                <option value='0' selected>Seleccione el Municipio</option>
+                <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
               </select>
             </div>
           </div>
@@ -36,82 +38,128 @@
           <div class='col-12 col-sm-6 mb-2'>
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text">* Gestor</label>
+                <label class="input-group-text">Gestor</label>
               </div>
-              <input class="form-control" type="text" disabled="true">
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality[0].manager.name}}
+              </div>
             </div>
           </div>
           <div class='col-12 col-sm-6 mb-2'>
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text">* Operador</label>
+                <label class="input-group-text">Operador</label>
               </div>
-              <select class="custom-select" name="" id="">
-                <option selected>Seleccione el Operador</option>
-                <option value="">Operador 1</option>
-              </select>
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality[0].operators[0].operator.name}}
+              </div>
             </div>
           </div>
-          <div class='col-12 col-sm-6  mb-1'>
+          <div class='col-12 col-sm-6 mb-1'>
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text">Numero de predios esperados</label>
+                <label class="input-group-text">Numero de predios</label>
               </div>
-              <input class="form-control" type="text">
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality[0].numberAlphanumericParcels}}
+              </div>
             </div>
           </div>
-          <div class='col-12 col-sm-6 mt-2 mb-1'>
+          <div class='col-12 col-sm-6 mb-1'>
             <div class="input-group">
               <div class="input-group-prepend">
                 <label class="input-group-text">Área de Trabajo</label>
               </div>
-              <input class="form-control" type="text">
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality[0].municipalityArea}}
+              </div>
             </div>
           </div>
           <div class='col-12 col-sm-6  mb-1'>
             <div class="form-group form-check">
               <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1"
-                [(ngModel)]="splitZones">
+                [(ngModel)]="splitZones" disabled="true">
               <label class="form-check-label" for="exampleCheck1">Selección de Zonas</label>
             </div>
           </div>
-          <div *ngIf="splitZones" class='col-12 col-sm-6 mb-1'>
+          <div class='col-12 col-sm-6 mb-1'>
             <div class="input-group">
-              <select class="custom-select" name="" id="">
-                <option selected>Seleccione la zona de trabajo</option>
-                <option value="">4</option>
+              <input class="form-control" type="text" disabled="true" placeholder="4" disabled="true">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class='col-12 col-sm-3 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Entidad</label>
+              </div>
+              <select (change)="changeProvider()" class="custom-select" name="entidades" id="entidades"
+                [(ngModel)]="selectProvider">
+                <option value='0' selected>Seleccione la entidad</option>
+                <option [ngValue]="item" *ngFor="let item of providers">{{item.name}}</option>
               </select>
             </div>
           </div>
-        </div>
-        <div class="row mb-2">
-          <div class='col-12 col-sm-6  mb-1'>
+          <div class='col-12 col-sm-3 mb-1'>
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text">* Fecha de Inicio</label>
+                <label class="input-group-text" aria-required="true">* Insumos</label>
               </div>
-              <input class="form-control" type="date">
+              <select class="custom-select" name="insumos" id="insumos" [(ngModel)]="selectSupplies">
+                <option value='0' selected>Seleccione el insumo</option>
+                <option [ngValue]="item" *ngFor="let item of dataSuppliesProvider">{{item.name}}</option>
+              </select>
             </div>
           </div>
-          <div class='col-12 col-sm-6  mb-1'>
+          <div class='col-12 col-sm-5 mb-1'>
             <div class="input-group">
-              <div class="input-group-prepend">
-                <label class="input-group-text">* Fecha Final</label>
+              <div class="input-group-prepend input-group-text">
+                <div class="">* Alcance / Observaciones</div>
               </div>
-              <input class="form-control" type="date">
+              <textarea class="form-control" id="observations" rows="3" name="observaciones"
+                [(ngModel)]="observations"></textarea>
             </div>
           </div>
+          <div class='col-12 col-sm-1 mt-5'>
+            <button type="button" name="agregar" id="agregar" class="btn btn-primary btn-sm btn-block"
+              (click)="agregar()">Agregar</button>
+          </div>
         </div>
-        <div class="row mb-2">
-          <div class="col-12">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label class="input-group-text">* Orden de Trabajo / Documento Soporte
-                  <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                </label>
-              </div>
-              <input class="form-control" type="file" accept="pdf" (change)="docSoport($event.target.files)" multiple>
+      </form>
+    </div>
+    <table class="table table-striped" *ngIf="this.tablesupplies.length > 0">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col" sortable="entidad">Entidad</th>
+          <th scope="col" sortable="insumo">Insumo</th>
+          <!-- <th scope="col" sortable="formato">Formato</th> -->
+          <th scope="col" sortable="observacion">Observación</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of tablesupplies">
+          <th scope="row">{{ item.id }}</th>
+          <td> {{ item.entidad }} </td>
+          <td>{{ item.insumo}}</td>
+          <!-- <td>{{ item.formato}}</td> -->
+          <td>{{ item.observacion }}</td>
+          <td><i class="material-icons cursor" (click)="delete(item)">
+              delete_forever
+            </i></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="card-footer text-muted text-center">
+      <div class="row">
+        <div class="col-12 col-sm-6 offset-sm-6 mt-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text">* fecha Limite</label>
             </div>
+            <input class="form-control" type="date" name="deadline" [(ngModel)]="listsupplies.deadline">
           </div>
         </div>
         <div class="row mt-3">
@@ -121,43 +169,11 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <h4>Gestor</h4>
-          <div class="col-12">
-            <div class="form-group form-check">
-              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck2">
-              <label class="form-check-label" for="exampleCheck1">Solicitud Insumos Catastrales</label>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-group form-check">
-              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck2">
-              <label class="form-check-label" for="exampleCheck1">Solicitud Insumos No Estructurados</label>
-            </div>
-          </div>
-          <div class='col-12 mb-1'>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label class="input-group-text">* Fecha Máxima de Entrega</label>
-              </div>
-              <input class="form-control" type="date">
-            </div>
-          </div>
+        <div class="col-12">
+          <button type="button" class="btn btn-dark" (click)="submitInfo()">Enviar Solicitud</button>
         </div>
-        <div class="row mt-2 mb-2">
-          <div class="col-12">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text">* Observaciones de la solicitud</div>
-              </div>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-    <div class="card-footer text-muted text-center">
-      <button type="button" class="btn btn-dark">Guardar</button>
+      </div>
     </div>
   </div>
+  <!-- {{listsupplies | json}} -->
 </div>

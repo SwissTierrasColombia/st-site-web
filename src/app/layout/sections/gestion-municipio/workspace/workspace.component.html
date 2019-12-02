@@ -3,7 +3,7 @@
 
   <div class="card">
     <div class="card-header text-center">
-      <h3>Hoja de trabajo</h3>
+      <h3>Proyecto</h3>
     </div>
     <div class="card-body">
       <form action="" method="post">
@@ -13,7 +13,8 @@
               <div class="input-group-prepend">
                 <label class="input-group-text" aria-required="true">* Departamento</label>
               </div>
-              <select class="custom-select" name="departments" id="departments" [(ngModel)]="selectDepartment">
+              <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
+                [(ngModel)]="selectDepartment">
                 <option value='0' selected>Seleccione el departamento</option>
                 <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
               </select>
@@ -24,9 +25,9 @@
               <div class="input-group-prepend">
                 <label class="input-group-text">* Municipio</label>
               </div>
-              <select class="custom-select" name="" id="">
-                <option selected>Seleccione el Municipio</option>
-                <option value="">OVEJAS</option>
+              <select class="custom-select" name="munucipalities" id="munucipalities" [(ngModel)]="selectMunicipality">
+                <option value='0' selected>Seleccione el Municipio</option>
+                <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
               </select>
             </div>
           </div>
@@ -41,36 +42,163 @@
       </form>
     </div>
     <div class="card-footer text-muted text-center">
-      <button type="button" class="btn btn-dark">Mostrar</button>
+      <button type="button" class="btn btn-dark" (click)="searchWorkSpace()">Buscar</button>
     </div>
   </div>
-  <div class="card mt-2">
-    <div class="card-body">
-      <div class="row">
-        <h5 class="card-title">Hoja de tarea</h5>
-        <table class="table table-striped table-inverse table-responsive">
-          <thead class="thead-inverse">
-            <tr>
-              <th>ID</th>
-              <th>Proyecto</th>
-              <th>Numero de predios</th>
-              <th>Fecha de Inicio</th>
-              <th>Fecha de Fin</th>
-              <th>Observaciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td scope="row"></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+  <div class="card mt-2" *ngIf="resultWorkSpace.length != 0">
+    <div class="card-header text-center">
+      <h3>Hoja de tarea</h3>
+    </div>
+    <div class="card-body container">
+      <div class="row justify-content-md-center">
+        <div class="col-12">
+          <table class="table table-striped table-inverse table-responsive">
+            <thead class="thead-inverse">
+              <tr>
+                <th>ID</th>
+                <th>Gestor</th>
+                <th>Predios alfanuméricos</th>
+                <th>Area Municipio</th>
+                <th>Fecha de Inicio</th>
+                <th>Observaciones</th>
+                <th>Estado</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of listWorkSpace">
+                <td scope="row">{{item.id}}</td>
+                <td scope="row">{{item.manager.name}}</td>
+                <td scope="row">{{item.numberAlphanumericParcels}}</td>
+                <td scope="row">{{item.municipalityArea}}</td>
+                <td scope="row">{{item.startDate}}</td>
+                <td scope="row">{{item.observations}}</td>
+                <td scope="row">{{item.isActive ? 'Activo':'Inactivo'}}</td>
+                <td *ngIf="item.isActive === true">
+                  <i class="material-icons cursor" (click)="updateWorkSpace(item.id)">
+                    system_update_alt
+                  </i>
+                </td>
+                <td *ngIf="item.isActive === false">
+                  <i class="material-icons cursor" (click)="viewWorkSpace(item.id)">
+                    remove_red_eye
+                  </i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="card" *ngIf="viewCreateWorkSpace">
+  <div class="card-header text-center">
+    <h3>Crear la Gestión del municipio</h3>
+  </div>
+  <div class="card-body">
+    <form action="" method="post">
+      <!-- <div class="row mb-2">
+         <div class='col-12 col-sm-6 mb-1'>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" aria-required="true">* Departamento</label>
+            </div>
+            <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
+              [(ngModel)]="dataCreateWorkSpace.selectDepartment">
+              <option value='0' selected>Seleccione el departamento</option>
+              <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class='col-12 col-sm-6  mb-1'>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text">* Municipio</label>
+            </div>
+            <select class="custom-select" name="munucipalities" id="munucipalities"
+              [(ngModel)]="dataCreateWorkSpace.municipalityId">
+              <option value='0' selected>Seleccione el Municipio</option>
+              <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div> -->
+      <div class="row mb-2">
+        <div class='col-12 col-sm-12 mb-2'>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text">* Gestor</label>
+            </div>
+            <select class="custom-select" name="managers" id="managers" [(ngModel)]="dataCreateWorkSpace.managerCode">
+              <option value='0' selected>Seleccione el Gestor</option>
+              <option [ngValue]="item.id" *ngFor="let item of activeManagers">{{item.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class='col-12 col-sm-6 mb-1'>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text">Numero de predios alfanuméricos</label>
+            </div>
+            <input class="form-control" type="text" name="numberAlphanumericParcels"
+              [(ngModel)]="dataCreateWorkSpace.numberAlphanumericParcels">
+          </div>
+        </div>
+        <div class='col-12 col-sm-6 mb-1'>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text">Área del municipio</label>
+            </div>
+            <input class="form-control" type="text" name="municipalityArea"
+              [(ngModel)]="dataCreateWorkSpace.municipalityArea">
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class='col-12 col-sm-6  mb-1'>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text">* Fecha de Inicio</label>
+            </div>
+            <input class="form-control" type="date" name="FechaInicio" [(ngModel)]="dataCreateWorkSpace.startDate">
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-12">
+          <div class="input-group">
+            <div class="input-group-prepend input-group-text">
+              <div class="">* Alcance / Observaciones</div>
+            </div>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observaciones"
+              [(ngModel)]="dataCreateWorkSpace.observations"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-12">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text">* Orden de Trabajo / Documento Soporte
+                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+              </label>
+            </div>
+            <input class="form-control" type="file" (change)="docSoport($event.target.files)" multiple>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12">
+          <div class="alert alert-primary text-center" role="alert">
+            Recuerde que los campos marcados con * son obligatorios.
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="card-footer text-muted text-center">
+    <button type="button" class="btn btn-dark" (click)="createWorkSpace()">Crear espacio de trabajo</button>
   </div>
 </div>

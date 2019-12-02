@@ -85,6 +85,6 @@ export class SidebarComponent implements OnInit {
   }
 
   onLoggedout() {
-    localStorage.removeItem(environment.nameTokenSession);
+    sessionStorage.removeItem(environment.nameTokenSession);
   }
 }

@@ -7,13 +7,18 @@ import { SolicitudComponent } from './solicitud/solicitud.component';
 import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
-import { NgxSpinnerModule } from 'ngx-spinner';
 import { IntegracionComponent } from './integracion/integracion.component';
+import { SolicitudesComponent } from './solicitudes/solicitudes.component';
+import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
 @NgModule({
-  declarations: [CargueComponent, SolicitudComponent, IntegracionComponent],
-  
-  imports: [CommonModule, PageHeaderModule, InsumosRoutingModule,
+  declarations: [CargueComponent, SolicitudComponent, IntegracionComponent, SolicitudesComponent],
+
+  imports: [
+    CommonModule, PageHeaderModule, InsumosRoutingModule,
     FormsModule, ReactiveFormsModule,
-    NgxSpinnerModule]
+  ],
+  providers: [
+    TypeDataSuppliesModel
+  ]
 })
 export class InsumosModule { }

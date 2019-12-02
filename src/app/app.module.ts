@@ -13,25 +13,28 @@ import { ResponseInterceptorService } from './services/interceptors/response.int
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MomentModule } from 'ngx-moment';
 @NgModule({
-    imports: [
-        CommonModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        ToastrModule.forRoot(), // ToastrModule added
-        HttpClientModule,
-        AppRoutingModule,
-        NgxSpinnerModule,
-        MatProgressSpinnerModule
-    ],
-    declarations: [AppComponent],
-    providers: [AuthGuard,
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ResponseInterceptorService, multi: true }
-    ],
-    bootstrap: [AppComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [
+    CommonModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(), // ToastrModule added
+    HttpClientModule,
+    AppRoutingModule,
+    NgxSpinnerModule,
+    MatProgressSpinnerModule,
+    FontAwesomeModule,
+    MomentModule
+  ],
+  declarations: [AppComponent],
+  providers: [AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ResponseInterceptorService, multi: true }
+  ],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

@@ -10,7 +10,6 @@ import {
     ChatComponent
 } from './components';
 import { StatModule } from '../../shared';
-import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
     imports: [
@@ -19,7 +18,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
         NgbAlertModule,
         DashboardRoutingModule,
         StatModule,
-        NgxSpinnerModule
     ],
     declarations: [
         DashboardComponent,
