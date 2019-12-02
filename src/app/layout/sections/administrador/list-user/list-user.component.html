@@ -1,0 +1,38 @@
+<div [@routerTransition]>
+  <app-page-header [heading]="'Usuarios registrados'" [icon]="'fa-star'">
+  </app-page-header>
+  <div class="d-flex justify-content-around">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-striped table-inverse table-responsive">
+          <thead class="thead-inverse">
+            <tr>
+              <th>ID</th>
+              <th>Nombres</th>
+              <th>Apellidos</th>
+              <th>Correo</th>
+              <th>Usuario</th>
+              <th>Fecha de creación</th>
+              <th>Roles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of dataListUser">
+              <td scope="row">{{item.id}}</td>
+              <td scope="row">{{item.firstName}}</td>
+              <td scope="row">{{item.lastName}}</td>
+              <td scope="row">{{item.email}}</td>
+              <td scope="row">{{item.username}}</td>
+              <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
+              <td scope="row">
+                <div *ngFor="let rol of item.roles">
+                  {{globalFuntionString(rol.name)}}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -17,4 +17,10 @@ export class ManagersService {
   public getManagers() {
     return this.httpClient.get(this.url + '/managers/v1/managers?state=1');
   }
+  /**
+   * getManagersProfiles
+   */
+  public getManagersProfiles() {
+    return this.httpClient.get(this.url + '/managers/v1/profiles');
+  }
 }

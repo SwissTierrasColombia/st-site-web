@@ -145,15 +145,15 @@
       <li class="nested" [class.expand]="showMenu === listMenu[0].administrador">
         <ul class="submenu">
           <li>
-            <a href="javascript:void(0)">
+            <a [routerLink]="['/administrador/listar-usuarios']">
               <i class="fa fa-monument"></i>&nbsp;
-              <span>Usuarios</span>
+              <span>Listar usuarios</span>
             </a>
           </li>
           <li>
-            <a href="javascript:void(0)">
+            <a [routerLink]="['/administrador/crear-usuario']">
               <i class="fa fa-monument"></i>&nbsp;
-              <span>Roles</span>
+              <span>Registrar Usuarios</span>
             </a>
           </li>
         </ul>

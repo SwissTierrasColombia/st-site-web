@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from 'src/app/router.animations';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { ManagersService } from 'src/app/services/gestion-municipio/managers.service';
+import { ManagersService } from 'src/app/services/managers/managers.service';
 import * as _moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { OperatorsService } from 'src/app/services/operators/operators.service';

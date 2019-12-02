@@ -20,6 +20,10 @@ const routes: Routes = [
           import('./sections/gestion-municipio/gestion-municipio.module').then(m => m.GestionMunicipioModule)
       },
       { path: 'poc', loadChildren: () => import('./poc/poc.module').then(m => m.PocModule) },
+      {
+        path: 'administrador', loadChildren: () =>
+          import('./sections/administrador/administrador.module').then(m => m.AdministradorModule)
+      },
     ]
   }
 ];

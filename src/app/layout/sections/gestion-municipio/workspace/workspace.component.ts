@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { slideToLeft } from 'src/app/router.animations';
-import { ManagersService } from 'src/app/services/gestion-municipio/managers.service';
+import { ManagersService } from 'src/app/services/managers/managers.service';
 import { Router } from '@angular/router';
 
 @Component({
