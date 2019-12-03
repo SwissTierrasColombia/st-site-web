@@ -34,7 +34,7 @@
             </div>
           </div>
         </div>
-        <div class="row mb-2">
+        <div class="row mb-2" *ngIf="dataWorkSpaceMunicipality[0]">
           <div class='col-12 col-sm-6 mb-2'>
             <div class="input-group">
               <div class="input-group-prepend">
@@ -51,14 +51,14 @@
                 <label class="input-group-text">Operador</label>
               </div>
               <div class="form-control">
-                {{dataWorkSpaceMunicipality[0].operators[0].operator.name}}
+                {{dataWorkSpaceMunicipality[0].operators[0] ? dataWorkSpaceMunicipality[0].operators[0].operator.name : ' '}}
               </div>
             </div>
           </div>
           <div class='col-12 col-sm-6 mb-1'>
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text">Numero de predios</label>
+                <label class="input-group-text">Número de predios</label>
               </div>
               <div class="form-control">
                 {{dataWorkSpaceMunicipality[0].numberAlphanumericParcels}}

@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
+import { AuthGuard } from '../shared/guard/auth.guard';
+import { RoleAdminGuard } from '../guards/role-admin-guard.service';
 
 const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'inicio', pathMatch: 'prefix' },
       { path: 'inicio', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
@@ -22,7 +25,8 @@ const routes: Routes = [
       { path: 'poc', loadChildren: () => import('./poc/poc.module').then(m => m.PocModule) },
       {
         path: 'administrador', loadChildren: () =>
-          import('./sections/administrador/administrador.module').then(m => m.AdministradorModule)
+          import('./sections/administrador/administrador.module').then(m => m.AdministradorModule),
+          canActivate: [RoleAdminGuard]
       },
     ]
   }

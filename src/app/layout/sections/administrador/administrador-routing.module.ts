@@ -6,6 +6,7 @@ const routes: Routes = [
   {
     path: 'crear-usuario',
     component: CreateUserComponent
+
   },
   {
     path: 'listar-usuarios',

@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     let result = false;
     const token = sessionStorage.getItem(environment.nameTokenSession);
+
     if (token) {
       const helper = new JwtHelperService();
       let decodedToken = null;
@@ -28,6 +29,8 @@ export class AuthGuard implements CanActivate {
         this.serviceLogin.getSessions().subscribe(
           (data: any) => {
             const sessions = data.body;
+            console.log(data);
+
             // tslint:disable-next-line:prefer-for-of
             for (let i = 0; i < sessions.length; i++) {
               const session = sessions[i];

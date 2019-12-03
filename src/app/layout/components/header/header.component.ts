@@ -13,7 +13,8 @@ export class HeaderComponent implements OnInit {
   user: any;
   constructor(public router: Router) {
     this.user = {
-      first_name: 'user'
+      first_name: 'user',
+      last_name: ''
     };
     this.router.events.subscribe(val => {
       if (

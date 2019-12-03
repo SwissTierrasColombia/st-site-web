@@ -20,7 +20,8 @@ export class SidebarComponent implements OnInit {
 
   constructor(public router: Router) {
     this.user = {
-      first_name: 'Usuario'
+      first_name: 'Usuario',
+      last_name: ''
     };
     this.router.events.subscribe(val => {
       if (
@@ -49,6 +50,8 @@ export class SidebarComponent implements OnInit {
     this.showMenu = '';
     this.pushRightClass = 'push-right';
     this.user = JwtHelper.getUserPublicInformation();
+    // console.log(this.user);
+
   }
 
   eventCalled() {

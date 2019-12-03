@@ -9,6 +9,9 @@ import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
 import { FooterComponent } from './components/footer/footer.component';
+import { RoleAdminGuard } from '../guards/role-admin-guard.service';
+import { AuthGuard } from '../shared/guard/auth.guard';
+import { RoleModel } from '../helpers/role.model';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,6 +25,7 @@ import { FooterComponent } from './components/footer/footer.component';
     SidebarComponent,
     HeaderComponent,
     FooterComponent
-  ]
+  ],
+  providers: [RoleModel, AuthGuard, RoleAdminGuard]
 })
 export class LayoutModule { }

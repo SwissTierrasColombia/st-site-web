@@ -140,7 +140,7 @@
     <div class="nested-menu">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].administrador)">
         <i class="fa fa-plus"></i>&nbsp;
-        <span>Administración</span>
+        <span>Administrador</span>
       </a>
       <li class="nested" [class.expand]="showMenu === listMenu[0].administrador">
         <ul class="submenu">
@@ -170,7 +170,7 @@
     <div class="header-fields">
       <div class="nested-menu">
         <a class="list-group-item" (click)="addExpandClass('profile')">
-          <span><i class="fa fa-user"></i>&nbsp; {{user.first_name}}</span>
+          <span><i class="fa fa-user"></i>&nbsp; {{user.first_name}} {{user.last_name}}</span>
         </a>
         <li class="nested" [class.expand]="showMenu === 'profile'">
           <ul class="submenu">
