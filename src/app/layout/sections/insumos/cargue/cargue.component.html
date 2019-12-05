@@ -53,7 +53,7 @@
                   <div>* Tipo</div>
                 </div>
                 <div class="form-control">
-                  <select (ngModelChange)="modelChanged(supp)" [(ngModel)]="supp.typeSupplyId"
+                  <select (ngModelChange)="modelChanged(supp, idOut, idInt )" [(ngModel)]="supp.typeSupplyId"
                     name="tipos{{idOut}}{{idInt}}" id="tipo{{idOut}}{{idInt}}">
                     <option value='0' selected>Seleccione el tipo</option>
                     <option [ngValue]="tipo.file" *ngFor="let tipo of supp.type">{{tipo.name}}</option>
