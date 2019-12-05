@@ -69,7 +69,6 @@ export class CargueComponent implements OnInit {
       this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
         data => {
           this.dataRequestPending = data;
-          // console.log("this.dataRequestPending", this.dataRequestPending);
           resolve(data);
         }
       );
@@ -88,15 +87,12 @@ export class CargueComponent implements OnInit {
           this.dataRequestPending[index].suppliesRequested[index2].button = this.clone(this.button);
           if (this.dataRequestPending[index].suppliesRequested[index2].delivered === false &&
             this.dataRequestPending[index].suppliesRequested[index2].justification !== null) {
-            // console.log("hola", this.dataRequestPending[index].suppliesRequested[index2]);
             this.dataRequestPending[index].suppliesRequested[index2].delivered = true;
           }
           // tslint:disable-next-line:prefer-for-of
           for (let index3 = 0;
             index3 < this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions.length;
             index3++) {
-            console.log(this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions);
-
             this.dataRequestPending[index].suppliesRequested[index2].
               format = this.clone(this.dataRequestPending[index].
                 suppliesRequested[index2].typeSupply.extensions[index3].name);
@@ -127,8 +123,6 @@ export class CargueComponent implements OnInit {
     const formato = files[0].name.split('.').pop()
     if (this.dataRequestPending[idOut].suppliesRequested[idInt].format === formato) {
       this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
-      console.log(this.dataRequestPending[idOut].suppliesRequested[idInt].file);
-
       if (this.dataRequestPending[idOut].suppliesRequested[idInt].xtf) {
         // const response = this.validarXTF(idOut, idInt);
         // if (response[0].isValid) {
@@ -140,7 +134,6 @@ export class CargueComponent implements OnInit {
         // }
       } else {
         this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
-        console.log(this.dataRequestPending[idOut].suppliesRequested[idInt]);
       }
     } else {
       this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
@@ -184,7 +177,6 @@ export class CargueComponent implements OnInit {
     );
   }
   closeRequest() {
-    // console.log(this.dataRequestPending);
     this.serviceWorkspaces.closeRequest(this.dataRequestPending[0].id).subscribe(
       data => {
         this.router.navigate(['/insumos/solicitudes/']);

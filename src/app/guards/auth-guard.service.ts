@@ -29,7 +29,6 @@ export class AuthGuard implements CanActivate {
         this.serviceLogin.getSessions().subscribe(
           (data: any) => {
             const sessions = data.body;
-            console.log(data);
 
             // tslint:disable-next-line:prefer-for-of
             for (let i = 0; i < sessions.length; i++) {

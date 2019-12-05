@@ -151,10 +151,6 @@ export class PocComponent implements OnInit {
 
       response => {
         this.respuestaValidador = response;
-        // console.log('this.respuestaValidador', this.respuestaValidador);
-      },
-      error => {
-        console.log(error as any);
       }
 
     ); // FIN DE METODO SUBSCRIBE
@@ -194,7 +190,6 @@ export class PocComponent implements OnInit {
       return this.generateDatabase;
     });
     const datagenerateDB = this.generateDatabase[0];
-    // console.log('datagenerateDB: ', datagenerateDB);
 
     this.pocService.generateImportDatabase(this.formDataXTF, datagenerateDB).subscribe(
       (response: any) => {

@@ -50,7 +50,6 @@ export class SidebarComponent implements OnInit {
     this.showMenu = '';
     this.pushRightClass = 'push-right';
     this.user = JwtHelper.getUserPublicInformation();
-    // console.log(this.user);
 
   }
 
@@ -59,7 +58,6 @@ export class SidebarComponent implements OnInit {
   }
 
   addExpandClass(element: string) {
-    // console.log("element: ", element);
     if (element === this.showMenu) {
       this.showMenu = '';
     } else {

@@ -69,11 +69,7 @@ export class WorkspaceComponent implements OnInit {
       });
   }
   docSoport(file: File) {
-    console.log(file[0]);
-
     this.dataCreateWorkSpace.supportFile = file[0];
-    console.log(this.dataCreateWorkSpace.supportFile);
-
   }
   changeDepartament() {
     this.dataCreateWorkSpace.selectDepartment = this.selectDepartment;
@@ -93,8 +89,6 @@ export class WorkspaceComponent implements OnInit {
         } else {
           this.viewCreateWorkSpace = false;
           this.listWorkSpace = response;
-          console.log(this.listWorkSpace);
-
         }
       }
     );

@@ -109,8 +109,6 @@ export class CreateUserComponent implements OnInit {
         delete data.roleProvider;
       }
 
-      console.log(data);
-
       this.serviceWorkSpace.createUser(data).subscribe(
         _ => {
           this.toast.success('Se ha registrado el usuario' + FuntionsGlobalsHelper.clone(this.registerData.username) + 'Correctamente');

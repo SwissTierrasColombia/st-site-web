@@ -79,7 +79,6 @@ export class SolicitudComponent implements OnInit {
     this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
       response => {
         this.dataWorkSpaceMunicipality = response;
-        // console.log(this.dataWorkSpaceMunicipality);
         this.serviceProviders.getProviders().subscribe(
           data => {
             this.providers = data;
