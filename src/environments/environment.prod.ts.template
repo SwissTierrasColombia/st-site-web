@@ -1,0 +1,8 @@
+const apiBaseUrl = 'http://HOST:PORT';
+export const environment = {
+  production: true,
+  apiBaseUrl,
+  apiBaseUrlPrefix: apiBaseUrl + 'PREFIJO-SERVER',
+  nameTokenSession: 'NAME-TOKEN',
+  clientUsername: 'CLIENT-SERVER',
+  clientPassword: 'PASSWORD-SERVER'

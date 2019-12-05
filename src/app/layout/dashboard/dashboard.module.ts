@@ -17,7 +17,7 @@ import { StatModule } from '../../shared';
         NgbCarouselModule,
         NgbAlertModule,
         DashboardRoutingModule,
-        StatModule
+        StatModule,
     ],
     declarations: [
         DashboardComponent,

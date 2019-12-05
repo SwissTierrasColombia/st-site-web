@@ -1,21 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { routerTransition } from '../router.animations';
+import { environment } from 'src/environments/environment';
+import { LoginService } from '../services/auth/login.service';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    animations: [routerTransition()]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  animations: [routerTransition()]
 })
 export class LoginComponent implements OnInit {
-    constructor(
-      public router: Router
-    ) {}
+  loginData = {
+    username: '',
+    password: ''
+  };
 
-    ngOnInit() {}
+  constructor(
+    public router: Router,
+    private serviceAUTH: LoginService
+  ) { }
 
-    onLoggedin() {
-        localStorage.setItem('isLoggedin', 'true');
-    }
+  ngOnInit() { }
+
+  onLoggedin() {
+    this.serviceAUTH.login(this.loginData.username.toLowerCase(), this.loginData.password).subscribe(
+      data => {
+        sessionStorage.setItem(environment.nameTokenSession, data.access_token);
+        this.router.navigate(['inicio']);
+      }
+    );
+  }
 }

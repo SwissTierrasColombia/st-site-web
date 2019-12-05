@@ -1,52 +1,55 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
+import { JwtHelper } from 'src/app/helpers/jwt';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss']
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-    public pushRightClass: string;
+  public pushRightClass: string;
+  user: any;
+  constructor(public router: Router) {
+    this.user = {
+      first_name: 'user',
+      last_name: ''
+    };
+    this.router.events.subscribe(val => {
+      if (
+        val instanceof NavigationEnd &&
+        window.innerWidth <= 992 &&
+        this.isToggled()
+      ) {
+        this.toggleSidebar();
+      }
+    });
+  }
 
-    constructor(private translate: TranslateService, public router: Router) {
+  ngOnInit() {
+    this.pushRightClass = 'push-right';
+    this.user = JwtHelper.getUserPublicInformation();
+  }
 
-        this.router.events.subscribe(val => {
-            if (
-                val instanceof NavigationEnd &&
-                window.innerWidth <= 992 &&
-                this.isToggled()
-            ) {
-                this.toggleSidebar();
-            }
-        });
-    }
+  isToggled(): boolean {
+    const dom: Element = document.querySelector('body');
+    return dom.classList.contains(this.pushRightClass);
+  }
 
-    ngOnInit() {
-        this.pushRightClass = 'push-right';
-    }
+  toggleSidebar() {
+    const dom: any = document.querySelector('body');
+    dom.classList.toggle(this.pushRightClass);
+  }
 
-    isToggled(): boolean {
-        const dom: Element = document.querySelector('body');
-        return dom.classList.contains(this.pushRightClass);
-    }
+  rltAndLtr() {
+    const dom: any = document.querySelector('body');
+    dom.classList.toggle('rtl');
+  }
 
-    toggleSidebar() {
-        const dom: any = document.querySelector('body');
-        dom.classList.toggle(this.pushRightClass);
-    }
+  onLoggedout() {
+    sessionStorage.removeItem(environment.nameTokenSession);
+  }
 
-    rltAndLtr() {
-        const dom: any = document.querySelector('body');
-        dom.classList.toggle('rtl');
-    }
 
-    onLoggedout() {
-        localStorage.removeItem('isLoggedin');
-    }
-
-    changeLang(language: string) {
-        this.translate.use(language);
-    }
 }

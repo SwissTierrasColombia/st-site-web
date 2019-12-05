@@ -7,7 +7,7 @@ import { PageHeaderModule } from './../../shared';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-    imports: [CommonModule, BsElementRoutingModule, PageHeaderModule, NgbModule],
-    declarations: [BsElementComponent]
+  imports: [CommonModule, BsElementRoutingModule, PageHeaderModule, NgbModule],
+  declarations: [BsElementComponent]
 })
-export class BsElementModule {}
+export class BsElementModule { }

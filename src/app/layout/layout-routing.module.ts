@@ -1,27 +1,41 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
+import { AuthGuard } from '../shared/guard/auth.guard';
+import { RoleAdminGuard } from '../guards/role-admin-guard.service';
+import { RoleAdminManagerGuard } from '../guards/role-admin-manager-guard.service';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: LayoutComponent,
-        children: [
-            { path: '', redirectTo: 'dashboard', pathMatch: 'prefix' },
-            { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
-            { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
-            { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
-            { path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },
-            { path: 'bs-element', loadChildren: () => import('./bs-element/bs-element.module').then(m => m.BsElementModule) },
-            { path: 'grid', loadChildren: () => import('./grid/grid.module').then(m => m.GridModule) },
-            { path: 'components', loadChildren: () => import('./bs-component/bs-component.module').then(m => m.BsComponentModule) },
-            { path: 'blank-page', loadChildren: () => import('./blank-page/blank-page.module').then(m => m.BlankPageModule) }
-        ]
-    }
+  {
+    path: '',
+    component: LayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', redirectTo: 'inicio', pathMatch: 'prefix' },
+      { path: 'inicio', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
+      { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
+      { path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },
+      { path: 'bs-element', loadChildren: () => import('./bs-element/bs-element.module').then(m => m.BsElementModule) },
+      { path: 'grid', loadChildren: () => import('./grid/grid.module').then(m => m.GridModule) },
+      { path: 'components', loadChildren: () => import('./bs-component/bs-component.module').then(m => m.BsComponentModule) },
+      { path: 'insumos', loadChildren: () => import('./sections/insumos/insumos.module').then(m => m.InsumosModule) },
+      {
+        path: 'gestion', loadChildren: () =>
+          import('./sections/gestion-municipio/gestion-municipio.module').then(m => m.GestionMunicipioModule),
+        canActivate: [RoleAdminManagerGuard]
+      },
+      { path: 'poc', loadChildren: () => import('./poc/poc.module').then(m => m.PocModule) },
+      {
+        path: 'administrador', loadChildren: () =>
+          import('./sections/administrador/administrador.module').then(m => m.AdministradorModule),
+        canActivate: [RoleAdminGuard]
+      },
+    ]
+  }
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class LayoutRoutingModule {}
+export class LayoutRoutingModule { }
