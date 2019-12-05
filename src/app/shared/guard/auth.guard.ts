@@ -5,14 +5,14 @@ import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-    canActivate() {
-        if (sessionStorage.getItem(environment.nameTokenSession)) {
-            return true;
-        }
-
-        this.router.navigate(['/login']);
-        return false;
+  canActivate() {
+    if (localStorage.getItem(environment.nameTokenSession)) {
+      return true;
     }
+
+    this.router.navigate(['/login']);
+    return false;
+  }
 }

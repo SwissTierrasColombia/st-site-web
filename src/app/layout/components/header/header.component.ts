@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onLoggedout() {
-    sessionStorage.removeItem(environment.nameTokenSession);
+    localStorage.removeItem(environment.nameTokenSession);
   }
 
 

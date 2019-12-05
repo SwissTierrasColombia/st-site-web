@@ -30,7 +30,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
           break;
         case 403:
           if (err.error.hasOwnProperty('tokenExpiration')) {
-            sessionStorage.removeItem(environment.nameTokenSession);
+            localStorage.removeItem(environment.nameTokenSession);
             this.router.navigate(['/login']);
           } else {
             this.toastaService.error(error);
