@@ -12,6 +12,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { RoleAdminGuard } from '../guards/role-admin-guard.service';
 import { AuthGuard } from '../shared/guard/auth.guard';
 import { RoleModel } from '../helpers/role.model';
+import { RoleManagerGuard } from '../guards/role-manager-guard.service';
+import { RoleProviderGuard } from '../guards/role-provider-guard.service';
+import { RoleOperatorGuard } from '../guards/role-operator-guard.service';
+import { RoleAdminManagerGuard } from '../guards/role-admin-manager-guard.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -26,6 +30,6 @@ import { RoleModel } from '../helpers/role.model';
     HeaderComponent,
     FooterComponent
   ],
-  providers: [RoleModel, AuthGuard, RoleAdminGuard]
+  providers: [RoleModel, AuthGuard, RoleAdminGuard, RoleManagerGuard, RoleProviderGuard, RoleOperatorGuard, RoleAdminManagerGuard]
 })
 export class LayoutModule { }

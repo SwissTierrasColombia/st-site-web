@@ -4,20 +4,25 @@ import { CargueComponent } from './cargue/cargue.component';
 import { SolicitudComponent } from './solicitud/solicitud.component';
 import { IntegracionComponent } from './integracion/integracion.component';
 import { SolicitudesComponent } from './solicitudes/solicitudes.component';
+import { RoleManagerGuard } from 'src/app/guards/role-manager-guard.service';
+import { RoleProviderGuard } from 'src/app/guards/role-provider-guard.service';
 
 
 const routes: Routes = [
   {
     path: 'solicitud',
-    component: SolicitudComponent
+    component: SolicitudComponent,
+    canActivate: [RoleManagerGuard]
   },
   {
     path: 'solicitudes',
-    component: SolicitudesComponent
+    component: SolicitudesComponent,
+    canActivate: [RoleProviderGuard]
   },
   {
     path: 'cargue/:idInsumo',
-    component: CargueComponent
+    component: CargueComponent,
+    canActivate: [RoleProviderGuard]
   },
   {
     path: 'integracion',
