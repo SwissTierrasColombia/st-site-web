@@ -98,4 +98,10 @@ export class WorkspacesService {
   public closeRequest(idInsumo: number) {
     return this.httpClient.put(this.url + '/workspaces/v1/providers/requests/' + idInsumo + '/close', {});
   }
+  /**
+   * createUser
+   */
+  public createUser(data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/administration/users', data);
+  }
 }

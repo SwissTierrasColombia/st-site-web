@@ -23,4 +23,10 @@ export class ProvidersService {
   public getTypeSuppliesByProvider(idProvider: string) {
     return this.httpClient.get(this.url + '/providers-supplies/v1/providers/' + idProvider + '/types-supplies');
   }
+  /**
+   * getProfilesByProvider
+   */
+  public getProfilesByProvider(id: number) {
+    return this.httpClient.get(this.url + '/providers-supplies/v1/providers/' + id + '/profiles');
+  }
 }

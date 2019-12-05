@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { slideToLeft } from 'src/app/router.animations';
-import { ManagersService } from 'src/app/services/gestion-municipio/managers.service';
+import { ManagersService } from 'src/app/services/managers/managers.service';
 import { Router } from '@angular/router';
-
+import { JwtHelper } from 'src/app/helpers/jwt';
+import { RoleModel } from 'src/app/helpers/role.model';
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
@@ -26,6 +27,7 @@ export class WorkspaceComponent implements OnInit {
     private serviceManagers: ManagersService,
     private serviceWorkspaces: WorkspacesService,
     private router: Router,
+    private roles: RoleModel
   ) {
     this.activeManagers = [];
     this.departments = [];
@@ -48,11 +50,19 @@ export class WorkspaceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.serviceManagers.getManagers()
-      .subscribe(
-        (data: any) => {
-          this.activeManagers = data;
-        });
+
+    const rol = JwtHelper.getUserPublicInformation();
+    const role = rol.roles.find(elem => {
+      return elem.id === this.roles.administrador;
+    });
+    if (role) {
+      this.serviceManagers.getManagers()
+        .subscribe(
+          (data: any) => {
+            this.activeManagers = data;
+          });
+    }
+
     this.serviceWorkspaces.getDepartments()
       .subscribe(response => {
         this.departments = response;

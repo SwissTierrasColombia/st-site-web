@@ -19,7 +19,7 @@
               src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg"
               alt="Generic placeholder image">
             <div class="media-body">
-              <h5 class="mt-0 mb-1"> {{user.first_name}}</h5>
+              <h5 class="mt-0 mb-1"> {{user.email}}</h5>
               <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer a las 4:32 p.m.</p>
               <p class="last"> Algún mensaje, puede ir aquí...</p>
             </div>
@@ -29,7 +29,7 @@
               src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg"
               alt="Generic placeholder image">
             <div class="media-body">
-              <h5 class="mt-0 mb-1"> {{user.first_name}}</h5>
+              <h5 class="mt-0 mb-1"> {{user.email}}</h5>
               <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer a las 4:32 p.m</p>
               <p class="last"> Algún mensaje, puede ir aquí...</p>
             </div>
@@ -39,7 +39,7 @@
               src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg"
               alt="Generic placeholder image" />
             <div class="media-body">
-              <h5 class="mt-0 mb-1"> {{user.first_name}}</h5>
+              <h5 class="mt-0 mb-1"> {{user.email}}</h5>
               <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer a las 4:32 p.m</p>
               <p class="last"> Algún mensaje, puede ir aquí...</p>
             </div>
@@ -52,13 +52,13 @@
         </a>
         <div class="dropdown-menu-right" ngbDropdownMenu>
           <a href="javascript:void(0)" class="dropdown-item">
-            Tareas asginadas <span class="badge badge-info">6</span>
+            Tareas asginadas <span class="badge badge-info">50</span>
           </a>
           <a href="javascript:void(0)" class="dropdown-item">
-            Tareas atrasadas <span class="badge badge-info"> 13</span>
+            Tareas atrasadas <span class="badge badge-info">8</span>
           </a>
           <a href="javascript:void(0)" class="dropdown-item">
-            Tareas vencidas <span class="badge badge-info"> 45</span>
+            Tareas vencidas <span class="badge badge-info">3</span>
           </a>
       <li class="dropdown-divider"></li>
       <a href="javascript:void(0)" class="dropdown-item">
@@ -68,7 +68,7 @@
   </li>
   <li class="nav-item dropdown" ngbDropdown>
     <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
-      <i class="fa fa-user"></i> {{user.first_name}} <b class="caret"></b>
+      <i class="fa fa-user"></i> {{user.first_name}} {{user.last_name}} <b class="caret"></b>
     </a>
     <div class="dropdown-menu-right" ngbDropdownMenu>
       <a class="dropdown-item" href="javascript:void(0)">
