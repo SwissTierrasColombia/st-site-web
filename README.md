@@ -1,4 +1,4 @@
-# Frontend sistema de transición
+# Front-end sistema de transición
 
 Este proyecto se generó con [Angular CLI] (https://github.com/angular/angular-cli) versión 8.3.15.
 
