@@ -12,7 +12,7 @@ touch environment.ts
 # Variables de producción
 touch environment.prod.ts
 ```
-Tomar de referencia los [template](https://github.com/AgenciaImplementacion/st-site-web/blob/master/src/environments/) de variables de entorno.
+Tomar de referencia los [templates](https://github.com/AgenciaImplementacion/st-site-web/blob/master/src/environments/) de variables de entorno.
 
 ## Servidor de desarrollo
 
