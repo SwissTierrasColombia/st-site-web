@@ -69,6 +69,7 @@ export class CargueComponent implements OnInit {
       this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
         data => {
           this.dataRequestPending = data;
+          // console.log(this.dataRequestPending);
           resolve(data);
         }
       );
@@ -94,9 +95,12 @@ export class CargueComponent implements OnInit {
             index3 < this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions.length;
             index3++) {
             this.dataRequestPending[index].suppliesRequested[index2].
-              format = this.clone(this.dataRequestPending[index].
-                suppliesRequested[index2].typeSupply.extensions[index3].name);
+              format = this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions.map(
+                function (elem) {
+                  return '.' + elem.name;
+                }).join(',');
 
+            console.log(this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensionsString);
             if (this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions[index3].name === 'xtf') {
               this.dataRequestPending[index].suppliesRequested[index2].xtf = this.clone(this.xtf);
               this.dataRequestPending[index].suppliesRequested[index2].type = [{
@@ -120,8 +124,20 @@ export class CargueComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   docSoport(files: FileList, idOut: number, idInt: number) {
-    const formato = files[0].name.split('.').pop()
-    if (this.dataRequestPending[idOut].suppliesRequested[idInt].format === formato) {
+    console.log(files[0].name.split('.').pop());
+    const formato = files[0].name.split('.').pop();
+    let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
+    formatoPermitido = formatoPermitido.map(
+      function (elem) {
+        return elem.substr(1);
+      });
+    console.log();
+    const archivoValido = formatoPermitido.filter(item => {
+      return item === formato;
+    });
+    console.log(archivoValido);
+
+    if (archivoValido.length > 0) {
       this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
       if (this.dataRequestPending[idOut].suppliesRequested[idInt].xtf) {
         // const response = this.validarXTF(idOut, idInt);
@@ -136,6 +152,7 @@ export class CargueComponent implements OnInit {
         this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
       }
     } else {
+      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
       this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
     }
   }
