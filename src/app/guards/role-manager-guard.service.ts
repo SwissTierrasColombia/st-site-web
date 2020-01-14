@@ -16,6 +16,7 @@ export class RoleManagerGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):
     Observable<boolean> | Promise<boolean> | boolean {
     if (this.rol) {
+      console.log(this.rol);
       const role = this.rol.roles.find(elem => {
         return elem.id === this.roles.gestor;
       });

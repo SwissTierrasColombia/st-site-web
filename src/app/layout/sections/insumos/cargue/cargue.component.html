@@ -61,15 +61,16 @@
                 </div>
               </div>
             </div>
+            <!-- {{supp | json}} -->
             <div class="input-group col-12 col-sm-4 mb-2">
               <div class="input-group">
                 <div class="form-control">
                   <div [ngSwitch]="supp.typeSupplyId">
                     <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
                       <div class="input-group">
-                        <input [accept]="'.'+supp.format" id="file{{idOut}}{{idInt}}" name="file{{idOut}}{{idInt}}"
-                          class="form-control" type="file" (change)="docSoport($event.target.files,idOut, idInt )"
-                          multiple>
+                        <input [accept]="supp.format" id="file{{idOut}}{{idInt}}"
+                          name="file{{idOut}}{{idInt}}" class="form-control" type="file"
+                          (change)="docSoport($event.target.files,idOut, idInt )" multiple>
                       </div>
                       <div *ngIf="supp.xtf && dataRequestPending[idOut].suppliesRequested[idInt].file != null"
                         id="xtf{{idOut}}{{idInt}}">
