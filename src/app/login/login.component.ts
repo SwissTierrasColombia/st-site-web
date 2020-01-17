@@ -31,4 +31,9 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+  public onKey(event: any) {
+    if (event.key === 'Enter') {
+      this.onLoggedin();
+    }
+  }
 }

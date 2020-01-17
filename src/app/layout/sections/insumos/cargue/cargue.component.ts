@@ -96,11 +96,11 @@ export class CargueComponent implements OnInit {
             index3++) {
             this.dataRequestPending[index].suppliesRequested[index2].
               format = this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions.map(
-                function (elem) {
+                // tslint:disable-next-line:only-arrow-functions
+                function(elem: any) {
                   return '.' + elem.name;
                 }).join(',');
 
-            console.log(this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensionsString);
             if (this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions[index3].name === 'xtf') {
               this.dataRequestPending[index].suppliesRequested[index2].xtf = this.clone(this.xtf);
               this.dataRequestPending[index].suppliesRequested[index2].type = [{
@@ -124,18 +124,16 @@ export class CargueComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   docSoport(files: FileList, idOut: number, idInt: number) {
-    console.log(files[0].name.split('.').pop());
     const formato = files[0].name.split('.').pop();
     let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
     formatoPermitido = formatoPermitido.map(
-      function (elem) {
+      // tslint:disable-next-line:only-arrow-functions
+      function(elem: any) {
         return elem.substr(1);
       });
-    console.log();
     const archivoValido = formatoPermitido.filter(item => {
       return item === formato;
     });
-    console.log(archivoValido);
 
     if (archivoValido.length > 0) {
       this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
