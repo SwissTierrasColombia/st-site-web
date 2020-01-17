@@ -164,4 +164,9 @@ export class OperatorAssignmentComponent implements OnInit {
       }
     );
   }
+  public onKey(event: any) {
+    if (event.key === 'Enter') {
+      this.update();
+    }
+  }
 }
