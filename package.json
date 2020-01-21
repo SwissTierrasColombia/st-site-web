@@ -41,6 +41,7 @@
     "material-design-icons": "^3.0.1",
     "moment": "^2.24.0",
     "ng2-charts": "2.3.0",
+    "ng2-tooltip-directive": "^2.8.17",
     "ngx-moment": "^3.5.0",
     "ngx-spinner": "^8.0.3",
     "ngx-toastr": "^11.2.1",

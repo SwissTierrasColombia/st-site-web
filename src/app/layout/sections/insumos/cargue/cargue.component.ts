@@ -69,7 +69,6 @@ export class CargueComponent implements OnInit {
       this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
         data => {
           this.dataRequestPending = data;
-          // console.log(this.dataRequestPending);
           resolve(data);
         }
       );

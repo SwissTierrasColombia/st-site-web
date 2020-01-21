@@ -10,12 +10,13 @@ import {
 import { IntegracionComponent } from './integracion/integracion.component';
 import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
+import { TooltipModule } from 'ng2-tooltip-directive';
 @NgModule({
   declarations: [CargueComponent, SolicitudComponent, IntegracionComponent, SolicitudesComponent],
 
   imports: [
     CommonModule, PageHeaderModule, InsumosRoutingModule,
-    FormsModule, ReactiveFormsModule,
+    FormsModule, ReactiveFormsModule, TooltipModule
   ],
   providers: [
     TypeDataSuppliesModel

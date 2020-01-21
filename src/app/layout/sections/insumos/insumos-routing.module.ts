@@ -26,7 +26,8 @@ const routes: Routes = [
   },
   {
     path: 'integracion',
-    component: IntegracionComponent
+    component: IntegracionComponent,
+    canActivate: [RoleManagerGuard]
   }
 
 ];

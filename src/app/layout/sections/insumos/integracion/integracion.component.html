@@ -1,1 +1,154 @@
-<p>integracion works!</p>
+<div [@routerTransition]>
+  <app-page-header [heading]="'Integración de insumos'" [icon]="'fa-star'">
+  </app-page-header>
+
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>integración de insumos</h3>
+    </div>
+    <div class="card-body">
+      <form action="" method="post">
+        <div class="row mb-2">
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Departamento</label>
+              </div>
+              <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
+                [(ngModel)]="selectDepartment">
+                <option value='0' selected>Seleccione el departamento</option>
+                <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Municipio</label>
+              </div>
+              <select (change)="changeMunucipality()" class="custom-select" name="munucipalities" id="munucipalities"
+                [(ngModel)]="selectMunicipality">
+                <option value='0' selected>Seleccione el Municipio</option>
+                <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2" *ngIf="dataWorkSpaceMunicipality[0].manager.name !== ''">
+          <div class='col-12 col-sm-6 mb-2'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Gestor</label>
+              </div>
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality[0].manager.name}}
+              </div>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6 mb-2'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Operador</label>
+              </div>
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality[0].operators[0] ? dataWorkSpaceMunicipality[0].operators[0].operator.name : ' '}}
+              </div>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Número de predios</label>
+              </div>
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality[0].numberAlphanumericParcels}}
+              </div>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Área de Trabajo</label>
+              </div>
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality[0].municipalityArea}}
+              </div>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="form-group form-check">
+              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1"
+                [(ngModel)]="splitZones" disabled="true">
+              <label class="form-check-label" for="exampleCheck1">Selección de Zonas</label>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <input class="form-control" type="text" disabled="true" placeholder="4" disabled="true">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <div class="alert alert-warning text-center" role="alert">
+                <strong>Recomendación: </strong>Por favor revisar los archivos antes de solicitar la integración.
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="row" *ngIf="dataWorkSpaceMunicipality[0].manager.name !== ''">
+        <div class="col-12 col-sm-4">
+          <div class="card">
+            <div class="card-header text-center">
+              <h5>Catrastro</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-check" *ngFor="let item of catrastro; let i = index;">
+                <input class="form-check-input" type="checkbox" value="" id="{{item.id}}">
+                <label class="form-check-label" for="defaultCheck1">
+                  <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
+                    {{item.typeSupply.name}} v{{i+1}}
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-4">
+          <div class="card">
+            <div class="card-header text-center">
+              <h5>Registro</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-check" *ngFor="let item of registro; let i = index;">
+                <input class="form-check-input" type="checkbox" value="" id="{{item.id}}">
+                <label class="form-check-label" for="defaultCheck1">
+                  <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
+                    {{item.typeSupply.name}} v{{i+1}}
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-4">
+          <div class="card">
+            <div class="card-header text-center">
+              <h5>ANT</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-check" *ngFor="let item of ant; let i = index;">
+                <input class="form-check-input" type="checkbox" value="" id="{{item.id}}">
+                <label class="form-check-label" for="defaultCheck1">
+                  <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
+                    {{item.typeSupply.name}} v{{i+1}}
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -104,4 +104,10 @@ export class WorkspacesService {
   public createUser(data: any) {
     return this.httpClient.post(this.url + '/workspaces/v1/administration/users', data);
   }
+  /**
+   * GetSuppliesByMunicipality
+   */
+  public GetSuppliesByMunicipalityXTF(idMunicipality: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?extensions=xtf');
+  }
 }
