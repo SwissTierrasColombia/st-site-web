@@ -77,8 +77,8 @@
           </div>
           <div class='col-12 col-sm-6  mb-1'>
             <div class="form-group form-check">
-              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1"
-                [(ngModel)]="splitZones" disabled="true">
+              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1" [(ngModel)]="splitZones"
+                disabled="true">
               <label class="form-check-label" for="exampleCheck1">Selección de Zonas</label>
             </div>
           </div>
@@ -96,16 +96,16 @@
           </div>
         </div>
       </form>
-      <div class="row" *ngIf="dataWorkSpaceMunicipality[0].manager.name !== ''">
+      <div class="row" id="insumosXTF" *ngIf="dataWorkSpaceMunicipality[0].manager.name !== ''">
         <div class="col-12 col-sm-4">
           <div class="card">
             <div class="card-header text-center">
-              <h5>Catrastro</h5>
+              <h5>Catastro</h5>
             </div>
             <div class="card-body">
               <div class="form-check" *ngFor="let item of catrastro; let i = index;">
-                <input class="form-check-input" type="checkbox" value="" id="{{item.id}}">
-                <label class="form-check-label" for="defaultCheck1">
+                <input name="Catastro" class="form-check-input" type="radio" value="" id="{{item.id}}">
+                <label class="form-check-label" for="radio{{i+1}}">
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}}
                   </span>
@@ -121,8 +121,8 @@
             </div>
             <div class="card-body">
               <div class="form-check" *ngFor="let item of registro; let i = index;">
-                <input class="form-check-input" type="checkbox" value="" id="{{item.id}}">
-                <label class="form-check-label" for="defaultCheck1">
+                <input name="Registro" class="form-check-input" type="radio" value="" id="{{item.id}}">
+                <label class="form-check-label" for="radio{{i+1}}">
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}}
                   </span>
@@ -138,8 +138,8 @@
             </div>
             <div class="card-body">
               <div class="form-check" *ngFor="let item of ant; let i = index;">
-                <input class="form-check-input" type="checkbox" value="" id="{{item.id}}">
-                <label class="form-check-label" for="defaultCheck1">
+                <input name="ANT" class="form-check-input" type="radio" value="" id="{{item.id}}">
+                <label class="form-check-label" for="radio{{i+1}}">
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}}
                   </span>
@@ -148,6 +148,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="card-footer text-muted text-center" *ngIf="dataWorkSpaceMunicipality[0].manager.name !== ''">
+        <button type="button" class="btn btn-dark">Realizar integración automatica de archivos XTF</button>
       </div>
     </div>
   </div>
