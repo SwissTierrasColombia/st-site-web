@@ -110,4 +110,10 @@ export class WorkspacesService {
   public GetSuppliesByMunicipalityXTF(idMunicipality: number) {
     return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?extensions=xtf');
   }
+  /**
+   * GetIntegrationCadastreRegistration
+   */
+  public GetIntegrationCadastreRegistration(idMunicipality: number, data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/integration/' + idMunicipality, data);
+  }
 }

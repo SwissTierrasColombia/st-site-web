@@ -77,8 +77,8 @@
           </div>
           <div class='col-12 col-sm-6  mb-1'>
             <div class="form-group form-check">
-              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1" [(ngModel)]="splitZones"
-                disabled="true">
+              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1"
+                [(ngModel)]="splitZones" disabled="true">
               <label class="form-check-label" for="exampleCheck1">Selección de Zonas</label>
             </div>
           </div>
@@ -87,62 +87,77 @@
               <input class="form-control" type="text" disabled="true" placeholder="4" disabled="true">
             </div>
           </div>
-          <div class="row mt-3">
-            <div class="col-12">
-              <div class="alert alert-warning text-center" role="alert">
-                <strong>Recomendación: </strong>Por favor revisar los archivos antes de solicitar la integración.
-              </div>
-            </div>
-          </div>
         </div>
       </form>
       <div class="row" id="insumosXTF" *ngIf="dataWorkSpaceMunicipality[0].manager.name !== ''">
-        <div class="col-12 col-sm-4">
+        <div class="col-12 col-sm-4 mb-2 order-1 order-sm-1">
           <div class="card">
             <div class="card-header text-center">
               <h5>Catastro</h5>
             </div>
             <div class="card-body">
               <div class="form-check" *ngFor="let item of catrastro; let i = index;">
-                <input name="Catastro" class="form-check-input" type="radio" value="" id="{{item.id}}">
+                <input [(ngModel)]="selectsupplyCadastre" name="Catastro" class="form-check-input mt-2" type="radio"
+                  value="{{item.id}}" id="{{item.id}}" (change)="comprobar()">
                 <label class="form-check-label" for="radio{{i+1}}">
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}}
                   </span>
+                  <i class="material-icons cursor">
+                    get_app
+                  </i>
                 </label>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-12 col-sm-4">
+        <div class="col-12 col-sm-4 mb-2 order-2 order-sm-2">
           <div class="card">
             <div class="card-header text-center">
               <h5>Registro</h5>
             </div>
             <div class="card-body">
               <div class="form-check" *ngFor="let item of registro; let i = index;">
-                <input name="Registro" class="form-check-input" type="radio" value="" id="{{item.id}}">
+                <input [(ngModel)]="selectsupplyRegistration" name="Registro" class="form-check-input mt-2" type="radio"
+                  value="{{item.id}}" id="{{item.id}}" (change)="comprobar()">
                 <label class="form-check-label" for="radio{{i+1}}">
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}}
                   </span>
+                  <i class="material-icons cursor">
+                    get_app
+                  </i>
                 </label>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-12 col-sm-4">
+        <div class="col-12 col-sm-4 mb-2 order-4 order-sm-3">
+          <div class="card">
+            <div class="card-header text-center">
+              <h5>Resultados de la integración</h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">Content</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 offset-sm-4 col-sm-4 mb-2 order-3 order-sm-4">
           <div class="card">
             <div class="card-header text-center">
               <h5>ANT</h5>
             </div>
             <div class="card-body">
               <div class="form-check" *ngFor="let item of ant; let i = index;">
-                <input name="ANT" class="form-check-input" type="radio" value="" id="{{item.id}}">
+                <input [(ngModel)]="selectsupplyANT" name="ANT" class="form-check-input mt-2" type="radio"
+                  value="{{item.id}}" id="{{item.id}}" (change)="comprobar()">
                 <label class="form-check-label" for="radio{{i+1}}">
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}}
                   </span>
+                  <i class="material-icons cursor">
+                    get_app
+                  </i>
                 </label>
               </div>
             </div>
@@ -150,7 +165,16 @@
         </div>
       </div>
       <div class="card-footer text-muted text-center" *ngIf="dataWorkSpaceMunicipality[0].manager.name !== ''">
-        <button type="button" class="btn btn-dark">Realizar integración automatica de archivos XTF</button>
+        <div class="row mt-1">
+          <div class="col-12 col-sm-6 offset-sm-3">
+            <div class="alert alert-warning text-center" role="alert">
+              <span [innerHTML]="msgAlert"></span>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-dark" (click)="integrationSupplies()"
+          [disabled]="activateButtonIntegration">Realizar integración automatica de
+          archivos XTF</button>
       </div>
     </div>
   </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { slideToBottom } from 'src/app/router.animations';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-integracion',
@@ -25,9 +26,16 @@ export class IntegracionComponent implements OnInit {
   registro: any;
   ant: any;
   municipalityXTF: any;
+  selectsupplyCadastre: number;
+  selectsupplyRegistration: number;
+  selectsupplyANT: number;
+  msgAlert: string;
+  mensajeIntegrationResponse: any;
+  activateButtonIntegration: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
+    private toastr: ToastrService
   ) {
     this.departments = [];
     this.munucipalities = [];
@@ -57,6 +65,14 @@ export class IntegracionComponent implements OnInit {
     this.registro = [];
     this.ant = [];
     this.municipalityXTF = [];
+    this.selectsupplyCadastre = 0;
+    this.selectsupplyRegistration = 0;
+    this.selectsupplyANT = 0;
+    this.mensajeIntegrationResponse = {
+      message: ''
+    };
+    this.msgAlert = '<strong>Recomendación: </strong>Por favor revisar los archivos antes de solicitar la integración.';
+    this.activateButtonIntegration = true;
   }
 
   ngOnInit() {
@@ -106,5 +122,31 @@ export class IntegracionComponent implements OnInit {
       }
     );
   }
-
+  integrationSupplies() {
+    let data = {
+      supplyCadastre: this.selectsupplyCadastre,
+      supplyRegistration: this.selectsupplyRegistration
+    };
+    this.serviceWorkspaces.GetIntegrationCadastreRegistration(this.selectMunicipality, data).subscribe(
+      response => {
+        this.mensajeIntegrationResponse = response;
+        this.msgAlert = this.mensajeIntegrationResponse.message;
+        this.selectsupplyCadastre = 0;
+        this.selectsupplyRegistration = 0;
+        this.activateButtonIntegration = true;
+        this.toastr.success('¡Se ha iniciado la integración!');
+      },
+      error => {
+        this.msgAlert = error.error.message;
+        this.selectsupplyCadastre = 0;
+        this.selectsupplyRegistration = 0;
+        this.activateButtonIntegration = true;
+      }
+    );
+  }
+  comprobar() {
+    if (this.selectsupplyCadastre !== 0 && this.selectsupplyRegistration !== 0) {
+      this.activateButtonIntegration = false;
+    }
+  }
 }
