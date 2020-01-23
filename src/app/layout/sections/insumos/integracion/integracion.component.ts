@@ -3,6 +3,8 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { slideToBottom } from 'src/app/router.animations';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
+import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
+import { ModalService } from 'src/app/services/modal/modal.service';
 
 @Component({
   selector: 'app-integracion',
@@ -32,10 +34,15 @@ export class IntegracionComponent implements OnInit {
   msgAlert: string;
   mensajeIntegrationResponse: any;
   activateButtonIntegration: boolean;
+  idWorkspace: number;
+  integrationByWorkspace: any;
+  lastIntegration: any;
+  selectIntegration: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modalService: ModalService
   ) {
     this.departments = [];
     this.munucipalities = [];
@@ -43,6 +50,7 @@ export class IntegracionComponent implements OnInit {
     this.selectMunicipality = 0;
     this.splitZones = false;
     this.dataWorkSpaceMunicipality = [{
+      id: 0,
       manager: {
         name: ''
       },
@@ -73,6 +81,10 @@ export class IntegracionComponent implements OnInit {
     };
     this.msgAlert = '<strong>Recomendación: </strong>Por favor revisar los archivos antes de solicitar la integración.';
     this.activateButtonIntegration = true;
+    this.idWorkspace = 0;
+    this.integrationByWorkspace = [];
+    this.lastIntegration = [];
+    this.selectIntegration = [];
   }
 
   ngOnInit() {
@@ -92,11 +104,18 @@ export class IntegracionComponent implements OnInit {
     this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
       response => {
         this.dataWorkSpaceMunicipality = response;
+        this.idWorkspace = this.dataWorkSpaceMunicipality[0].id;
+        console.log(this.idWorkspace);
 
         this.serviceProviders.getProviders().subscribe(
           data => {
             this.providers = data;
-
+          }
+        );
+        this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
+          resp => {
+            this.integrationByWorkspace = resp;
+            this.lastIntegration.push(this.integrationByWorkspace[this.integrationByWorkspace.length - 1]);
           }
         );
       }
@@ -130,7 +149,8 @@ export class IntegracionComponent implements OnInit {
     this.serviceWorkspaces.GetIntegrationCadastreRegistration(this.selectMunicipality, data).subscribe(
       response => {
         this.mensajeIntegrationResponse = response;
-        this.msgAlert = this.mensajeIntegrationResponse.message;
+        this.msgAlert = this.mensajeIntegrationResponse.message +
+          '<br><strong>Por favor ingrese mas tarde, para ver los resultados de la integración</strong>';
         this.selectsupplyCadastre = 0;
         this.selectsupplyRegistration = 0;
         this.activateButtonIntegration = true;
@@ -148,5 +168,17 @@ export class IntegracionComponent implements OnInit {
     if (this.selectsupplyCadastre !== 0 && this.selectsupplyRegistration !== 0) {
       this.activateButtonIntegration = false;
     }
+  }
+  globalFuntionDate(date: any) {
+    return FuntionsGlobalsHelper.formatDate(date);
+  }
+  closeModal(option: number, id: string) {
+    this.modalService.close(id);
+  }
+  openModal(id: number, modal: string) {
+    this.selectIntegration = this.integrationByWorkspace.filter(item => {
+      return item.id === id;
+    });
+    this.modalService.open(modal);
   }
 }
