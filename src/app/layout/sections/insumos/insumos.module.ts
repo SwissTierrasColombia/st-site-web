@@ -12,19 +12,27 @@ import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { DialogBoxComponent } from '../../bs-component/components/dialog-box/dialog-box.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 @NgModule({
   declarations: [
     CargueComponent,
     SolicitudComponent,
     IntegracionComponent,
     SolicitudesComponent,
-    DialogBoxComponent
+    DialogBoxComponent,
   ],
-
   imports: [
-    CommonModule, PageHeaderModule, InsumosRoutingModule,
-    FormsModule, ReactiveFormsModule, TooltipModule
+    CommonModule,
+    PageHeaderModule,
+    InsumosRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TooltipModule,
+    NgxPaginationModule,
+    NgbModule,
   ],
+  bootstrap: [IntegracionComponent],
   providers: [
     TypeDataSuppliesModel
   ]

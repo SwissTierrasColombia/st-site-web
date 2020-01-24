@@ -38,6 +38,8 @@ export class IntegracionComponent implements OnInit {
   integrationByWorkspace: any;
   lastIntegration: any;
   selectIntegration: any;
+  page: number;
+  pageSize: number;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
@@ -83,8 +85,28 @@ export class IntegracionComponent implements OnInit {
     this.activateButtonIntegration = true;
     this.idWorkspace = 0;
     this.integrationByWorkspace = [];
-    this.lastIntegration = [];
-    this.selectIntegration = [];
+    this.lastIntegration = [{
+      id: '',
+      integrationState: {
+        name: '',
+        description: ''
+      },
+      supplyCadastre: {
+        typeSupply: {
+          name: ''
+        }
+      },
+      supplySnr: { typeSupply: { name: '' } },
+      stats: [{
+        cadastreRecordsNumber: '',
+        snrRecordsNumber: '',
+        percentage: '',
+        createdAt: ''
+      }]
+    }];
+    this.selectIntegration = this.lastIntegration;
+    this.page = 1;
+    this.pageSize = 3;
   }
 
   ngOnInit() {
@@ -105,8 +127,6 @@ export class IntegracionComponent implements OnInit {
       response => {
         this.dataWorkSpaceMunicipality = response;
         this.idWorkspace = this.dataWorkSpaceMunicipality[0].id;
-        console.log(this.idWorkspace);
-
         this.serviceProviders.getProviders().subscribe(
           data => {
             this.providers = data;
@@ -115,7 +135,10 @@ export class IntegracionComponent implements OnInit {
         this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
           resp => {
             this.integrationByWorkspace = resp;
-            this.lastIntegration.push(this.integrationByWorkspace[this.integrationByWorkspace.length - 1]);
+            this.integrationByWorkspace.reverse();
+            if (this.integrationByWorkspace.length > 0) {
+              this.lastIntegration = [this.integrationByWorkspace[0]];
+            }
           }
         );
       }
@@ -154,10 +177,11 @@ export class IntegracionComponent implements OnInit {
         this.selectsupplyCadastre = 0;
         this.selectsupplyRegistration = 0;
         this.activateButtonIntegration = true;
-        this.toastr.success('¡Se ha iniciado la integración!');
+        this.toastr.success(this.mensajeIntegrationResponse.message);
       },
       error => {
-        this.msgAlert = error.error.message;
+        this.msgAlert = error.error.message +
+          '<br><strong>Por favor ingrese mas tarde, para ver los resultados de la integración</strong>';;
         this.selectsupplyCadastre = 0;
         this.selectsupplyRegistration = 0;
         this.activateButtonIntegration = true;
@@ -180,5 +204,17 @@ export class IntegracionComponent implements OnInit {
       return item.id === id;
     });
     this.modalService.open(modal);
+  }
+  generateXTF() {
+
+  }
+  startIntegrationAssited() {
+    this.serviceWorkspaces.StartIntegrationAssited(this.idWorkspace, this.lastIntegration[0].id).subscribe(
+      response => {
+        console.log(response);
+      });
+  }
+  cancel() {
+
   }
 }

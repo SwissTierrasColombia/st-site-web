@@ -111,7 +111,7 @@ export class CreateUserComponent implements OnInit {
 
       this.serviceWorkSpace.createUser(data).subscribe(
         _ => {
-          this.toast.success('Se ha registrado el usuario' + FuntionsGlobalsHelper.clone(this.registerData.username) + 'Correctamente');
+          this.toast.success('Se ha registrado el usuario ' + FuntionsGlobalsHelper.clone(this.registerData.username) + ' Correctamente');
           this.registerData = {
             activeManager: false,
             activeAdmin: false,

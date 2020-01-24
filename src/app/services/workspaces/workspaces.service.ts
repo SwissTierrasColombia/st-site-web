@@ -122,4 +122,10 @@ export class WorkspacesService {
   public GetIntegrationsByWorkspace(idWorkspace: number) {
     return this.httpClient.get(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations');
   }
+  /**
+   * StartIntegrationAssited
+   */
+  public StartIntegrationAssited(idWorkspace: number, idIntegration: number) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration + '', {});
+  }
 }
