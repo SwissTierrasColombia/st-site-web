@@ -40,6 +40,7 @@ export class IntegracionComponent implements OnInit {
   selectIntegration: any;
   page: number;
   pageSize: number;
+  msgIntegrationAssited: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
@@ -107,6 +108,7 @@ export class IntegracionComponent implements OnInit {
     this.selectIntegration = this.lastIntegration;
     this.page = 1;
     this.pageSize = 3;
+    this.msgIntegrationAssited = [];
   }
 
   ngOnInit() {
@@ -211,7 +213,8 @@ export class IntegracionComponent implements OnInit {
   startIntegrationAssited() {
     this.serviceWorkspaces.StartIntegrationAssited(this.idWorkspace, this.lastIntegration[0].id).subscribe(
       response => {
-        console.log(response);
+        this.msgIntegrationAssited = response;
+        this.toastr.success(this.msgIntegrationAssited.integrationState.description);
       });
   }
   cancel() {

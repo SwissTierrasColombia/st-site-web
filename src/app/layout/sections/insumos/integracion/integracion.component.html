@@ -101,7 +101,7 @@
                   value="{{item.id}}" id="{{item.id}}" (change)="comprobar()">
                 <label class="form-check-label" for="radio{{i+1}}">
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
-                    {{item.typeSupply.name}} v{{i+1}}
+                    {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
                   <i class="material-icons cursor">
                     get_app
@@ -122,7 +122,7 @@
                   value="{{item.id}}" id="{{item.id}}" (change)="comprobar()">
                 <label class="form-check-label" for="radio{{i+1}}">
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
-                    {{item.typeSupply.name}} v{{i+1}}
+                    {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
                   <i class="material-icons cursor">
                     get_app
@@ -143,7 +143,7 @@
                   value="{{item.id}}" id="{{item.id}}" (change)="comprobar()">
                 <label class="form-check-label" for="radio{{i+1}}">
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
-                    {{item.typeSupply.name}} v{{i+1}}
+                    {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
                   <i class="material-icons cursor">
                     get_app
