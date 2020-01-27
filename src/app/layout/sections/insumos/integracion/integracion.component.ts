@@ -208,7 +208,11 @@ export class IntegracionComponent implements OnInit {
     this.modalService.open(modal);
   }
   generateXTF() {
-
+    this.serviceWorkspaces.GenerateProductFromIntegration(this.idWorkspace, this.lastIntegration[0].id).subscribe(
+      response => {
+        this.msgIntegrationAssited = response;
+        this.toastr.success(this.msgIntegrationAssited.integrationState.description);
+      });
   }
   startIntegrationAssited() {
     this.serviceWorkspaces.StartIntegrationAssited(this.idWorkspace, this.lastIntegration[0].id).subscribe(
@@ -218,6 +222,19 @@ export class IntegracionComponent implements OnInit {
       });
   }
   cancel() {
+  }
 
+  roundDecimal(num) {
+    const decimales = 2;
+    let signo = (num >= 0 ? 1 : -1);
+    num = num * signo;
+    if (decimales === 0) //con 0 decimales
+      return signo * Math.round(num);
+    // round(x * 10 ^ decimales)
+    num = num.toString().split('e');
+    num = Math.round(+(num[0] + 'e' + (num[1] ? (+num[1] + decimales) : decimales)));
+    // x * 10 ^ (-decimales)
+    num = num.toString().split('e');
+    return signo * (num[0] + 'e' + (num[1] ? (+num[1] - decimales) : -decimales));
   }
 }
