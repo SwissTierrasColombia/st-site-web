@@ -75,48 +75,15 @@
                       placeholder="Confirmar contraseña" autocomplete="current-password"
                       [(ngModel)]="registerData.confirmationPassword" required>
                   </div>
-                  <div class="input-group">
-                    <div class="row text-center">
-                      <div class="col-12 col-sm-4">
-                        <div class="form-check">
-                          <input name="selectAdmin" class="form-check-input" type="checkbox" value="" id="selectAdmin1"
-                            [(ngModel)]="registerData.activeAdmin">
-                          <label class="form-check-label" for="defaultCheck1">
-                            Administrador
-                          </label>
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-4">
-                        <div class="form-check">
-                          <input name="selectManager" class="form-check-input" type="checkbox" value=""
-                            id="selectManager" [(ngModel)]="registerData.activeManager">
-                          <label class="form-check-label" for="defaultCheck1">
-                            Gestor
-                          </label>
-                        </div>
-                      </div>
-                      <!-- <div class="col-12 col-sm-3">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                          <label class="form-check-label" for="defaultCheck1">
-                            Operador
-                          </label>
-                        </div>
-                      </div> -->
-                      <div class="col-12 col-sm-4">
-                        <div class="form-check">
-                          <input name="selectProvider" class="form-check-input" type="checkbox" value=""
-                            id="selectProvider" [(ngModel)]="registerData.activeProvider">
-                          <label class="form-check-label" for="defaultCheck1">
-                            Proveedor
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <small id="perfil" class="form-text text-muted mb-3">Seleccione los perfiles para
+                  <fieldset class="form-group text-center">
+                    <label class="radio-inline col-12 col-sm-4" *ngFor="let item of registerData.state; let i = index;">
+                      <input [(ngModel)]="selectROL" [value]="item.id" [id]="item.id" name="roles" type="radio">
+                      {{item.name}}
+                    </label>
+                  </fieldset>
+                  <small id="perfil" class="form-text text-muted mb-3">Seleccione el perfil para
                     este usuario</small>
-                  <div class="mb-3" *ngIf="registerData.activeManager">
+                  <div class="mb-3" *ngIf="selectROL === 2">
                     <!-- Gestor lista unica -->
                     <div class="input-group">
                       <div class="input-group-prepend">
@@ -141,14 +108,15 @@
                     <small id="entities" class="form-text text-muted">Seleccione el GESTOR y luego su Perfil</small>
                   </div>
 
-                  <div class="mb-3" *ngIf="registerData.activeProvider">
+                  <div class="mb-3" *ngIf="selectROL === 3">
                     <!-- Proveedor lista unica -->
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <label class="input-group-text" aria-required="true">* Proveedor</label>
                       </div>
-                      <select (change)="getProfilesProviders(registerData.roleProvider.providerId)" class="custom-select"
-                        name="providers" id="providers" [(ngModel)]="registerData.roleProvider.providerId">
+                      <select (change)="getProfilesProviders(registerData.roleProvider.providerId)"
+                        class="custom-select" name="providers" id="providers"
+                        [(ngModel)]="registerData.roleProvider.providerId">
                         <option value='0' selected>Seleccione el Proveedor</option>
                         <option [ngValue]="item.id" *ngFor="let item of providers">{{item.name}}</option>
                       </select>

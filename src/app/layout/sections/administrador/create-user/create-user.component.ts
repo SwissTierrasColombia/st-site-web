@@ -16,6 +16,7 @@ export class CreateUserComponent implements OnInit {
   managers: any;
   profilesManagers: any;
   profilesProviders: any;
+  selectROL: number;
   constructor(
     private serviceManagers: ManagersService,
     private servicePrividers: ProvidersService,
@@ -25,9 +26,20 @@ export class CreateUserComponent implements OnInit {
     this.profilesManagers = [];
     this.profilesProviders = [];
     this.registerData = {
-      activeManager: false,
-      activeAdmin: false,
-      activeProvider: false,
+      state: [
+        {
+          id: 1,
+          name: 'Administrador',
+        },
+        {
+          id: 2,
+          name: 'gestor',
+        },
+        {
+          id: 3,
+          name: 'Proveedor',
+        }
+      ],
       email: '',
       username: '',
       firstName: '',
@@ -50,7 +62,7 @@ export class CreateUserComponent implements OnInit {
     };
     this.providers = [];
     this.managers = [];
-
+    this.selectROL = 0;
   }
 
   ngOnInit() {
@@ -90,19 +102,19 @@ export class CreateUserComponent implements OnInit {
         roleManager: {}
       };
 
-      if (this.registerData.activeAdmin) {
+      if (this.selectROL === 1) {
         this.registerData.roleAdministrator.roleId = 1;
         data.roleAdministrator = this.registerData.roleAdministrator;
       } else {
         delete data.roleAdministrator;
       }
-      if (this.registerData.activeManager) {
+      if (this.selectROL === 2) {
         this.registerData.roleManager.roleId = 2;
         data.roleManager = this.registerData.roleManager;
       } else {
         delete data.roleManager;
       }
-      if (this.registerData.activeProvider) {
+      if (this.selectROL === 3) {
         this.registerData.roleProvider.roleId = 4;
         data.roleProvider = this.registerData.roleProvider;
       } else {
@@ -113,9 +125,20 @@ export class CreateUserComponent implements OnInit {
         _ => {
           this.toast.success('Se ha registrado el usuario ' + FuntionsGlobalsHelper.clone(this.registerData.username) + ' Correctamente');
           this.registerData = {
-            activeManager: false,
-            activeAdmin: false,
-            activeProvider: false,
+            state: [
+              {
+                id: 1,
+                name: 'Administrador',
+              },
+              {
+                id: 2,
+                name: 'gestor',
+              },
+              {
+                id: 3,
+                name: 'Proveedor',
+              }
+            ],
             email: '',
             username: '',
             firstName: '',
@@ -143,5 +166,6 @@ export class CreateUserComponent implements OnInit {
     }
 
   }
+  comprobar() { }
 
 }
