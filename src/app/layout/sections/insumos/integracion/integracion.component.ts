@@ -167,6 +167,7 @@ export class IntegracionComponent implements OnInit {
     );
   }
   integrationSupplies() {
+    // tslint:disable-next-line:prefer-const
     let data = {
       supplyCadastre: this.selectsupplyCadastre,
       supplyRegistration: this.selectsupplyRegistration
@@ -175,17 +176,16 @@ export class IntegracionComponent implements OnInit {
       response => {
         this.lastIntegration = [];
         this.lastIntegration.push(response);
-        console.log(response);
-        // this.lastIntegration[0] = response;
+        // tslint:disable-next-line:max-line-length
         this.msgAlert = '¡Se ha iniciado la integración!<br><strong>Por favor ingrese mas tarde, para ver los resultados de la integración</strong>';
         this.selectsupplyCadastre = 0;
         this.selectsupplyRegistration = 0;
         this.activateButtonIntegration = true;
-        this.toastr.success("¡Se ha iniciado la integración!");
+        this.toastr.success('¡Se ha iniciado la integración!');
       },
       error => {
         this.msgAlert = error.error.message +
-          '<br><strong>Por favor ingrese mas tarde, para ver los resultados de la integración</strong>';;
+          '<br><strong>Por favor ingrese mas tarde, para ver los resultados de la integración</strong>';
         this.selectsupplyCadastre = 0;
         this.selectsupplyRegistration = 0;
         this.activateButtonIntegration = true;
