@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { slideToBottom } from '../../router.animations';
+import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,8 +11,11 @@ import { slideToBottom } from '../../router.animations';
 export class DashboardComponent implements OnInit {
   public alerts: Array<any> = [];
   public sliders: Array<any> = [];
+  numtask: number;
 
-  constructor() {
+  constructor(
+    private serviceWorkspaces: WorkspacesService,
+  ) {
     this.sliders.push(
       {
         imagePath: 'assets/images/slider1.jpg',
@@ -92,9 +96,16 @@ export class DashboardComponent implements OnInit {
                 voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
       }
     );
+    this.numtask = 0;
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.serviceWorkspaces.GetPendingTasksUser().subscribe(
+      (response: any) => {
+        this.numtask = response.length;
+      }
+    );
+  }
 
   public closeAlert(alert: any) {
     const index: number = this.alerts.indexOf(alert);

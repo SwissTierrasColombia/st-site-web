@@ -134,4 +134,10 @@ export class WorkspacesService {
   public GenerateProductFromIntegration(idWorkspace: number, idIntegration: number) {
     return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration + '/export', {});
   }
+  /**
+   * GetPendingTasksUser
+   */
+  public GetPendingTasksUser() {
+    return this.httpClient.get(this.url + '/workspaces/v1/tasks/pending');
+  }
 }

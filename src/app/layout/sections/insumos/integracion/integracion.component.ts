@@ -86,7 +86,8 @@ export class IntegracionComponent implements OnInit {
     this.activateButtonIntegration = true;
     this.idWorkspace = 0;
     this.integrationByWorkspace = [];
-    this.lastIntegration = [{
+    this.lastIntegration = [];
+    this.selectIntegration = [{
       id: '',
       integrationState: {
         name: '',
@@ -105,7 +106,6 @@ export class IntegracionComponent implements OnInit {
         createdAt: ''
       }]
     }];
-    this.selectIntegration = this.lastIntegration;
     this.page = 1;
     this.pageSize = 3;
     this.msgIntegrationAssited = [];
@@ -173,13 +173,15 @@ export class IntegracionComponent implements OnInit {
     };
     this.serviceWorkspaces.GetIntegrationCadastreRegistration(this.selectMunicipality, data).subscribe(
       response => {
-        this.mensajeIntegrationResponse = response;
-        this.msgAlert = this.mensajeIntegrationResponse.message +
-          '<br><strong>Por favor ingrese mas tarde, para ver los resultados de la integración</strong>';
+        this.lastIntegration = [];
+        this.lastIntegration.push(response);
+        console.log(response);
+        // this.lastIntegration[0] = response;
+        this.msgAlert = '¡Se ha iniciado la integración!<br><strong>Por favor ingrese mas tarde, para ver los resultados de la integración</strong>';
         this.selectsupplyCadastre = 0;
         this.selectsupplyRegistration = 0;
         this.activateButtonIntegration = true;
-        this.toastr.success(this.mensajeIntegrationResponse.message);
+        this.toastr.success("¡Se ha iniciado la integración!");
       },
       error => {
         this.msgAlert = error.error.message +
@@ -224,17 +226,7 @@ export class IntegracionComponent implements OnInit {
   cancel() {
   }
 
-  roundDecimal(num) {
-    const decimales = 2;
-    let signo = (num >= 0 ? 1 : -1);
-    num = num * signo;
-    if (decimales === 0) //con 0 decimales
-      return signo * Math.round(num);
-    // round(x * 10 ^ decimales)
-    num = num.toString().split('e');
-    num = Math.round(+(num[0] + 'e' + (num[1] ? (+num[1] + decimales) : decimales)));
-    // x * 10 ^ (-decimales)
-    num = num.toString().split('e');
-    return signo * (num[0] + 'e' + (num[1] ? (+num[1] - decimales) : -decimales));
+  roundDecimal(num: any) {
+    return Math.round(num * 100) / 100;
   }
 }

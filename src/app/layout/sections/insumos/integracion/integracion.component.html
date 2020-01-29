@@ -103,9 +103,6 @@
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
-                  <i class="material-icons cursor">
-                    get_app
-                  </i>
                 </label>
               </div>
             </div>
@@ -124,9 +121,6 @@
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
-                  <i class="material-icons cursor">
-                    get_app
-                  </i>
                 </label>
               </div>
             </div>
@@ -145,9 +139,6 @@
                   <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
-                  <i class="material-icons cursor">
-                    get_app
-                  </i>
                 </label>
               </div>
             </div>
@@ -162,8 +153,7 @@
             Realizar integración automatica de archivos XTF</button>
         </div>
         <div class="col-12 col-sm-12 mb-2">
-          <!-- <pre> {{lastIntegration | json}}</pre> -->
-          <div class="card">
+          <div class="card" *ngIf="lastIntegration.length > 0">
             <div class="card-header text-center">
               <h5>Resultados de la última integración</h5>
             </div>
@@ -186,13 +176,15 @@
                   <tr *ngFor="let item of lastIntegration">
                     <td scope="row">{{item.id}}</td>
                     <td scope="row">{{item.integrationState.name}}</td>
-                    <td scope="row">{{item.integrationState.description}}</td>
-                    <td scope="row">{{item.supplyCadastre.typeSupply.name}}<br>{{item.supplySnr.typeSupply.name}}</td>
+                    <td scope="row">{{item.integrationState ? item.integrationState.description: ''}}</td>
+                    <td scope="row">
+                      {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
+                    </td>
                     <td scope="row">{{item.stats.length > 0 ? item.stats[0].cadastreRecordsNumber: ''}}</td>
                     <td scope="row">{{item.stats.length > 0 ? item.stats[0].snrRecordsNumber: ''}}</td>
                     <td scope="row">{{item.stats.length > 0 ? item.stats[0].matchNumber: '0'}}</td>
                     <td scope="row">{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</td>
-                    <td scope="row">{{globalFuntionDate(item.startedAt)}}</td>
+                    <td scope="row">{{globalFuntionDate(item.startedAt ? item.startedAt: '')}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -213,7 +205,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="dataWorkSpaceMunicipality[0].manager.name !== ''">
+      <div *ngIf="dataWorkSpaceMunicipality[0].manager.name !== '' && integrationByWorkspace.length > 0">
         <div class="row justify-content-md-center">
           <div class="card text-center">
             <div class="card-header text-center">
@@ -278,8 +270,10 @@
               <tr *ngFor="let item of selectIntegration">
                 <td scope="row">{{item.id}}</td>
                 <td scope="row">{{item.integrationState.name}}</td>
-                <td scope="row">{{item.integrationState.description}}</td>
-                <td scope="row">{{item.supplyCadastre.typeSupply.name}}<br>{{item.supplySnr.typeSupply.name}}</td>
+                <td scope="row">{{item.integrationState ? item.integrationState.description: ''}}</td>
+                <td scope="row">
+                  {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
+                </td>
                 <td scope="row">{{item.stats.length > 0 ? item.stats[0].cadastreRecordsNumber: ''}}</td>
                 <td scope="row">{{item.stats.length > 0 ? item.stats[0].snrRecordsNumber: ''}}</td>
                 <td scope="row">{{item.stats.length > 0 ? item.stats[0].matchNumber: '0'}}</td>

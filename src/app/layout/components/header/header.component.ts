@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { JwtHelper } from 'src/app/helpers/jwt';
+import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,11 @@ import { JwtHelper } from 'src/app/helpers/jwt';
 export class HeaderComponent implements OnInit {
   public pushRightClass: string;
   user: any;
-  constructor(public router: Router) {
+  numtask: number;
+  constructor(
+    public router: Router,
+    private serviceWorkspaces: WorkspacesService,
+  ) {
     this.user = {
       first_name: 'user',
       last_name: ''
@@ -25,11 +30,17 @@ export class HeaderComponent implements OnInit {
         this.toggleSidebar();
       }
     });
+    this.numtask = 0;
   }
 
   ngOnInit() {
     this.pushRightClass = 'push-right';
     this.user = JwtHelper.getUserPublicInformation();
+    this.serviceWorkspaces.GetPendingTasksUser().subscribe(
+      (response: any) => {
+        this.numtask = response.length;
+      }
+    );
   }
 
   isToggled(): boolean {
