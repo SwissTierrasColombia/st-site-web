@@ -74,32 +74,16 @@ export class SidebarComponent implements OnInit {
     this.allroles = this.roles;
     this.user = JwtHelper.getUserPublicInformation();
     this.roleAdmin = this.user.roles.find(elem => {
-      if (elem.id === this.roles.administrador) {
-        return elem.id === this.roles.administrador;
-      } else {
-        return elem.id;
-      }
+      return elem.id === this.roles.administrador;
     });
     this.rolegestor = this.user.roles.find(elem => {
-      if (elem.id === this.roles.gestor) {
-        return elem.id === this.roles.gestor;
-      } else {
-        return elem.id;
-      }
-    });
-    this.roleoperador = this.user.roles.find(elem => {
-      if (elem.id === this.roles.proveedor) {
-        return elem.id === this.roles.proveedor;
-      } else {
-        return elem.id;
-      }
+      return elem.id === this.roles.gestor;
     });
     this.roleproveedor = this.user.roles.find(elem => {
-      if (elem.id === this.roles.operador) {
-        return elem.id === this.roles.operador;
-      } else {
-        return elem.id;
-      }
+      return elem.id === this.roles.proveedor;
+    });
+    this.roleoperador = this.user.roles.find(elem => {
+      return elem.id === this.roles.operador;
     });
   }
 
