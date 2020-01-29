@@ -16,7 +16,7 @@
       </a>
       <li class="nested" [class.expand]="showMenu === listMenu[0].gestion">
         <ul class="submenu">
-          <li>
+          <li *ngIf="roleAdmin.id === allroles.administrador || rolegestor.id === allroles.gestor">
             <a href="" [routerLink]="['/gestion/workspace']">
               <i class="fa fa-monument"></i>&nbsp;
               <span>Espacio de trabajo</span>
@@ -43,26 +43,26 @@
         </ul>
       </li>
     </div>
-    <div class="nested-menu">
+    <div class="nested-menu" *ngIf="rolegestor.id === allroles.gestor || roleproveedor.id === allroles.proveedor">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].insumos)">
         <i class="fa fa-plus"></i>&nbsp;
         <span>Insumos</span>
       </a>
       <li class="nested" [class.expand]="showMenu === listMenu[0].insumos">
         <ul class="submenu">
-          <li>
+          <li *ngIf="rolegestor.id === allroles.gestor">
             <a [routerLink]="['/insumos/solicitud']">
               <i class="fa fa-monument"></i>&nbsp;
               <span>Solicitud</span>
             </a>
           </li>
-          <li>
+          <li *ngIf="roleproveedor.id === allroles.proveedor">
             <a [routerLink]="['/insumos/solicitudes']">
               <i class="fa fa-monument"></i>&nbsp;
               <span>Solicitudes</span>
             </a>
           </li>
-          <li>
+          <li *ngIf="rolegestor.id === allroles.gestor">
             <a [routerLink]="['/insumos/integracion']">
               <i class="fa fa-monument"></i>&nbsp;
               <span>Integración</span>
@@ -137,7 +137,7 @@
         </ul>
       </li>
     </div>
-    <div class="nested-menu">
+    <div class="nested-menu" *ngIf="roleAdmin.id === allroles.administrador">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].administrador)">
         <i class="fa fa-plus"></i>&nbsp;
         <span>Administrador</span>
@@ -159,11 +159,12 @@
         </ul>
       </li>
     </div>
-    <a href="https://github.com/AgenciaImplementacion/Asistente-LADM_COL/releases" target="_blank" class="list-group-item">
+    <a href="https://github.com/AgenciaImplementacion/Asistente-LADM_COL/releases" target="_blank"
+      class="list-group-item">
       <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
       <span>Instalación Asistente <br> LADM</span>
     </a>
-    <a [routerLink]="['/poc']" class="list-group-item">
+    <a *ngIf="roleAdmin.id === allroles.administrador" [routerLink]="['/poc']" class="list-group-item">
       <i class="fa fa-fw fa-plus-circle"></i>&nbsp;
       <span>Prueba de concepto</span>
     </a>
