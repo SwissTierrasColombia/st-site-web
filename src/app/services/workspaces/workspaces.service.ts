@@ -104,4 +104,40 @@ export class WorkspacesService {
   public createUser(data: any) {
     return this.httpClient.post(this.url + '/workspaces/v1/administration/users', data);
   }
+  /**
+   * GetSuppliesByMunicipality
+   */
+  public GetSuppliesByMunicipalityXTF(idMunicipality: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?extensions=xtf');
+  }
+  /**
+   * GetIntegrationCadastreRegistration
+   */
+  public GetIntegrationCadastreRegistration(idMunicipality: number, data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/integration/' + idMunicipality, data);
+  }
+  /**
+   * GetIntegrationsByWorkspace
+   */
+  public GetIntegrationsByWorkspace(idWorkspace: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations');
+  }
+  /**
+   * StartIntegrationAssited
+   */
+  public StartIntegrationAssited(idWorkspace: number, idIntegration: number) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration + '', {});
+  }
+  /**
+   * GenerateProductFromIntegration
+   */
+  public GenerateProductFromIntegration(idWorkspace: number, idIntegration: number) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration + '/export', {});
+  }
+  /**
+   * GetPendingTasksUser
+   */
+  public GetPendingTasksUser() {
+    return this.httpClient.get(this.url + '/workspaces/v1/tasks/pending');
+  }
 }

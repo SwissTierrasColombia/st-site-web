@@ -1,6 +1,5 @@
 export * from './buttons/buttons.component';
 export * from './alert/alert.component';
-export * from './modal/modal.component';
 export * from './collapse/collapse.component';
 export * from './date-picker/date-picker.component';
 export * from './dropdown/dropdown.component';

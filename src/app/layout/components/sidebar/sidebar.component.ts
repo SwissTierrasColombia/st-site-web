@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { JwtHelper } from 'src/app/helpers/jwt';
+import { RoleModel } from 'src/app/helpers/role.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,10 +16,18 @@ export class SidebarComponent implements OnInit {
   showMenu: string;
   listMenu: any;
   user: any;
+  allroles: any;
+  roleAdmin: any;
+  rolegestor: any;
+  roleoperador: any;
+  roleproveedor: any;
 
   @Output() collapsedEvent = new EventEmitter<boolean>();
 
-  constructor(public router: Router) {
+  constructor(
+    public router: Router,
+    private roles: RoleModel
+  ) {
     this.user = {
       first_name: 'Usuario',
       last_name: ''
@@ -42,15 +51,40 @@ export class SidebarComponent implements OnInit {
         administrador: 'administrador'
       }
     ];
-  }
-
-  ngOnInit() {
+    this.allroles = {};
+    this.roleAdmin = {
+      id: 0
+    };
+    this.rolegestor = {
+      id: 0
+    };
+    this.roleoperador = {
+      id: 0
+    };
+    this.roleproveedor = {
+      id: 0
+    };
     this.isActive = false;
     this.collapsed = false;
     this.showMenu = '';
     this.pushRightClass = 'push-right';
-    this.user = JwtHelper.getUserPublicInformation();
+  }
 
+  ngOnInit() {
+    this.allroles = this.roles;
+    this.user = JwtHelper.getUserPublicInformation();
+    this.roleAdmin = this.user.roles.find(elem => {
+      return elem.id === this.roles.administrador;
+    });
+    this.rolegestor = this.user.roles.find(elem => {
+      return elem.id === this.roles.gestor;
+    });
+    this.roleproveedor = this.user.roles.find(elem => {
+      return elem.id === this.roles.proveedor;
+    });
+    this.roleoperador = this.user.roles.find(elem => {
+      return elem.id === this.roles.operador;
+    });
   }
 
   eventCalled() {
