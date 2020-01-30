@@ -27,6 +27,7 @@ export class SolicitudComponent implements OnInit {
   listsupplies: any;
   tablesupplies: any;
   count: number;
+  selectModelSupplies: number;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
@@ -60,6 +61,7 @@ export class SolicitudComponent implements OnInit {
       supplies: []
     };
     this.tablesupplies = [];
+    this.selectModelSupplies = 0;
   }
   ngOnInit() {
     this.serviceWorkspaces.getDepartments()
