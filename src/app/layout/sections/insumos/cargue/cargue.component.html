@@ -119,33 +119,36 @@
               </div>
             </div>
             <div class="col-12 col-sm-2 mb-2" *ngIf="supp.state.id === 1">
-              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-success'"
-                (click)="send(item.id, supp, idOut)" [disabled]="supp.button.status">
-                Aceptado
+              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}"
+                [ngClass]="supp.button.status ? 'btn-success':'btn-warning'" (click)="send(item.id, supp, idOut)"
+                [disabled]="supp.button.status">
+                {{supp.button.status ? 'Enviado':'Reenviar'}}
               </button>
             </div>
             <div class="col-12 col-sm-2 mb-2" *ngIf="supp.state.id === 2">
-              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-danger'"
-                (click)="send(item.id, supp, idOut)" [disabled]="supp.button.status">
-                Rechazado
+              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}"
+                [ngClass]="supp.button.status ? 'btn-danger':'btn-dark'" (click)="send(item.id, supp, idOut)"
+                [disabled]="supp.button.status">
+                {{supp.button.status ? 'Rechazado':'Reenviar'}}
               </button>
             </div>
             <div class="col-12 col-sm-2 mb-2" *ngIf="supp.state.id === 3">
               <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-info'"
-                (click)="send(item.id, supp, idOut)" [disabled]="supp.button.status">
-                Validando
+                (click)="send(item.id, supp, idOut)" [disabled]="true">
+                {{supp.button.status ? 'Validando': ''}}
               </button>
+              {{supp.button.status ? '': 'En este momento no es posible subir el archivo, porque hay una validación en curso.'}}
             </div>
             <div class="col-12 col-sm-2 mb-2" *ngIf="supp.state.id === 4">
-              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-warning'"
+              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-dark'"
                 (click)="send(item.id, supp, idOut)" [disabled]="supp.button.status">
                 Enviar
               </button>
             </div>
             <div class="col-12 col-sm-2 mb-2" *ngIf="supp.state.id === 5">
-              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-dark'"
+              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-warning'"
                 (click)="send(item.id, supp)" [disabled]="supp.button.status">
-                Enviado pero no entregado
+                {{supp.button.status ? 'Justificación enviada':'Enviar'}}
               </button>
             </div>
           </div>
@@ -162,7 +165,7 @@
       </div>
     </div>
     <div class="card-footer text-muted">
-      <button type="button" class="btn btn-dark" (click)="closeRequest()">
+      <button type="button" class="btn btn-dark" [disabled]="closeRequestButton" (click)="closeRequest()">
         Cerrar Solicitud
       </button>
     </div>

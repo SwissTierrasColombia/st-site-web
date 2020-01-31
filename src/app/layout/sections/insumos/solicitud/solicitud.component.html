@@ -92,15 +92,15 @@
                 <label class="input-group-text" aria-required="true">* Modelo de insumos</label>
               </div>
               <select class="custom-select" name="modelSupplies" id="modelSupplies" [(ngModel)]="selectModelSupplies">
-                <option value='0' selected>Seleccione el modelo de insumos</option>
-                <option value='1' selected>Modelo 3.0.0</option>
-                <option value='2' selected>Modelo 2.9.6</option>
+                <option value='0' selected>Seleccione la versión del modelo de insumos.</option>
+                <option value='1' selected disabled="true">Modelo 3.0.0</option>
+                <option value='2' selected disabled="true">Modelo 2.9.6</option>
                 <option value='3' selected>Modelo 2.9.4</option>
                 <!-- <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option> -->
               </select>
             </div>
-            <div class="alert alert-primary text-center small m-2" role="alert">
-              La versión del modelo de insumos solo afecatara a los insumos de tipo Catrastro y Registro.
+            <div class="alert alert-primary text-center m-2" role="alert">
+              La versión seleccionada del modelo de insumos <b>solo se tendrá en cuenta</b> para los insumos del <b>modelo Catastral y Registral.</b>
             </div>
           </div>
         </div>

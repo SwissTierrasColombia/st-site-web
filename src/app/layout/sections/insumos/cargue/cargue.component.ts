@@ -22,6 +22,8 @@ export class CargueComponent implements OnInit {
   xtf: any;
   respuestaValidador: any;
   button: any;
+  closeRequestButton: boolean;
+  closeRequestButtonArray: any;
   constructor(
     private toastr: ToastrService,
     private router: Router,
@@ -55,6 +57,8 @@ export class CargueComponent implements OnInit {
         file: 'none'
       }
     ];
+    this.closeRequestButton = true;
+    this.closeRequestButtonArray = [];
   }
   ngOnInit() {
     const promise1 = new Promise((resolve) => {
@@ -79,9 +83,14 @@ export class CargueComponent implements OnInit {
           return element;
         }
       });
-      console.log("hola 1: ", this.dataRequestPending);
-      console.log("hola 2: ", this.dataRequestPending[0].suppliesRequested);
-
+      this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
+        if (item.state.id === 1 || item.state.id === 5) {
+          return item.state;
+        }
+      });
+      if (this.dataRequestPending[0].suppliesRequested.length === this.closeRequestButtonArray.length) {
+        this.closeRequestButton = false;
+      }
       // tslint:disable-next-line: prefer-for-of
       for (let index = 0; index < this.dataRequestPending.length; index++) {
         // tslint:disable-next-line:prefer-for-of
