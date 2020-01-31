@@ -79,6 +79,9 @@ export class CargueComponent implements OnInit {
           return element;
         }
       });
+      console.log("hola 1: ", this.dataRequestPending);
+      console.log("hola 2: ", this.dataRequestPending[0].suppliesRequested);
+
       // tslint:disable-next-line: prefer-for-of
       for (let index = 0; index < this.dataRequestPending.length; index++) {
         // tslint:disable-next-line:prefer-for-of
@@ -96,7 +99,7 @@ export class CargueComponent implements OnInit {
             this.dataRequestPending[index].suppliesRequested[index2].
               format = this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions.map(
                 // tslint:disable-next-line:only-arrow-functions
-                function(elem: any) {
+                function (elem: any) {
                   return '.' + elem.name;
                 }).join(',');
 
@@ -117,7 +120,7 @@ export class CargueComponent implements OnInit {
     });
   }
   formatDate(date: string) {
-    return moment(date).format('DD-MMM-YYYY h:mm:ss');
+    return moment(date).format('DD-MMM-YYYY hh:mm:ss');
   }
   clone(obj: any) {
     return JSON.parse(JSON.stringify(obj));
@@ -127,7 +130,7 @@ export class CargueComponent implements OnInit {
     let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
     formatoPermitido = formatoPermitido.map(
       // tslint:disable-next-line:only-arrow-functions
-      function(elem: any) {
+      function (elem: any) {
         return elem.substr(1);
       });
     const archivoValido = formatoPermitido.filter(item => {
@@ -136,30 +139,42 @@ export class CargueComponent implements OnInit {
 
     if (archivoValido.length > 0) {
       this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
-      if (this.dataRequestPending[idOut].suppliesRequested[idInt].xtf) {
-        // const response = this.validarXTF(idOut, idInt);
-        // if (response[0].isValid) {
-        //   this.toastr.success('archivo XTF valido');
-        //   this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
-        // } else {
-        //   this.toastr.error('archivo XTF invalido');
-        //   this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
-        // }
-      } else {
-        this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
-      }
+      this.validsendFile(idOut, idInt);
     } else {
       this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
       this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
     }
   }
-  intoValidURL(idOut: number, idInt: number) {
-    if (this.dataRequestPending[idOut].suppliesRequested[idInt].url) {
-      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
+  validsendFile(idOut: number, idInt: number) {
+    if (this.dataRequestPending[idOut].suppliesRequested[idInt].observations) {
+      if (this.dataRequestPending[idOut].suppliesRequested[idInt].file) {
+        this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
+      } else {
+        this.toastr.info('Por favor sube el archivo en alguno de los siguientes formatos: ' +
+          this.dataRequestPending[idOut].suppliesRequested[idInt].format);
+      }
     } else {
-      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
+      this.toastr.info('La observación del archivo es obligatoria');
     }
   }
+  intoValidURL(idOut: number, idInt: number) {
+    // https://stackoverflow.com/questions/8667070/javascript-regular-expression-to-validate-url
+    function validateUrl(value) {
+      // tslint:disable-next-line:max-line-length
+      return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+    }
+    if (validateUrl(this.dataRequestPending[idOut].suppliesRequested[idInt].url)) {
+      if (this.dataRequestPending[idOut].suppliesRequested[idInt].observations) {
+        this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
+      } else {
+        this.toastr.info('La observación es obligatoria');
+      }
+    } else {
+      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
+      this.toastr.info('La URL no es correcta.');
+    }
+  }
+
   intoValidJustification(idOut: number, idInt: number) {
     if (this.dataRequestPending[idOut].suppliesRequested[idInt].justification) {
       this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
@@ -167,7 +182,7 @@ export class CargueComponent implements OnInit {
       this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
     }
   }
-  send(idSolicitud: string, item: any) {
+  send(idSolicitud: string, item: any, idOut: number) {
     const form = new FormData();
     if (item.hasOwnProperty('typeSupply')) {
       form.append('typeSupplyId', item.typeSupply.id);
@@ -185,7 +200,8 @@ export class CargueComponent implements OnInit {
       form.append('observations', item.observations);
     }
     this.serviceWorkspaces.loadSupplyFromRequest(idSolicitud, form).subscribe(
-      data => {
+      (data: any) => {
+        this.ngOnInit();
         item.delivered = true;
       }
     );
@@ -207,23 +223,5 @@ export class CargueComponent implements OnInit {
     if (item.type.file === this.typeDataFieldModel.typeDataNone) {
       this.dataRequestPending[idOut].suppliesRequested[idInt].typeData = this.typeDataFieldModel.typeDataNone;
     }
-
   }
-  validarXTF(idOut: number, idInt: number) {
-    this.pocService.postFileImagen(this.dataRequestPending[idOut].suppliesRequested[idInt].file).subscribe(
-      (response: any) => {
-        this.respuestaValidador = response;
-        if (response[0].isValid) {
-          this.toastr.success('archivo XTF valido');
-          this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
-        } else {
-          this.toastr.error('archivo XTF invalido');
-          this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
-        }
-        return this.respuestaValidador;
-      }
-
-    ); // FIN DE METODO SUBSCRIBE
-  }
-
 }

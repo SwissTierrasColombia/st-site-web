@@ -16,6 +16,7 @@
                 <th>Municipio</th>
                 <th>Gestor</th>
                 <th>Categoria</th>
+                <th>Modelo de insumos</th>
                 <th>Fecha de Solicitud</th>
                 <th>Fecha limite</th>
               </tr>
@@ -27,6 +28,7 @@
                 <td scope="row">{{item.municipality.name}}</td>
                 <td scope="row">{{item.provider.name}}</td>
                 <td scope="row">{{item.provider.providerCategory.name}}</td>
+                <td scope="row">Modelo 2.9.6</td>
                 <td scope="row">{{formatDate(item.createdAt)}}</td>
                 <td scope="row">{{formatDate(item.deadline)}}</td>
               </tr>
@@ -68,30 +70,17 @@
                   <div [ngSwitch]="supp.typeSupplyId">
                     <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
                       <div class="input-group">
-                        <input [accept]="supp.format" id="file{{idOut}}{{idInt}}"
-                          name="file{{idOut}}{{idInt}}" class="form-control" type="file"
-                          (change)="docSoport($event.target.files,idOut, idInt )" multiple>
-                      </div>
-                      <div *ngIf="supp.xtf && dataRequestPending[idOut].suppliesRequested[idInt].file != null"
-                        id="xtf{{idOut}}{{idInt}}">
-                        <button type="button" class="btn btn-dark mb-2 mt-2" (click)="validarXTF(idOut, idInt)">
-                          Validar XTF
-                        </button>
-                        <div _ngcontent-hhg-c4="" class="alert alert-success"
-                          *ngIf='respuestaValidador[0].isValid === true'>
-                          <strong _ngcontent-hhg-c4="" class="ng-tns-c4-0">
-                            El archivo XTF</strong> validado correctamente. </div>
-                        <div _ngcontent-hbo-c4="" class="alert alert-danger"
-                          *ngIf='respuestaValidador[0].isValid === false'>
-                          <strong _ngcontent-hbo-c4="" class="ng-tns-c4-0">
-                            El archivo XTF </strong> No es valido. </div>
+                        <input [accept]="supp.format" id="file{{idOut}}{{idInt}}" name="file{{idOut}}{{idInt}}"
+                          class="form-control" type="file" (change)="docSoport($event.target.files,idOut, idInt )"
+                          multiple>
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend input-group-text">
                           <div>* Observación</div>
                         </div>
-                        <textarea class="form-control" id="observations{{idOut}}{{idInt}}" type="text"
-                          name="observations{{idOut}}{{idInt}}" [(ngModel)]="supp.observations" rows="2"></textarea>
+                        <textarea (change)="validsendFile(idOut, idInt)" class="form-control"
+                          id="observations{{idOut}}{{idInt}}" type="text" name="observations{{idOut}}{{idInt}}"
+                          [(ngModel)]="supp.observations" rows="2"></textarea>
                       </div>
                     </div>
                     <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
@@ -106,8 +95,9 @@
                         <div class="input-group-prepend input-group-text">
                           <div>* Observación</div>
                         </div>
-                        <textarea class="form-control" id="observations{{idOut}}{{idInt}}" type="text"
-                          name="observations{{idOut}}{{idInt}}" [(ngModel)]="supp.observations" rows="2"></textarea>
+                        <textarea (change)="intoValidURL(idOut, idInt)" class="form-control"
+                          id="observations{{idOut}}{{idInt}}" type="text" name="observations{{idOut}}{{idInt}}"
+                          [(ngModel)]="supp.observations" rows="2"></textarea>
                       </div>
                     </div>
                     <div *ngSwitchCase="typeDataFieldModel.typeDataNone">
@@ -128,11 +118,34 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-2 mb-2">
-              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}"
-                [ngClass]="{'btn-success':supp.delivered == true, 'btn-dark':!supp.delivered }"
+            <div class="col-12 col-sm-2 mb-2" *ngIf="supp.state.id === 1">
+              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-success'"
+                (click)="send(item.id, supp, idOut)" [disabled]="supp.button.status">
+                Aceptado
+              </button>
+            </div>
+            <div class="col-12 col-sm-2 mb-2" *ngIf="supp.state.id === 2">
+              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-danger'"
+                (click)="send(item.id, supp, idOut)" [disabled]="supp.button.status">
+                Rechazado
+              </button>
+            </div>
+            <div class="col-12 col-sm-2 mb-2" *ngIf="supp.state.id === 3">
+              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-info'"
+                (click)="send(item.id, supp, idOut)" [disabled]="supp.button.status">
+                Validando
+              </button>
+            </div>
+            <div class="col-12 col-sm-2 mb-2" *ngIf="supp.state.id === 4">
+              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-warning'"
+                (click)="send(item.id, supp, idOut)" [disabled]="supp.button.status">
+                Enviar
+              </button>
+            </div>
+            <div class="col-12 col-sm-2 mb-2" *ngIf="supp.state.id === 5">
+              <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-dark'"
                 (click)="send(item.id, supp)" [disabled]="supp.button.status">
-                {{supp.delivered ? 'Enviado':'Enviar'}}
+                Enviado pero no entregado
               </button>
             </div>
           </div>

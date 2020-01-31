@@ -60,6 +60,7 @@
                 <th>Predios alfanuméricos</th>
                 <th>Area Municipio</th>
                 <th>Fecha de Inicio</th>
+                <th>Modelo de Insumos</th>
                 <th>Observaciones</th>
                 <th>Estado</th>
                 <th>Opciones</th>
@@ -72,6 +73,8 @@
                 <td scope="row">{{item.numberAlphanumericParcels}}</td>
                 <td scope="row">{{item.municipalityArea}}</td>
                 <td scope="row">{{item.startDate}}</td>
+                <td scope="row">Modelo 2.9.6</td>
+                <!-- <td scope="row">{{item.selectModelSupplies}}</td> -->
                 <td scope="row">{{item.observations}}</td>
                 <td scope="row">{{item.isActive ? 'Activo':'Inactivo'}}</td>
                 <td *ngIf="item.isActive === true">
@@ -99,32 +102,6 @@
   </div>
   <div class="card-body">
     <form action="" method="post">
-      <!-- <div class="row mb-2">
-         <div class='col-12 col-sm-6 mb-1'>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <label class="input-group-text" aria-required="true">* Departamento</label>
-            </div>
-            <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
-              [(ngModel)]="dataCreateWorkSpace.selectDepartment">
-              <option value='0' selected>Seleccione el departamento</option>
-              <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
-            </select>
-          </div>
-        </div>
-        <div class='col-12 col-sm-6  mb-1'>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <label class="input-group-text">* Municipio</label>
-            </div>
-            <select class="custom-select" name="munucipalities" id="munucipalities"
-              [(ngModel)]="dataCreateWorkSpace.municipalityId">
-              <option value='0' selected>Seleccione el Municipio</option>
-              <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
-            </select>
-          </div>
-        </div>
-      </div> -->
       <div class="row mb-2">
         <div class='col-12 col-sm-12 mb-2'>
           <div class="input-group">
@@ -157,12 +134,27 @@
         </div>
       </div>
       <div class="row mb-2">
-        <div class='col-12 col-sm-6  mb-1'>
+        <div class='col-12 col-sm-6 mb-2'>
           <div class="input-group">
             <div class="input-group-prepend">
               <label class="input-group-text">* Fecha de Inicio</label>
             </div>
             <input class="form-control" type="date" name="FechaInicio" [(ngModel)]="dataCreateWorkSpace.startDate">
+          </div>
+        </div>
+        <div class='col-12 mb-1'>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" aria-required="true">* Modelo de insumos</label>
+            </div>
+            <select class="custom-select" name="modelSupplies" id="modelSupplies"
+              [(ngModel)]="dataCreateWorkSpace.selectModelSupplies">
+              <option value='0' selected>Seleccione el modelo de insumos</option>
+              <option value='Modelo 3.0.0' selected>Modelo 3.0.0</option>
+              <option value='Modelo 2.9.6' selected>Modelo 2.9.6</option>
+              <option value='Modelo 2.9.4' selected>Modelo 2.9.4</option>
+              <!-- <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option> -->
+            </select>
           </div>
         </div>
       </div>
