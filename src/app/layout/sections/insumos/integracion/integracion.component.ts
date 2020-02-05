@@ -24,7 +24,7 @@ export class IntegracionComponent implements OnInit {
   dataSuppliesProvider: any;
   selectSupplies: number;
   listsupplies: { deadline: string; supplies: any; };
-  catrastro: any;
+  catastro: any;
   registro: any;
   ant: any;
   municipalityXTF: any;
@@ -72,7 +72,7 @@ export class IntegracionComponent implements OnInit {
       deadline: '',
       supplies: []
     };
-    this.catrastro = [];
+    this.catastro = [];
     this.registro = [];
     this.ant = [];
     this.municipalityXTF = [];
@@ -148,7 +148,7 @@ export class IntegracionComponent implements OnInit {
     this.serviceWorkspaces.GetSuppliesByMunicipalityXTF(this.selectMunicipality).subscribe(
       response => {
         this.municipalityXTF = response;
-        this.catrastro = this.municipalityXTF.filter(item => {
+        this.catastro = this.municipalityXTF.filter(item => {
           if (item.typeSupply.providerProfile.name === 'CATASTRAL') {
             return item;
           }

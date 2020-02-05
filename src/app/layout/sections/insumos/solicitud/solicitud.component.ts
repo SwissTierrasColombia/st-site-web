@@ -16,7 +16,7 @@ export class SolicitudComponent implements OnInit {
   departments: any;
   selectDepartment: number;
   splitZones: boolean;
-  munucipalities: any;
+  municipalities: any;
   selectMunicipality: number;
   dataWorkSpaceMunicipality: any;
   providers: any;
@@ -36,7 +36,7 @@ export class SolicitudComponent implements OnInit {
     this.count = 0;
     this.observations = '';
     this.departments = [];
-    this.munucipalities = [];
+    this.municipalities = [];
     this.selectDepartment = 0;
     this.selectMunicipality = 0;
     this.selectProvider = 0;
@@ -72,7 +72,7 @@ export class SolicitudComponent implements OnInit {
   changeDepartament() {
     this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment.toString()).subscribe(
       data => {
-        this.munucipalities = data;
+        this.municipalities = data;
       }
     );
   }
@@ -91,6 +91,8 @@ export class SolicitudComponent implements OnInit {
   changeProvider() {
     this.serviceProviders.getTypeSuppliesByProvider(this.selectProvider.id.toString()).subscribe(
       response => {
+        console.log(response);
+
         this.dataSuppliesProvider = response;
       }
     );

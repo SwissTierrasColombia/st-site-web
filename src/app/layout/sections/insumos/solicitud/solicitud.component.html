@@ -25,10 +25,10 @@
               <div class="input-group-prepend">
                 <label class="input-group-text">* Municipio</label>
               </div>
-              <select (change)="changeMunucipality()" class="custom-select" name="munucipalities" id="munucipalities"
+              <select (change)="changeMunucipality()" class="custom-select" name="municipalities" id="municipalities"
                 [(ngModel)]="selectMunicipality">
                 <option value='0' selected>Seleccione el Municipio</option>
-                <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
+                <option [ngValue]="item.id" *ngFor="let item of municipalities">{{item.name}}</option>
               </select>
             </div>
           </div>
