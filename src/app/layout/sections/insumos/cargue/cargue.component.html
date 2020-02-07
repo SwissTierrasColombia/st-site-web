@@ -16,7 +16,6 @@
                 <th>Municipio</th>
                 <th>Gestor</th>
                 <th>Categoria</th>
-                <th>Modelo de insumos</th>
                 <th>Fecha de Solicitud</th>
                 <th>Fecha limite</th>
               </tr>
@@ -28,7 +27,6 @@
                 <td scope="row">{{item.municipality.name}}</td>
                 <td scope="row">{{item.provider.name}}</td>
                 <td scope="row">{{item.provider.providerCategory.name}}</td>
-                <td scope="row">Modelo 2.9.6</td>
                 <td scope="row">{{formatDate(item.createdAt)}}</td>
                 <td scope="row">{{formatDate(item.deadline)}}</td>
               </tr>
@@ -73,6 +71,9 @@
                         <input [accept]="supp.format" id="file{{idOut}}{{idInt}}" name="file{{idOut}}{{idInt}}"
                           class="form-control" type="file" (change)="docSoport($event.target.files,idOut, idInt )"
                           multiple>
+                      </div>
+                      <div *ngIf="supp.modelVersion"  class="alert alert-info text-center" role="alert">
+                      <strong>Modelo {{supp.modelVersion}}</strong>
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend input-group-text">

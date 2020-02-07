@@ -129,7 +129,7 @@ export class CargueComponent implements OnInit {
     });
   }
   formatDate(date: string) {
-    return moment(date).format('DD-MMM-YYYY hh:mm:ss');
+    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
   }
   clone(obj: any) {
     return JSON.parse(JSON.stringify(obj));
