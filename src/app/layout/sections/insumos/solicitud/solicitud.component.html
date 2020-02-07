@@ -86,7 +86,7 @@
               <input class="form-control" type="text" disabled="true" placeholder="4" disabled="true">
             </div>
           </div>
-          <div class='col-12 col-sm-12 mb-1 mt-1 text-center'>
+          <!-- <div class='col-12 col-sm-12 mb-1 mt-1 text-center'>
             <div class="input-group">
               <div class="input-group-prepend">
                 <label class="input-group-text" aria-required="true">* Modelo de insumos</label>
@@ -96,13 +96,12 @@
                 <option value='1' selected disabled="true">Modelo 3.0.0</option>
                 <option value='2' selected disabled="true">Modelo 2.9.6</option>
                 <option value='3' selected>Modelo 2.9.4</option>
-                <!-- <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option> -->
               </select>
             </div>
             <div class="alert alert-primary text-center m-2" role="alert">
               La versión seleccionada del modelo de insumos <b>solo se tendrá en cuenta</b> para los insumos del <b>modelo Catastral y Registral.</b>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="row">
           <div class='col-12 col-sm-3 mb-1'>
@@ -144,30 +143,45 @@
         </div>
       </form>
     </div>
-    <table class="table table-striped" *ngIf="this.tablesupplies.length > 0">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col" sortable="entidad">Entidad</th>
-          <th scope="col" sortable="insumo">Insumo</th>
-          <!-- <th scope="col" sortable="formato">Formato</th> -->
-          <th scope="col" sortable="observacion">Observación</th>
-          <th>Eliminar</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of tablesupplies">
-          <th scope="row">{{ item.id }}</th>
-          <td> {{ item.entidad }} </td>
-          <td>{{ item.insumo}}</td>
-          <!-- <td>{{ item.formato}}</td> -->
-          <td>{{ item.observacion }}</td>
-          <td><i class="material-icons cursor" (click)="delete(item)">
-              delete_forever
-            </i></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped table-inverse" *ngIf="this.tablesupplies.length > 0">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col" sortable="entidad">Entidad</th>
+            <th scope="col" sortable="insumo">Insumo</th>
+            <th scope="col" sortable="modelo">Modelo de insumo</th>
+            <th scope="col" sortable="observacion">Observación</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of tablesupplies">
+            <th>{{ item.idCount }}</th>
+            <td class="col-sm-1"> {{ item.entidad }} </td>
+            <td class="col-sm-2">{{ item.insumo}}</td>
+            <td class="col-sm-3">
+              <div class="input-group" *ngIf="item.modelRequired">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" aria-required="true">*</label>
+                </div>
+              <select (change)="changeModelSupplies(item.idCount, item.modelVersion)"
+               class="custom-select" name="modelSupplies{{item.idCount}}" id="modelSupplies{{item.idCount}}"
+               [(ngModel)]="item.modelVersion">
+                  <option value='0' selected>Seleccione la versión del insumos.</option>
+                  <option [ngValue]="item.name" *ngFor="let item of item.versions">Modelo {{item.name}}</option>
+                </select>
+              </div>
+              <div *ngIf="!item.modelRequired">N/A</div>
+            </td>
+            <td class="col-sm-4">{{ item.observacion }}</td>
+            <td class="col-sm-2"><i class="material-icons cursor" (click)="delete(item)">
+                delete_forever
+              </i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="card-footer text-muted text-center">
       <div class="row">
         <div class="col-12 col-sm-6 offset-sm-6 mt-2">
@@ -184,7 +198,7 @@
           </div>
         </div>
         <div class="col-12">
-          <button type="button" class="btn btn-dark" (click)="submitInfo()">Enviar Solicitud</button>
+          <button type="button" [disabled]="enviarsolicitud" class="btn btn-dark" (click)="submitInfo()">Enviar Solicitud</button>
         </div>
       </div>
     </div>

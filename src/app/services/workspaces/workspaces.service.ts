@@ -140,4 +140,10 @@ export class WorkspacesService {
   public GetPendingTasksUser() {
     return this.httpClient.get(this.url + '/workspaces/v1/tasks/pending');
   }
+    /**
+   * GetTypesModels
+   */
+  public GetTypesModels() {
+    return this.httpClient.get(this.url + '/ili/versions/v1/versions');
+  }
 }
