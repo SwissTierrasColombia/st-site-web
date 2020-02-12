@@ -40,13 +40,15 @@ export class WorkspaceComponent implements OnInit {
     this.dataCreateWorkSpace = {
       selectDepartment: '',
       supportFile: File,
-      managerCode: '',
+      managerCode: '0',
       municipalityId: '',
       observations: '',
       numberAlphanumericParcels: '',
       startDate: '',
-      municipalityArea: ''
+      municipalityArea: '',
+      selectModelSupplies: '0'
     };
+
   }
 
   ngOnInit() {

@@ -30,7 +30,7 @@ export class SolicitudesComponent implements OnInit {
     );
   }
   formatDate(date: string) {
-    return moment(date).format('DD-MMM-YYYY h:mm:ss');
+    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
   }
   load(idInsumo: number) {
     this.router.navigate(['/insumos/cargue/' + idInsumo]);

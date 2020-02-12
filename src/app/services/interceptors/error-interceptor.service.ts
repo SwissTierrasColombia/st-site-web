@@ -10,7 +10,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Injectable()
 export class ErrorInterceptorService implements HttpInterceptor {
 
-  constructor(public toastaService: ToastrService, private router: Router, private spinner: NgxSpinnerService) {
+  constructor(public toastrService: ToastrService, private router: Router, private spinner: NgxSpinnerService) {
 
   }
 
@@ -24,20 +24,27 @@ export class ErrorInterceptorService implements HttpInterceptor {
       switch (err.status) {
         case 400:
         case 401:
+          if (err.error.error === 'invalid_token') {
+            localStorage.removeItem(environment.nameTokenSession);
+            this.router.navigate(['/login']);
+          } else {
+            this.toastrService.error(error);
+          }
+          break;
         case 404:
         case 422:
-          this.toastaService.error(error);
+          this.toastrService.error(error);
           break;
         case 403:
           if (err.error.hasOwnProperty('tokenExpiration')) {
             localStorage.removeItem(environment.nameTokenSession);
             this.router.navigate(['/login']);
           } else {
-            this.toastaService.error(error);
+            this.toastrService.error(error);
           }
           break;
         default:
-          this.toastaService.error('No se a podido conectar con el servidor', 'Actualiza la pagina');
+          this.toastrService.error('No se ha podido conectar con el servidor', 'Actualiza la pagina');
           break;
       }
 

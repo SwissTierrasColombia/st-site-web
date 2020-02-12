@@ -16,7 +16,7 @@ export class SolicitudComponent implements OnInit {
   departments: any;
   selectDepartment: number;
   splitZones: boolean;
-  munucipalities: any;
+  municipalities: any;
   selectMunicipality: number;
   dataWorkSpaceMunicipality: any;
   providers: any;
@@ -27,6 +27,9 @@ export class SolicitudComponent implements OnInit {
   listsupplies: any;
   tablesupplies: any;
   count: number;
+  selectModelSupplies: string;
+  listModels: any;
+  enviarsolicitud: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
@@ -35,7 +38,7 @@ export class SolicitudComponent implements OnInit {
     this.count = 0;
     this.observations = '';
     this.departments = [];
-    this.munucipalities = [];
+    this.municipalities = [];
     this.selectDepartment = 0;
     this.selectMunicipality = 0;
     this.selectProvider = 0;
@@ -60,17 +63,26 @@ export class SolicitudComponent implements OnInit {
       supplies: []
     };
     this.tablesupplies = [];
+    this.selectModelSupplies = '0';
+    this.listModels = [];
+    this.enviarsolicitud = true;
   }
   ngOnInit() {
     this.serviceWorkspaces.getDepartments()
       .subscribe(response => {
         this.departments = response;
       });
+
+    this.serviceWorkspaces.GetTypesModels().subscribe(
+        response => {
+          this.listModels = response;
+        }
+      );
   }
   changeDepartament() {
     this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment.toString()).subscribe(
       data => {
-        this.munucipalities = data;
+        this.municipalities = data;
       }
     );
   }
@@ -94,27 +106,57 @@ export class SolicitudComponent implements OnInit {
     );
   }
   agregar() {
-    this.listsupplies.supplies.push({
-      observation: this.observations,
-      providerId: this.selectProvider.id,
-      typeSupplyId: this.selectSupplies.id
+    const exist = this.tablesupplies.find(item => {
+      return item.idInsumo === this.selectSupplies.id;
     });
-    this.tablesupplies.push({
-      id: this.count,
-      idEntidad: this.selectProvider.id,
-      entidad: this.selectProvider.name,
-      idInsumo: this.selectSupplies.id,
-      insumo: this.selectSupplies.name,
-      observacion: this.observations
-    });
-    this.dataSuppliesProvider = this.dataSuppliesProvider.filter(element => {
-      if (element.id !== this.selectSupplies.id) {
-        return element;
-      }
-    });
-    this.count += 1;
-    this.selectSupplies = 0;
-    this.observations = '';
+    if (exist === undefined) {
+      if (this.selectSupplies.modelRequired) {
+        this.listsupplies.supplies.push({
+          idCount: this.count,
+          idInsumo: this.selectSupplies.id,
+          observation: this.observations,
+          providerId: this.selectProvider.id,
+          typeSupplyId: this.selectSupplies.id,
+          modelVersion: this.selectModelSupplies
+        });
+        this.tablesupplies.push({
+          idCount: this.count,
+          idEntidad: this.selectProvider.id,
+          entidad: this.selectProvider.name,
+          idInsumo: this.selectSupplies.id,
+          insumo: this.selectSupplies.name,
+          observacion: this.observations,
+          modelRequired: true,
+          modelVersion: this.selectModelSupplies,
+          versions: this.listModels
+        });
+        this.count += 1;
+        this.selectSupplies = 0;
+        this.observations = '';
+      } else {
+      this.listsupplies.supplies.push({
+        idCount: this.count,
+        idInsumo: this.selectSupplies.id,
+        observation: this.observations,
+        providerId: this.selectProvider.id,
+        typeSupplyId: this.selectSupplies.id,
+      });
+      this.tablesupplies.push({
+        idCount: this.count,
+        idEntidad: this.selectProvider.id,
+        entidad: this.selectProvider.name,
+        idInsumo: this.selectSupplies.id,
+        insumo: this.selectSupplies.name,
+        observacion: this.observations
+      });
+      this.count += 1;
+      this.selectSupplies = 0;
+      this.observations = '';
+    }
+    } else {
+      this.toastr.show('Ya ha solicitado el insumo.', this.selectSupplies.name);
+    }
+    this.comprobarEnviarSolicitud();
   }
   delete(item: any) {
     this.tablesupplies = this.tablesupplies.filter((element: any) => {
@@ -122,19 +164,23 @@ export class SolicitudComponent implements OnInit {
         return element;
       }
     });
-    if (item.idInsumo) {
-      let data: any;
-      this.serviceProviders.getTypeSuppliesByProvider(item.idEntidad).subscribe(
-        response => {
-          data = response;
-          data = data.filter((element: any) => {
-            if (element.id === item.idInsumo) {
-              return element;
-            }
-          });
-          this.dataSuppliesProvider.push(data[0]);
-        }
-      );
+    this.listsupplies.supplies = this.listsupplies.supplies.filter((element: any) => {
+      if (element.idInsumo !== item.idInsumo) {
+        return element;
+      }
+    });
+    this.comprobarEnviarSolicitud();
+  }
+  comprobarEnviarSolicitud() {
+    const send = this.listsupplies.supplies.find(
+      item => {
+        return item.modelVersion === '0';
+      }
+    );
+    if (send) {
+      this.enviarsolicitud = true;
+    } else {
+      this.enviarsolicitud = false;
     }
   }
   submitInfo() {
@@ -143,6 +189,15 @@ export class SolicitudComponent implements OnInit {
         this.toastr.success('Solicitud enviada correctamente');
       }
     );
+  }
+  changeModelSupplies(id, itemModelVersion) {
+    this.listsupplies.supplies.find((item: any) => {
+      if (item.idCount === id) {
+        item.modelVersion = itemModelVersion;
+      }
+    });
+  this.toastr.info('Se ha seleccionado la versión del modelo de insumos: ' + itemModelVersion);
+  this.comprobarEnviarSolicitud();
   }
 
 }

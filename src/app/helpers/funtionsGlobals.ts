@@ -10,7 +10,7 @@ export class FuntionsGlobalsHelper {
     return JSON.parse(JSON.stringify(obj));
   }
   static formatDate(date: string) {
-    return moment(date).format('DD-MMM-YYYY h:mm:ss');
+    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
   }
   static formatDateCalendar(date: string) {
     return moment(date).format('YYYY-MM-DD');
