@@ -146,4 +146,11 @@ export class WorkspacesService {
   public GetTypesModels() {
     return this.httpClient.get(this.url + '/ili/versions/v1/versions');
   }
+  /**
+   * deleteIntegration
+   */
+  public deleteIntegration(idWorkspace: number, idIntegration: number) {
+    return this.httpClient.delete(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration);
+
+  }
 }

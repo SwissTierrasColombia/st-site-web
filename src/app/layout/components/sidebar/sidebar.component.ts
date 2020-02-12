@@ -121,5 +121,6 @@ export class SidebarComponent implements OnInit {
 
   onLoggedout() {
     localStorage.removeItem(environment.nameTokenSession);
+    this.router.navigate(['login']);
   }
 }

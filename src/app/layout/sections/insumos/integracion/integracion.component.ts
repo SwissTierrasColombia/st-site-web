@@ -224,6 +224,7 @@ export class IntegracionComponent implements OnInit {
       });
   }
   cancel() {
+    this.serviceWorkspaces.deleteIntegration(this.idWorkspace, this.lastIntegration[0].id);
   }
 
   roundDecimal(num: any) {
