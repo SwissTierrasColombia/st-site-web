@@ -151,6 +151,5 @@ export class WorkspacesService {
    */
   public deleteIntegration(idWorkspace: number, idIntegration: number) {
     return this.httpClient.delete(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration);
-
   }
 }

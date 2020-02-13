@@ -14,13 +14,15 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { DialogBoxComponent } from '../../bs-component/components/dialog-box/dialog-box.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SearchComponent } from './search/search.component';
 @NgModule({
   declarations: [
     CargueComponent,
     SolicitudComponent,
     IntegracionComponent,
     SolicitudesComponent,
-    DialogBoxComponent
+    DialogBoxComponent,
+    SearchComponent
   ],
   imports: [
     CommonModule,

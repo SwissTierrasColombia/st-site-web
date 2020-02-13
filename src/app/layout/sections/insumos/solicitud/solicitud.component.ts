@@ -196,7 +196,7 @@ export class SolicitudComponent implements OnInit {
         item.modelVersion = itemModelVersion;
       }
     });
-  this.toastr.info('Se ha seleccionado la versión del modelo de insumos: ' + itemModelVersion);
+  this.toastr.info('Ha seleccionado la versión del modelo de insumos: ' + itemModelVersion);
   this.comprobarEnviarSolicitud();
   }
 

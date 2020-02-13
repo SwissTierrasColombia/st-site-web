@@ -224,7 +224,11 @@ export class IntegracionComponent implements OnInit {
       });
   }
   cancel() {
-    this.serviceWorkspaces.deleteIntegration(this.idWorkspace, this.lastIntegration[0].id);
+    this.serviceWorkspaces.deleteIntegration(this.idWorkspace, this.lastIntegration[0].id).subscribe(
+      _ => {
+        this.toastr.info('Ha eliminado la integración');
+      }
+    );
   }
 
   roundDecimal(num: any) {
