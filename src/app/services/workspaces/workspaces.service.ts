@@ -152,4 +152,16 @@ export class WorkspacesService {
   public deleteIntegration(idWorkspace: number, idIntegration: number) {
     return this.httpClient.delete(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration);
   }
+  /**
+   * GetRequestByManager
+   */
+  public GetRequestByManager() {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/requests/emmiters');
+  }
+    /**
+   * GetSuppliesByMunicipalityFilter
+   */
+  public GetSuppliesByMunicipalityFilter(data: any) {
+    return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + data.selectMunicipality );
+  }
 }

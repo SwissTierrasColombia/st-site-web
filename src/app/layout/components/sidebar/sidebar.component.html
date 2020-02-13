@@ -45,7 +45,7 @@
       </li>
     </div>
     <div class="nested-menu"
-      *ngIf="rolegestor ? rolegestor.id: 0 === allroles.gestor || roleproveedor ? roleproveedor.id: 0 === allroles.proveedor">
+      *ngIf="rolegestor ? rolegestor.id: 0 === allroles.gestor || roleproveedor ? roleproveedor.id: 0 === allroles.proveedor || roleAdmin ? roleAdmin.id: 0 === allroles.administrador">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].insumos)">
         <i class="fa fa-plus"></i>&nbsp;
         <span>Insumos</span>
@@ -58,6 +58,13 @@
               <span>Solicitud</span>
             </a>
           </li>
+          <li
+          *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
+          <a href="" [routerLink]="['/insumos/buscar']">
+            <i class="fa fa-monument"></i>&nbsp;
+            <span>Buscar</span>
+          </a>
+        </li>
           <li *ngIf="roleproveedor ? roleproveedor.id: 0 === allroles.proveedor">
             <a [routerLink]="['/insumos/solicitudes']">
               <i class="fa fa-monument"></i>&nbsp;
