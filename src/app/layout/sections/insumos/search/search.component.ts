@@ -3,6 +3,9 @@ import { slideToLeft } from 'src/app/router.animations';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
+import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
@@ -20,6 +23,9 @@ export class SearchComponent implements OnInit {
   suppliesManagerRequest: any;
   selectSuppliesManagerRequest: any;
   allSupplies: any;
+  size: any;
+  number: any;
+  totalElements: any;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService
@@ -30,8 +36,11 @@ export class SearchComponent implements OnInit {
     this.munucipalities = [];
     this.selectMunicipality = '0';
     this.suppliesManagerRequest = [];
-    this.selectSuppliesManagerRequest = 0;
     this.allSupplies = [];
+    this.selectSuppliesManagerRequest = 0;
+    this.size = 20;
+    this.number = 0;
+    this.totalElements = 0;
   }
 
   ngOnInit() {
@@ -44,6 +53,7 @@ export class SearchComponent implements OnInit {
       this.serviceWorkspaces.GetRequestByManager().subscribe(
         response => {
           this.suppliesManagerRequest = response;
+          // console.log(this.suppliesManagerRequest);
         }
       )
     }
@@ -52,6 +62,9 @@ export class SearchComponent implements OnInit {
         this.departments = response;
       });
   }
+  globalFuntionDate(date: any) {
+    return FuntionsGlobalsHelper.formatDate(date);
+  }
   changeDepartament() {
     this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment).subscribe(
       data => {
@@ -59,17 +72,14 @@ export class SearchComponent implements OnInit {
       }
     );
   }
-  searchSupplies(){
-    const data = {
-      selectMunicipality: this.selectMunicipality
-    }
-    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(data).subscribe(
-      response => {
-        this.allSupplies = response;
-        console.log(this.allSupplies);
-        
+  getPage(page: string) {
+    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page).subscribe(
+      (response: any) => {
+        this.number = response.number + 1;
+        this.size = response.size;
+        this.totalElements = response.totalElements;
+        this.allSupplies = response.items;
       }
-    )
+    );
   }
-
 }

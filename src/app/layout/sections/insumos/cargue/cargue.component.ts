@@ -111,6 +111,7 @@ export class CargueComponent implements OnInit {
                 function (elem: any) {
                   return '.' + elem.name;
                 }).join(',');
+                this.dataRequestPending[index].suppliesRequested[index2].format = this.dataRequestPending[index].suppliesRequested[index2].format +',.zip'
 
             if (this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions[index3].name === 'xtf') {
               this.dataRequestPending[index].suppliesRequested[index2].xtf = this.clone(this.xtf);

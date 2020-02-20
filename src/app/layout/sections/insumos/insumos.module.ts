@@ -15,6 +15,7 @@ import { DialogBoxComponent } from '../../bs-component/components/dialog-box/dia
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchComponent } from './search/search.component';
+
 @NgModule({
   declarations: [
     CargueComponent,
