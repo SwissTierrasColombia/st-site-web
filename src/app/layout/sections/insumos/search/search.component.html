@@ -1,1 +1,101 @@
-<p>search works!</p>
+<div [@routerTransition]>
+    <app-page-header [heading]="'Buscar insumos'" [icon]="'fa-star'"></app-page-header>
+
+    <div class="card">
+        <div class="card-header text-center">
+            <h3>Busqueda de insumo</h3>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row mb-2">
+                    <div class='col-12 col-sm-6 mb-1'>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" aria-required="true">* Departamento</label>
+                            </div>
+                            <select (change)="changeDepartament()" class="custom-select" name="departments"
+                                id="departments" [(ngModel)]="selectDepartment">
+                                <option value='0' selected>Seleccione el departamento</option>
+                                <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='col-12 col-sm-6  mb-1'>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">* Municipio</label>
+                            </div>
+                            <select class="custom-select" name="munucipalities" id="munucipalities"
+                                [(ngModel)]="selectMunicipality">
+                                <option value='0' selected>Seleccione el Municipio</option>
+                                <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div *ngIf="usermanager" class='col-12 mb-1'>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" aria-required="true">* solicitudes gestor</label>
+                            </div>
+                            <select class="custom-select" name="managersprfile" id="managersprofile"
+                                [(ngModel)]="selectSuppliesManagerRequest" multiple>
+                                <option [ngValue]="item.id"
+                                    *ngFor="let item of suppliesManagerRequest; let index = index;">
+                                    Solicitud # {{item.id}} ({{item.provider ? item.provider.name: ''}})
+                                </option>
+                            </select>
+                        </div>
+                        <small id="entities" class="form-text text-muted">Seleccione las solicitudes a buscar</small>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="alert alert-primary text-center" role="alert">
+                            Recuerde que los campos marcados con * son obligatorios.
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-muted text-center">
+            <button type="button" class="btn btn-dark" (click)="getPage(1)">Buscar</button>
+        </div>
+    </div>
+    <div *ngIf="allSupplies">
+        <div class="row justify-content-md-center">
+            <div class="card text-center">
+                <div class="card-header text-center">
+                    <h5>Resultados de busqueda</h5>
+                </div>
+                <div class="card-body">
+                    <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number"
+                        [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [ellipses]="false"
+                        [boundaryLinks]="true" (pageChange)="getPage($event)">
+                    </ngb-pagination>
+                    <table class="table table-striped table-inverse table-responsive">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>ID</th>
+                                <th>Proveedor</th>
+                                <th>Insumo</th>
+                                <th>Fecha de cargue</th>
+                                <th>Modelo</th>
+                                <th>Observación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of allSupplies">
+                                <td scope=" row">{{item.id}}</td>
+                                <td scope="row">{{item.typeSupply.provider.name}}</td>
+                                <td scope="row">{{item.typeSupply.name}}</td>
+                                <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
+                                <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
+                                <td scope="row">{{item.observations}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

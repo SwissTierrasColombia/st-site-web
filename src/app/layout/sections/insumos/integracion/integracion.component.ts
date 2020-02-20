@@ -227,6 +227,13 @@ export class IntegracionComponent implements OnInit {
     this.serviceWorkspaces.deleteIntegration(this.idWorkspace, this.lastIntegration[0].id).subscribe(
       _ => {
         this.toastr.info('Ha eliminado la integración');
+        this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
+          resp => {
+            this.integrationByWorkspace = resp;
+            this.integrationByWorkspace.reverse();
+            this.lastIntegration = [];
+          }
+        );
       }
     );
   }

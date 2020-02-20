@@ -140,9 +140,9 @@ export class WorkspacesService {
   public GetPendingTasksUser() {
     return this.httpClient.get(this.url + '/workspaces/v1/tasks/pending');
   }
-    /**
-   * GetTypesModels
-   */
+  /**
+ * GetTypesModels
+ */
   public GetTypesModels() {
     return this.httpClient.get(this.url + '/ili/versions/v1/versions');
   }
@@ -151,5 +151,21 @@ export class WorkspacesService {
    */
   public deleteIntegration(idWorkspace: number, idIntegration: number) {
     return this.httpClient.delete(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration);
+  }
+  /**
+   * GetRequestByManager
+   */
+  public GetRequestByManager() {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/requests/emmiters');
+  }
+  /**
+ * GetSuppliesByMunicipalityFilter
+ */
+  public GetSuppliesByMunicipalityFilter(idMunicipality: string, page: string, requests?: string) {
+    let url = this.url + '/workspaces/v1/supplies/' + idMunicipality + '?page=' + page
+    if (requests) {
+      url = url + '&requests' + requests
+    }
+    return this.httpClient.get(url);
   }
 }

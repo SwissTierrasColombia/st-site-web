@@ -6,6 +6,8 @@ import { IntegracionComponent } from './integracion/integracion.component';
 import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 import { RoleManagerGuard } from 'src/app/guards/role-manager-guard.service';
 import { RoleProviderGuard } from 'src/app/guards/role-provider-guard.service';
+import { SearchComponent } from './search/search.component';
+import { RoleAdminManagerGuard } from 'src/app/guards/role-admin-manager-guard.service';
 
 
 const routes: Routes = [
@@ -28,6 +30,11 @@ const routes: Routes = [
     path: 'integracion',
     component: IntegracionComponent,
     canActivate: [RoleManagerGuard]
+  },
+  {
+    path: 'buscar', 
+    component: SearchComponent,
+    canActivate: [RoleAdminManagerGuard]
   }
 
 ];
