@@ -104,9 +104,10 @@
                     {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
                 </label>
-                <div *ngIf="item.modelVersion"  class="alert alert-info text-center" role="alert">
+                <div *ngIf="item.modelVersion" class="alert alert-info text-center" role="alert">
                   <strong *ngIf="item.modelVersion === '2.9.6'">Modelo {{item.modelVersion}}</strong>
-                  <strong *ngIf="item.modelVersion === '2.9.4'" style="color:green">Modelo {{item.modelVersion}}</strong>
+                  <strong *ngIf="item.modelVersion === '2.9.4'" style="color:green">Modelo
+                    {{item.modelVersion}}</strong>
                 </div>
               </div>
             </div>
@@ -126,9 +127,10 @@
                     {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
                 </label>
-                <div *ngIf="item.modelVersion"  class="alert alert-info text-center" role="alert">
+                <div *ngIf="item.modelVersion" class="alert alert-info text-center" role="alert">
                   <strong *ngIf="item.modelVersion === '2.9.6'">Modelo {{item.modelVersion}}</strong>
-                  <strong *ngIf="item.modelVersion === '2.9.4'" style="color:green">Modelo {{item.modelVersion}}</strong>
+                  <strong *ngIf="item.modelVersion === '2.9.4'" style="color:green">Modelo
+                    {{item.modelVersion}}</strong>
                 </div>
               </div>
             </div>
@@ -166,37 +168,41 @@
               <h5>Resultados de la última integración</h5>
             </div>
             <div class="card-body text-center">
-            <div class="table-striped table-inverse table-responsive">
-              <table class="table">
-                <thead class="thead-inverse">
-                  <tr>
-                    <th>ID</th>
-                    <th>Estado de integración</th>
-                    <th>Descripción</th>
-                    <th>Insumos</th>
-                    <th *ngIf="lastIntegration[0].stats.length > 0">Número de registros catastrales</th>
-                    <th *ngIf="lastIntegration[0].stats.length > 0">Número de registros SNR</th>
-                    <th *ngIf="lastIntegration[0].stats.length > 0">Registros integrados</th>
-                    <th *ngIf="lastIntegration[0].stats.length > 0">Porcentaje</th>
-                    <th>Fecha</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of lastIntegration">
-                    <td scope="row">{{item.id}}</td>
-                    <td scope="row">{{item.integrationState.name}}</td>
-                    <td scope="row">{{item.integrationState ? item.integrationState.description: ''}}</td>
-                    <td scope="row">
-                      {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
-                    </td>
-                    <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">{{item.stats.length > 0 ? item.stats[0].cadastreRecordsNumber: ''}}</td>
-                    <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">{{item.stats.length > 0 ? item.stats[0].snrRecordsNumber: ''}}</td>
-                    <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">{{item.stats.length > 0 ? item.stats[0].matchNumber: '0'}}</td>
-                    <td scope="row" *ngIf="lastIntegration[0].stats.length > 0"><b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b></td>
-                    <td scope="row">{{globalFuntionDate(item.startedAt ? item.startedAt: '')}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-striped table-inverse table-responsive">
+                <table class="table">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>ID</th>
+                      <th>Estado de integración</th>
+                      <th>Descripción</th>
+                      <th *ngIf="lastIntegration[0].stats.length > 0">Insumos</th>
+                      <th *ngIf="lastIntegration[0].stats.length > 0">Número de registros catastrales</th>
+                      <th *ngIf="lastIntegration[0].stats.length > 0">Número de registros SNR</th>
+                      <th *ngIf="lastIntegration[0].stats.length > 0">Registros integrados</th>
+                      <th *ngIf="lastIntegration[0].stats.length > 0">Porcentaje</th>
+                      <th>Fecha</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of lastIntegration">
+                      <td scope="row">{{item.id}}</td>
+                      <td scope="row">{{item.integrationState.name}}</td>
+                      <td scope="row">{{item.integrationState ? item.integrationState.description: ''}}</td>
+                      <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">
+                        {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
+                      </td>
+                      <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">
+                        {{item.stats.length > 0 ? item.stats[0].cadastreRecordsNumber: ''}}</td>
+                      <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">
+                        {{item.stats.length > 0 ? item.stats[0].snrRecordsNumber: ''}}</td>
+                      <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">
+                        {{item.stats.length > 0 ? item.stats[0].matchNumber: '0'}}</td>
+                      <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">
+                        <b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b></td>
+                      <td scope="row">{{globalFuntionDate(item.startedAt ? item.startedAt: '')}}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <div *ngIf="lastIntegration[0].integrationState.name == 'FINALIZADA AUTOMÁTICA'"
                 class="row justify-content-center text-center">
@@ -257,44 +263,48 @@
       </div>
     </div>
     <jw-modal id="modal-1">
-    <div  class="row justify-content-md-center mt-2">
-      <div class="card text-center">
-        <div class="card-header text-center">
-          <h5>Resultados de la integración</h5>
+      <div class="row justify-content-md-center mt-2">
+        <div class="card text-center">
+          <div class="card-header text-center">
+            <h5>Resultados de la integración</h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped table-inverse table-responsive">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo de integración</th>
+                  <th>Descripción</th>
+                  <th>Insumos</th>
+                  <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros catastrales</th>
+                  <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros SNR</th>
+                  <th *ngIf="selectIntegration[0].stats.length > 0">Registros integrados</th>
+                  <th *ngIf="selectIntegration[0].stats.length > 0">Porcentaje</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of selectIntegration">
+                  <td scope="row">{{item.id}}</td>
+                  <td scope="row">{{item.integrationState.name}}</td>
+                  <td scope="row">{{item.integrationState ? item.integrationState.description: ''}}</td>
+                  <td scope="row">
+                    {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
+                  </td>
+                  <td scope="row" *ngIf="item.stats.length > 0">
+                    {{item.stats.length > 0 ? item.stats[0].cadastreRecordsNumber: ''}}</td>
+                  <td scope="row" *ngIf="item.stats.length > 0">
+                    {{item.stats.length > 0 ? item.stats[0].snrRecordsNumber: ''}}</td>
+                  <td scope="row" *ngIf="item.stats.length > 0">
+                    {{item.stats.length > 0 ? item.stats[0].matchNumber: '0'}}</td>
+                  <td scope="row" *ngIf="item.stats.length > 0">
+                    <b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b></td>
+                  <td scope="row">{{globalFuntionDate(item.startedAt)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="card-body">
-          <table class="table table-striped table-inverse table-responsive">
-            <thead class="thead-inverse">
-              <tr>
-                <th>ID</th>
-                <th>Tipo de integración</th>
-                <th>Descripción</th>
-                <th>Insumos</th>
-                <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros catastrales</th>
-                <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros SNR</th>
-                <th *ngIf="selectIntegration[0].stats.length > 0">Registros integrados</th>
-                <th *ngIf="selectIntegration[0].stats.length > 0">Porcentaje</th>
-                <th>Fecha</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of selectIntegration">
-                <td scope="row">{{item.id}}</td>
-                <td scope="row">{{item.integrationState.name}}</td>
-                <td scope="row">{{item.integrationState ? item.integrationState.description: ''}}</td>
-                <td scope="row">
-                  {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
-                </td>
-                <td scope="row" *ngIf="item.stats.length > 0">{{item.stats.length > 0 ? item.stats[0].cadastreRecordsNumber: ''}}</td>
-                <td scope="row" *ngIf="item.stats.length > 0">{{item.stats.length > 0 ? item.stats[0].snrRecordsNumber: ''}}</td>
-                <td scope="row" *ngIf="item.stats.length > 0">{{item.stats.length > 0 ? item.stats[0].matchNumber: '0'}}</td>
-                <td scope="row" *ngIf="item.stats.length > 0"><b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b></td>
-                <td scope="row">{{globalFuntionDate(item.startedAt)}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
       </div>
       <div class="row justify-content-md-center mt-2">
         <div class="card">
@@ -302,27 +312,27 @@
             <h5>Historico de la integración</h5>
           </div>
           <div class="card-body">
-          <div class="table-striped table-inverse table-responsive">
-            <table class="table">
-              <thead class="thead-inverse">
-                <tr>
-                  <th>ID</th>
-                  <th>Tipo</th>
-                  <th>Descripción</th>
-                  <th>Responsable</th>
-                  <th>Fecha</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of selectIntegration[0].histories; let index = index;">
-                  <td scope="row">{{index + 1}}</td>
-                  <td scope="row">{{item.state.name}}</td>
-                  <td scope="row">{{item.state.description}}</td>
-                  <td scope="row">{{item.userName}}</td>
-                  <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-striped table-inverse table-responsive">
+              <table class="table">
+                <thead class="thead-inverse">
+                  <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Responsable</th>
+                    <th>Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of selectIntegration[0].histories; let index = index;">
+                    <td scope="row">{{index + 1}}</td>
+                    <td scope="row">{{item.state.name}}</td>
+                    <td scope="row">{{item.state.description}}</td>
+                    <td scope="row">{{item.userName}}</td>
+                    <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
