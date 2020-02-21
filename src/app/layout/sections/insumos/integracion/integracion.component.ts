@@ -137,7 +137,8 @@ export class IntegracionComponent implements OnInit {
         this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
           resp => {
             this.integrationByWorkspace = resp;
-            this.integrationByWorkspace.reverse();
+            console.log("antes: ", this.integrationByWorkspace);
+            console.log("Reverse: ", this.integrationByWorkspace.reverse());
             if (this.integrationByWorkspace.length > 0) {
               this.lastIntegration = [this.integrationByWorkspace[0]];
             }

@@ -164,8 +164,14 @@ export class WorkspacesService {
   public GetSuppliesByMunicipalityFilter(idMunicipality: string, page: string, requests?: string) {
     let url = this.url + '/workspaces/v1/supplies/' + idMunicipality + '?page=' + page
     if (requests) {
-      url = url + '&requests' + requests
+      url = url + '&requests=' + requests
     }
     return this.httpClient.get(url);
+  }
+  /**
+   * downloadSupplie
+   */
+  public downloadSupplie(supplyId: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/download-supply/' + supplyId, { responseType: 'arraybuffer', observe: 'response' })
   }
 }
