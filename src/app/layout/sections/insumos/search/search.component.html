@@ -58,10 +58,10 @@
             </form>
         </div>
         <div class="card-footer text-muted text-center">
-            <button type="button" class="btn btn-dark" (click)="getPage(1)">Buscar</button>
+            <button type="button" class="btn btn-dark" (click)="getPage(1)">Filtrar</button>
         </div>
     </div>
-    <div *ngIf="allSupplies">
+    <div *ngIf="allSupplies.length > 0">
         <div class="row justify-content-md-center">
             <div class="card text-center">
                 <div class="card-header text-center">
@@ -72,28 +72,44 @@
                         [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [ellipses]="false"
                         [boundaryLinks]="true" (pageChange)="getPage($event)">
                     </ngb-pagination>
-                    <table class="table table-striped table-inverse table-responsive">
-                        <thead class="thead-inverse">
-                            <tr>
-                                <th>ID</th>
-                                <th>Proveedor</th>
-                                <th>Insumo</th>
-                                <th>Fecha de cargue</th>
-                                <th>Modelo</th>
-                                <th>Observación</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of allSupplies">
-                                <td scope=" row">{{item.id}}</td>
-                                <td scope="row">{{item.typeSupply.provider.name}}</td>
-                                <td scope="row">{{item.typeSupply.name}}</td>
-                                <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                                <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
-                                <td scope="row">{{item.observations}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="search-hero">
+                        <input class="form-control" type="text" name="search" [(ngModel)]="searchText"
+                            autocomplete="off" placeholder="&#61442;  Buscar insumo">
+                    </div>
+                    <div class="table-inverse table-responsive">
+                        <table class="table table-striped">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Proveedor</th>
+                                    <th>Insumo</th>
+                                    <th>Fecha de cargue</th>
+                                    <th>Modelo</th>
+                                    <th>Observación</th>
+                                    <th>Descargar</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of allSupplies |filter:searchText">
+                                    <td scope=" row">{{item.id}}</td>
+                                    <td scope="row">{{item.typeSupply ? item.typeSupply.provider.name: 'N/A'}}</td>
+                                    <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'N/A'}}</td>
+                                    <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
+                                    <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
+                                    <td scope="row">{{item.observations}}</td>
+                                    <td>
+                                        <i class="material-icons cursor"
+                                            (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
+                                            cloud_download </i>
+                                    </td>
+                                    <td><i class="material-icons">
+                                            delete_forever
+                                        </i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

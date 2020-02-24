@@ -15,7 +15,7 @@ import { DialogBoxComponent } from '../../bs-component/components/dialog-box/dia
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchComponent } from './search/search.component';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 @NgModule({
   declarations: [
     CargueComponent,
@@ -33,7 +33,8 @@ import { SearchComponent } from './search/search.component';
     ReactiveFormsModule,
     TooltipModule,
     NgxPaginationModule,
-    NgbModule
+    NgbModule,
+    Ng2SearchPipeModule
   ],
   bootstrap: [IntegracionComponent],
   providers: [
