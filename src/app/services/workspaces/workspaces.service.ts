@@ -174,4 +174,7 @@ export class WorkspacesService {
   public downloadSupplie(supplyId: number) {
     return this.httpClient.get(this.url + '/workspaces/v1/workspaces/download-supply/' + supplyId, { responseType: 'arraybuffer', observe: 'response' })
   }
+  public deleteSupplies(idMunicipality: string, supplyId: number) {
+    return this.httpClient.delete(this.url + '/workspaces/v1/workspaces/' + idMunicipality + '/supplies/' + supplyId);
+  }
 }

@@ -72,8 +72,8 @@
                           class="form-control" type="file" (change)="docSoport($event.target.files,idOut, idInt )"
                           multiple>
                       </div>
-                      <div *ngIf="supp.modelVersion"  class="alert alert-info text-center" role="alert">
-                      <strong>Modelo {{supp.modelVersion}}</strong>
+                      <div *ngIf="supp.modelVersion" class="alert alert-info text-center" role="alert">
+                        <strong>Modelo {{supp.modelVersion}}</strong>
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend input-group-text">
@@ -159,9 +159,8 @@
     <div class="row mt-3">
       <div class="col-12">
         <div class="alert alert-warning text-center" role="alert">
-          Recuerde que los campos marcados con * son obligatorios.
-          <strong>Si el boton de enviar es de color verde, el insumo ya fue enviado.</strong>
-          Si envia nuevamente el insumo, <strong style="color: red;">este sera remplazado.</strong>
+          Se puede subir más de una versión de un insumo, <strong>pero recuerde que esta solicitud se vinculará al
+            último archivo cargado.</strong>
         </div>
       </div>
     </div>

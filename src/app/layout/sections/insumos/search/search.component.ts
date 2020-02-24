@@ -7,6 +7,8 @@ import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { saveAs } from 'file-saver';
+import { ModalService } from 'src/app/services/modal/modal.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -26,9 +28,12 @@ export class SearchComponent implements OnInit {
   size: any;
   number: any;
   totalElements: any;
+  idSupplieDelete: number;
   constructor(
     private roles: RoleModel,
-    private serviceWorkspaces: WorkspacesService
+    private serviceWorkspaces: WorkspacesService,
+    private modalService: ModalService,
+    private toastr: ToastrService
   ) {
     this.usermanager = false;
     this.departments = [];
@@ -40,6 +45,7 @@ export class SearchComponent implements OnInit {
     this.size = 20;
     this.number = 0;
     this.totalElements = 0;
+    this.idSupplieDelete = 0;
   }
 
   ngOnInit() {
@@ -105,5 +111,24 @@ export class SearchComponent implements OnInit {
         window.open(url);
       }
     );
+  }
+  deleteSupplies(idSupplie: number) {
+    console.log(this.selectMunicipality + '-------' + idSupplie);
+    this.serviceWorkspaces.deleteSupplies(this.selectMunicipality, idSupplie).subscribe(
+      data => {
+        console.log(data);
+        this.toastr.info("Se ha eliminado el insumo");
+      }
+    );
+  }
+  closeModal(option: boolean, modal: string) {
+    this.modalService.close(modal);
+    if (option) {
+      this.deleteSupplies(this.idSupplieDelete);
+    }
+  }
+  openModal(idSupplieDelete: number, modal: string) {
+    this.idSupplieDelete = idSupplieDelete;
+    this.modalService.open(modal);
   }
 }
