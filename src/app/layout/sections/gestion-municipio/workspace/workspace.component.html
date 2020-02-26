@@ -58,7 +58,7 @@
                 <th>ID</th>
                 <th>Gestor</th>
                 <th>Predios alfanuméricos</th>
-                <th>Area Municipio</th>
+                <th>Área Municipio</th>
                 <th>Fecha de Inicio</th>
                 <!-- <th>Modelo de Insumos</th> -->
                 <th>Observaciones</th>
@@ -71,7 +71,7 @@
                 <td scope="row">{{item.id}}</td>
                 <td scope="row">{{item.manager.name}}</td>
                 <td scope="row">{{item.numberAlphanumericParcels}}</td>
-                <td scope="row">{{item.municipalityArea}}</td>
+                <td scope="row">{{item.municipalityArea}} m <sup>2</sup></td>
                 <td scope="row">{{item.startDate}}</td>
                 <!-- <td scope="row">Modelo 2.9.6</td> -->
                 <!-- <td scope="row">{{item.selectModelSupplies}}</td> -->
@@ -119,16 +119,16 @@
             <div class="input-group-prepend">
               <label class="input-group-text">Número de predios alfanuméricos</label>
             </div>
-            <input class="form-control" type="text" name="numberAlphanumericParcels"
+            <input class="form-control" type="number" name="numberAlphanumericParcels"
               [(ngModel)]="dataCreateWorkSpace.numberAlphanumericParcels">
           </div>
         </div>
         <div class='col-12 col-sm-6 mb-1'>
           <div class="input-group">
             <div class="input-group-prepend">
-              <label class="input-group-text">Área del municipio (km<sup>2</sup>)</label>
+              <label class="input-group-text">Área del municipio (m<sup>2</sup>)</label>
             </div>
-            <input class="form-control" type="text" name="municipalityArea"
+            <input class="form-control" type="number" name="municipalityArea"
               [(ngModel)]="dataCreateWorkSpace.municipalityArea">
           </div>
         </div>

@@ -35,7 +35,7 @@ export class SolicitudComponent implements OnInit {
     private serviceProviders: ProvidersService,
     private toastr: ToastrService,
   ) {
-    this.count = 0;
+    this.count = 1;
     this.observations = '';
     this.departments = [];
     this.municipalities = [];

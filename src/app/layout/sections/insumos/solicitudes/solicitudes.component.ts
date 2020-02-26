@@ -30,6 +30,7 @@ export class SolicitudesComponent implements OnInit {
     );
   }
   formatDate(date: string) {
+    moment.locale('es');
     return moment(date).format('MMMM Do YYYY, h:mm:ss a');
   }
   load(idInsumo: number) {

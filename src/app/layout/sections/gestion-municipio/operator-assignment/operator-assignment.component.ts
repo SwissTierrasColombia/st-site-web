@@ -102,9 +102,11 @@ export class OperatorAssignmentComponent implements OnInit {
   }
 
   formatDate(date: string) {
+    moment.locale('es');
     return moment(date).format('DD-MMM-YYYY h:mm:ss');
   }
   formatDateCalendar(date: string) {
+    moment.locale('es');
     return moment(date).format('YYYY-MM-DD');
   }
   volver() {

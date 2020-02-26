@@ -29,9 +29,7 @@ export class CargueComponent implements OnInit {
     private router: Router,
     private activedRoute: ActivatedRoute,
     private serviceWorkspaces: WorkspacesService,
-    public typeDataFieldModel: TypeDataSuppliesModel,
-    private pocService: PocService
-
+    public typeDataFieldModel: TypeDataSuppliesModel
   ) {
     this.respuestaValidador = [
       {
@@ -97,10 +95,6 @@ export class CargueComponent implements OnInit {
         for (let index2 = 0; index2 < this.dataRequestPending[index].suppliesRequested.length; index2++) {
           this.dataRequestPending[index].suppliesRequested[index2].type = this.clone(this.type);
           this.dataRequestPending[index].suppliesRequested[index2].button = this.clone(this.button);
-          if (this.dataRequestPending[index].suppliesRequested[index2].delivered === false &&
-            this.dataRequestPending[index].suppliesRequested[index2].justification !== null) {
-            this.dataRequestPending[index].suppliesRequested[index2].delivered = true;
-          }
           // tslint:disable-next-line:prefer-for-of
           for (let index3 = 0;
             index3 < this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions.length;
@@ -111,7 +105,7 @@ export class CargueComponent implements OnInit {
                 function (elem: any) {
                   return '.' + elem.name;
                 }).join(',');
-                this.dataRequestPending[index].suppliesRequested[index2].format = this.dataRequestPending[index].suppliesRequested[index2].format +',.zip'
+            this.dataRequestPending[index].suppliesRequested[index2].format = this.dataRequestPending[index].suppliesRequested[index2].format + ',.zip'
 
             if (this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions[index3].name === 'xtf') {
               this.dataRequestPending[index].suppliesRequested[index2].xtf = this.clone(this.xtf);
@@ -130,6 +124,7 @@ export class CargueComponent implements OnInit {
     });
   }
   formatDate(date: string) {
+    moment.locale('es');
     return moment(date).format('MMMM Do YYYY, h:mm:ss a');
   }
   clone(obj: any) {
@@ -192,7 +187,7 @@ export class CargueComponent implements OnInit {
       this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
     }
   }
-  send(idSolicitud: string, item: any, idOut: number) {
+  send(idSolicitud: string, item: any, idOut: number, idInt: number) {
     const form = new FormData();
     if (item.hasOwnProperty('typeSupply')) {
       form.append('typeSupplyId', item.typeSupply.id);
@@ -211,8 +206,30 @@ export class CargueComponent implements OnInit {
     }
     this.serviceWorkspaces.loadSupplyFromRequest(idSolicitud, form).subscribe(
       (data: any) => {
-        this.ngOnInit();
-        item.delivered = true;
+        let response = data.suppliesRequested.find(item => {
+          return item.id == this.dataRequestPending[idOut].suppliesRequested[idInt].id;
+        });
+        response.type = this.clone(this.type);
+        response.button = this.clone(this.button);
+        response.format = this.clone(this.dataRequestPending[idOut].suppliesRequested[idInt].typeSupply.extensions.map(
+          function (elem: any) {
+            return '.' + elem.name;
+          }).join(','));
+        response.format = response.format + ',.zip'
+        for (let index3 = 0; index3 < this.dataRequestPending[idOut].suppliesRequested[idInt].typeSupply.extensions.length; index3++) {
+          if (this.dataRequestPending[idOut].suppliesRequested[idInt].typeSupply.extensions[index3].name === 'xtf') {
+            response.xtf = this.clone(this.xtf);
+            response.type = [{
+              name: 'Archivo',
+              file: 'file'
+            },
+            {
+              name: 'No disponible',
+              file: 'none'
+            }];
+          }
+        }
+        this.dataRequestPending[idOut].suppliesRequested[idInt] = this.clone(response);
       }
     );
   }

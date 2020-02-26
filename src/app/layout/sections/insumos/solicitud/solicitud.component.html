@@ -70,7 +70,8 @@
                 <label class="input-group-text">Área de Trabajo</label>
               </div>
               <div class="form-control">
-                {{dataWorkSpaceMunicipality[0].municipalityArea}}
+                {{dataWorkSpaceMunicipality[0].municipalityArea ? dataWorkSpaceMunicipality[0].municipalityArea: '0'}} m
+                <sup>2</sup>
               </div>
             </div>
           </div>
@@ -165,9 +166,9 @@
                 <div class="input-group-prepend">
                   <label class="input-group-text" aria-required="true">*</label>
                 </div>
-              <select (change)="changeModelSupplies(item.idCount, item.modelVersion)"
-               class="custom-select" name="modelSupplies{{item.idCount}}" id="modelSupplies{{item.idCount}}"
-               [(ngModel)]="item.modelVersion">
+                <select (change)="changeModelSupplies(item.idCount, item.modelVersion)" class="custom-select"
+                  name="modelSupplies{{item.idCount}}" id="modelSupplies{{item.idCount}}"
+                  [(ngModel)]="item.modelVersion">
                   <option value='0' selected>Seleccione la versión del insumos.</option>
                   <option [ngValue]="item.name" *ngFor="let item of item.versions">Modelo {{item.name}}</option>
                 </select>
@@ -198,7 +199,8 @@
           </div>
         </div>
         <div class="col-12">
-          <button type="button" [disabled]="enviarsolicitud" class="btn btn-dark" (click)="submitInfo()">Enviar Solicitud</button>
+          <button type="button" [disabled]="enviarsolicitud" class="btn btn-dark" (click)="submitInfo()">Enviar
+            Solicitud</button>
         </div>
       </div>
     </div>

@@ -90,6 +90,7 @@ export class OperatorViewComponent implements OnInit {
   }
 
   formatDate(date: string) {
+    moment.locale('es');
     return moment(date).format('DD-MMMM-YYYY h:mm:ss');
   }
   volver() {

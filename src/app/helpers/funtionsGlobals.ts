@@ -10,9 +10,11 @@ export class FuntionsGlobalsHelper {
     return JSON.parse(JSON.stringify(obj));
   }
   static formatDate(date: string) {
+    moment.locale('es');
     return moment(date).format('MMMM Do YYYY, h:mm:ss a');
   }
   static formatDateCalendar(date: string) {
+    moment.locale('es');
     return moment(date).format('YYYY-MM-DD');
   }
   static itemToLowerCase(item: string) {
