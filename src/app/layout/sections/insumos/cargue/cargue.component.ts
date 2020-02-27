@@ -241,6 +241,10 @@ export class CargueComponent implements OnInit {
     );
   }
   modelChanged(item, idOut: number, idInt: number) {
+    delete this.dataRequestPending[idOut].suppliesRequested[idInt].observations;
+    delete this.dataRequestPending[idOut].suppliesRequested[idInt].file;
+    delete this.dataRequestPending[idOut].suppliesRequested[idInt].url;
+    delete this.dataRequestPending[idOut].suppliesRequested[idInt].justification;
     if (item.type.file === this.typeDataFieldModel.typeDataFile) {
       this.dataRequestPending[idOut].suppliesRequested[idInt].typeData = this.typeDataFieldModel.typeDataFile;
     }
