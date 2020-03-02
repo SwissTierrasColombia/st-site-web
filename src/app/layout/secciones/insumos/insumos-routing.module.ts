@@ -6,7 +6,7 @@ import { IntegracionComponent } from './integracion/integracion.component';
 import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 import { RoleManagerGuard } from 'src/app/guards/role-manager-guard.service';
 import { RoleProviderGuard } from 'src/app/guards/role-provider-guard.service';
-import { SearchComponent } from './search/search.component';
+import { SearchComponent } from './buscar/search.component';
 import { RoleAdminManagerGuard } from 'src/app/guards/role-admin-manager-guard.service';
 
 

@@ -177,4 +177,10 @@ export class WorkspacesService {
   public deleteSupplies(idMunicipality: string, supplyId: number) {
     return this.httpClient.delete(this.url + '/workspaces/v1/workspaces/' + idMunicipality + '/supplies/' + supplyId);
   }
+  /**
+   * changePassword
+   */
+  public changePassword(data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/administration/users/reset-password', data);
+  }
 }

@@ -52,13 +52,13 @@
         </a>
         <div class="dropdown-menu-right" ngbDropdownMenu>
           <a href="javascript:void(0)" class="dropdown-item">
-            Tareas asginadas <span class="badge badge-info">{{numtask}}</span>
+            Solicitudes <span class="badge badge-info">{{numtask}}</span>
           </a>
           <a href="javascript:void(0)" class="dropdown-item">
-            Tareas atrasadas <span class="badge badge-info">0</span>
+            Entregas <span class="badge badge-info">0</span>
           </a>
           <a href="javascript:void(0)" class="dropdown-item">
-            Tareas vencidas <span class="badge badge-info">0</span>
+            Integraciones <span class="badge badge-info">0</span>
           </a>
       <li class="dropdown-divider"></li>
       <a href="javascript:void(0)" class="dropdown-item">
@@ -71,7 +71,7 @@
       <i class="fa fa-user"></i> {{user.first_name}} {{user.last_name}} <b class="caret"></b>
     </a>
     <div class="dropdown-menu-right" ngbDropdownMenu>
-      <a class="dropdown-item" href="javascript:void(0)">
+      <a class="dropdown-item" [routerLink]="['/cuenta/perfil']">
         <i class="fa fa-fw fa-user"></i> Perfil
       </a>
       <a class="dropdown-item" href="javascript:void(0)">

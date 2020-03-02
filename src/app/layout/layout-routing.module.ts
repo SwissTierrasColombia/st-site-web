@@ -18,17 +18,21 @@ const routes: Routes = [
       { path: 'bs-element', loadChildren: () => import('./bs-element/bs-element.module').then(m => m.BsElementModule) },
       { path: 'grid', loadChildren: () => import('./grid/grid.module').then(m => m.GridModule) },
       { path: 'components', loadChildren: () => import('./bs-component/bs-component.module').then(m => m.BsComponentModule) },
-      { path: 'insumos', loadChildren: () => import('./sections/insumos/insumos.module').then(m => m.InsumosModule) },
+      { path: 'insumos', loadChildren: () => import('./secciones/insumos/insumos.module').then(m => m.InsumosModule) },
       {
         path: 'gestion', loadChildren: () =>
-          import('./sections/gestion-municipio/gestion-municipio.module').then(m => m.GestionMunicipioModule),
+          import('./secciones/gestion-municipio/gestion-municipio.module').then(m => m.GestionMunicipioModule),
         canActivate: [RoleAdminManagerGuard]
       },
       { path: 'poc', loadChildren: () => import('./poc/poc.module').then(m => m.PocModule) },
       {
         path: 'administrador', loadChildren: () =>
-          import('./sections/administrador/administrador.module').then(m => m.AdministradorModule),
+          import('./secciones/administrador/administrador.module').then(m => m.AdministradorModule),
         canActivate: [RoleAdminGuard]
+      },
+      {
+        path: 'cuenta', loadChildren: () =>
+          import('./secciones/cuenta/account.module').then(m => m.AccountModule)
       },
     ]
   }
