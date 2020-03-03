@@ -52,44 +52,46 @@
     <div class="card-body container">
       <div class="row justify-content-md-center">
         <div class="col-12">
-          <table class="table table-striped table-inverse table-responsive">
-            <thead class="thead-inverse">
-              <tr>
-                <th>ID</th>
-                <th>Gestor</th>
-                <th>Predios alfanuméricos</th>
-                <th>Área Municipio</th>
-                <th>Fecha de Inicio</th>
-                <!-- <th>Modelo de Insumos</th> -->
-                <th>Observaciones</th>
-                <th>Estado</th>
-                <th>Opciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of listWorkSpace">
-                <td scope="row">{{item.id}}</td>
-                <td scope="row">{{item.manager.name}}</td>
-                <td scope="row">{{item.numberAlphanumericParcels}}</td>
-                <td scope="row">{{item.municipalityArea}} m <sup>2</sup></td>
-                <td scope="row">{{item.startDate}}</td>
-                <!-- <td scope="row">Modelo 2.9.6</td> -->
-                <!-- <td scope="row">{{item.selectModelSupplies}}</td> -->
-                <td scope="row">{{item.observations}}</td>
-                <td scope="row">{{item.isActive ? 'Activo':'Inactivo'}}</td>
-                <td *ngIf="item.isActive === true">
-                  <i class="material-icons cursor" (click)="updateWorkSpace(item.id)">
-                    system_update_alt
-                  </i>
-                </td>
-                <td *ngIf="item.isActive === false">
-                  <i class="material-icons cursor" (click)="viewWorkSpace(item.id)">
-                    remove_red_eye
-                  </i>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-inverse table-responsive">
+            <table class="table table-striped">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>ID</th>
+                  <th>Gestor</th>
+                  <th>Predios alfanuméricos</th>
+                  <th>Área Municipio</th>
+                  <th>Fecha de Inicio</th>
+                  <!-- <th>Modelo de Insumos</th> -->
+                  <th>Observaciones</th>
+                  <th>Estado</th>
+                  <th>Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of listWorkSpace">
+                  <td scope="row">{{item.id}}</td>
+                  <td scope="row">{{item.manager.name}}</td>
+                  <td scope="row">{{item.numberAlphanumericParcels}}</td>
+                  <td scope="row">{{item.municipalityArea}} m <sup>2</sup></td>
+                  <td scope="row">{{item.startDate}}</td>
+                  <!-- <td scope="row">Modelo 2.9.6</td> -->
+                  <!-- <td scope="row">{{item.selectModelSupplies}}</td> -->
+                  <td scope="row">{{item.observations}}</td>
+                  <td scope="row">{{item.isActive ? 'Activo':'Inactivo'}}</td>
+                  <td *ngIf="item.isActive === true">
+                    <i class="material-icons cursor" (click)="updateWorkSpace(item.id)">
+                      system_update_alt
+                    </i>
+                  </td>
+                  <td *ngIf="item.isActive === false">
+                    <i class="material-icons cursor" (click)="viewWorkSpace(item.id)">
+                      remove_red_eye
+                    </i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

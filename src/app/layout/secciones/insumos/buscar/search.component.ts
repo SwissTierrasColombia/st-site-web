@@ -4,8 +4,6 @@ import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 import { saveAs } from 'file-saver';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { ToastrService } from 'ngx-toastr';
@@ -21,7 +19,7 @@ export class SearchComponent implements OnInit {
   departments: any;
   selectDepartment: string;
   munucipalities: any;
-  selectMunicipality: string;
+  selectMunicipality: number;
   suppliesManagerRequest: any;
   selectSuppliesManagerRequest: any;
   allSupplies: any;
@@ -39,7 +37,7 @@ export class SearchComponent implements OnInit {
     this.departments = [];
     this.selectDepartment = '0';
     this.munucipalities = [];
-    this.selectMunicipality = '0';
+    this.selectMunicipality = 0;
     this.suppliesManagerRequest = [];
     this.allSupplies = [];
     this.size = 20;
@@ -85,7 +83,6 @@ export class SearchComponent implements OnInit {
           this.size = response.size;
           this.totalElements = response.totalElements;
           this.allSupplies = response.items;
-          console.log(response);
         }
       );
     } else {
@@ -95,7 +92,6 @@ export class SearchComponent implements OnInit {
           this.size = response.size;
           this.totalElements = response.totalElements;
           this.allSupplies = response.items;
-          console.log(response);
         }
       );
     }
@@ -115,10 +111,8 @@ export class SearchComponent implements OnInit {
     );
   }
   deleteSupplies(idSupplie: number) {
-    console.log(this.selectMunicipality + '-------' + idSupplie);
     this.serviceWorkspaces.deleteSupplies(this.selectMunicipality, idSupplie).subscribe(
       data => {
-        console.log(data);
         this.toastr.info("Se ha eliminado el insumo");
       }
     );

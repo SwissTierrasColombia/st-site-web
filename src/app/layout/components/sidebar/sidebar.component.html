@@ -59,6 +59,12 @@
               <span>Solicitud</span>
             </a>
           </li>
+          <li *ngIf="rolegestor ? rolegestor.id: 0 === allroles.gestor">
+            <a [routerLink]="['/insumos/integracion']">
+              <i class="fa fa-monument"></i>&nbsp;
+              <span>Integración</span>
+            </a>
+          </li>
           <li
             *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
             <a href="" [routerLink]="['/insumos/buscar']">
@@ -72,10 +78,10 @@
               <span>Solicitudes</span>
             </a>
           </li>
-          <li *ngIf="rolegestor ? rolegestor.id: 0 === allroles.gestor">
-            <a [routerLink]="['/insumos/integracion']">
+          <li *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
+            <a [routerLink]="['/insumos/entrega']">
               <i class="fa fa-monument"></i>&nbsp;
-              <span>Integración</span>
+              <span>Entrega</span>
             </a>
           </li>
         </ul>
@@ -169,7 +175,7 @@
         </ul>
       </li>
     </div>
-    <a href="https://github.com/AgenciaImplementacion/Asistente-LADM_COL/releases" target="_blank"
+    <a href="https://www.proadmintierra.info/descargas-2/desarrollos-tecnologicos/" target="_blank"
       class="list-group-item">
       <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
       <span>Instalación Asistente <br> LADM</span>

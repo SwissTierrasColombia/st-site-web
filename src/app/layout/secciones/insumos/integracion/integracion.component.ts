@@ -52,7 +52,7 @@ export class IntegracionComponent implements OnInit {
     this.selectDepartment = '0';
     this.selectMunicipality = 0;
     this.splitZones = false;
-    this.dataWorkSpaceMunicipality = [{
+    this.dataWorkSpaceMunicipality = {
       id: 0,
       manager: {
         name: ''
@@ -64,7 +64,7 @@ export class IntegracionComponent implements OnInit {
       }],
       numberAlphanumericParcels: '',
       municipalityArea: ''
-    }];
+    };
     this.providers = [];
     this.dataSuppliesProvider = [];
     this.selectSupplies = 0;
@@ -128,7 +128,7 @@ export class IntegracionComponent implements OnInit {
     this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
       response => {
         this.dataWorkSpaceMunicipality = response;
-        this.idWorkspace = this.dataWorkSpaceMunicipality[0].id;
+        this.idWorkspace = this.dataWorkSpaceMunicipality.id;
         this.serviceProviders.getProviders().subscribe(
           data => {
             this.providers = data;
@@ -137,8 +137,6 @@ export class IntegracionComponent implements OnInit {
         this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
           resp => {
             this.integrationByWorkspace = resp;
-            console.log("antes: ", this.integrationByWorkspace);
-            console.log("Reverse: ", this.integrationByWorkspace.reverse());
             if (this.integrationByWorkspace.length > 0) {
               this.lastIntegration = [this.integrationByWorkspace[0]];
             }

@@ -38,9 +38,9 @@ const routes: Routes = [
     canActivate: [RoleAdminManagerGuard]
   },
   {
-    path: 'entregar',
+    path: 'entrega',
     component: EntregarComponent,
-    canActivate: [RoleManagerGuard]
+    canActivate: [RoleAdminManagerGuard]
   }
 
 ];

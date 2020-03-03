@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { slideToBottom } from '../../router.animations';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
+import { JwtHelper } from 'src/app/helpers/jwt';
+import { RoleModel } from 'src/app/helpers/role.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,10 +13,14 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 export class DashboardComponent implements OnInit {
   public alerts: Array<any> = [];
   public sliders: Array<any> = [];
-  numtask: number;
+  dataRequestPending: number;
+  user: any;
+  roleproveedor: any;
+  allroles: any;
 
   constructor(
     private serviceWorkspaces: WorkspacesService,
+    private roles: RoleModel
   ) {
     this.sliders.push(
       {
@@ -96,15 +102,26 @@ export class DashboardComponent implements OnInit {
                 voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
       }
     );
-    this.numtask = 0;
+    this.dataRequestPending = 0;
+    this.user = {};
+    this.allroles = {};
+    this.roleproveedor = {
+      id: 0
+    };
   }
 
   ngOnInit() {
-    this.serviceWorkspaces.GetPendingTasksUser().subscribe(
-      (response: any) => {
-        this.numtask = response.length;
-      }
-    );
+    this.user = JwtHelper.getUserPublicInformation();
+    this.roleproveedor = this.user.roles.find((elem: any) => {
+      return elem.id === this.roles.proveedor;
+    });
+    if (this.roleproveedor) {
+      this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
+        (data: any) => {
+          this.dataRequestPending = data.length;
+        }
+      );
+    }
   }
 
   public closeAlert(alert: any) {

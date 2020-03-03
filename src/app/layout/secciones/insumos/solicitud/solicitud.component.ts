@@ -43,7 +43,7 @@ export class SolicitudComponent implements OnInit {
     this.selectMunicipality = 0;
     this.selectProvider = 0;
     this.splitZones = false;
-    this.dataWorkSpaceMunicipality = [{
+    this.dataWorkSpaceMunicipality = {
       manager: {
         name: ''
       },
@@ -54,7 +54,7 @@ export class SolicitudComponent implements OnInit {
       }],
       numberAlphanumericParcels: '',
       municipalityArea: ''
-    }];
+    };
     this.providers = [];
     this.dataSuppliesProvider = [];
     this.selectSupplies = 0;
@@ -74,10 +74,10 @@ export class SolicitudComponent implements OnInit {
       });
 
     this.serviceWorkspaces.GetTypesModels().subscribe(
-        response => {
-          this.listModels = response;
-        }
-      );
+      response => {
+        this.listModels = response;
+      }
+    );
   }
   changeDepartament() {
     this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment.toString()).subscribe(
@@ -134,25 +134,25 @@ export class SolicitudComponent implements OnInit {
         this.selectSupplies = 0;
         this.observations = '';
       } else {
-      this.listsupplies.supplies.push({
-        idCount: this.count,
-        idInsumo: this.selectSupplies.id,
-        observation: this.observations,
-        providerId: this.selectProvider.id,
-        typeSupplyId: this.selectSupplies.id,
-      });
-      this.tablesupplies.push({
-        idCount: this.count,
-        idEntidad: this.selectProvider.id,
-        entidad: this.selectProvider.name,
-        idInsumo: this.selectSupplies.id,
-        insumo: this.selectSupplies.name,
-        observacion: this.observations
-      });
-      this.count += 1;
-      this.selectSupplies = 0;
-      this.observations = '';
-    }
+        this.listsupplies.supplies.push({
+          idCount: this.count,
+          idInsumo: this.selectSupplies.id,
+          observation: this.observations,
+          providerId: this.selectProvider.id,
+          typeSupplyId: this.selectSupplies.id,
+        });
+        this.tablesupplies.push({
+          idCount: this.count,
+          idEntidad: this.selectProvider.id,
+          entidad: this.selectProvider.name,
+          idInsumo: this.selectSupplies.id,
+          insumo: this.selectSupplies.name,
+          observacion: this.observations
+        });
+        this.count += 1;
+        this.selectSupplies = 0;
+        this.observations = '';
+      }
     } else {
       this.toastr.show('Ya ha solicitado el insumo.', this.selectSupplies.name);
     }
@@ -196,8 +196,8 @@ export class SolicitudComponent implements OnInit {
         item.modelVersion = itemModelVersion;
       }
     });
-  this.toastr.info('Ha seleccionado la versión del modelo de insumos: ' + itemModelVersion);
-  this.comprobarEnviarSolicitud();
+    this.toastr.info('Ha seleccionado la versión del modelo de insumos: ' + itemModelVersion);
+    this.comprobarEnviarSolicitud();
   }
 
 }

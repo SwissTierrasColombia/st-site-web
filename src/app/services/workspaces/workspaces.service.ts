@@ -72,7 +72,7 @@ export class WorkspacesService {
    * getWorkSpaceActiveByMunicipality
    */
   public getWorkSpaceActiveByMunicipality(idMunicipality: number) {
-    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/municipalities/' + idMunicipality);
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/municipalities/' + idMunicipality + '/active');
   }
   /**
    * createRequest
@@ -161,7 +161,7 @@ export class WorkspacesService {
   /**
  * GetSuppliesByMunicipalityFilter
  */
-  public GetSuppliesByMunicipalityFilter(idMunicipality: string, page: string, requests?: string) {
+  public GetSuppliesByMunicipalityFilter(idMunicipality: number, page: string, requests?: string) {
     let url = this.url + '/workspaces/v1/supplies/' + idMunicipality + '?page=' + page
     if (requests) {
       url = url + '&requests=' + requests
@@ -174,7 +174,7 @@ export class WorkspacesService {
   public downloadSupplie(supplyId: number) {
     return this.httpClient.get(this.url + '/workspaces/v1/workspaces/download-supply/' + supplyId, { responseType: 'arraybuffer', observe: 'response' })
   }
-  public deleteSupplies(idMunicipality: string, supplyId: number) {
+  public deleteSupplies(idMunicipality: number, supplyId: number) {
     return this.httpClient.delete(this.url + '/workspaces/v1/workspaces/' + idMunicipality + '/supplies/' + supplyId);
   }
   /**
@@ -182,5 +182,11 @@ export class WorkspacesService {
    */
   public changePassword(data: any) {
     return this.httpClient.post(this.url + '/workspaces/v1/administration/users/reset-password', data);
+  }
+  /**
+   * deliveriesSupplies
+   */
+  public deliveriesSupplies(idWorkspace: number, data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/operators/deliveries', data);
   }
 }

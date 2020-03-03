@@ -17,15 +17,18 @@
   </div>
   <hr>
   <div class="row justify-content-center justify-content-md-center">
-    <div class="mt-1 mb-1 col-8 col-md-4">
-      <app-stat [bgClass]="'success'" [icon]="'fa-tasks'" [count]="numtask" [label]="'SOLICITUDES'"></app-stat>
+    <div *ngIf="roleproveedor" class="mt-1 mb-1 col-8 col-md-4">
+      <app-stat [bgClass]="'success'" [icon]="'fa-tasks'" [count]="dataRequestPending" [label]="'SOLICITUDES'"
+        [url]="'/insumos/solicitudes'">
+      </app-stat>
     </div>
     <div class="mt-1 mb-1 col-8 col-md-4">
-      <app-stat [bgClass]="'info'" [icon]="'fa-tasks'" [count]="0" [label]="'ENTREGAS'"></app-stat>
+      <app-stat [bgClass]="'info'" [icon]="'fa-tasks'" [count]="0" [label]="'ENTREGAS'" [url]="">
+      </app-stat>
     </div>
-    <div class="mt-1 mb-1 col-8 col-md-4">
+    <!-- <div class="mt-1 mb-1 col-8 col-md-4">
       <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="0" [label]="'INTEGRACIONES'"></app-stat>
-    </div>
+    </div> -->
   </div>
   <hr />
 </div>

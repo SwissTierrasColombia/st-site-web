@@ -51,15 +51,15 @@
           <i class="fa fa-bell"></i> <b class="caret"></b><span class="sr-only">(current)</span>
         </a>
         <div class="dropdown-menu-right" ngbDropdownMenu>
-          <a href="javascript:void(0)" class="dropdown-item">
-            Solicitudes <span class="badge badge-info">{{numtask}}</span>
+          <a [routerLink]="['/insumos/solicitudes']" href="javascript:void(0)" class="dropdown-item">
+            Solicitudes <span class="badge badge-info">{{dataRequestPending}}</span>
           </a>
           <a href="javascript:void(0)" class="dropdown-item">
             Entregas <span class="badge badge-info">0</span>
           </a>
-          <a href="javascript:void(0)" class="dropdown-item">
+          <!-- <a href="javascript:void(0)" class="dropdown-item">
             Integraciones <span class="badge badge-info">0</span>
-          </a>
+          </a> -->
           <!-- <li class="dropdown-divider"></li>
       <a href="javascript:void(0)" class="dropdown-item">
         Mostrar Todo
