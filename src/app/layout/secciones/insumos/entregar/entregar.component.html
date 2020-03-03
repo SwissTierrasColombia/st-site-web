@@ -1,0 +1,145 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Entrega de insumos'" [icon]="'fa-star'"></app-page-header>
+
+    <div class="card">
+        <div class="card-header text-center">
+            <h3>Entrega de insumos</h3>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row mb-2">
+                    <div class='col-12 col-sm-6 mb-1'>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" aria-required="true">* Departamento</label>
+                            </div>
+                            <select (change)="changeDepartament()" class="custom-select" name="departments"
+                                id="departments" [(ngModel)]="selectDepartment">
+                                <option value='0' selected>Seleccione el departamento</option>
+                                <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='col-12 col-sm-6  mb-1'>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">* Municipio</label>
+                            </div>
+                            <select (change)="changeMunucipality()" class="custom-select" name="munucipalities"
+                                id="munucipalities" [(ngModel)]="selectMunicipality">
+                                <option value='0' selected>Seleccione el Municipio</option>
+                                <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div *ngIf="usermanager" class='col-12 mb-1'>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" aria-required="true">Solicitudes gestor</label>
+                            </div>
+                            <select class="custom-select" name="managersprfile" id="managersprofile"
+                                [(ngModel)]="selectSuppliesManagerRequest" multiple>
+                                <option [ngValue]="item.id"
+                                    *ngFor="let item of suppliesManagerRequest; let index = index;">
+                                    Solicitud # {{item.id}} ({{item.provider ? item.provider.name: ''}})
+                                </option>
+                            </select>
+                        </div>
+                        <small id="entities" class="form-text text-muted">Seleccione las solicitudes a buscar</small>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="alert alert-primary text-center" role="alert">
+                            Recuerde que los campos marcados con * son obligatorios.
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-muted text-center">
+            <button type="button" class="btn btn-dark" (click)="getPage(1)"
+                [disabled]="sendSuppliesFilter">Buscar</button>
+        </div>
+    </div>
+    <div *ngIf="allSupplies.length > 0">
+        <div class="row justify-content-md-center">
+            <div class="card text-center">
+                <div class="card-header text-center">
+                    <h5>Resultados de búsqueda</h5>
+                </div>
+                <div class="card-body">
+                    <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number"
+                        [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [ellipses]="false"
+                        [boundaryLinks]="true" (pageChange)="getPage($event)">
+                    </ngb-pagination>
+                    <div class="search-hero">
+                        <input class="form-control" type="text" name="search" [(ngModel)]="searchText"
+                            autocomplete="off" placeholder="&#61442;  Buscar insumo">
+                    </div>
+                    <div class="table-inverse table-responsive">
+                        <!-- {{allSupplies | json}} -->
+                        <table class="table table-striped">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Insumo</th>
+                                    <th>Observación del insumo</th>
+                                    <th>Modelo</th>
+                                    <th>Estado</th>
+                                    <th>Observación /<br />Fecha de entrega</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of allSupplies |filter:searchText">
+                                    <td scope=" row">{{item.id}}</td>
+                                    <td scope="row">
+                                        {{item.typeSupply ? item.typeSupply.name: 'N/A'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'N/A'}})
+                                    </td>
+                                    <td scope="row">{{item.observations}}</td>
+                                    <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
+                                    <td>
+                                        <div class="form-check"
+                                            *ngIf="item.delivered === null || item.delivered === false">
+                                            <input class="form-check-input" type="checkbox" [(ngModel)]="item.delivery"
+                                                value="" id="defaultCheck{{item.id}}"
+                                                (change)="builddelivery(item, item.delivery)">
+                                        </div>
+                                        <div *ngIf="item.delivered === true" class="form-check">
+                                            <input class="form-check-input" type="checkbox" [checked]="item.delivered"
+                                                [value]="item.delivered" id="defaultCheck{{item.id}}" disabled>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="item.delivered === null || item.delivered === false">
+                                        <div class="input-group">
+                                            <textarea class="form-control" id="observations{{item.id}}" rows="3"
+                                                name="observaciones{{item.id}}" [(ngModel)]="item.observationsTosupplie"
+                                                (change)="builddelivery(item, item.delivery, item.observationsTosupplie)"
+                                                [disabled]="item.delivery ? false:true"></textarea>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="item.delivered === true">
+                                        {{globalFuntionDate(item.delivery.createdAt)}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class='col-12 mt-2 mb-2' *ngIf="usermanager">
+                            <div class="input-group">
+                                <div class="input-group-prepend input-group-text">
+                                    <div class="">* Observaciones Generales</div>
+                                </div>
+                                <textarea class="form-control" id="observationsGeneral" rows="3"
+                                    name="observaciones Generales"
+                                    [(ngModel)]="deliverySupplies.observations"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="usermanager" class="card-footer text-muted text-center">
+            <button type="button" class="btn btn-dark" (click)="sendSupplies()">Entregar insumos</button>
+        </div>
+    </div>
+</div>

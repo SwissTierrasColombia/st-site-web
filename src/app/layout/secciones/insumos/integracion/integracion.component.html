@@ -33,14 +33,14 @@
             </div>
           </div>
         </div>
-        <div class="row mb-2" *ngIf="dataWorkSpaceMunicipality[0].manager.name !== ''">
+        <div class="row mb-2" *ngIf="dataWorkSpaceMunicipality.manager.name !== ''">
           <div class='col-12 col-sm-6 mb-2'>
             <div class="input-group">
               <div class="input-group-prepend">
                 <label class="input-group-text">Gestor</label>
               </div>
               <div class="form-control">
-                {{dataWorkSpaceMunicipality[0].manager.name}}
+                {{dataWorkSpaceMunicipality.manager.name}}
               </div>
             </div>
           </div>
@@ -50,7 +50,7 @@
                 <label class="input-group-text">Operador</label>
               </div>
               <div class="form-control">
-                {{dataWorkSpaceMunicipality[0].operators[0] ? dataWorkSpaceMunicipality[0].operators[0].operator.name : ' '}}
+                {{dataWorkSpaceMunicipality.operators[0] ? dataWorkSpaceMunicipality.operators[0].operator.name : ' '}}
               </div>
             </div>
           </div>
@@ -60,7 +60,7 @@
                 <label class="input-group-text">Número de predios</label>
               </div>
               <div class="form-control">
-                {{dataWorkSpaceMunicipality[0].numberAlphanumericParcels}}
+                {{dataWorkSpaceMunicipality.numberAlphanumericParcels}}
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@
                 <label class="input-group-text">Área de Trabajo</label>
               </div>
               <div class="form-control">
-                {{dataWorkSpaceMunicipality[0].municipalityArea ? dataWorkSpaceMunicipality[0].municipalityArea: '0' }}
+                {{dataWorkSpaceMunicipality.municipalityArea ? dataWorkSpaceMunicipality.municipalityArea: '0' }}
                 m <sup>2</sup>
               </div>
             </div>
@@ -90,7 +90,7 @@
         </div>
       </form>
       <div class="row justify-content-center text-center" id="insumosXTF"
-        *ngIf="dataWorkSpaceMunicipality[0].manager.name !== ''">
+        *ngIf="dataWorkSpaceMunicipality.manager.name !== ''">
         <div class="col-12 col-sm-4 mb-2">
           <div class="card">
             <div class="card-header text-center">
@@ -222,7 +222,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="dataWorkSpaceMunicipality[0].manager.name !== '' && integrationByWorkspace.length > 0">
+      <div *ngIf="dataWorkSpaceMunicipality.manager.name !== '' && integrationByWorkspace.length > 0">
         <div class="row justify-content-md-center">
           <div class="card text-center">
             <div class="card-header text-center">

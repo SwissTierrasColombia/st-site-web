@@ -14,8 +14,9 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { DialogBoxComponent } from '../../bs-component/components/dialog-box/dialog-box.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SearchComponent } from './search/search.component';
+import { SearchComponent } from './buscar/search.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { EntregarComponent } from './entregar/entregar.component';
 @NgModule({
   declarations: [
     CargueComponent,
@@ -23,7 +24,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     IntegracionComponent,
     SolicitudesComponent,
     DialogBoxComponent,
-    SearchComponent
+    SearchComponent,
+    EntregarComponent
   ],
   imports: [
     CommonModule,

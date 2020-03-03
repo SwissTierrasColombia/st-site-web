@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
+import { RoleModel } from 'src/app/helpers/role.model';
 
 @Component({
   selector: 'app-header',
@@ -12,11 +13,20 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 export class HeaderComponent implements OnInit {
   public pushRightClass: string;
   user: any;
-  numtask: number;
+  dataRequestPending: number;
+  roleproveedor: any;
+  allroles: any;
   constructor(
     public router: Router,
     private serviceWorkspaces: WorkspacesService,
+    private roles: RoleModel
+
   ) {
+    this.dataRequestPending = 0;
+    this.allroles = {};
+    this.roleproveedor = {
+      id: 0
+    };
     this.user = {
       first_name: 'user',
       last_name: ''
@@ -30,17 +40,21 @@ export class HeaderComponent implements OnInit {
         this.toggleSidebar();
       }
     });
-    this.numtask = 0;
   }
 
   ngOnInit() {
     this.pushRightClass = 'push-right';
     this.user = JwtHelper.getUserPublicInformation();
-    this.serviceWorkspaces.GetPendingTasksUser().subscribe(
-      (response: any) => {
-        this.numtask = response.length;
-      }
-    );
+    this.roleproveedor = this.user.roles.find((elem: any) => {
+      return elem.id === this.roles.proveedor;
+    });
+    if (this.roleproveedor) {
+      this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
+        (data: any) => {
+          this.dataRequestPending = data.length;
+        }
+      );
+    }
   }
 
   isToggled(): boolean {

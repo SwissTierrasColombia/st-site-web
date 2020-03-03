@@ -3,7 +3,7 @@
 
     <div class="card">
         <div class="card-header text-center">
-            <h3>Busqueda de insumo</h3>
+            <h3>Búsqueda de insumo</h3>
         </div>
         <div class="card-body">
             <form action="" method="post">
@@ -35,7 +35,7 @@
                     <div *ngIf="usermanager" class='col-12 mb-1'>
                         <div class="input-group mt-2">
                             <div class="input-group-prepend">
-                                <label class="input-group-text" aria-required="true">* solicitudes gestor</label>
+                                <label class="input-group-text" aria-required="true">Solicitudes gestor</label>
                             </div>
                             <select class="custom-select" name="managersprfile" id="managersprofile"
                                 [(ngModel)]="selectSuppliesManagerRequest" multiple>
@@ -58,14 +58,14 @@
             </form>
         </div>
         <div class="card-footer text-muted text-center">
-            <button type="button" class="btn btn-dark" (click)="getPage(1)">Filtrar</button>
+            <button type="button" class="btn btn-dark" (click)="getPage(1)">Buscar</button>
         </div>
     </div>
     <div *ngIf="allSupplies.length > 0">
         <div class="row justify-content-md-center">
             <div class="card text-center">
                 <div class="card-header text-center">
-                    <h5>Resultados de busqueda</h5>
+                    <h5>Resultados de búsqueda</h5>
                 </div>
                 <div class="card-body">
                     <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number"
