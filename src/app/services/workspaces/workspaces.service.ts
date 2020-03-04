@@ -189,4 +189,16 @@ export class WorkspacesService {
   public deliveriesSupplies(idWorkspace: number, data: any) {
     return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/operators/deliveries', data);
   }
+  /**
+   * GetDeliveriesToOperator
+   */
+  public GetDeliveriesToOperator() {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/operators/deliveries');
+  }
+  /**
+   * CloseDelivery
+   */
+  public CloseDelivery(idDelivery) {
+    return this.httpClient.put(this.url + '/workspaces/v1/operators/deliveries/' + idDelivery + '/disable', {});
+  }
 }

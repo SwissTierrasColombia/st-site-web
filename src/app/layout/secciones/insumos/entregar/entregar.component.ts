@@ -170,7 +170,7 @@ export class EntregarComponent implements OnInit {
         this.toastr.info("Las observaciones generales son obligatorias")
       }
     } else {
-      this.toastr.info("No has seleccionado ningún insumo, o te faltan las observaciones")
+      this.toastr.info("No has seleccionado ningún insumo, ó te faltan las observaciones")
     }
   }
 }

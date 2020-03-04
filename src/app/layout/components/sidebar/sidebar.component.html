@@ -78,7 +78,8 @@
               <span>Solicitudes</span>
             </a>
           </li>
-          <li *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
+          <li
+            *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
             <a [routerLink]="['/insumos/entrega']">
               <i class="fa fa-monument"></i>&nbsp;
               <span>Entrega</span>
@@ -87,7 +88,7 @@
         </ul>
       </li>
     </div>
-    <div class="nested-menu">
+    <div class="nested-menu" *ngIf="roleoperador ? roleoperador.id: 0 === allroles.operador">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].operacion)">
         <i class="fa fa-plus"></i>&nbsp;
         <span>Operación</span>
@@ -95,7 +96,7 @@
       <li class="nested" [class.expand]="showMenu === listMenu[0].operacion">
         <ul class="submenu">
           <li>
-            <a href="javascript:void(0)">
+            <a [routerLink]="['/operador/entregas']">
               <i class="fa fa-monument"></i>&nbsp;
               <span>Descargue insumos</span>
             </a>

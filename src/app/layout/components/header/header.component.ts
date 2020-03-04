@@ -13,18 +13,24 @@ import { RoleModel } from 'src/app/helpers/role.model';
 export class HeaderComponent implements OnInit {
   public pushRightClass: string;
   user: any;
-  dataRequestPending: number;
+  taskProvider: number;
   roleproveedor: any;
   allroles: any;
+  roleoperator: any;
+  taskOperator: number;
   constructor(
     public router: Router,
     private serviceWorkspaces: WorkspacesService,
     private roles: RoleModel
 
   ) {
-    this.dataRequestPending = 0;
+    this.taskProvider = 0;
+    this.taskOperator = 0;
     this.allroles = {};
     this.roleproveedor = {
+      id: 0
+    };
+    this.roleoperator = {
       id: 0
     };
     this.user = {
@@ -48,10 +54,20 @@ export class HeaderComponent implements OnInit {
     this.roleproveedor = this.user.roles.find((elem: any) => {
       return elem.id === this.roles.proveedor;
     });
+    this.roleoperator = this.user.roles.find((elem: any) => {
+      return elem.id === this.roles.operador;
+    });
     if (this.roleproveedor) {
       this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
         (data: any) => {
-          this.dataRequestPending = data.length;
+          this.taskProvider = data.length;
+        }
+      );
+    }
+    if (this.roleoperator) {
+      this.serviceWorkspaces.GetDeliveriesToOperator().subscribe(
+        (response: any) => {
+          this.taskOperator = response.length;
         }
       );
     }

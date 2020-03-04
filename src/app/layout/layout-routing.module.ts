@@ -4,6 +4,7 @@ import { LayoutComponent } from './layout.component';
 import { AuthGuard } from '../shared/guard/auth.guard';
 import { RoleAdminGuard } from '../guards/role-admin-guard.service';
 import { RoleAdminManagerGuard } from '../guards/role-admin-manager-guard.service';
+import { RoleOperatorGuard } from '../guards/role-operator-guard.service';
 
 const routes: Routes = [
   {
@@ -34,6 +35,11 @@ const routes: Routes = [
         path: 'cuenta', loadChildren: () =>
           import('./secciones/cuenta/account.module').then(m => m.AccountModule)
       },
+      {
+        path: 'operador', loadChildren: () =>
+          import('./secciones/operacion/operacion.module').then(m => m.OperacionModule),
+        canActivate: [RoleOperatorGuard]
+      }
     ]
   }
 ];
