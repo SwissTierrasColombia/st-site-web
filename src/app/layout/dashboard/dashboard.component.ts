@@ -13,10 +13,12 @@ import { RoleModel } from 'src/app/helpers/role.model';
 export class DashboardComponent implements OnInit {
   public alerts: Array<any> = [];
   public sliders: Array<any> = [];
-  dataRequestPending: number;
+  taskProvider: number;
   user: any;
   roleproveedor: any;
   allroles: any;
+  roleoperator: any;
+  taskOperator: number;
 
   constructor(
     private serviceWorkspaces: WorkspacesService,
@@ -83,29 +85,14 @@ export class DashboardComponent implements OnInit {
           'Sistema de Transición para el Barrido Predial en Colombia'
       }
     );
-
-    this.alerts.push(
-      {
-        id: 1,
-        type: 'success',
-        message: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Voluptates est animi quibusdam praesentium quam, et perspiciatis,
-                consectetur velit culpa molestias dignissimos
-                voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
-      },
-      {
-        id: 2,
-        type: 'warning',
-        message: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Voluptates est animi quibusdam praesentium quam, et perspiciatis,
-                consectetur velit culpa molestias dignissimos
-                voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
-      }
-    );
-    this.dataRequestPending = 0;
+    this.taskProvider = 0;
+    this.taskOperator = 0;
     this.user = {};
     this.allroles = {};
     this.roleproveedor = {
+      id: 0
+    };
+    this.roleoperator = {
       id: 0
     };
   }
@@ -115,10 +102,20 @@ export class DashboardComponent implements OnInit {
     this.roleproveedor = this.user.roles.find((elem: any) => {
       return elem.id === this.roles.proveedor;
     });
+    this.roleoperator = this.user.roles.find((elem: any) => {
+      return elem.id === this.roles.operador;
+    });
     if (this.roleproveedor) {
       this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
         (data: any) => {
-          this.dataRequestPending = data.length;
+          this.taskProvider = data.length;
+        }
+      );
+    }
+    if (this.roleoperator) {
+      this.serviceWorkspaces.GetDeliveriesToOperator().subscribe(
+        (response: any) => {
+          this.taskOperator = response.length;
         }
       );
     }

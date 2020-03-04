@@ -1,1 +1,104 @@
-<p>download-supplies works!</p>
+<div [@routerTransition]>
+    <app-page-header [heading]="'Descarga de insumo pendiente'" [icon]="'fa-star'">
+    </app-page-header>
+    <div class="row justify-content-center text-center mb-2">
+        <div class="card text-center">
+            <div class="card-header">
+                <h3>Información general de los insumos</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-inverse table-responsive">
+                    <table *ngIf="dataRequestPending.length > 0" class="table table-striped">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Código</th>
+                                <th>Gestor</th>
+                                <th>Municipio</th>
+                                <th>Código Municipio</th>
+                                <th>Fecha de entrega</th>
+                                <th>Observaciones generales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dataRequestPending">
+                                <td scope="row">{{item.id}}</td>
+                                <td scope="row">{{item.manager.name}}</td>
+                                <td scope="row">{{item.municipality.name}}</td>
+                                <td scope="row">{{item.municipality.code}}</td>
+                                <td scope="row">{{formatDate(item.createdAt)}}</td>
+                                <td scope="row">{{item.observations}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center text-center">
+        <div class="card text-center">
+            <div class="card-header">
+                <h3>Descarga de insumos</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-inverse table-responsive">
+                    <table *ngIf="supplies.length > 0" class="table table-striped">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Insumo</th>
+                                <th>Observaciones</th>
+                                <th>Descargar</th>
+                                <th>Fecha de descarga</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of supplies">
+                                <td scope="row">{{item.supply.typeSupply ? item.supply.typeSupply.name: 'N/A'}}</td>
+                                <td scope="row">{{item.observations}}</td>
+                                <td scope="row">
+                                    <i class="material-icons cursor"
+                                        (click)="downloadSupplies(item.supplyCode, item.supply.typeSupply ? item.supply.typeSupply.name: 'Insumo')">
+                                        cloud_download
+                                    </i>
+                                </td>
+                                <td scope="row">
+                                    {{item.downloadedAt ? formatDate(item.downloadedAt):'No se ha descargado el insumo'}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-dark" (click)="openModal('custom-modal-3')">Cerrar entrega</button>
+            </div>
+        </div>
+        <jw-modal id="custom-modal-3">
+            <div class="card">
+                <div class="card-header">
+                    <i class="cui-arrow-bottom"></i>
+                    <h2 class="text-center font-weight-bold">
+                        ¿Está seguro de cerrar la entrega?
+                    </h2>
+                </div>
+                <div class="card-body row">
+                    <div class="card-title col-12">
+                        <h5>Tenga en cuenta, que una vez cerrada la entrega, no podrá descargar nuevamente estos
+                            insumos.</h5>
+                    </div>
+                    <div class="text-center col-sm">
+                        <button type="button" class="btn btn-primary btn-block"
+                            (click)="closeModal(true,'custom-modal-3');">
+                            <h4>Sí</h4>
+                        </button>
+                    </div>
+                    <div class="text-center col-sm">
+                        <button type="button" class="btn btn-dark btn-block"
+                            (click)="closeModal(false,'custom-modal-3');">
+                            <h4>No</h4>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </jw-modal>
+    </div>
+</div>

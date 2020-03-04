@@ -101,12 +101,11 @@ export class SearchComponent implements OnInit {
       (data: any) => {
         const contentType = data.headers.get('content-type');
         const type = contentType.split(',')[0];
-        const ext = contentType.split(',')[1];
+        //const ext = data.headers.get('Content-Disposition');
         const dataFile = data.body;
         const blob = new Blob([dataFile], { type });
         const url = window.URL.createObjectURL(blob);
         saveAs(blob, nameSupplie + '.zip');
-        window.open(url);
       }
     );
   }
