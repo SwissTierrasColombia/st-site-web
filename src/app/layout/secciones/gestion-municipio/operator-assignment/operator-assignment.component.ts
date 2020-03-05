@@ -6,6 +6,9 @@ import { ManagersService } from 'src/app/services/managers/managers.service';
 import * as _moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
+import { JwtHelper } from 'src/app/helpers/jwt';
+import { RoleModel } from 'src/app/helpers/role.model';
+import { saveAs } from 'file-saver';
 
 const moment = _moment;
 @Component({
@@ -30,14 +33,15 @@ export class OperatorAssignmentComponent implements OnInit {
   selectOperator: number;
   dataOperatorsWorkSpace: any;
   supportFileOperator: File;
-
+  assingOperator: boolean;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
     private serviceWorkspaces: WorkspacesService,
     private serviceManagers: ManagersService,
     private toastr: ToastrService,
-    private serviceOperators: OperatorsService
+    private serviceOperators: OperatorsService,
+    private roles: RoleModel
   ) {
     this.idWorkspace = 0;
     this.dataWorkSpace = {
@@ -63,14 +67,22 @@ export class OperatorAssignmentComponent implements OnInit {
     this.dataOperatorsWorkSpace = {
       startDate: '',
       endDate: '',
-      numberParcelsExpected: '',
-      workArea: '',
+      numberParcelsExpected: 0,
+      workArea: 0,
       observations: '',
       operatorCode: 0
     };
+    this.assingOperator = false;
   }
 
   ngOnInit() {
+    const rol = JwtHelper.getUserPublicInformation();
+    const roleManager = rol.roles.find((elem: any) => {
+      return elem.id === this.roles.gestor;
+    });
+    if (roleManager) {
+      this.assingOperator = true;
+    }
     this.serviceWorkspaces.getDepartments()
       .subscribe(response => {
         this.departaments = response;
@@ -160,15 +172,40 @@ export class OperatorAssignmentComponent implements OnInit {
     dataOperator.append('operatorCode', this.dataOperatorsWorkSpace.operatorCode);
     dataOperator.append('workArea', this.dataOperatorsWorkSpace.workArea);
     dataOperator.append('observations', this.dataOperatorsWorkSpace.observations);
-    this.serviceWorkspaces.assingOperatorToWorkSpace(this.idWorkspace, dataOperator).subscribe(
-      response => {
-        this.toastr.success('Operador asignado satisfactoriamente');
-      }
-    );
+    const numberAlphanumericParcels = Number.isInteger(this.dataOperatorsWorkSpace.numberParcelsExpected);
+    const workArea = Number.isInteger(this.dataOperatorsWorkSpace.workArea);
+    if (this.supportFileOperator === undefined) {
+      this.toastr.info("No has subido ningún soporte.");
+    } else if (this.dataOperatorsWorkSpace.observations == '') {
+      this.toastr.info("Las observaciones son obligatorias.");
+    } else if (!numberAlphanumericParcels) {
+      this.toastr.info("El Número de predios a intervenir debe ser numerico.");
+    } else if (!workArea) {
+      this.toastr.info("El Área de trabajo debe ser numerico.");
+    }
+    else {
+      this.serviceWorkspaces.assingOperatorToWorkSpace(this.idWorkspace, dataOperator).subscribe(
+        response => {
+          this.toastr.success('Operador asignado satisfactoriamente');
+        }
+      );
+    }
   }
   public onKey(event: any) {
     if (event.key === 'Enter') {
       this.update();
     }
+  }
+  downloadSupplies(idSupport: number) {
+    this.serviceWorkspaces.downloadSupport(this.idWorkspace, idSupport).subscribe(
+      (data: any) => {
+        const contentType = data.headers.get('content-type');
+        const type = contentType.split(',')[0];
+        const dataFile = data.body;
+        const blob = new Blob([dataFile], { type });
+        const url = window.URL.createObjectURL(blob);
+        saveAs(blob, 'soporte.zip');
+      }
+    );
   }
 }

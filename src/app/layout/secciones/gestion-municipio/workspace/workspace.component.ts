@@ -5,6 +5,7 @@ import { ManagersService } from 'src/app/services/managers/managers.service';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
@@ -27,7 +28,8 @@ export class WorkspaceComponent implements OnInit {
     private serviceManagers: ManagersService,
     private serviceWorkspaces: WorkspacesService,
     private router: Router,
-    private roles: RoleModel
+    private roles: RoleModel,
+    private toastr: ToastrService
   ) {
     this.activeManagers = [];
     this.departments = [];
@@ -39,14 +41,13 @@ export class WorkspaceComponent implements OnInit {
     this.viewCreateWorkSpace = false;
     this.dataCreateWorkSpace = {
       selectDepartment: '',
-      supportFile: File,
+      supportFile: '',
       managerCode: '0',
       municipalityId: '',
       observations: '',
-      numberAlphanumericParcels: '',
+      numberAlphanumericParcels: 0,
       startDate: '',
-      municipalityArea: '',
-      selectModelSupplies: '0'
+      municipalityArea: 0
     };
 
   }
@@ -96,11 +97,25 @@ export class WorkspaceComponent implements OnInit {
     );
   }
   createWorkSpace() {
-    this.serviceWorkspaces.createWorkspace(this.dataCreateWorkSpace).subscribe(
-      _ => {
-        this.searchWorkSpace();
-      }
-    );
+    const numberAlphanumericParcels = Number.isInteger(this.dataCreateWorkSpace.numberAlphanumericParcels);
+    const municipalityArea = Number.isInteger(this.dataCreateWorkSpace.municipalityArea);
+
+    if (this.dataCreateWorkSpace.supportFile === "") {
+      this.toastr.info("No has subido ningún soporte.");
+    } else if (this.dataCreateWorkSpace.observations == '') {
+      this.toastr.info("Las observaciones son obligatorias.");
+    } else if (!numberAlphanumericParcels) {
+      this.toastr.info("El Número de predios alfanuméricos debe ser numerico.");
+    } else if (!municipalityArea) {
+      this.toastr.info("El Área del municipio debe ser numerico.");
+    } else {
+      this.serviceWorkspaces.createWorkspace(this.dataCreateWorkSpace).subscribe(
+        _ => {
+          this.toastr.success("Se ha asignado el espacio de trabajo para el municipio seleccionado.");
+          this.searchWorkSpace();
+        }
+      );
+    }
   }
   updateWorkSpace(idWorkspace: number) {
     this.router.navigate(['gestion/workspace/' + idWorkspace + '/operador']);

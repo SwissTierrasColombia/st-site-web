@@ -61,7 +61,6 @@
                   <th>Predios alfanuméricos</th>
                   <th>Área Municipio</th>
                   <th>Fecha de Inicio</th>
-                  <!-- <th>Modelo de Insumos</th> -->
                   <th>Observaciones</th>
                   <th>Estado</th>
                   <th>Opciones</th>
@@ -74,8 +73,6 @@
                   <td scope="row">{{item.numberAlphanumericParcels}}</td>
                   <td scope="row">{{item.municipalityArea}} m <sup>2</sup></td>
                   <td scope="row">{{item.startDate}}</td>
-                  <!-- <td scope="row">Modelo 2.9.6</td> -->
-                  <!-- <td scope="row">{{item.selectModelSupplies}}</td> -->
                   <td scope="row">{{item.observations}}</td>
                   <td scope="row">{{item.isActive ? 'Activo':'Inactivo'}}</td>
                   <td *ngIf="item.isActive === true">
@@ -144,21 +141,6 @@
             <input class="form-control" type="date" name="FechaInicio" [(ngModel)]="dataCreateWorkSpace.startDate">
           </div>
         </div>
-        <!-- <div class='col-12 mb-1'>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <label class="input-group-text" aria-required="true">* Modelo de insumos</label>
-            </div>
-            <select class="custom-select" name="modelSupplies" id="modelSupplies"
-              [(ngModel)]="dataCreateWorkSpace.selectModelSupplies">
-              <option value='0' selected>Seleccione la versión del modelo de insumos.</option>
-              <option value='Modelo 3.0.0' selected disabled="true">Modelo 3.0.0</option>
-              <option value='Modelo 2.9.6' selected disabled="true">Modelo 2.9.6</option>
-              <option value='Modelo 2.9.4' selected>Modelo 2.9.4</option>
-              <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
-            </select>
-          </div>
-        </div> -->
       </div>
       <div class="row mb-2">
         <div class="col-12">

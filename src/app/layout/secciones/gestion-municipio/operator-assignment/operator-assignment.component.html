@@ -114,24 +114,31 @@
           <br>
           <div class="row">
             <div class="col-12">
-              <table class="table table-striped table-inverse table-responsive">
-                <thead class="thead-inverse">
-                  <tr>
-                    <th>ID</th>
-                    <th>Repositorio Documental</th>
-                    <th>Hito</th>
-                    <th>Fecha de creación</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of dataSoports">
-                    <td scope="row">{{item.id}}</td>
-                    <td scope="row">{{item.urlDocumentaryRepository}}</td>
-                    <td scope="row">{{item.milestone.name}}</td>
-                    <td scope='row'>{{formatDate(item.createdAt)}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-inverse table-responsive">
+                <table class="table table-striped text-center">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>ID</th>
+                      <th>Repositorio Documental</th>
+                      <th>Hito</th>
+                      <th>Fecha de creación</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of dataSoports">
+                      <td scope="row">{{item.id}}</td>
+                      <td scope="row">
+                        Descargar soporte
+                        <i class="material-icons mt-2 ml-2 cursor" (click)="downloadSupplies(item.id)">
+                          cloud_download
+                        </i>
+                      </td>
+                      <td scope="row">{{item.milestone.name}}</td>
+                      <td scope='row'>{{formatDate(item.createdAt)}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -174,7 +181,7 @@
               <div class='col-12 col-sm-6 mb-1'>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text">* Número de predios a intervenir</label>
+                    <label class="input-group-text">Número de predios a intervenir</label>
                   </div>
                   <input class="form-control" type="number" name="numberParcelsExpected"
                     [(ngModel)]="dataOperatorsWorkSpace.numberParcelsExpected">
@@ -183,7 +190,7 @@
               <div class='col-12 col-sm-6 mb-1'>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text">* Área de trabajo (m <sup>2</sup>)</label>
+                    <label class="input-group-text">Área de trabajo (m <sup>2</sup>)</label>
                   </div>
                   <input class="form-control" type="number" name="workArea"
                     [(ngModel)]="dataOperatorsWorkSpace.workArea">
@@ -214,7 +221,7 @@
               </div>
             </div>
           </form>
-          <div class="card-footer text-muted text-center">
+          <div class="card-footer text-muted text-center" *ngIf="assingOperator">
             <button type="button" class="btn btn-dark" (click)="assingOperatorInWorkSpace()">Asignar Operador a espació
               de trabajo</button>
           </div>
