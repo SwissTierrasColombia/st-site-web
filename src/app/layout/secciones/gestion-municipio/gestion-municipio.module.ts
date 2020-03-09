@@ -9,6 +9,7 @@ import { PageHeaderModule } from 'src/app/shared';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { OperatorAssignmentComponent } from './operator-assignment/operator-assignment.component';
 import { OperatorViewComponent } from './operator-view/operator-view.component';
+import { BsComponentModule } from '../../bs-component/bs-component.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { OperatorViewComponent } from './operator-view/operator-view.component';
     FormsModule,
     ReactiveFormsModule,
     GestionMunicipioRoutingModule,
-    PageHeaderModule
+    PageHeaderModule,
+    BsComponentModule
   ]
 })
 export class GestionMunicipioModule { }

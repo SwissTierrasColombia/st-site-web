@@ -11,11 +11,11 @@ export class FuntionsGlobalsHelper {
   }
   static formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    return moment(date).format('ll, h:mm a');
   }
   static formatDateCalendar(date: string) {
     moment.locale('es');
-    return moment(date).format('YYYY-MM-DD');
+    return moment(date).format('ll');
   }
   static itemToLowerCase(item: string) {
     return item.charAt(0).toUpperCase() + item.slice(1).toLowerCase();

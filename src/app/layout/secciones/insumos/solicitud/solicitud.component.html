@@ -1,9 +1,9 @@
 <div [@routerTransition]>
-  <app-page-header [heading]="'Solicitud de insumos'" [icon]="'fa-star'">
+  <app-page-header [heading]="'Solicitud de Insumos'" [icon]="'fa-star'">
   </app-page-header>
   <div class="card">
     <div class="card-header text-center">
-      <h3>Solicitud de insumos</h3>
+      <h3>Solicitud de Insumos</h3>
     </div>
     <div class="card-body">
       <form action="" method="post">
@@ -15,7 +15,7 @@
               </div>
               <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
                 [(ngModel)]="selectDepartment">
-                <option value='0' selected>Seleccione el departamento</option>
+                <option value='0' selected>Seleccione el Departamento</option>
                 <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
               </select>
             </div>
@@ -57,7 +57,7 @@
           <div class='col-12 col-sm-6 mb-1'>
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text">Número de predios</label>
+                <label class="input-group-text">Número de Predios</label>
               </div>
               <div class="form-control">
                 {{dataWorkSpaceMunicipality.numberAlphanumericParcels}}
@@ -86,7 +86,7 @@
             <div class="input-group">
               <input class="form-control" type="text" disabled="true" placeholder="4" disabled="true">
             </div>
-          </div>  
+          </div>
         </div>
         <div class="row">
           <div class='col-12 col-sm-3 mb-1'>
@@ -128,14 +128,17 @@
         </div>
       </form>
     </div>
-    <div class="table-responsive">
-      <table class="table table-striped table-inverse" *ngIf="this.tablesupplies.length > 0">
+    <div class="table-responsive table-inverse" *ngIf="this.tablesupplies.length > 0">
+      <div class="text-center mt-2 mb-2">
+        <h3>Selección de Insumos</h3>
+      </div>
+      <table class="table table-striped">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col" sortable="entidad">Entidad</th>
             <th scope="col" sortable="insumo">Insumo</th>
-            <th scope="col" sortable="modelo">Modelo de insumo</th>
+            <th scope="col" sortable="modelo">Modelo de Insumo</th>
             <th scope="col" sortable="observacion">Observación</th>
             <th>Eliminar</th>
           </tr>
@@ -153,7 +156,7 @@
                 <select (change)="changeModelSupplies(item.idCount, item.modelVersion)" class="custom-select"
                   name="modelSupplies{{item.idCount}}" id="modelSupplies{{item.idCount}}"
                   [(ngModel)]="item.modelVersion">
-                  <option value='0' selected>Seleccione la versión del insumos.</option>
+                  <option value='0' selected>Seleccione la versión del modelo de insumos LADM-COL</option>
                   <option [ngValue]="item.name" *ngFor="let item of item.versions">Modelo {{item.name}}</option>
                 </select>
               </div>

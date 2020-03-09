@@ -102,6 +102,7 @@ export class WorkspacesService {
    * createUser
    */
   public createUser(data: any) {
+    console.log(data);
     return this.httpClient.post(this.url + '/workspaces/v1/administration/users', data);
   }
   /**
@@ -200,5 +201,11 @@ export class WorkspacesService {
    */
   public CloseDelivery(idDelivery) {
     return this.httpClient.put(this.url + '/workspaces/v1/operators/deliveries/' + idDelivery + '/disable', {});
+  }
+  /**
+   * downloadSupport
+   */
+  public downloadSupport(workspaceId: number, supportId: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/' + workspaceId + '/download-support/' + supportId, { responseType: 'arraybuffer', observe: 'response' });
   }
 }

@@ -32,7 +32,9 @@ import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
     NgbModule,
     NgxPaginationModule
   ],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+  ],
   providers: [AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

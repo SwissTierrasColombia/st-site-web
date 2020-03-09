@@ -6,7 +6,7 @@
     <div class="col-12 col-sm-5">
       <div class="input-group">
         <div class="input-group-prepend">
-          <label class="input-group-text">Deparamento</label>
+          <label class="input-group-text">Departamento</label>
         </div>
         <div class="form-control">{{dataWorkSpace.municipality.department.name}}</div>
       </div>
@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="card">
-    <div class="card-header"><b>Espacio de trabajo</b></div>
+    <div class="card-header"><b>Espacio de Trabajo</b></div>
     <div class="card-body">
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
@@ -29,7 +29,7 @@
             aria-controls="home">
             <i class="material-icons">
               home
-            </i>General</a>
+            </i>Información Básica</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [ngClass]="{'active':tab === 2}" data-toggle="tab" role="tab" (click)="getSopports()"
@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Número de Predios alfanuméricos:</label>
+            <label class="col-sm-4 col-form-label">Número de predios:</label>
             <div class="col-sm-8">
               <input class="form-control" type="text" name="numberAlphanumericParcels"
                 [(ngModel)]="dataWorkSpace.numberAlphanumericParcels" disabled="{{editForm.numberAlphanumericParcels}}">
@@ -82,7 +82,7 @@
                 [(ngModel)]="dataWorkSpace.observations" disabled="{{editForm.observations}}">
             </div>
           </div>
-          <div class="mb-2 form-group row">
+          <div class="mb-2 form-group row" *ngIf="assingOperator">
             <button *ngIf="editForm.municipalityArea" type="button" class="btn btn-primary btn-sm btn-block"
               (click)="changeUpdate()">Editar</button>
             <button *ngIf="editForm.municipalityArea === false" type="button" class="btn btn-primary btn-sm btn-block"
@@ -104,7 +104,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Creado el:</label>
+            <label class="col-sm-4 col-form-label">Fecha de asignación:</label>
             <div class="col-sm-8">
               <div class="form-control">{{formatDate(dataWorkSpace.manager.createdAt)}}</div>
             </div>
@@ -114,24 +114,31 @@
           <br>
           <div class="row">
             <div class="col-12">
-              <table class="table table-striped table-inverse table-responsive">
-                <thead class="thead-inverse">
-                  <tr>
-                    <th>ID</th>
-                    <th>Repositorio Documental</th>
-                    <th>Hito</th>
-                    <th>Fecha de creación</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of dataSoports">
-                    <td scope="row">{{item.id}}</td>
-                    <td scope="row">{{item.urlDocumentaryRepository}}</td>
-                    <td scope="row">{{item.milestone.name}}</td>
-                    <td scope='row'>{{formatDate(item.createdAt)}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-inverse table-responsive">
+                <table class="table table-striped text-center">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>ID</th>
+                      <th>Repositorio Documental</th>
+                      <th>Hito</th>
+                      <th>Fecha de Creación</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of dataSoports">
+                      <td scope="row">{{item.id}}</td>
+                      <td scope="row">
+                        Descargar soporte
+                        <i class="material-icons mt-2 ml-2 cursor" (click)="downloadSupplies(item.id)">
+                          cloud_download
+                        </i>
+                      </td>
+                      <td scope="row">{{item.milestone.name}}</td>
+                      <td scope='row'>{{formatDate(item.createdAt)}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -174,7 +181,7 @@
               <div class='col-12 col-sm-6 mb-1'>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text">* Número de predios a intervenir</label>
+                    <label class="input-group-text">Número de Predios a Intervenir</label>
                   </div>
                   <input class="form-control" type="number" name="numberParcelsExpected"
                     [(ngModel)]="dataOperatorsWorkSpace.numberParcelsExpected">
@@ -183,7 +190,7 @@
               <div class='col-12 col-sm-6 mb-1'>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text">* Área de trabajo (m <sup>2</sup>)</label>
+                    <label class="input-group-text">Área de Trabajo (m <sup>2</sup>)</label>
                   </div>
                   <input class="form-control" type="number" name="workArea"
                     [(ngModel)]="dataOperatorsWorkSpace.workArea">
@@ -214,12 +221,41 @@
               </div>
             </div>
           </form>
-          <div class="card-footer text-muted text-center">
-            <button type="button" class="btn btn-dark" (click)="assingOperatorInWorkSpace()">Asignar Operador a espació
+          <div class="card-footer text-muted text-center" *ngIf="assingOperator">
+            <button *ngIf="replaceOperator === false" type="button" class="btn btn-dark"
+              (click)="assingOperatorInWorkSpace()">Asignar Operador a espació
+              de trabajo</button>
+            <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark"
+              (click)="openModal('modal-operator')">Asignar Operador a espació
               de trabajo</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <jw-modal id="modal-operator" class="mt-5">
+    <div class="card">
+      <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+      <div class="card-header">
+        <i class="cui-arrow-bottom"></i>
+        <h2 class="text-center font-weight-bold">
+          ¿Está seguro de modificar los datos del Operador?
+        </h2>
+        <h5 class="alert alert-warning text-center">Advertencia: Esta acción generará un nuevo espacio de trabajo para
+          el Municipio.</h5>
+      </div>
+      <div class="card-body row">
+        <div class="text-center col-sm">
+          <button type="button" class="btn btn-primary btn-block" (click)="closeModal(true,'modal-operator');">
+            <h4>Sí</h4>
+          </button>
+        </div>
+        <div class="text-center col-sm">
+          <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false,'modal-operator');">
+            <h4>No</h4>
+          </button>
+        </div>
+      </div>
+    </div>
+  </jw-modal>
 </div>

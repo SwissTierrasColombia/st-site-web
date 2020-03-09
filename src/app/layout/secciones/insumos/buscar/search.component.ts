@@ -7,6 +7,7 @@ import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { saveAs } from 'file-saver';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { ToastrService } from 'ngx-toastr';
+import { Select2OptionData } from 'ng2-select2';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',

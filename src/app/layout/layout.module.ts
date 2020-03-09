@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutRoutingModule } from './layout-routing.module';
@@ -22,7 +22,7 @@ import { RoleAdminManagerGuard } from '../guards/role-admin-manager-guard.servic
     LayoutRoutingModule,
     NgbDropdownModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     LayoutComponent,
@@ -30,6 +30,7 @@ import { RoleAdminManagerGuard } from '../guards/role-admin-manager-guard.servic
     HeaderComponent,
     FooterComponent
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [RoleModel, AuthGuard, RoleAdminGuard, RoleManagerGuard, RoleProviderGuard, RoleOperatorGuard, RoleAdminManagerGuard]
 })
 export class LayoutModule { }

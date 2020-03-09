@@ -5,6 +5,7 @@ import { ManagersService } from 'src/app/services/managers/managers.service';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
@@ -27,7 +28,8 @@ export class WorkspaceComponent implements OnInit {
     private serviceManagers: ManagersService,
     private serviceWorkspaces: WorkspacesService,
     private router: Router,
-    private roles: RoleModel
+    private roles: RoleModel,
+    private toastr: ToastrService
   ) {
     this.activeManagers = [];
     this.departments = [];
@@ -39,14 +41,13 @@ export class WorkspaceComponent implements OnInit {
     this.viewCreateWorkSpace = false;
     this.dataCreateWorkSpace = {
       selectDepartment: '',
-      supportFile: File,
+      supportFile: '',
       managerCode: '0',
       municipalityId: '',
       observations: '',
-      numberAlphanumericParcels: '',
+      numberAlphanumericParcels: 0,
       startDate: '',
-      municipalityArea: '',
-      selectModelSupplies: '0'
+      municipalityArea: 0
     };
 
   }
@@ -91,22 +92,41 @@ export class WorkspaceComponent implements OnInit {
         } else {
           this.viewCreateWorkSpace = false;
           this.listWorkSpace = response;
+          this.listWorkSpace.reverse();
         }
       }
     );
   }
   createWorkSpace() {
-    this.serviceWorkspaces.createWorkspace(this.dataCreateWorkSpace).subscribe(
-      _ => {
-        this.searchWorkSpace();
-      }
-    );
+    const numberAlphanumericParcels = Number.isInteger(this.dataCreateWorkSpace.numberAlphanumericParcels);
+    const municipalityArea = Number.isInteger(this.dataCreateWorkSpace.municipalityArea);
+
+    if (this.dataCreateWorkSpace.supportFile === "") {
+      this.toastr.error("No se ha cargado ningún soporte.");
+    } else if (this.dataCreateWorkSpace.observations == '') {
+      this.toastr.error("Las observaciones son obligatorias.");
+    } else if (!numberAlphanumericParcels) {
+      this.toastr.error("El número de predios debe ser de tipo numérico.");
+    } else if (this.dataCreateWorkSpace.numberAlphanumericParcels < 0) {
+      this.toastr.error("El número de predios no es correcto.");
+    } else if (!municipalityArea) {
+      this.toastr.error("El área del municipio debe ser de tipo numérico.");
+    } else if (this.dataCreateWorkSpace.municipalityArea < 0) {
+      this.toastr.error("El área del municipio no es correcta.");
+    } else {
+      this.serviceWorkspaces.createWorkspace(this.dataCreateWorkSpace).subscribe(
+        _ => {
+          this.toastr.success("Se ha asignado el espacio de trabajo para el municipio seleccionado.");
+          this.searchWorkSpace();
+        }
+      );
+    }
   }
-  updateWorkSpace(idWorkspace: number) {
-    this.router.navigate(['gestion/workspace/' + idWorkspace + '/operador']);
+  updateWorkSpace() {
+    this.router.navigate(['gestion/workspace/' + this.selectMunicipality + '/operador']);
   }
-  viewWorkSpace(idWorkspace: number) {
-    this.router.navigate(['gestion/workspace/' + idWorkspace + '/ver/operador']);
+  viewWorkSpace(idItem: number) {
+    this.router.navigate(['gestion/workspace/' + idItem + '/ver/operador']);
   }
 
 }
