@@ -44,7 +44,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
           }
           break;
         default:
-          this.toastrService.error('No se ha podido conectar con el servidor', 'Actualiza la pagina');
+          this.toastrService.error('No se ha podido conectar con el servidor, espere unos minutos he intentelo de nuevo.', 'Actualize la página', { disableTimeOut: true });
           break;
       }
 

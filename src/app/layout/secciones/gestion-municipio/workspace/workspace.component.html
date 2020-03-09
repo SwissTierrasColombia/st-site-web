@@ -1,9 +1,9 @@
 <div [@routerTransition]>
-  <app-page-header [heading]="'Hoja de trabajo'" [icon]="'fa-star'"></app-page-header>
+  <app-page-header [heading]="'Gestión de Municipios'" [icon]="'fa-star'"></app-page-header>
 
   <div class="card">
     <div class="card-header text-center">
-      <h3>Proyecto</h3>
+      <h3>Gestión de Municipios</h3>
     </div>
     <div class="card-body">
       <form action="" method="post">
@@ -15,7 +15,7 @@
               </div>
               <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
                 [(ngModel)]="selectDepartment">
-                <option value='0' selected>Seleccione el departamento</option>
+                <option value='0' selected>Seleccione el Departamento</option>
                 <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
               </select>
             </div>
@@ -47,7 +47,7 @@
   </div>
   <div class="card mt-2" *ngIf="resultWorkSpace.length != 0">
     <div class="card-header text-center">
-      <h3>Hoja de tarea</h3>
+      <h3>Espacios de Trabajo</h3>
     </div>
     <div class="card-body container">
       <div class="row justify-content-md-center">
@@ -58,7 +58,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Gestor</th>
-                  <th>Predios alfanuméricos</th>
+                  <th>Número de Predios</th>
                   <th>Área Municipio</th>
                   <th>Fecha de Inicio</th>
                   <th>Observaciones</th>
@@ -76,8 +76,8 @@
                   <td scope="row">{{item.observations}}</td>
                   <td scope="row">{{item.isActive ? 'Activo':'Inactivo'}}</td>
                   <td *ngIf="item.isActive === true">
-                    <i class="material-icons cursor" (click)="updateWorkSpace(item.id)">
-                      system_update_alt
+                    <i class="material-icons cursor" (click)="updateWorkSpace()">
+                      double_arrow
                     </i>
                   </td>
                   <td *ngIf="item.isActive === false">
@@ -95,9 +95,9 @@
   </div>
 </div>
 
-<div class="card" *ngIf="viewCreateWorkSpace">
+<div class="card mt-2" *ngIf="viewCreateWorkSpace">
   <div class="card-header text-center">
-    <h3>Crear la Gestión del municipio</h3>
+    <h3>Asignación de Gestor Catastral</h3>
   </div>
   <div class="card-body">
     <form action="" method="post">
@@ -116,7 +116,7 @@
         <div class='col-12 col-sm-6 mb-1'>
           <div class="input-group">
             <div class="input-group-prepend">
-              <label class="input-group-text">Número de predios alfanuméricos</label>
+              <label class="input-group-text">Número de Predios</label>
             </div>
             <input class="form-control" type="number" name="numberAlphanumericParcels"
               [(ngModel)]="dataCreateWorkSpace.numberAlphanumericParcels">
@@ -125,7 +125,7 @@
         <div class='col-12 col-sm-6 mb-1'>
           <div class="input-group">
             <div class="input-group-prepend">
-              <label class="input-group-text">Área del municipio (m<sup>2</sup>)</label>
+              <label class="input-group-text">Área del Municipio (m<sup>2</sup>)</label>
             </div>
             <input class="form-control" type="number" name="municipalityArea"
               [(ngModel)]="dataCreateWorkSpace.municipalityArea">

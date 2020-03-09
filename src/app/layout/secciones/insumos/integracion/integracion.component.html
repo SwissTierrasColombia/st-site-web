@@ -15,7 +15,7 @@
               </div>
               <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
                 [(ngModel)]="selectDepartment">
-                <option value='0' selected>Seleccione el departamento</option>
+                <option value='0' selected>Seleccione el Departamento</option>
                 <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
               </select>
             </div>

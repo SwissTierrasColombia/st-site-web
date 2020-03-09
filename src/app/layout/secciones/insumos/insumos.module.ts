@@ -17,6 +17,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchComponent } from './buscar/search.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EntregarComponent } from './entregar/entregar.component';
+import { Select2Module } from 'ng2-select2';
 @NgModule({
   declarations: [
     CargueComponent,
@@ -36,7 +37,8 @@ import { EntregarComponent } from './entregar/entregar.component';
     TooltipModule,
     NgxPaginationModule,
     NgbModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    Select2Module
   ],
   bootstrap: [IntegracionComponent],
   providers: [

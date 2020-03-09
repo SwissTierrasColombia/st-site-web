@@ -1,9 +1,9 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="'Entrega de insumos'" [icon]="'fa-star'"></app-page-header>
+    <app-page-header [heading]="'Entrega de Insumos'" [icon]="'fa-star'"></app-page-header>
 
     <div class="card">
         <div class="card-header text-center">
-            <h3>Entrega de insumos</h3>
+            <h3>Entrega de Insumos</h3>
         </div>
         <div class="card-body">
             <form action="" method="post">
@@ -15,7 +15,7 @@
                             </div>
                             <select (change)="changeDepartament()" class="custom-select" name="departments"
                                 id="departments" [(ngModel)]="selectDepartment">
-                                <option value='0' selected>Seleccione el departamento</option>
+                                <option value='0' selected>Seleccione el Departamento</option>
                                 <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
                             </select>
                         </div>

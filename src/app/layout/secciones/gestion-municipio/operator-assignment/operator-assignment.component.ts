@@ -43,7 +43,6 @@ export class OperatorAssignmentComponent implements OnInit {
     private serviceOperators: OperatorsService,
     private roles: RoleModel
   ) {
-    this.idWorkspace = 0;
     this.dataWorkSpace = {
       manager: {},
       municipality: {
@@ -51,6 +50,7 @@ export class OperatorAssignmentComponent implements OnInit {
       }
     };
     this.tab = 1;
+    this.idWorkspace = 0;
     this.departaments = [];
     this.munucipalities = [];
     this.selectDepartment = 0;
@@ -87,16 +87,22 @@ export class OperatorAssignmentComponent implements OnInit {
       .subscribe(response => {
         this.departaments = response;
       });
+    this.activedRoute.params.subscribe(
+      response => {
+        this.selectMunicipality = response.idWorkspace;
+      }
+    );
+
     const promise1 = new Promise((resolve) => {
-      this.activedRoute.params.subscribe(
-        response => {
-          resolve(response.idWorkspace);
+      this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
+        (response: any) => {
+          this.idWorkspace = response.id;
+          resolve(response)
         }
       );
     });
     Promise.all([promise1]).then((values: any) => {
-      this.idWorkspace = values[0];
-      this.serviceWorkspaces.getWorkSpace(values[0]).subscribe(
+      this.serviceWorkspaces.getWorkSpace(this.idWorkspace).subscribe(
         response => {
           this.dataWorkSpace = response;
           if (this.dataWorkSpace.operators.length > 0) {
@@ -107,6 +113,9 @@ export class OperatorAssignmentComponent implements OnInit {
         }
       );
     });
+  }
+  spaceActive() {
+
   }
 
   docSoport(files: FileList) {
@@ -175,18 +184,37 @@ export class OperatorAssignmentComponent implements OnInit {
     const numberAlphanumericParcels = Number.isInteger(this.dataOperatorsWorkSpace.numberParcelsExpected);
     const workArea = Number.isInteger(this.dataOperatorsWorkSpace.workArea);
     if (this.supportFileOperator === undefined) {
-      this.toastr.info("No has subido ningún soporte.");
+      this.toastr.warning("No has subido ningún soporte.");
     } else if (this.dataOperatorsWorkSpace.observations == '') {
-      this.toastr.info("Las observaciones son obligatorias.");
+      this.toastr.warning("Las observaciones son obligatorias.");
     } else if (!numberAlphanumericParcels) {
-      this.toastr.info("El Número de predios a intervenir debe ser numerico.");
+      this.toastr.warning("El número de predios a intervenir debe ser numérico.");
+    } else if (this.dataOperatorsWorkSpace.numberParcelsExpected < 0) {
+      this.toastr.error("El número de predios no es correcto.");
     } else if (!workArea) {
-      this.toastr.info("El Área de trabajo debe ser numerico.");
+      this.toastr.warning("El área de trabajo debe ser numérico.");
+    } else if (this.dataOperatorsWorkSpace.workArea < 0) {
+      this.toastr.error("El área de trabajo no es correcta.");
     }
     else {
       this.serviceWorkspaces.assingOperatorToWorkSpace(this.idWorkspace, dataOperator).subscribe(
         response => {
           this.toastr.success('Operador asignado satisfactoriamente');
+          this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
+            (response: any) => {
+              this.idWorkspace = response.id;
+              this.serviceWorkspaces.getWorkSpace(this.idWorkspace).subscribe(
+                response => {
+                  this.dataWorkSpace = response;
+                  if (this.dataWorkSpace.operators.length > 0) {
+                    this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
+                    this.dataOperatorsWorkSpace.startDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.startDate);
+                    this.dataOperatorsWorkSpace.endDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.endDate);
+                  }
+                }
+              );
+            }
+          );
         }
       );
     }

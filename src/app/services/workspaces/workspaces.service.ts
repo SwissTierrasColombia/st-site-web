@@ -102,6 +102,7 @@ export class WorkspacesService {
    * createUser
    */
   public createUser(data: any) {
+    console.log(data);
     return this.httpClient.post(this.url + '/workspaces/v1/administration/users', data);
   }
   /**

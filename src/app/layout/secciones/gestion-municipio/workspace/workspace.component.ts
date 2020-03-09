@@ -101,13 +101,21 @@ export class WorkspaceComponent implements OnInit {
     const municipalityArea = Number.isInteger(this.dataCreateWorkSpace.municipalityArea);
 
     if (this.dataCreateWorkSpace.supportFile === "") {
-      this.toastr.info("No has subido ningún soporte.");
+      this.toastr.warning("No has subido ningún soporte.");
     } else if (this.dataCreateWorkSpace.observations == '') {
-      this.toastr.info("Las observaciones son obligatorias.");
+      this.toastr.warning("Las observaciones son obligatorias.");
     } else if (!numberAlphanumericParcels) {
-      this.toastr.info("El Número de predios alfanuméricos debe ser numerico.");
+      this.toastr.warning("El número de predios debe ser numérico.");
+    } else if (this.dataCreateWorkSpace.numberAlphanumericParcels < 0) {
+      this.toastr.error("El número de predios no es correcto.");
     } else if (!municipalityArea) {
-      this.toastr.info("El Área del municipio debe ser numerico.");
+      this.toastr.warning("El área del municipio debe ser numérico.");
+    } else if (this.dataCreateWorkSpace.municipalityArea < 0) {
+      this.toastr.error("El  área del municipio no es correcta.");
+    } else if (this.dataCreateWorkSpace.numberAlphanumericParcels < 0) {
+
+    } else if (this.dataCreateWorkSpace.municipalityArea < 0) {
+
     } else {
       this.serviceWorkspaces.createWorkspace(this.dataCreateWorkSpace).subscribe(
         _ => {
@@ -117,11 +125,11 @@ export class WorkspaceComponent implements OnInit {
       );
     }
   }
-  updateWorkSpace(idWorkspace: number) {
-    this.router.navigate(['gestion/workspace/' + idWorkspace + '/operador']);
+  updateWorkSpace() {
+    this.router.navigate(['gestion/workspace/' + this.selectMunicipality + '/operador']);
   }
-  viewWorkSpace(idWorkspace: number) {
-    this.router.navigate(['gestion/workspace/' + idWorkspace + '/ver/operador']);
+  viewWorkSpace(idItem: number) {
+    this.router.navigate(['gestion/workspace/' + idItem + '/ver/operador']);
   }
 
 }

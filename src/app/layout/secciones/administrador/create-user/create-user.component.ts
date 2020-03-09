@@ -4,6 +4,7 @@ import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
+import { OperatorsService } from 'src/app/services/operators/operators.service';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -14,14 +15,16 @@ export class CreateUserComponent implements OnInit {
   registerData: any;
   providers: any;
   managers: any;
+  operators: any;
   profilesManagers: any;
   profilesProviders: any;
   selectROL: number;
   constructor(
     private serviceManagers: ManagersService,
-    private servicePrividers: ProvidersService,
+    private serviceProviders: ProvidersService,
     private serviceWorkSpace: WorkspacesService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private serviceOperators: OperatorsService
   ) {
     this.profilesManagers = [];
     this.profilesProviders = [];
@@ -33,10 +36,14 @@ export class CreateUserComponent implements OnInit {
         },
         {
           id: 2,
-          name: 'gestor',
+          name: 'Gestor',
         },
         {
           id: 3,
+          name: 'Operador',
+        },
+        {
+          id: 4,
           name: 'Proveedor',
         }
       ],
@@ -46,11 +53,6 @@ export class CreateUserComponent implements OnInit {
       lastName: '',
       password: '',
       confirmationPassword: '',
-      roleProvider: {
-        profiles: [],
-        providerId: 0,
-        roleId: 0
-      },
       roleAdministrator: {
         roleId: 0
       },
@@ -58,10 +60,20 @@ export class CreateUserComponent implements OnInit {
         profiles: [],
         managerId: 0,
         roleId: 0
+      },
+      roleOperator: {
+        roleId: 0,
+        operatorId: 0
+      },
+      roleProvider: {
+        profiles: [],
+        providerId: 0,
+        roleId: 0
       }
     };
     this.providers = [];
     this.managers = [];
+    this.operators = [];
     this.selectROL = 0;
   }
 
@@ -71,9 +83,14 @@ export class CreateUserComponent implements OnInit {
         this.managers = data;
       }
     );
-    this.servicePrividers.getProviders().subscribe(
+    this.serviceProviders.getProviders().subscribe(
       data => {
         this.providers = data;
+      }
+    );
+    this.serviceOperators.getOperatorsByFilters().subscribe(
+      response => {
+        this.operators = response;
       }
     );
   }
@@ -83,7 +100,7 @@ export class CreateUserComponent implements OnInit {
     });
   }
   getProfilesProviders(id: number) {
-    this.servicePrividers.getProfilesByProvider(id).subscribe(
+    this.serviceProviders.getProfilesByProvider(id).subscribe(
       data => {
         this.profilesProviders = data;
       }
@@ -98,8 +115,9 @@ export class CreateUserComponent implements OnInit {
         lastName: this.registerData.lastName,
         password: this.registerData.password,
         roleAdministrator: {},
+        roleManager: {},
+        roleOperator: {},
         roleProvider: {},
-        roleManager: {}
       };
 
       if (this.selectROL === 1) {
@@ -115,6 +133,12 @@ export class CreateUserComponent implements OnInit {
         delete data.roleManager;
       }
       if (this.selectROL === 3) {
+        this.registerData.roleOperator.roleId = 3;
+        data.roleOperator = this.registerData.roleOperator;
+      } else {
+        delete data.roleOperator;
+      }
+      if (this.selectROL === 4) {
         this.registerData.roleProvider.roleId = 4;
         data.roleProvider = this.registerData.roleProvider;
       } else {
@@ -136,6 +160,10 @@ export class CreateUserComponent implements OnInit {
               },
               {
                 id: 3,
+                name: 'Operador',
+              },
+              {
+                id: 4,
                 name: 'Proveedor',
               }
             ],
@@ -145,11 +173,6 @@ export class CreateUserComponent implements OnInit {
             lastName: '',
             password: '',
             confirmationPassword: '',
-            roleProvider: {
-              profiles: [],
-              providerId: 0,
-              roleId: 0
-            },
             roleAdministrator: {
               roleId: 0
             },
@@ -157,7 +180,16 @@ export class CreateUserComponent implements OnInit {
               profiles: [],
               managerId: 0,
               roleId: 0
-            }
+            },
+            roleOperator: {
+              roleId: 0,
+              operatorId: 0
+            },
+            roleProvider: {
+              profiles: [],
+              providerId: 0,
+              roleId: 0
+            },
           };
         }
       );
@@ -166,6 +198,4 @@ export class CreateUserComponent implements OnInit {
     }
 
   }
-  comprobar() { }
-
 }

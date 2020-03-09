@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="card">
-    <div class="card-header"><b>Espacio de trabajo</b></div>
+    <div class="card-header"><b>Espacio de Trabajo</b></div>
     <div class="card-body">
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
@@ -29,7 +29,7 @@
             aria-controls="home">
             <i class="material-icons">
               home
-            </i>General</a>
+            </i>Información Básica</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [ngClass]="{'active':tab === 2}" data-toggle="tab" role="tab" (click)="getSopports()"
@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Número de Predios alfanuméricos:</label>
+            <label class="col-sm-4 col-form-label">Número de predios:</label>
             <div class="col-sm-8">
               <input class="form-control" type="text" name="numberAlphanumericParcels"
                 [(ngModel)]="dataWorkSpace.numberAlphanumericParcels" disabled="{{editForm.numberAlphanumericParcels}}">
@@ -82,7 +82,7 @@
                 [(ngModel)]="dataWorkSpace.observations" disabled="{{editForm.observations}}">
             </div>
           </div>
-          <div class="mb-2 form-group row">
+          <div class="mb-2 form-group row" *ngIf="assingOperator">
             <button *ngIf="editForm.municipalityArea" type="button" class="btn btn-primary btn-sm btn-block"
               (click)="changeUpdate()">Editar</button>
             <button *ngIf="editForm.municipalityArea === false" type="button" class="btn btn-primary btn-sm btn-block"
@@ -104,7 +104,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Creado el:</label>
+            <label class="col-sm-4 col-form-label">Fecha de asignación:</label>
             <div class="col-sm-8">
               <div class="form-control">{{formatDate(dataWorkSpace.manager.createdAt)}}</div>
             </div>
@@ -121,7 +121,7 @@
                       <th>ID</th>
                       <th>Repositorio Documental</th>
                       <th>Hito</th>
-                      <th>Fecha de creación</th>
+                      <th>Fecha de Creación</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -181,7 +181,7 @@
               <div class='col-12 col-sm-6 mb-1'>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text">Número de predios a intervenir</label>
+                    <label class="input-group-text">Número de Predios a Intervenir</label>
                   </div>
                   <input class="form-control" type="number" name="numberParcelsExpected"
                     [(ngModel)]="dataOperatorsWorkSpace.numberParcelsExpected">
@@ -190,7 +190,7 @@
               <div class='col-12 col-sm-6 mb-1'>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text">Área de trabajo (m <sup>2</sup>)</label>
+                    <label class="input-group-text">Área de Trabajo (m <sup>2</sup>)</label>
                   </div>
                   <input class="form-control" type="number" name="workArea"
                     [(ngModel)]="dataOperatorsWorkSpace.workArea">
