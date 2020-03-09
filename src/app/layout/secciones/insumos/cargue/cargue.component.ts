@@ -125,7 +125,7 @@ export class CargueComponent implements OnInit {
   }
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    return moment(date).format('ll, h:mm a');
   }
   clone(obj: any) {
     return JSON.parse(JSON.stringify(obj));

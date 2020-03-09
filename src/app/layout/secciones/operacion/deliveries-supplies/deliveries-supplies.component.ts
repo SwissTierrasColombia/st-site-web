@@ -31,7 +31,7 @@ export class DeliveriesSuppliesComponent implements OnInit {
   }
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    return moment(date).format('ll, h:mm a');
   }
   load(IdEntrega: number) {
     this.router.navigate(['/operador/entrega/' + IdEntrega + '/descargar']);

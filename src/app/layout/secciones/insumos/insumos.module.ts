@@ -11,20 +11,19 @@ import { IntegracionComponent } from './integracion/integracion.component';
 import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
 import { TooltipModule } from 'ng2-tooltip-directive';
-import { DialogBoxComponent } from '../../bs-component/components/dialog-box/dialog-box.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchComponent } from './buscar/search.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EntregarComponent } from './entregar/entregar.component';
 import { Select2Module } from 'ng2-select2';
+import { BsComponentModule } from '../../bs-component/bs-component.module';
 @NgModule({
   declarations: [
     CargueComponent,
     SolicitudComponent,
     IntegracionComponent,
     SolicitudesComponent,
-    DialogBoxComponent,
     SearchComponent,
     EntregarComponent
   ],
@@ -38,7 +37,8 @@ import { Select2Module } from 'ng2-select2';
     NgxPaginationModule,
     NgbModule,
     Ng2SearchPipeModule,
-    Select2Module
+    Select2Module,
+    BsComponentModule
   ],
   bootstrap: [IntegracionComponent],
   providers: [

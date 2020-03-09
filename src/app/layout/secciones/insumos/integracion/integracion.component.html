@@ -169,8 +169,8 @@
               <h5>Resultados de la última integración</h5>
             </div>
             <div class="card-body text-center">
-              <div class="table-striped table-inverse table-responsive">
-                <table class="table">
+              <div class="table-inverse table-responsive">
+                <table class="table table-striped">
                   <thead class="thead-inverse">
                     <tr>
                       <th>ID</th>
@@ -233,31 +233,33 @@
                 [collectionSize]="integrationByWorkspace.length" [rotate]="true" [ellipses]="false"
                 [boundaryLinks]="true">
               </ngb-pagination>
-              <table class="table table-striped table-inverse table-responsive">
-                <thead class="thead-inverse">
-                  <tr>
-                    <th>ID</th>
-                    <th>nombre</th>
-                    <th>Descripción</th>
-                    <th>Fecha de integración</th>
-                    <th>Visualizar Resultados de integración</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    *ngFor="let item of integrationByWorkspace | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                    <td scope=" row">{{item.id}}</td>
-                    <td scope="row">{{item.integrationState.name}}</td>
-                    <td scope="row">{{item.integrationState.description}}</td>
-                    <td scope="row">{{globalFuntionDate(item.startedAt)}}</td>
-                    <td scope="row">
-                      <i class="material-icons cursor" (click)="openModal(item.id,'modal-1')">
-                        pageview
-                      </i>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-inverse table-responsive">
+                <table class="table table-striped">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>ID</th>
+                      <th>nombre</th>
+                      <th>Descripción</th>
+                      <th>Fecha de integración</th>
+                      <th>Visualizar Resultados de integración</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let item of integrationByWorkspace | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                      <td scope=" row">{{item.id}}</td>
+                      <td scope="row">{{item.integrationState.name}}</td>
+                      <td scope="row">{{item.integrationState.description}}</td>
+                      <td scope="row">{{globalFuntionDate(item.startedAt)}}</td>
+                      <td scope="row">
+                        <i class="material-icons cursor" (click)="openModal(item.id,'modal-1')">
+                          pageview
+                        </i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -270,40 +272,42 @@
             <h5>Resultados de la integración</h5>
           </div>
           <div class="card-body">
-            <table class="table table-striped table-inverse table-responsive">
-              <thead class="thead-inverse">
-                <tr>
-                  <th>ID</th>
-                  <th>Tipo de integración</th>
-                  <th>Descripción</th>
-                  <th>Insumos</th>
-                  <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros catastrales</th>
-                  <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros SNR</th>
-                  <th *ngIf="selectIntegration[0].stats.length > 0">Registros integrados</th>
-                  <th *ngIf="selectIntegration[0].stats.length > 0">Porcentaje</th>
-                  <th>Fecha</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of selectIntegration">
-                  <td scope="row">{{item.id}}</td>
-                  <td scope="row">{{item.integrationState.name}}</td>
-                  <td scope="row">{{item.integrationState ? item.integrationState.description: ''}}</td>
-                  <td scope="row">
-                    {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
-                  </td>
-                  <td scope="row" *ngIf="item.stats.length > 0">
-                    {{item.stats.length > 0 ? item.stats[0].cadastreRecordsNumber: ''}}</td>
-                  <td scope="row" *ngIf="item.stats.length > 0">
-                    {{item.stats.length > 0 ? item.stats[0].snrRecordsNumber: ''}}</td>
-                  <td scope="row" *ngIf="item.stats.length > 0">
-                    {{item.stats.length > 0 ? item.stats[0].matchNumber: '0'}}</td>
-                  <td scope="row" *ngIf="item.stats.length > 0">
-                    <b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b></td>
-                  <td scope="row">{{globalFuntionDate(item.startedAt)}}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-inverse table-responsive">
+              <table class="table table-striped">
+                <thead class="thead-inverse">
+                  <tr>
+                    <th>ID</th>
+                    <th>Tipo de integración</th>
+                    <th>Descripción</th>
+                    <th>Insumos</th>
+                    <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros catastrales</th>
+                    <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros SNR</th>
+                    <th *ngIf="selectIntegration[0].stats.length > 0">Registros integrados</th>
+                    <th *ngIf="selectIntegration[0].stats.length > 0">Porcentaje</th>
+                    <th>Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of selectIntegration">
+                    <td scope="row">{{item.id}}</td>
+                    <td scope="row">{{item.integrationState.name}}</td>
+                    <td scope="row">{{item.integrationState ? item.integrationState.description: ''}}</td>
+                    <td scope="row">
+                      {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
+                    </td>
+                    <td scope="row" *ngIf="item.stats.length > 0">
+                      {{item.stats.length > 0 ? item.stats[0].cadastreRecordsNumber: ''}}</td>
+                    <td scope="row" *ngIf="item.stats.length > 0">
+                      {{item.stats.length > 0 ? item.stats[0].snrRecordsNumber: ''}}</td>
+                    <td scope="row" *ngIf="item.stats.length > 0">
+                      {{item.stats.length > 0 ? item.stats[0].matchNumber: '0'}}</td>
+                    <td scope="row" *ngIf="item.stats.length > 0">
+                      <b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b></td>
+                    <td scope="row">{{globalFuntionDate(item.startedAt)}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -313,8 +317,8 @@
             <h5>Historico de la integración</h5>
           </div>
           <div class="card-body">
-            <div class="table-striped table-inverse table-responsive">
-              <table class="table">
+            <div class="table-inverse table-responsive">
+              <table class="table table-striped">
                 <thead class="thead-inverse">
                   <tr>
                     <th>ID</th>

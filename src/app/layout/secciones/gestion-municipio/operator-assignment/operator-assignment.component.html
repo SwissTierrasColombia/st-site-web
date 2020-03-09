@@ -6,7 +6,7 @@
     <div class="col-12 col-sm-5">
       <div class="input-group">
         <div class="input-group-prepend">
-          <label class="input-group-text">Deparamento</label>
+          <label class="input-group-text">Departamento</label>
         </div>
         <div class="form-control">{{dataWorkSpace.municipality.department.name}}</div>
       </div>
@@ -222,11 +222,40 @@
             </div>
           </form>
           <div class="card-footer text-muted text-center" *ngIf="assingOperator">
-            <button type="button" class="btn btn-dark" (click)="assingOperatorInWorkSpace()">Asignar Operador a espació
+            <button *ngIf="replaceOperator === false" type="button" class="btn btn-dark"
+              (click)="assingOperatorInWorkSpace()">Asignar Operador a espació
+              de trabajo</button>
+            <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark"
+              (click)="openModal('modal-operator')">Asignar Operador a espació
               de trabajo</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <jw-modal id="modal-operator" class="mt-5">
+    <div class="card">
+      <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+      <div class="card-header">
+        <i class="cui-arrow-bottom"></i>
+        <h2 class="text-center font-weight-bold">
+          ¿Está seguro de modificar los datos del Operador?
+        </h2>
+        <h5 class="alert alert-warning text-center">Advertencia: Esta acción generará un nuevo espacio de trabajo para
+          el Municipio.</h5>
+      </div>
+      <div class="card-body row">
+        <div class="text-center col-sm">
+          <button type="button" class="btn btn-primary btn-block" (click)="closeModal(true,'modal-operator');">
+            <h4>Sí</h4>
+          </button>
+        </div>
+        <div class="text-center col-sm">
+          <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false,'modal-operator');">
+            <h4>No</h4>
+          </button>
+        </div>
+      </div>
+    </div>
+  </jw-modal>
 </div>

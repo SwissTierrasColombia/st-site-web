@@ -92,6 +92,7 @@ export class WorkspaceComponent implements OnInit {
         } else {
           this.viewCreateWorkSpace = false;
           this.listWorkSpace = response;
+          this.listWorkSpace.reverse();
         }
       }
     );
@@ -101,21 +102,17 @@ export class WorkspaceComponent implements OnInit {
     const municipalityArea = Number.isInteger(this.dataCreateWorkSpace.municipalityArea);
 
     if (this.dataCreateWorkSpace.supportFile === "") {
-      this.toastr.warning("No has subido ningún soporte.");
+      this.toastr.error("No se ha cargado ningún soporte.");
     } else if (this.dataCreateWorkSpace.observations == '') {
-      this.toastr.warning("Las observaciones son obligatorias.");
+      this.toastr.error("Las observaciones son obligatorias.");
     } else if (!numberAlphanumericParcels) {
-      this.toastr.warning("El número de predios debe ser numérico.");
+      this.toastr.error("El número de predios debe ser de tipo numérico.");
     } else if (this.dataCreateWorkSpace.numberAlphanumericParcels < 0) {
       this.toastr.error("El número de predios no es correcto.");
     } else if (!municipalityArea) {
-      this.toastr.warning("El área del municipio debe ser numérico.");
+      this.toastr.error("El área del municipio debe ser de tipo numérico.");
     } else if (this.dataCreateWorkSpace.municipalityArea < 0) {
-      this.toastr.error("El  área del municipio no es correcta.");
-    } else if (this.dataCreateWorkSpace.numberAlphanumericParcels < 0) {
-
-    } else if (this.dataCreateWorkSpace.municipalityArea < 0) {
-
+      this.toastr.error("El área del municipio no es correcta.");
     } else {
       this.serviceWorkspaces.createWorkspace(this.dataCreateWorkSpace).subscribe(
         _ => {

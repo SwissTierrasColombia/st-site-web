@@ -12,17 +12,25 @@ import { slideToLeft } from 'src/app/router.animations';
 export class ListUserComponent implements OnInit {
 
   dataListUser: any;
+  page: number;
+  pageSize: number;
 
   constructor(
     private serviceAdministration: AdministrationService,
   ) {
     this.dataListUser = [];
+    this.page = 1;
+    this.pageSize = 10;
   }
 
   ngOnInit() {
     this.serviceAdministration.getAllUsers()
-      .subscribe(arg => this.dataListUser = arg);
+      .subscribe(arg => {
+        this.dataListUser = arg
+        console.log(this.dataListUser);
+      });
   }
+
   globalFuntionDate(date: any) {
     return FuntionsGlobalsHelper.formatDate(date);
   }

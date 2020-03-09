@@ -114,7 +114,7 @@
                         <label class="input-group-text" aria-required="true">* Operador</label>
                       </div>
                       <select class="custom-select" name="operator" id="operator"
-                        [(ngModel)]="registerData.roleProvider.providerId">
+                        [(ngModel)]="registerData.roleOperator.operatorId">
                         <option value='0' selected>Seleccione el Operador</option>
                         <option [ngValue]="item.id" *ngFor="let item of operators">{{item.name}}</option>
                       </select>

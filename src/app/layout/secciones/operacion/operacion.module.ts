@@ -5,22 +5,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OperacionRoutingModule } from './operacion-routing.module';
 import { DeliveriesSuppliesComponent } from './deliveries-supplies/deliveries-supplies.component';
 import { DownloadSuppliesComponent } from './download-supplies/download-supplies.component';
-import { DialogBoxComponent } from '../../bs-component/components/dialog-box/dialog-box.component';
-
+import { BsComponentModule } from '../../bs-component/bs-component.module';
 
 @NgModule({
   declarations: [
     DeliveriesSuppliesComponent,
     DownloadSuppliesComponent,
-    DialogBoxComponent // Componente Modal
-
   ],
   imports: [
     CommonModule,
     PageHeaderModule,
     FormsModule,
     ReactiveFormsModule,
-    OperacionRoutingModule
+    OperacionRoutingModule,
+    BsComponentModule
   ]
 })
 export class OperacionModule { }

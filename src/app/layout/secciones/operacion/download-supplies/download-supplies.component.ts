@@ -73,7 +73,7 @@ export class DownloadSuppliesComponent implements OnInit {
   }
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    return moment(date).format('ll, h:mm a');
   }
   downloadSupplies(idSupplie: number, nameSupplie: string) {
     const promise1 = new Promise((resolve) => {

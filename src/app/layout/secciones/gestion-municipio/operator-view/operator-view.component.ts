@@ -91,7 +91,7 @@ export class OperatorViewComponent implements OnInit {
 
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('DD-MMMM-YYYY h:mm:ss');
+    return moment(date).format('ll, h:mm a');
   }
   volver() {
     this.router.navigate(['/gestion/workspace']);

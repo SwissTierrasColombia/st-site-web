@@ -54,21 +54,21 @@ export class CreateUserComponent implements OnInit {
       password: '',
       confirmationPassword: '',
       roleAdministrator: {
-        roleId: 0
+        roleId: 1
       },
       roleManager: {
         profiles: [],
         managerId: 0,
-        roleId: 0
+        roleId: 2
       },
       roleOperator: {
-        roleId: 0,
+        roleId: 3,
         operatorId: 0
       },
       roleProvider: {
         profiles: [],
         providerId: 0,
-        roleId: 0
+        roleId: 4
       }
     };
     this.providers = [];
@@ -174,21 +174,21 @@ export class CreateUserComponent implements OnInit {
             password: '',
             confirmationPassword: '',
             roleAdministrator: {
-              roleId: 0
+              roleId: 1
             },
             roleManager: {
               profiles: [],
               managerId: 0,
-              roleId: 0
+              roleId: 2
             },
             roleOperator: {
-              roleId: 0,
+              roleId: 3,
               operatorId: 0
             },
             roleProvider: {
               profiles: [],
               providerId: 0,
-              roleId: 0
+              roleId: 4
             },
           };
         }

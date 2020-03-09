@@ -9,6 +9,7 @@ import { OperatorsService } from 'src/app/services/operators/operators.service';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { saveAs } from 'file-saver';
+import { ModalService } from 'src/app/services/modal/modal.service';
 
 const moment = _moment;
 @Component({
@@ -34,6 +35,7 @@ export class OperatorAssignmentComponent implements OnInit {
   dataOperatorsWorkSpace: any;
   supportFileOperator: File;
   assingOperator: boolean;
+  replaceOperator: boolean;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -41,7 +43,9 @@ export class OperatorAssignmentComponent implements OnInit {
     private serviceManagers: ManagersService,
     private toastr: ToastrService,
     private serviceOperators: OperatorsService,
-    private roles: RoleModel
+    private roles: RoleModel,
+    private modalService: ModalService,
+
   ) {
     this.dataWorkSpace = {
       manager: {},
@@ -73,6 +77,7 @@ export class OperatorAssignmentComponent implements OnInit {
       operatorCode: 0
     };
     this.assingOperator = false;
+    this.replaceOperator = false;
   }
 
   ngOnInit() {
@@ -106,6 +111,7 @@ export class OperatorAssignmentComponent implements OnInit {
         response => {
           this.dataWorkSpace = response;
           if (this.dataWorkSpace.operators.length > 0) {
+            this.replaceOperator = true;
             this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
             this.dataOperatorsWorkSpace.startDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.startDate);
             this.dataOperatorsWorkSpace.endDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.endDate);
@@ -124,11 +130,11 @@ export class OperatorAssignmentComponent implements OnInit {
 
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('DD-MMM-YYYY h:mm:ss');
+    return moment(date).format('ll, h:mm a');
   }
   formatDateCalendar(date: string) {
     moment.locale('es');
-    return moment(date).format('YYYY-MM-DD');
+    return moment(date).format('ll');
   }
   volver() {
     this.router.navigate(['/gestion/workspace']);
@@ -184,15 +190,15 @@ export class OperatorAssignmentComponent implements OnInit {
     const numberAlphanumericParcels = Number.isInteger(this.dataOperatorsWorkSpace.numberParcelsExpected);
     const workArea = Number.isInteger(this.dataOperatorsWorkSpace.workArea);
     if (this.supportFileOperator === undefined) {
-      this.toastr.warning("No has subido ningún soporte.");
+      this.toastr.error("No se ha cargado ningún soporte.");
     } else if (this.dataOperatorsWorkSpace.observations == '') {
-      this.toastr.warning("Las observaciones son obligatorias.");
+      this.toastr.error("Las observaciones son obligatorias.");
     } else if (!numberAlphanumericParcels) {
-      this.toastr.warning("El número de predios a intervenir debe ser numérico.");
+      this.toastr.error("El número de predios a intervenir debe ser de tipo numérico.");
     } else if (this.dataOperatorsWorkSpace.numberParcelsExpected < 0) {
       this.toastr.error("El número de predios no es correcto.");
     } else if (!workArea) {
-      this.toastr.warning("El área de trabajo debe ser numérico.");
+      this.toastr.error("El área de trabajo debe ser de tipo numérico.");
     } else if (this.dataOperatorsWorkSpace.workArea < 0) {
       this.toastr.error("El área de trabajo no es correcta.");
     }
@@ -207,6 +213,7 @@ export class OperatorAssignmentComponent implements OnInit {
                 response => {
                   this.dataWorkSpace = response;
                   if (this.dataWorkSpace.operators.length > 0) {
+                    this.replaceOperator = true;
                     this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
                     this.dataOperatorsWorkSpace.startDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.startDate);
                     this.dataOperatorsWorkSpace.endDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.endDate);
@@ -218,6 +225,15 @@ export class OperatorAssignmentComponent implements OnInit {
         }
       );
     }
+  }
+  closeModal(option: boolean, modal: string) {
+    if (option) {
+      this.assingOperatorInWorkSpace();
+    }
+    this.modalService.close(modal);
+  }
+  openModal(modal: string) {
+    this.modalService.open(modal);
   }
   public onKey(event: any) {
     if (event.key === 'Enter') {
