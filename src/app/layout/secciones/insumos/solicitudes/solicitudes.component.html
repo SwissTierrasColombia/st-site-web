@@ -4,7 +4,7 @@
   <div class="row justify-content-center text-center">
     <div class="card text-center">
       <div class="card-header">
-        <h3>Solicitudes pendientes</h3>
+        <h3>Solicitudes Pendientes</h3>
       </div>
       <div class="card-body">
         <div class="table-inverse table-responsive">
@@ -17,13 +17,13 @@
                 <th>Gestor</th>
                 <th>Categoria</th>
                 <th>Fecha de Solicitud</th>
-                <th>Fecha limite</th>
+                <th>Fecha Limite</th>
                 <th>Ver</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of dataRequestPending">
-                <td scope="row">{{item.id}}</td>
+              <tr *ngFor="let item of dataRequestPending; let i = index">
+                <td scope="row">{{i+1}}</td>
                 <td scope="row">{{item.municipality.department.name}}</td>
                 <td scope="row">{{item.municipality.name}}</td>
                 <td scope="row">{{item.provider.name}}</td>

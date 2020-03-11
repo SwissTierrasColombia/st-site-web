@@ -92,14 +92,14 @@
           <div class="form-group row">
             <label class="col-sm-4 col-form-label">Nombre:</label>
             <div class="col-sm-8">
-              <input class="form-control" type="text" name="managerName" [(ngModel)]="dataWorkSpace.manager.name"
-                disabled="true">
+              <input disabled="{{!assingOperator}}" class="form-control" type="text" name="managerName"
+                [(ngModel)]="dataWorkSpace.manager.name" disabled="true">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-sm-4 col-form-label">NIT:</label>
             <div class="col-sm-8">
-              <input class="form-control" type="text" name="taxIdentificationNumber"
+              <input disabled="{{!assingOperator}}" class="form-control" type="text" name="taxIdentificationNumber"
                 [(ngModel)]="dataWorkSpace.manager.taxIdentificationNumber" disabled="true">
             </div>
           </div>
@@ -125,8 +125,8 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of dataSoports">
-                      <td scope="row">{{item.id}}</td>
+                    <tr *ngFor="let item of dataSoports; let i = index">
+                      <td scope="row">{{i+1}}</td>
                       <td scope="row">
                         Descargar soporte
                         <i class="material-icons mt-2 ml-2 cursor" (click)="downloadSupplies(item.id)">
@@ -150,7 +150,7 @@
                   <div class="input-group-prepend">
                     <label class="input-group-text" aria-required="true">* Operador</label>
                   </div>
-                  <select class="custom-select" name="operators" id="operators"
+                  <select disabled="{{!assingOperator}}" class="custom-select" name="operators" id="operators"
                     [(ngModel)]="dataOperatorsWorkSpace.operatorCode">
                     <option value='0' selected>Seleccione el Operador</option>
                     <option [ngValue]="item.id" *ngFor="let item of operators">{{item.name}}</option>
@@ -164,7 +164,7 @@
                   <div class="input-group-prepend">
                     <label class="input-group-text">* Fecha de Inicio</label>
                   </div>
-                  <input class="form-control" type="date" name="FechaInicio"
+                  <input disabled="{{!assingOperator}}" class="form-control" type="date" name="FechaInicio"
                     [(ngModel)]="dataOperatorsWorkSpace.startDate">
                 </div>
               </div>
@@ -173,7 +173,8 @@
                   <div class="input-group-prepend">
                     <label class="input-group-text">* Fecha Final</label>
                   </div>
-                  <input class="form-control" type="date" name="FechaFin" [(ngModel)]="dataOperatorsWorkSpace.endDate">
+                  <input disabled="{{!assingOperator}}" class="form-control" type="date" name="FechaFin"
+                    [(ngModel)]="dataOperatorsWorkSpace.endDate">
                 </div>
               </div>
             </div>
@@ -183,7 +184,7 @@
                   <div class="input-group-prepend">
                     <label class="input-group-text">Número de Predios a Intervenir</label>
                   </div>
-                  <input class="form-control" type="number" name="numberParcelsExpected"
+                  <input disabled="{{!assingOperator}}" class="form-control" type="number" name="numberParcelsExpected"
                     [(ngModel)]="dataOperatorsWorkSpace.numberParcelsExpected">
                 </div>
               </div>
@@ -192,7 +193,7 @@
                   <div class="input-group-prepend">
                     <label class="input-group-text">Área de Trabajo (m <sup>2</sup>)</label>
                   </div>
-                  <input class="form-control" type="number" name="workArea"
+                  <input disabled="{{!assingOperator}}" class="form-control" type="number" name="workArea"
                     [(ngModel)]="dataOperatorsWorkSpace.workArea">
                 </div>
               </div>
@@ -203,12 +204,12 @@
                   <div class="input-group-prepend input-group-text">
                     <div class="">* Alcance / Observaciones</div>
                   </div>
-                  <textarea class="form-control" id="observations" rows="3" name="observaciones"
-                    [(ngModel)]="dataOperatorsWorkSpace.observations"></textarea>
+                  <textarea disabled="{{!assingOperator}}" class="form-control" id="observations" rows="3"
+                    name="observaciones" [(ngModel)]="dataOperatorsWorkSpace.observations"></textarea>
                 </div>
               </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2" *ngIf="assingOperator">
               <div class="col-12">
                 <div class="input-group">
                   <div class="input-group-prepend">
@@ -220,11 +221,17 @@
                 </div>
               </div>
             </div>
+            <div class="row mt-3" *ngIf="assingOperator">
+              <div class="col-12">
+                <div class="alert alert-primary text-center" role="alert">
+                  Recuerde que los campos marcados con * son obligatorios.
+                </div>
+              </div>
+            </div>
           </form>
           <div class="card-footer text-muted text-center" *ngIf="assingOperator">
             <button *ngIf="replaceOperator === false" type="button" class="btn btn-dark"
-              (click)="assingOperatorInWorkSpace()">Asignar Operador a espació
-              de trabajo</button>
+              (click)="assingOperatorInWorkSpace()">Asignar Operador a espacio de trabajo</button>
             <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark"
               (click)="openModal('modal-operator')">Asignar Operador a espació
               de trabajo</button>

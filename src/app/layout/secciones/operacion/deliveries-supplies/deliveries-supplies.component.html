@@ -21,8 +21,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of dataRequestPending">
-                                <td scope="row">{{item.id}}</td>
+                            <tr *ngFor="let item of dataRequestPending; let i = index">
+                                <td scope="row">{{i+1}}</td>
                                 <td scope="row">{{item.manager.name}}</td>
                                 <td scope="row">{{item.municipality.name}}</td>
                                 <td scope="row">{{item.municipality.code}}</td>

@@ -67,8 +67,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of listWorkSpace">
-                  <td scope="row">{{item.id}}</td>
+                <tr *ngFor="let item of listWorkSpace; let i = index">
+                  <td scope="row">{{i+1}}</td>
                   <td scope="row">{{item.manager.name}}</td>
                   <td scope="row">{{item.numberAlphanumericParcels}}</td>
                   <td scope="row">{{item.municipalityArea}} m <sup>2</sup></td>

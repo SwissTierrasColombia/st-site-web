@@ -32,6 +32,11 @@
               </select>
             </div>
           </div>
+          <div class="col-12 mt-3">
+            <div class="alert alert-primary text-center" role="alert">
+              Recuerde que los campos marcados con * son obligatorios.
+            </div>
+          </div>
         </div>
         <div class="row mb-2" *ngIf="dataWorkSpaceMunicipality.manager.name !== ''">
           <div class='col-12 col-sm-6 mb-2'>
@@ -163,70 +168,12 @@
             [disabled]="activateButtonIntegration">
             Realizar integración automatica de archivos XTF</button>
         </div>
-        <div class="col-12 col-sm-12 mb-2">
-          <div class="card" *ngIf="lastIntegration.length > 0">
-            <div class="card-header text-center">
-              <h5>Resultados de la última integración</h5>
-            </div>
-            <div class="card-body text-center">
-              <div class="table-inverse table-responsive">
-                <table class="table table-striped">
-                  <thead class="thead-inverse">
-                    <tr>
-                      <th>ID</th>
-                      <th>Estado de integración</th>
-                      <th>Descripción</th>
-                      <th *ngIf="lastIntegration[0].stats.length > 0">Insumos</th>
-                      <th *ngIf="lastIntegration[0].stats.length > 0">Número de registros catastrales</th>
-                      <th *ngIf="lastIntegration[0].stats.length > 0">Número de registros SNR</th>
-                      <th *ngIf="lastIntegration[0].stats.length > 0">Registros integrados</th>
-                      <th *ngIf="lastIntegration[0].stats.length > 0">Porcentaje</th>
-                      <th>Fecha</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of lastIntegration">
-                      <td scope="row">{{item.id}}</td>
-                      <td scope="row">{{item.integrationState.name}}</td>
-                      <td scope="row">{{item.integrationState ? item.integrationState.description: ''}}</td>
-                      <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">
-                        {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
-                      </td>
-                      <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">
-                        {{item.stats.length > 0 ? item.stats[0].cadastreRecordsNumber: ''}}</td>
-                      <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">
-                        {{item.stats.length > 0 ? item.stats[0].snrRecordsNumber: ''}}</td>
-                      <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">
-                        {{item.stats.length > 0 ? item.stats[0].matchNumber: '0'}}</td>
-                      <td scope="row" *ngIf="lastIntegration[0].stats.length > 0">
-                        <b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b></td>
-                      <td scope="row">{{globalFuntionDate(item.startedAt ? item.startedAt: '')}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div *ngIf="lastIntegration[0].integrationState.name == 'FINALIZADA AUTOMÁTICA'"
-                class="row justify-content-center text-center">
-                <div class="col-12 col-sm-4 mb-1">
-                  <button type="button" class="btn btn-success" (click)="generateXTF()">Generar XTF</button>
-                </div>
-                <div class="col-12 col-sm-4 mb-1">
-                  <button type="button" class="btn btn-dark" (click)="startIntegrationAssited()">Iniciar integración
-                    asistida</button>
-                </div>
-                <div class="col-12 col-sm-4">
-                  <button type="button" class="btn btn-danger" (click)="cancel()">Eliminar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       <div *ngIf="dataWorkSpaceMunicipality.manager.name !== '' && integrationByWorkspace.length > 0">
         <div class="row justify-content-md-center">
           <div class="card text-center">
             <div class="card-header text-center">
-              <h5>Historial de integraciones</h5>
+              <h5>Historial de Integraciones</h5>
             </div>
             <div class="card-body">
               <ngb-pagination class="d-flex justify-content-center" [(page)]="page" [pageSize]="pageSize"
@@ -237,24 +184,51 @@
                 <table class="table table-striped">
                   <thead class="thead-inverse">
                     <tr>
-                      <th>ID</th>
-                      <th>nombre</th>
+                      <th>Nombre</th>
                       <th>Descripción</th>
-                      <th>Fecha de integración</th>
-                      <th>Visualizar Resultados de integración</th>
+                      <th>Fecha de Integración</th>
+                      <th>Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr
                       *ngFor="let item of integrationByWorkspace | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                      <td scope=" row">{{item.id}}</td>
                       <td scope="row">{{item.integrationState.name}}</td>
                       <td scope="row">{{item.integrationState.description}}</td>
                       <td scope="row">{{globalFuntionDate(item.startedAt)}}</td>
                       <td scope="row">
-                        <i class="material-icons cursor" (click)="openModal(item.id,'modal-1')">
-                          pageview
-                        </i>
+                        <div class="row justify-content-center text-center">
+                          <div class="col-12 col-sm-3">
+                            <span tooltip="Ver historico" placement="top" show-delay="500">
+                              <i class="material-icons cursor" (click)="openModal(item.id,'modal-1')">
+                                pageview
+                              </i>
+                            </span>
+                          </div>
+                          <div class="col-12 col-sm-3"
+                            *ngIf="lastIntegration[0].integrationState.name == 'FINALIZADA AUTOMÁTICA'">
+                            <span tooltip="Generar XTF" placement="top" show-delay="500">
+                              <i class="material-icons cursor" (click)="generateXTF()">
+                                assignment_turned_in
+                              </i></span>
+                          </div>
+                          <div class="col-12 col-sm-3"
+                            *ngIf="lastIntegration[0].integrationState.name == 'FINALIZADA AUTOMÁTICA'">
+                            <span tooltip="Iniciar integración asistida" placement="top" show-delay="500">
+                              <i class="material-icons cursor" (click)="startIntegrationAssited()">
+                                important_devices
+                              </i>
+                            </span>
+                          </div>
+                          <div class="col-12 col-sm-3"
+                            *ngIf="lastIntegration[0].integrationState.name == 'FINALIZADA AUTOMÁTICA'">
+                            <span tooltip="Eliminar" placement="top" show-delay="500">
+                              <i class="material-icons cursor" (click)="cancel()">
+                                delete
+                              </i>
+                            </span>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -269,7 +243,7 @@
       <div class="row justify-content-md-center mt-2">
         <div class="card text-center">
           <div class="card-header text-center">
-            <h5>Resultados de la integración</h5>
+            <h5>Resultados de la Integración</h5>
           </div>
           <div class="card-body">
             <div class="table-inverse table-responsive">
@@ -277,21 +251,24 @@
                 <thead class="thead-inverse">
                   <tr>
                     <th>ID</th>
-                    <th>Tipo de integración</th>
+                    <th>Tipo de Integración</th>
                     <th>Descripción</th>
                     <th>Insumos</th>
-                    <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros catastrales</th>
-                    <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros SNR</th>
+                    <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros
+                      catastrales</th>
+                    <th *ngIf="selectIntegration[0].stats.length > 0">Número de registros SNR
+                    </th>
                     <th *ngIf="selectIntegration[0].stats.length > 0">Registros integrados</th>
                     <th *ngIf="selectIntegration[0].stats.length > 0">Porcentaje</th>
                     <th>Fecha</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of selectIntegration">
-                    <td scope="row">{{item.id}}</td>
+                  <tr *ngFor="let item of selectIntegration; let i = index">
+                    <td scope="row">{{i+1}}</td>
                     <td scope="row">{{item.integrationState.name}}</td>
-                    <td scope="row">{{item.integrationState ? item.integrationState.description: ''}}</td>
+                    <td scope="row">
+                      {{item.integrationState ? item.integrationState.description: ''}}</td>
                     <td scope="row">
                       {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
                     </td>
@@ -302,7 +279,8 @@
                     <td scope="row" *ngIf="item.stats.length > 0">
                       {{item.stats.length > 0 ? item.stats[0].matchNumber: '0'}}</td>
                     <td scope="row" *ngIf="item.stats.length > 0">
-                      <b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b></td>
+                      <b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b>
+                    </td>
                     <td scope="row">{{globalFuntionDate(item.startedAt)}}</td>
                   </tr>
                 </tbody>
@@ -314,7 +292,7 @@
       <div class="row justify-content-md-center mt-2">
         <div class="card">
           <div class="card-header text-center">
-            <h5>Historico de la integración</h5>
+            <h5>Historico de la Integración</h5>
           </div>
           <div class="card-body">
             <div class="table-inverse table-responsive">
