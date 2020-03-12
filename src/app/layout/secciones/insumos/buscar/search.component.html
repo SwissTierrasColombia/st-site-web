@@ -35,7 +35,7 @@
                     <div *ngIf="usermanager" class='col-12 mb-1'>
                         <div class="input-group mt-2">
                             <div class="input-group-prepend">
-                                <label class="input-group-text" aria-required="true">Solicitudes gestor</label>
+                                <label class="input-group-text" aria-required="true">Solicitudes Gestor</label>
                             </div>
                             <select class="custom-select" name="managersprfile" id="managersprofile"
                                 [(ngModel)]="selectSuppliesManagerRequest" multiple>
@@ -65,7 +65,7 @@
         <div class="row justify-content-md-center">
             <div class="card text-center">
                 <div class="card-header text-center">
-                    <h5>Resultados de búsqueda</h5>
+                    <h5>Resultados de Búsqueda</h5>
                 </div>
                 <div class="card-body">
                     <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number"
@@ -80,10 +80,9 @@
                         <table class="table table-striped">
                             <thead class="thead-inverse">
                                 <tr>
-                                    <th>ID</th>
                                     <th>Proveedor</th>
                                     <th>Insumo</th>
-                                    <th>Fecha de cargue</th>
+                                    <th>Fecha de Cargue</th>
                                     <th>Modelo</th>
                                     <th>Observación</th>
                                     <th>Descargar</th>
@@ -92,7 +91,6 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of allSupplies |filter:searchText">
-                                    <td scope=" row">{{item.id}}</td>
                                     <td scope="row">{{item.typeSupply ? item.typeSupply.provider.name: 'N/A'}}</td>
                                     <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'N/A'}}</td>
                                     <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
@@ -123,6 +121,7 @@
                 <h2 class="text-center font-weight-bold">
                     ¿Está seguro de eliminar el insumo?
                 </h2>
+                <h5 class="alert alert-warning text-center">Advertencia: El insumo se borrará permanentemente del Sistema.</h5>
             </div>
             <div class="card-body row">
                 <div class="text-center col-sm">

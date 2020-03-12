@@ -5,6 +5,8 @@ import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { ModalService } from 'src/app/services/modal/modal.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-integracion',
@@ -36,16 +38,19 @@ export class IntegracionComponent implements OnInit {
   activateButtonIntegration: boolean;
   idWorkspace: number;
   integrationByWorkspace: any;
-  lastIntegration: any;
   selectIntegration: any;
   page: number;
   pageSize: number;
   msgIntegrationAssited: any;
+  idGenerateXTF: number;
+  idStartAsistente: number;
+  idCancel: number;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
     private toastr: ToastrService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private router: Router
   ) {
     this.departments = [];
     this.munucipalities = [];
@@ -86,7 +91,6 @@ export class IntegracionComponent implements OnInit {
     this.activateButtonIntegration = true;
     this.idWorkspace = 0;
     this.integrationByWorkspace = [];
-    this.lastIntegration = [];
     this.selectIntegration = [{
       id: '',
       integrationState: {
@@ -109,6 +113,9 @@ export class IntegracionComponent implements OnInit {
     this.page = 1;
     this.pageSize = 3;
     this.msgIntegrationAssited = [];
+    this.idGenerateXTF = 0;
+    this.idStartAsistente = 0;
+    this.idCancel = 0;
   }
 
   ngOnInit() {
@@ -137,9 +144,7 @@ export class IntegracionComponent implements OnInit {
         this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
           resp => {
             this.integrationByWorkspace = resp;
-            if (this.integrationByWorkspace.length > 0) {
-              this.lastIntegration = [this.integrationByWorkspace[0]];
-            }
+            console.log('this.integrationByWorkspace', this.integrationByWorkspace);
           }
         );
       }
@@ -173,14 +178,15 @@ export class IntegracionComponent implements OnInit {
     };
     this.serviceWorkspaces.GetIntegrationCadastreRegistration(this.selectMunicipality, data).subscribe(
       response => {
-        this.lastIntegration = [];
-        this.lastIntegration.push(response);
         // tslint:disable-next-line:max-line-length
         this.msgAlert = '¡Se ha iniciado la integración!<br><strong>Por favor ingrese mas tarde, para ver los resultados de la integración</strong>';
         this.selectsupplyCadastre = 0;
         this.selectsupplyRegistration = 0;
         this.activateButtonIntegration = true;
         this.toastr.success('¡Se ha iniciado la integración!');
+        setTimeout(() => {
+          this.changeMunucipality();
+        }, 2000);
       },
       error => {
         this.msgAlert = error.error.message +
@@ -208,36 +214,73 @@ export class IntegracionComponent implements OnInit {
     });
     this.modalService.open(modal);
   }
-  generateXTF() {
-    this.serviceWorkspaces.GenerateProductFromIntegration(this.idWorkspace, this.lastIntegration[0].id).subscribe(
+  openModalGenerateXTF(modal: string, idIntegration: number) {
+    this.idGenerateXTF = idIntegration;
+    this.modalService.open(modal);
+  }
+  openModalIntegrationAssited(modal: string, idIntegration: number) {
+    this.idStartAsistente = idIntegration;
+    this.modalService.open(modal);
+  }
+  openModalcancel(modal: string, idIntegration: number) {
+    this.idCancel = idIntegration;
+    this.modalService.open(modal);
+  }
+  closeModalGenerateXTF(modal: string, option: boolean) {
+    if (option) {
+      this.generateXTF(this.idGenerateXTF);
+    }
+    this.modalService.close(modal);
+  }
+  closeModalIntegrationAssited(modal: string, option: boolean) {
+    if (option) {
+      this.startIntegrationAssited(this.idStartAsistente);
+    }
+    this.modalService.close(modal);
+  }
+  closeModalcancel(modal: string, option: boolean) {
+    if (option) {
+      this.cancel(this.idCancel);
+    }
+    this.modalService.close(modal);
+  }
+  generateXTF(idIntegration: number) {
+    this.serviceWorkspaces.GenerateProductFromIntegration(this.idWorkspace, idIntegration).subscribe(
       response => {
         this.msgIntegrationAssited = response;
         this.toastr.success(this.msgIntegrationAssited.integrationState.description);
+        setTimeout(() => {
+          this.changeMunucipality();
+        }, 2000);
       });
   }
-  startIntegrationAssited() {
-    this.serviceWorkspaces.StartIntegrationAssited(this.idWorkspace, this.lastIntegration[0].id).subscribe(
+  startIntegrationAssited(idIntegration: number) {
+    this.serviceWorkspaces.StartIntegrationAssited(this.idWorkspace, idIntegration).subscribe(
       response => {
         this.msgIntegrationAssited = response;
         this.toastr.success(this.msgIntegrationAssited.integrationState.description);
+        setTimeout(() => {
+          this.changeMunucipality();
+        }, 2000);
       });
   }
-  cancel() {
-    this.serviceWorkspaces.deleteIntegration(this.idWorkspace, this.lastIntegration[0].id).subscribe(
+  cancel(idIntegration: number) {
+    this.serviceWorkspaces.deleteIntegration(this.idWorkspace, idIntegration).subscribe(
       _ => {
         this.toastr.info('Ha eliminado la integración');
         this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
           resp => {
             this.integrationByWorkspace = resp;
             this.integrationByWorkspace.reverse();
-            this.lastIntegration = [];
           }
         );
       }
     );
   }
-
   roundDecimal(num: any) {
     return Math.round(num * 100) / 100;
+  }
+  parcelNumber(number: number) {
+    return new Intl.NumberFormat().format(number);
   }
 }

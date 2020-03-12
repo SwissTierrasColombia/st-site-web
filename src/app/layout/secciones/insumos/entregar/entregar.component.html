@@ -35,7 +35,7 @@
                     <div *ngIf="usermanager" class='col-12 mb-1'>
                         <div class="input-group mt-2">
                             <div class="input-group-prepend">
-                                <label class="input-group-text" aria-required="true">Solicitudes gestor</label>
+                                <label class="input-group-text" aria-required="true">Solicitudes Gestor</label>
                             </div>
                             <select class="custom-select" name="managersprfile" id="managersprofile"
                                 [(ngModel)]="selectSuppliesManagerRequest" multiple>
@@ -66,7 +66,7 @@
         <div class="row justify-content-md-center">
             <div class="card text-center">
                 <div class="card-header text-center">
-                    <h5>Resultados de búsqueda</h5>
+                    <h5>Resultados de Búsqueda</h5>
                 </div>
                 <div class="card-body">
                     <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number"
@@ -84,17 +84,19 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Insumo</th>
-                                    <th>Observación del insumo</th>
+                                    <th>Observación del Insumo</th>
                                     <th>Modelo</th>
                                     <th>Estado</th>
-                                    <th>Observación /<br />Fecha de entrega</th>
+                                    <th>Observación /<br />Fecha de Entrega</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of allSupplies |filter:searchText">
-                                    <td scope=" row">{{item.id}}</td>
+                                <tr *ngFor="let item of allSupplies |filter:searchText; let i = index">
                                     <td scope="row">
-                                        {{item.typeSupply ? item.typeSupply.name: 'N/A'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'N/A'}})
+                                        {{i + 1}}
+                                    </td>
+                                    <td scope="row">
+                                        {{item.typeSupply ? item.typeSupply.name: 'Modelo de insumos para el Municipio'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}})
                                     </td>
                                     <td scope="row">{{item.observations}}</td>
                                     <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
