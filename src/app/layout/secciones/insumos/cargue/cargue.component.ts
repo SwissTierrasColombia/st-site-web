@@ -155,7 +155,7 @@ export class CargueComponent implements OnInit {
       if (this.dataRequestPending[idOut].suppliesRequested[idInt].file) {
         this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
       } else {
-        this.toastr.info('Por favor sube el archivo en alguno de los siguientes formatos: ' +
+        this.toastr.error('Por favor sube el archivo en alguno de los siguientes formatos: ' +
           this.dataRequestPending[idOut].suppliesRequested[idInt].format);
       }
     } else {
@@ -176,7 +176,7 @@ export class CargueComponent implements OnInit {
       }
     } else {
       this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
-      this.toastr.info('La URL no es correcta.');
+      this.toastr.error('La URL no es correcta.');
     }
   }
 

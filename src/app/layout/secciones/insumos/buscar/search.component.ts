@@ -113,7 +113,7 @@ export class SearchComponent implements OnInit {
   deleteSupplies(idSupplie: number) {
     this.serviceWorkspaces.deleteSupplies(this.selectMunicipality, idSupplie).subscribe(
       data => {
-        this.toastr.info("Se ha eliminado el insumo");
+        this.toastr.success("Se ha eliminado el insumo");
       }
     );
   }

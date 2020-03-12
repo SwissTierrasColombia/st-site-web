@@ -267,7 +267,7 @@ export class IntegracionComponent implements OnInit {
   cancel(idIntegration: number) {
     this.serviceWorkspaces.deleteIntegration(this.idWorkspace, idIntegration).subscribe(
       _ => {
-        this.toastr.info('Ha eliminado la integración');
+        this.toastr.success('Ha eliminado la integración');
         this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
           resp => {
             this.integrationByWorkspace = resp;

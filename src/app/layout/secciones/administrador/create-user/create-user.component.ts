@@ -194,7 +194,7 @@ export class CreateUserComponent implements OnInit {
         }
       );
     } else {
-      this.toast.info('Las contraseñas no son iguales');
+      this.toast.error('Las contraseñas no son iguales');
     }
 
   }

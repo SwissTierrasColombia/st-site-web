@@ -148,7 +148,7 @@ export class EntregarComponent implements OnInit {
         this.toastr.info("La observación es obligatoria");
       }
     } else {
-      this.toastr.info("No tienes los permisos necesarios para entregar el insumo.");
+      this.toastr.error("No tienes los permisos necesarios para entregar el insumo.");
     }
   }
   sendSupplies() {
@@ -158,7 +158,7 @@ export class EntregarComponent implements OnInit {
           return element.observations === '';
         });
         if (data) {
-          this.toastr.info("Te faltan algunas observaciones");
+          this.toastr.error("Te faltan algunas observaciones");
         } else {
           this.serviceWorkspaces.deliveriesSupplies(this.idWorkSpace, this.deliverySupplies).subscribe(
             _ => {
@@ -167,10 +167,10 @@ export class EntregarComponent implements OnInit {
           );
         }
       } else {
-        this.toastr.info("Las observaciones generales son obligatorias")
+        this.toastr.error("Las observaciones generales son obligatorias")
       }
     } else {
-      this.toastr.info("No has seleccionado ningún insumo, ó te faltan las observaciones")
+      this.toastr.error("No has seleccionado ningún insumo, ó te faltan las observaciones")
     }
   }
 }

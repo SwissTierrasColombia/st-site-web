@@ -106,57 +106,65 @@ export class SolicitudComponent implements OnInit {
     );
   }
   agregar() {
-    const exist = this.tablesupplies.find(item => {
-      return item.idInsumo === this.selectSupplies.id;
-    });
-    if (exist === undefined) {
-      if (this.selectSupplies.modelRequired) {
-        this.listsupplies.supplies.push({
-          idCount: this.count,
-          idInsumo: this.selectSupplies.id,
-          observation: this.observations,
-          providerId: this.selectProvider.id,
-          typeSupplyId: this.selectSupplies.id,
-          modelVersion: this.selectModelSupplies
+    if (this.selectSupplies.id) {
+      if (this.observations) {
+        const exist = this.tablesupplies.find(item => {
+          return item.idInsumo === this.selectSupplies.id;
         });
-        this.tablesupplies.push({
-          idCount: this.count,
-          idEntidad: this.selectProvider.id,
-          entidad: this.selectProvider.name,
-          idInsumo: this.selectSupplies.id,
-          insumo: this.selectSupplies.name,
-          observacion: this.observations,
-          modelRequired: true,
-          modelVersion: this.selectModelSupplies,
-          versions: this.listModels
-        });
-        this.count += 1;
-        this.selectSupplies = 0;
-        this.observations = '';
+        if (exist === undefined) {
+          if (this.selectSupplies.modelRequired) {
+            this.listsupplies.supplies.push({
+              idCount: this.count,
+              idInsumo: this.selectSupplies.id,
+              observation: this.observations,
+              providerId: this.selectProvider.id,
+              typeSupplyId: this.selectSupplies.id,
+              modelVersion: this.selectModelSupplies
+            });
+            this.tablesupplies.push({
+              idCount: this.count,
+              idEntidad: this.selectProvider.id,
+              entidad: this.selectProvider.name,
+              idInsumo: this.selectSupplies.id,
+              insumo: this.selectSupplies.name,
+              observacion: this.observations,
+              modelRequired: true,
+              modelVersion: this.selectModelSupplies,
+              versions: this.listModels
+            });
+            this.count += 1;
+            this.selectSupplies = 0;
+            this.observations = '';
+          } else {
+            this.listsupplies.supplies.push({
+              idCount: this.count,
+              idInsumo: this.selectSupplies.id,
+              observation: this.observations,
+              providerId: this.selectProvider.id,
+              typeSupplyId: this.selectSupplies.id,
+            });
+            this.tablesupplies.push({
+              idCount: this.count,
+              idEntidad: this.selectProvider.id,
+              entidad: this.selectProvider.name,
+              idInsumo: this.selectSupplies.id,
+              insumo: this.selectSupplies.name,
+              observacion: this.observations
+            });
+            this.count += 1;
+            this.selectSupplies = 0;
+            this.observations = '';
+          }
+        } else {
+          this.toastr.show('Ya ha solicitado el insumo.', this.selectSupplies.name);
+        }
+        this.comprobarEnviarSolicitud();
       } else {
-        this.listsupplies.supplies.push({
-          idCount: this.count,
-          idInsumo: this.selectSupplies.id,
-          observation: this.observations,
-          providerId: this.selectProvider.id,
-          typeSupplyId: this.selectSupplies.id,
-        });
-        this.tablesupplies.push({
-          idCount: this.count,
-          idEntidad: this.selectProvider.id,
-          entidad: this.selectProvider.name,
-          idInsumo: this.selectSupplies.id,
-          insumo: this.selectSupplies.name,
-          observacion: this.observations
-        });
-        this.count += 1;
-        this.selectSupplies = 0;
-        this.observations = '';
+        this.toastr.error("Las observaciones son obligatorias.")
       }
     } else {
-      this.toastr.show('Ya ha solicitado el insumo.', this.selectSupplies.name);
+      this.toastr.error("No ha seleccionado ningún insumo.")
     }
-    this.comprobarEnviarSolicitud();
   }
   delete(item: any) {
     this.tablesupplies = this.tablesupplies.filter((element: any) => {
