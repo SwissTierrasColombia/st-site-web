@@ -1,7 +1,10 @@
 <div [@routerTransition]>
   <div class="row">
-    <div class="col-md-12 text-center mb-2">
-      <h2 class="text-muted"><small>Sistema de Transición para el Barrido Predial en Colombia</small></h2>
+    <div class="col-md-12 text-center">
+      <div class="text">
+        SISTEMA DE TRANSICIÓN<br>
+        BARRIDO PREDIAL
+      </div>
     </div>
     <div class="col-md-12">
       <ngb-carousel>
@@ -16,16 +19,20 @@
     </div>
   </div>
   <hr>
-  <div class="row">
-    <div class="col-xl-4 col-lg-6">
-      <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="50" [label]="'Tareas asignadas'"></app-stat>
+  <div class="row justify-content-center justify-content-md-center">
+    <div *ngIf="roleproveedor" class="mt-1 mb-1 col-8 col-md-4">
+      <app-stat [bgClass]="'success'" [icon]="'fa-tasks'" [count]="taskProvider" [label]="'SOLICITUDES'"
+        [url]="'/insumos/solicitudes'">
+      </app-stat>
     </div>
-    <div class="col-xl-4 col-lg-6">
-      <app-stat [bgClass]="'primary'" [icon]="'fa-tasks'" [count]="8" [label]="'Tareas Atrasadas'"></app-stat>
+    <div *ngIf="roleoperator" class="mt-1 mb-1 col-8 col-md-4">
+      <app-stat [bgClass]="'info'" [icon]="'fa-tasks'" [count]="taskOperator" [label]="'ENTREGAS'"
+        [url]="'/operador/entregas'">
+      </app-stat>
     </div>
-    <div class="col-xl-4 col-lg-6">
-      <app-stat [bgClass]="'danger'" [icon]="'fa-tasks'" [count]="3" [label]="'Tareas vencidas'"></app-stat>
-    </div>
+    <!-- <div class="mt-1 mb-1 col-8 col-md-4">
+      <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="0" [label]="'INTEGRACIONES'"></app-stat>
+    </div> -->
   </div>
   <hr />
 </div>

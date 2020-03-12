@@ -1,0 +1,195 @@
+<div [@routerTransition]>
+  <app-page-header [heading]="'Solicitud de Insumos'" [icon]="'fa-star'">
+  </app-page-header>
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Solicitud de Insumos</h3>
+    </div>
+    <div class="card-body">
+      <form action="" method="post">
+        <div class="row mb-2">
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Departamento</label>
+              </div>
+              <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
+                [(ngModel)]="selectDepartment">
+                <option value='0' selected>Seleccione el Departamento</option>
+                <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Municipio</label>
+              </div>
+              <select (change)="changeMunucipality()" class="custom-select" name="municipalities" id="municipalities"
+                [(ngModel)]="selectMunicipality">
+                <option value='0' selected>Seleccione el Municipio</option>
+                <option [ngValue]="item.id" *ngFor="let item of municipalities">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2" *ngIf="dataWorkSpaceMunicipality">
+          <div class='col-12 col-sm-6 mb-2'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Gestor</label>
+              </div>
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality.manager.name}}
+              </div>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6 mb-2'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Operador</label>
+              </div>
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality.operators[0] ? dataWorkSpaceMunicipality.operators[0].operator.name : ' '}}
+              </div>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Número de Predios</label>
+              </div>
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality.numberAlphanumericParcels}}
+              </div>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Área de Trabajo</label>
+              </div>
+              <div class="form-control">
+                {{dataWorkSpaceMunicipality.municipalityArea ? dataWorkSpaceMunicipality.municipalityArea: '0'}} m
+                <sup>2</sup>
+              </div>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="form-group form-check">
+              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1"
+                [(ngModel)]="splitZones" disabled="true">
+              <label class="form-check-label" for="exampleCheck1">Selección de Zonas</label>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <input class="form-control" type="text" disabled="true" placeholder="4" disabled="true">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class='col-12 col-sm-3 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Entidad</label>
+              </div>
+              <select (change)="changeProvider()" class="custom-select" name="entidades" id="entidades"
+                [(ngModel)]="selectProvider">
+                <option value='0' selected>Seleccione la entidad</option>
+                <option [ngValue]="item" *ngFor="let item of providers">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class='col-12 col-sm-3 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Insumos</label>
+              </div>
+              <select class="custom-select" name="insumos" id="insumos" [(ngModel)]="selectSupplies">
+                <option value='0' selected>Seleccione el insumo</option>
+                <option [ngValue]="item" *ngFor="let item of dataSuppliesProvider">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class='col-12 col-sm-5 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend input-group-text">
+                <div class="">* Alcance / Observaciones</div>
+              </div>
+              <textarea class="form-control" id="observations" rows="3" name="observaciones"
+                [(ngModel)]="observations"></textarea>
+            </div>
+          </div>
+          <div class='col-12 col-sm-1 mt-5'>
+            <button type="button" name="agregar" id="agregar" class="btn btn-primary btn-sm btn-block"
+              (click)="agregar()">Agregar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="table-responsive table-inverse" *ngIf="this.tablesupplies.length > 0">
+      <div class="text-center mt-2 mb-2">
+        <h3>Selección de Insumos</h3>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col" sortable="entidad">Entidad</th>
+            <th scope="col" sortable="insumo">Insumo</th>
+            <th scope="col" sortable="modelo">Modelo de Insumo</th>
+            <th scope="col" sortable="observacion">Observación</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of tablesupplies">
+            <th>{{ item.idCount }}</th>
+            <td class="col-sm-1"> {{ item.entidad }} </td>
+            <td class="col-sm-2">{{ item.insumo}}</td>
+            <td class="col-sm-3">
+              <div class="input-group" *ngIf="item.modelRequired">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" aria-required="true">*</label>
+                </div>
+                <select (change)="changeModelSupplies(item.idCount, item.modelVersion)" class="custom-select"
+                  name="modelSupplies{{item.idCount}}" id="modelSupplies{{item.idCount}}"
+                  [(ngModel)]="item.modelVersion">
+                  <option value='0' selected>Seleccione la versión del modelo de insumos LADM-COL</option>
+                  <option [ngValue]="item.name" *ngFor="let item of item.versions">Modelo {{item.name}}</option>
+                </select>
+              </div>
+              <div *ngIf="!item.modelRequired">N/A</div>
+            </td>
+            <td class="col-sm-4">{{ item.observacion }}</td>
+            <td class="col-sm-2"><i class="material-icons cursor" (click)="delete(item)">
+                delete_forever
+              </i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <div class="row">
+        <div class="col-12 col-sm-6 offset-sm-6 mt-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text">* Fecha Limite</label>
+            </div>
+            <input class="form-control" type="date" name="deadline" [(ngModel)]="listsupplies.deadline">
+          </div>
+        </div>
+        <div class="col-12 mt-3">
+          <div class="alert alert-primary text-center" role="alert">
+            Recuerde que los campos marcados con * son obligatorios.
+          </div>
+        </div>
+        <div class="col-12">
+          <button type="button" [disabled]="enviarsolicitud" class="btn btn-dark" (click)="submitInfo()">Enviar
+            Solicitud</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

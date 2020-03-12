@@ -15,6 +15,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MomentModule } from 'ngx-moment';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 @NgModule({
   imports: [
     CommonModule,
@@ -26,9 +28,13 @@ import { MomentModule } from 'ngx-moment';
     NgxSpinnerModule,
     MatProgressSpinnerModule,
     FontAwesomeModule,
-    MomentModule
+    MomentModule,
+    NgbModule,
+    NgxPaginationModule
   ],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+  ],
   providers: [AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

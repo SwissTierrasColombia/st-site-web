@@ -72,7 +72,7 @@ export class WorkspacesService {
    * getWorkSpaceActiveByMunicipality
    */
   public getWorkSpaceActiveByMunicipality(idMunicipality: number) {
-    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/municipalities/' + idMunicipality);
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/municipalities/' + idMunicipality + '/active');
   }
   /**
    * createRequest
@@ -102,6 +102,110 @@ export class WorkspacesService {
    * createUser
    */
   public createUser(data: any) {
+    console.log(data);
     return this.httpClient.post(this.url + '/workspaces/v1/administration/users', data);
+  }
+  /**
+   * GetSuppliesByMunicipality
+   */
+  public GetSuppliesByMunicipalityXTF(idMunicipality: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?extensions=xtf');
+  }
+  /**
+   * GetIntegrationCadastreRegistration
+   */
+  public GetIntegrationCadastreRegistration(idMunicipality: number, data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/integration/' + idMunicipality, data);
+  }
+  /**
+   * GetIntegrationsByWorkspace
+   */
+  public GetIntegrationsByWorkspace(idWorkspace: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations');
+  }
+  /**
+   * StartIntegrationAssited
+   */
+  public StartIntegrationAssited(idWorkspace: number, idIntegration: number) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration + '', {});
+  }
+  /**
+   * GenerateProductFromIntegration
+   */
+  public GenerateProductFromIntegration(idWorkspace: number, idIntegration: number) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration + '/export', {});
+  }
+  /**
+   * GetPendingTasksUser
+   */
+  public GetPendingTasksUser() {
+    return this.httpClient.get(this.url + '/workspaces/v1/tasks/pending');
+  }
+  /**
+ * GetTypesModels
+ */
+  public GetTypesModels() {
+    return this.httpClient.get(this.url + '/ili/versions/v1/versions');
+  }
+  /**
+   * deleteIntegration
+   */
+  public deleteIntegration(idWorkspace: number, idIntegration: number) {
+    return this.httpClient.delete(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/integrations/' + idIntegration);
+  }
+  /**
+   * GetRequestByManager
+   */
+  public GetRequestByManager() {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/requests/emmiters');
+  }
+  /**
+ * GetSuppliesByMunicipalityFilter
+ */
+  public GetSuppliesByMunicipalityFilter(idMunicipality: number, page: string, requests?: string) {
+    let url = this.url + '/workspaces/v1/supplies/' + idMunicipality + '?page=' + page
+    if (requests) {
+      url = url + '&requests=' + requests
+    }
+    return this.httpClient.get(url);
+  }
+  /**
+   * downloadSupplie
+   */
+  public downloadSupplie(supplyId: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/download-supply/' + supplyId, { responseType: 'arraybuffer', observe: 'response' })
+  }
+  public deleteSupplies(idMunicipality: number, supplyId: number) {
+    return this.httpClient.delete(this.url + '/workspaces/v1/workspaces/' + idMunicipality + '/supplies/' + supplyId);
+  }
+  /**
+   * changePassword
+   */
+  public changePassword(data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/administration/users/reset-password', data);
+  }
+  /**
+   * deliveriesSupplies
+   */
+  public deliveriesSupplies(idWorkspace: number, data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/workspaces/' + idWorkspace + '/operators/deliveries', data);
+  }
+  /**
+   * GetDeliveriesToOperator
+   */
+  public GetDeliveriesToOperator() {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/operators/deliveries');
+  }
+  /**
+   * CloseDelivery
+   */
+  public CloseDelivery(idDelivery) {
+    return this.httpClient.put(this.url + '/workspaces/v1/operators/deliveries/' + idDelivery + '/disable', {});
+  }
+  /**
+   * downloadSupport
+   */
+  public downloadSupport(workspaceId: number, supportId: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/' + workspaceId + '/download-support/' + supportId, { responseType: 'arraybuffer', observe: 'response' });
   }
 }

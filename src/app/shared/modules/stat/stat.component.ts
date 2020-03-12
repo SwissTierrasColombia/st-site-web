@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-stat',
@@ -9,11 +10,17 @@ export class StatComponent implements OnInit {
     @Input() bgClass: string;
     @Input() icon: string;
     @Input() count: number;
+    @Input() url: string;
     @Input() label: string;
     @Input() data: number;
     @Output() event: EventEmitter<any> = new EventEmitter();
 
-    constructor() {}
+    constructor(
+        private router: Router
+    ) { }
 
-    ngOnInit() {}
+    ngOnInit() { }
+    sendTopage() {
+        this.router.navigate([this.url]);
+    }
 }

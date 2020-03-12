@@ -8,7 +8,6 @@ import { BsComponentComponent } from './bs-component.component';
 import {
   AlertComponent,
   ButtonsComponent,
-  ModalComponent,
   CollapseComponent,
   DatePickerComponent,
   DropdownComponent,
@@ -21,6 +20,7 @@ import {
   TimepickerComponent
 } from './components';
 import { PageHeaderModule } from '../../shared';
+import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
 
 @NgModule({
   imports: [
@@ -35,7 +35,6 @@ import { PageHeaderModule } from '../../shared';
     BsComponentComponent,
     ButtonsComponent,
     AlertComponent,
-    ModalComponent,
     CollapseComponent,
     DatePickerComponent,
     DropdownComponent,
@@ -45,7 +44,11 @@ import { PageHeaderModule } from '../../shared';
     TabsComponent,
     RatingComponent,
     TooltipComponent,
-    TimepickerComponent
+    TimepickerComponent,
+    DialogBoxComponent
+  ],
+  exports: [
+    DialogBoxComponent
   ]
 })
 export class BsComponentModule { }

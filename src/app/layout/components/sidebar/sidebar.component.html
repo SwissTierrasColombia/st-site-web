@@ -2,98 +2,115 @@
   <div class="list-group">
 
     <a routerLink="" class="list-group-item">
-      <i class="fa fa-fw fa-dashboard"></i>&nbsp;
-      <span>Pagina principal</span>
+      <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+      <span>Página Principal</span>
     </a>
     <a href="http://sat.proadmintierra.info/autenticacion/login" target="_blank" class="list-group-item">
-      <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
-      <span>Consulta <br>(Punto unico de verdad)</span>
+      <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+      <span>Consulta <br>(Punto único de verdad)</span>
     </a>
-    <div class="nested-menu">
+    <div class="nested-menu"
+      *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].gestion)">
-        <i class="fa fa-plus"></i>&nbsp;
+        <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>Gestión de Municipio</span>
       </a>
       <li class="nested" [class.expand]="showMenu === listMenu[0].gestion">
         <ul class="submenu">
-          <li>
+          <li
+            *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
             <a href="" [routerLink]="['/gestion/workspace']">
-              <i class="fa fa-monument"></i>&nbsp;
-              <span>Espacio de trabajo</span>
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Asignación</span>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="javascript:void(0)">
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Tareas</span>
             </a>
-          </li>
-          <li>
+          </li> -->
+          <!-- <li>
             <a href="javascript:void(0)">
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Reportes</span>
             </a>
-          </li>
-          <li>
+          </li> -->
+          <!-- <li>
             <a href="javascript:void(0)">
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Indicadores</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </li>
     </div>
-    <div class="nested-menu">
+    <div class="nested-menu"
+      *ngIf="rolegestor ? rolegestor.id: 0 === allroles.gestor || roleproveedor ? roleproveedor.id: 0 === allroles.proveedor || roleAdmin ? roleAdmin.id: 0 === allroles.administrador">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].insumos)">
-        <i class="fa fa-plus"></i>&nbsp;
+        <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>Insumos</span>
       </a>
       <li class="nested" [class.expand]="showMenu === listMenu[0].insumos">
         <ul class="submenu">
-          <li>
+          <li *ngIf="rolegestor ? rolegestor.id: 0 === allroles.gestor">
             <a [routerLink]="['/insumos/solicitud']">
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Solicitud</span>
             </a>
           </li>
-          <li>
+          <li *ngIf="rolegestor ? rolegestor.id: 0 === allroles.gestor">
+            <a [routerLink]="['/insumos/integracion']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Integración</span>
+            </a>
+          </li>
+          <li
+            *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
+            <a href="" [routerLink]="['/insumos/buscar']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Búsqueda</span>
+            </a>
+          </li>
+          <li *ngIf="roleproveedor ? roleproveedor.id: 0 === allroles.proveedor">
             <a [routerLink]="['/insumos/solicitudes']">
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Solicitudes</span>
             </a>
           </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="fa fa-monument"></i>&nbsp;
-              <span>Integración</span>
+          <li
+            *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
+            <a [routerLink]="['/insumos/entrega']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Entrega</span>
             </a>
           </li>
         </ul>
       </li>
     </div>
-    <div class="nested-menu">
+    <div class="nested-menu" *ngIf="roleoperador ? roleoperador.id: 0 === allroles.operador">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].operacion)">
-        <i class="fa fa-plus"></i>&nbsp;
+        <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>Operación</span>
       </a>
       <li class="nested" [class.expand]="showMenu === listMenu[0].operacion">
         <ul class="submenu">
           <li>
-            <a href="javascript:void(0)">
-              <i class="fa fa-monument"></i>&nbsp;
-              <span>Descargue insumos</span>
+            <a [routerLink]="['/operador/entregas']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Descargue Insumos</span>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a>
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Cargue BPM</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </li>
     </div>
-    <div class="nested-menu">
+    <!-- <div class="nested-menu">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].calidad)">
         <i class="fa fa-plus"></i>&nbsp;
         <span>Control calidad</span>
@@ -102,14 +119,14 @@
         <ul class="submenu">
           <li>
             <a>
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Control de calidad</span>
             </a>
           </li>
         </ul>
       </li>
-    </div>
-    <div class="nested-menu">
+    </div> -->
+    <!-- <div class="nested-menu">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].tramites)">
         <i class="fa fa-plus"></i>&nbsp;
         <span>Trámites</span>
@@ -118,55 +135,56 @@
         <ul class="submenu">
           <li>
             <a>
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Novedades</span>
             </a>
           </li>
           <li>
             <a>
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Trámites</span>
             </a>
           </li>
           <li>
             <a>
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Radicación</span>
             </a>
           </li>
         </ul>
       </li>
-    </div>
-    <div class="nested-menu">
+    </div> -->
+    <div class="nested-menu" *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].administrador)">
-        <i class="fa fa-plus"></i>&nbsp;
+        <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>Administrador</span>
       </a>
       <li class="nested" [class.expand]="showMenu === listMenu[0].administrador">
         <ul class="submenu">
           <li>
             <a [routerLink]="['/administrador/listar-usuarios']">
-              <i class="fa fa-monument"></i>&nbsp;
-              <span>Listar usuarios</span>
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Listar Usuarios</span>
             </a>
           </li>
           <li>
             <a [routerLink]="['/administrador/crear-usuario']">
-              <i class="fa fa-monument"></i>&nbsp;
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Registrar Usuarios</span>
             </a>
           </li>
         </ul>
       </li>
     </div>
-    <a href="https://github.com/AgenciaImplementacion/Asistente-LADM_COL/releases" target="_blank" class="list-group-item">
-      <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
-      <span>Instalación Asistente <br> LADM</span>
+    <a href="https://agenciaimplementacion.github.io/Asistente-LADM_COL/" target="_blank"
+      class="list-group-item">
+      <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+      <span>Asistente LADM-COL</span>
     </a>
-    <a [routerLink]="['/poc']" class="list-group-item">
+    <!-- <a *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador" [routerLink]="['/poc']" class="list-group-item">
       <i class="fa fa-fw fa-plus-circle"></i>&nbsp;
       <span>Prueba de concepto</span>
-    </a>
+    </a> -->
     <div class="header-fields">
       <div class="nested-menu">
         <a class="list-group-item" (click)="addExpandClass('profile')">
@@ -175,11 +193,11 @@
         <li class="nested" [class.expand]="showMenu === 'profile'">
           <ul class="submenu">
             <li>
-              <a href="javascript:void(0)">
+              <a [routerLink]="['/cuenta/perfil']">
                 <span><i class="fa fa-fw fa-user"></i> Perfil</span>
               </a>
             </li>
-            <li>
+            <!-- <li>
               <a href="javascript:void(0)">
                 <span><i class="fa fa-fw fa-envelope"></i> Bandeja de entrada</span>
               </a>
@@ -188,7 +206,7 @@
               <a href="javascript:void(0)">
                 <span><i class="fa fa-fw fa-gear"></i> Configuración</span>
               </a>
-            </li>
+            </li> -->
             <li>
               <a [routerLink]="['/login']" (click)="onLoggedout()">
                 <span><i class="fa fa-fw fa-power-off"></i> Cerrar sesión</span>

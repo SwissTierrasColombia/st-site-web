@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { JwtHelper } from 'src/app/helpers/jwt';
+import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
+import { RoleModel } from 'src/app/helpers/role.model';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +13,26 @@ import { JwtHelper } from 'src/app/helpers/jwt';
 export class HeaderComponent implements OnInit {
   public pushRightClass: string;
   user: any;
-  constructor(public router: Router) {
+  taskProvider: number;
+  roleproveedor: any;
+  allroles: any;
+  roleoperator: any;
+  taskOperator: number;
+  constructor(
+    public router: Router,
+    private serviceWorkspaces: WorkspacesService,
+    private roles: RoleModel
+
+  ) {
+    this.taskProvider = 0;
+    this.taskOperator = 0;
+    this.allroles = {};
+    this.roleproveedor = {
+      id: 0
+    };
+    this.roleoperator = {
+      id: 0
+    };
     this.user = {
       first_name: 'user',
       last_name: ''
@@ -30,6 +51,26 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.pushRightClass = 'push-right';
     this.user = JwtHelper.getUserPublicInformation();
+    this.roleproveedor = this.user.roles.find((elem: any) => {
+      return elem.id === this.roles.proveedor;
+    });
+    this.roleoperator = this.user.roles.find((elem: any) => {
+      return elem.id === this.roles.operador;
+    });
+    if (this.roleproveedor) {
+      this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
+        (data: any) => {
+          this.taskProvider = data.length;
+        }
+      );
+    }
+    if (this.roleoperator) {
+      this.serviceWorkspaces.GetDeliveriesToOperator().subscribe(
+        (response: any) => {
+          this.taskOperator = response.length;
+        }
+      );
+    }
   }
 
   isToggled(): boolean {
@@ -49,6 +90,7 @@ export class HeaderComponent implements OnInit {
 
   onLoggedout() {
     localStorage.removeItem(environment.nameTokenSession);
+    this.router.navigate(['login']);
   }
 
 

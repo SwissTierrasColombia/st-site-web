@@ -5,6 +5,8 @@
 @import "rtl";
 @import "responsive";
 @import "ngx-toastr/ngx-toastr";
+@import "modal";
+@import "familyMaterialIcons";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @media print {
   .breadcrumb {
@@ -19,4 +21,11 @@
 }
 .col-form-label {
   font-weight: bold;
+}
+
+@font-face{
+  font-family: 'helvetica-Roman';
+  font-style: normal;
+  font-weight: 100;
+  src: url('./fonts/Helvetica\ Neue\ CE\ 55\ Roman.ttf');
 }

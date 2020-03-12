@@ -1,0 +1,141 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Búsqueda de Insumos'" [icon]="'fa-star'"></app-page-header>
+
+    <div class="card">
+        <div class="card-header text-center">
+            <h3>Búsqueda de Insumos</h3>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row mb-2">
+                    <div class='col-12 col-sm-6 mb-1'>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" aria-required="true">* Departamento</label>
+                            </div>
+                            <select (change)="changeDepartament()" class="custom-select" name="departments"
+                                id="departments" [(ngModel)]="selectDepartment">
+                                <option value='0' selected>Seleccione el Departamento</option>
+                                <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='col-12 col-sm-6  mb-1'>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">* Municipio</label>
+                            </div>
+                            <select class="custom-select" name="munucipalities" id="munucipalities"
+                                [(ngModel)]="selectMunicipality">
+                                <option value='0' selected>Seleccione el Municipio</option>
+                                <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div *ngIf="usermanager" class='col-12 mb-1'>
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" aria-required="true">Solicitudes Gestor</label>
+                            </div>
+                            <select class="custom-select" name="managersprfile" id="managersprofile"
+                                [(ngModel)]="selectSuppliesManagerRequest" multiple>
+                                <option [ngValue]="item.id"
+                                    *ngFor="let item of suppliesManagerRequest; let index = index;">
+                                    Solicitud # {{item.id}} ({{item.provider ? item.provider.name: ''}})
+                                </option>
+                            </select>
+                        </div>
+                        <small id="entities" class="form-text text-muted">Seleccione las solicitudes a buscar</small>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="alert alert-primary text-center" role="alert">
+                            Recuerde que los campos marcados con * son obligatorios.
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-muted text-center">
+            <button type="button" class="btn btn-dark" (click)="getPage(1)">Buscar</button>
+        </div>
+    </div>
+    <div *ngIf="allSupplies.length > 0">
+        <div class="row justify-content-md-center">
+            <div class="card text-center">
+                <div class="card-header text-center">
+                    <h5>Resultados de Búsqueda</h5>
+                </div>
+                <div class="card-body">
+                    <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number"
+                        [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [ellipses]="false"
+                        [boundaryLinks]="true" (pageChange)="getPage($event)">
+                    </ngb-pagination>
+                    <div class="search-hero">
+                        <input class="form-control" type="text" name="search" [(ngModel)]="searchText"
+                            autocomplete="off" placeholder="&#61442;  Buscar insumo">
+                    </div>
+                    <div class="table-inverse table-responsive">
+                        <table class="table table-striped">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>Proveedor</th>
+                                    <th>Insumo</th>
+                                    <th>Fecha de Cargue</th>
+                                    <th>Modelo</th>
+                                    <th>Observación</th>
+                                    <th>Descargar</th>
+                                    <th *ngIf="usermanager">Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of allSupplies |filter:searchText">
+                                    <td scope="row">{{item.typeSupply ? item.typeSupply.provider.name: 'N/A'}}</td>
+                                    <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'N/A'}}</td>
+                                    <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
+                                    <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
+                                    <td scope="row">{{item.observations}}</td>
+                                    <td>
+                                        <i class="material-icons cursor"
+                                            (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
+                                            cloud_download </i>
+                                    </td>
+                                    <td *ngIf="usermanager"><i class="material-icons cursor"
+                                            (click)="openModal(item.id, 'custom-modal-2')">
+                                            delete_forever
+                                        </i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <jw-modal id="custom-modal-2" class="mt-5">
+        <div class="card">
+            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+            <div class="card-header">
+                <i class="cui-arrow-bottom"></i>
+                <h2 class="text-center font-weight-bold">
+                    ¿Está seguro de eliminar el insumo?
+                </h2>
+                <h5 class="alert alert-warning text-center">Advertencia: El insumo se borrará permanentemente del Sistema.</h5>
+            </div>
+            <div class="card-body row">
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-primary btn-block"
+                        (click)="closeModal(true,'custom-modal-2');">
+                        <h4>Sí</h4>
+                    </button>
+                </div>
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false,'custom-modal-2');">
+                        <h4>No</h4>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
+</div>
