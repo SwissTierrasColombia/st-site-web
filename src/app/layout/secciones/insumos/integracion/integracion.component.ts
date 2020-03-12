@@ -144,7 +144,6 @@ export class IntegracionComponent implements OnInit {
         this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
           resp => {
             this.integrationByWorkspace = resp;
-            console.log('this.integrationByWorkspace', this.integrationByWorkspace);
           }
         );
       }

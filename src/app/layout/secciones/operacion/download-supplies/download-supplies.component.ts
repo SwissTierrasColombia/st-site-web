@@ -54,8 +54,6 @@ export class DownloadSuppliesComponent implements OnInit {
         }
       });
       this.supplies = this.dataRequestPending[0].supplies;
-      console.log(this.supplies);
-
     });
   }
   reload() {

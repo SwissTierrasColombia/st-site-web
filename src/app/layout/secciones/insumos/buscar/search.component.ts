@@ -28,6 +28,7 @@ export class SearchComponent implements OnInit {
   number: any;
   totalElements: any;
   idSupplieDelete: number;
+  searchText: string;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,

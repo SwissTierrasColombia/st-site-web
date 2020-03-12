@@ -29,6 +29,7 @@ export class EntregarComponent implements OnInit {
   deliverySupplies: any;
   sendSuppliesFilter: boolean;
   idWorkSpace: number;
+  searchText: string;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
