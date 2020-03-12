@@ -5,7 +5,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import * as _moment from 'moment';
 import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
-import { PocService } from 'src/app/services/poc/poc.service';
 
 const moment = _moment;
 
@@ -240,7 +239,7 @@ export class CargueComponent implements OnInit {
       }
     );
   }
-  modelChanged(item, idOut: number, idInt: number) {
+  modelChanged(item: any, idOut: number, idInt: number) {
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].observations;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].file;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].url;

@@ -142,7 +142,7 @@
             </div>
             <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 5">
               <button type="button" class="btn" id="boton{{idOut}}{{idInt}}" [ngClass]="'btn-warning'"
-                (click)="send(item.id, supp)" [disabled]="supp.button.status">
+                (click)="send(item.id, supp, idOut, idInt)" [disabled]="supp.button.status">
                 {{supp.button.status ? 'Justificación enviada':'Enviar'}}
               </button>
             </div>

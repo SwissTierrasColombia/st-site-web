@@ -14,7 +14,7 @@ export class ListUserComponent implements OnInit {
   dataListUser: any;
   page: number;
   pageSize: number;
-
+  searchText: string;
   constructor(
     private serviceAdministration: AdministrationService,
   ) {
@@ -27,7 +27,6 @@ export class ListUserComponent implements OnInit {
     this.serviceAdministration.getAllUsers()
       .subscribe(arg => {
         this.dataListUser = arg
-        console.log(this.dataListUser);
       });
   }
 
