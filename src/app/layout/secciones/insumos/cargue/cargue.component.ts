@@ -229,6 +229,14 @@ export class CargueComponent implements OnInit {
           }
         }
         this.dataRequestPending[idOut].suppliesRequested[idInt] = this.clone(response);
+        this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
+          if (item.state.id === 1 || item.state.id === 5) {
+            return item.state;
+          }
+        });
+        if (this.dataRequestPending[0].suppliesRequested.length === this.closeRequestButtonArray.length) {
+          this.closeRequestButton = false;
+        }
       }
     );
   }
