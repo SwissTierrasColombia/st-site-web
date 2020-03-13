@@ -205,13 +205,13 @@
                               </i>
                             </span>
                           </div>
-                          <div class="col-12 col-sm-3" *ngIf="item.integrationState.name == 'FINALIZADA AUTOMÁTICA'">
+                          <div class="col-12 col-sm-3" *ngIf="item.integrationState.id === 2">
                             <span tooltip="Generar XTF" placement="top" show-delay="500">
                               <i class="material-icons cursor" (click)="openModalGenerateXTF('modalXTF',item.id)">
                                 assignment_turned_in
                               </i></span>
                           </div>
-                          <div class="col-12 col-sm-3" *ngIf="item.integrationState.name == 'FINALIZADA AUTOMÁTICA'">
+                          <div class="col-12 col-sm-3" *ngIf="item.integrationState.id === 2">
                             <span tooltip="Iniciar integración asistida" placement="top" show-delay="500">
                               <i class="material-icons cursor"
                                 (click)="openModalIntegrationAssited('modalIntegration',item.id)">
@@ -219,7 +219,7 @@
                               </i>
                             </span>
                           </div>
-                          <div class="col-12 col-sm-3" *ngIf="item.integrationState.name == 'FINALIZADA AUTOMÁTICA'">
+                          <div class="col-12 col-sm-3" *ngIf="item.integrationState.id === 2 || item.integrationState.id === 7">
                             <span tooltip="Eliminar" placement="top" show-delay="500">
                               <i class="material-icons cursor" (click)="openModalcancel('modalCancel',item.id)">
                                 delete

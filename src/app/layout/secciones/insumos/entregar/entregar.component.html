@@ -78,12 +78,12 @@
                             autocomplete="off" placeholder="&#61442;  Buscar insumo">
                     </div>
                     <div class="table-inverse table-responsive">
-                        <!-- {{allSupplies | json}} -->
                         <table class="table table-striped">
                             <thead class="thead-inverse">
                                 <tr>
                                     <th>ID</th>
                                     <th>Insumo</th>
+                                    <th>Fecha de Cargue</th>
                                     <th>Observación del Insumo</th>
                                     <th>Modelo</th>
                                     <th>Estado</th>
@@ -97,6 +97,9 @@
                                     </td>
                                     <td scope="row">
                                         {{item.typeSupply ? item.typeSupply.name: 'Modelo de insumos para el Municipio'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}})
+                                    </td>
+                                    <td scope="row">
+                                        {{globalFuntionDate(item.createdAt)}}
                                     </td>
                                     <td scope="row">{{item.observations}}</td>
                                     <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
@@ -141,7 +144,7 @@
             </div>
         </div>
         <div *ngIf="usermanager" class="card-footer text-muted text-center">
-            <button type="button" class="btn btn-dark" (click)="sendSupplies()">Entregar insumos</button>
+            <button type="button" class="btn btn-dark" (click)="sendSupplies()">Entregar Insumos</button>
         </div>
     </div>
 </div>
