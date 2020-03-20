@@ -288,4 +288,10 @@ export class CargueComponent implements OnInit {
       this.dataRequestPending[idOut].suppliesRequested[idInt].typeData = this.typeDataFieldModel.typeDataNone;
     }
   }
+  getEntity(item: any) {
+    let data = item.emitters.find((elem: any) => {
+      return elem.emitterType === "ENTITY"
+    });
+    return data.user.name
+  }
 }
