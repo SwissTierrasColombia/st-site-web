@@ -72,7 +72,16 @@ export class WorkspaceComponent implements OnInit {
       });
   }
   docSoport(file: File) {
-    this.dataCreateWorkSpace.supportFile = file[0];
+    if (file[0].type === 'application/zip') {
+      this.dataCreateWorkSpace.supportFile = file[0];
+    } else {
+      if (file[0].size / 1024 / 1024 > 1) {
+        this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
+        this.dataCreateWorkSpace.supportFile = '';
+      } else {
+        this.dataCreateWorkSpace.supportFile = file[0];
+      }
+    }
   }
   changeDepartament() {
     this.dataCreateWorkSpace.selectDepartment = this.selectDepartment;
