@@ -36,4 +36,10 @@ export class SolicitudesComponent implements OnInit {
   load(idInsumo: number) {
     this.router.navigate(['/insumos/cargue/' + idInsumo]);
   }
+  getEntity(item: any) {
+    let data = item.emitters.find((elem: any) => {
+      return elem.emitterType === "ENTITY"
+    });
+    return data.user.name
+  }
 }

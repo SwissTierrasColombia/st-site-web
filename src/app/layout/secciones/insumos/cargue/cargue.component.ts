@@ -130,23 +130,49 @@ export class CargueComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   docSoport(files: FileList, idOut: number, idInt: number) {
-    const formato = files[0].name.split('.').pop();
-    let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
-    formatoPermitido = formatoPermitido.map(
-      // tslint:disable-next-line:only-arrow-functions
-      function (elem: any) {
-        return elem.substr(1);
+    if (files[0].type === 'application/zip') {
+      const formato = files[0].name.split('.').pop();
+      let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
+      formatoPermitido = formatoPermitido.map(
+        // tslint:disable-next-line:only-arrow-functions
+        function (elem: any) {
+          return elem.substr(1);
+        });
+      const archivoValido = formatoPermitido.filter(item => {
+        return item === formato;
       });
-    const archivoValido = formatoPermitido.filter(item => {
-      return item === formato;
-    });
 
-    if (archivoValido.length > 0) {
-      this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
-      this.validsendFile(idOut, idInt);
+      if (archivoValido.length > 0) {
+        this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
+        this.validsendFile(idOut, idInt);
+      } else {
+        this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
+        this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
+      }
     } else {
-      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
-      this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
+      if (files[0].size / 1024 / 1024 > 1) {
+        this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
+        this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
+      } else {
+        const formato = files[0].name.split('.').pop();
+        let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
+        formatoPermitido = formatoPermitido.map(
+          // tslint:disable-next-line:only-arrow-functions
+          function (elem: any) {
+            return elem.substr(1);
+          });
+        const archivoValido = formatoPermitido.filter(item => {
+          return item === formato;
+        });
+
+        if (archivoValido.length > 0) {
+          this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
+          this.validsendFile(idOut, idInt);
+        } else {
+          this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
+          this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
+        }
+      }
     }
   }
   validsendFile(idOut: number, idInt: number) {
@@ -261,5 +287,11 @@ export class CargueComponent implements OnInit {
     if (item.type.file === this.typeDataFieldModel.typeDataNone) {
       this.dataRequestPending[idOut].suppliesRequested[idInt].typeData = this.typeDataFieldModel.typeDataNone;
     }
+  }
+  getEntity(item: any) {
+    let data = item.emitters.find((elem: any) => {
+      return elem.emitterType === "ENTITY"
+    });
+    return data.user.name
   }
 }

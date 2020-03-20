@@ -33,7 +33,7 @@ export class OperatorAssignmentComponent implements OnInit {
   operators: any;
   selectOperator: number;
   dataOperatorsWorkSpace: any;
-  supportFileOperator: File;
+  supportFileOperator: any;
   assingOperator: boolean;
   replaceOperator: boolean;
   constructor(
@@ -125,7 +125,16 @@ export class OperatorAssignmentComponent implements OnInit {
   }
 
   docSoport(files: FileList) {
-    this.supportFileOperator = files[0];
+    if (files[0].type === 'application/zip') {
+      this.supportFileOperator = files[0];
+    } else {
+      if (files[0].size / 1024 / 1024 > 1) {
+        this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
+        this.supportFileOperator = undefined;
+      } else {
+        this.supportFileOperator = files[0];
+      }
+    }
   }
 
   formatDate(date: string) {

@@ -26,7 +26,7 @@
                 <td scope="row">{{i+1}}</td>
                 <td scope="row">{{item.municipality.department.name}}</td>
                 <td scope="row">{{item.municipality.name}}</td>
-                <td scope="row">{{item.provider.name}}</td>
+                <td scope="row">{{getEntity(item)}}</td>
                 <td scope="row">{{item.provider.providerCategory.name}}</td>
                 <td scope="row">{{formatDate(item.createdAt)}}</td>
                 <td scope="row">{{formatDate(item.deadline)}}</td>
