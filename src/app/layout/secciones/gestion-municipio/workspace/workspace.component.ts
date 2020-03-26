@@ -72,7 +72,8 @@ export class WorkspaceComponent implements OnInit {
       });
   }
   docSoport(file: File) {
-    if (file[0].type === 'application/zip') {
+    var re = /zip*/;
+    if (file[0].type.match(re)) {
       this.dataCreateWorkSpace.supportFile = file[0];
     } else {
       if (file[0].size / 1024 / 1024 > 1) {

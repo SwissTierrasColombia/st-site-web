@@ -130,7 +130,8 @@ export class CargueComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   docSoport(files: FileList, idOut: number, idInt: number) {
-    if (files[0].type === 'application/zip') {
+    var re = /zip*/;
+    if (files[0].type.match(re)) {
       const formato = files[0].name.split('.').pop();
       let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
       formatoPermitido = formatoPermitido.map(
