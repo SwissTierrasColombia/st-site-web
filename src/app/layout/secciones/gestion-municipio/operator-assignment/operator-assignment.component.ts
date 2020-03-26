@@ -125,7 +125,8 @@ export class OperatorAssignmentComponent implements OnInit {
   }
 
   docSoport(files: FileList) {
-    if (files[0].type === 'application/zip') {
+    var re = /zip*/;
+    if (files[0].type.match(re)) {
       this.supportFileOperator = files[0];
     } else {
       if (files[0].size / 1024 / 1024 > 1) {
