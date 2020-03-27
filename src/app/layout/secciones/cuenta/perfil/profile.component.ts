@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtHelper } from 'src/app/helpers/jwt';
-import { slideToBottom } from 'src/app/router.animations';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
-  animations: [slideToBottom()]
+  styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
 

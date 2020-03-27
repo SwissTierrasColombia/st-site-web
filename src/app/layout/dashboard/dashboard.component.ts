@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { slideToBottom } from '../../router.animations';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
@@ -7,8 +6,7 @@ import { RoleModel } from 'src/app/helpers/role.model';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  animations: [slideToBottom()]
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   public alerts: Array<any> = [];

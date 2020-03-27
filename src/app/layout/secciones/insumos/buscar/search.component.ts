@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { slideToLeft } from 'src/app/router.animations';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
@@ -7,12 +6,10 @@ import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { saveAs } from 'file-saver';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { ToastrService } from 'ngx-toastr';
-import { Select2OptionData } from 'ng2-select2';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
-  animations: [slideToLeft()]
+  styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
 

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { slideToLeft } from 'src/app/router.animations';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
@@ -9,8 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
-  styleUrls: ['./workspace.component.scss'],
-  animations: [slideToLeft()]
+  styleUrls: ['./workspace.component.scss']
 })
 export class WorkspaceComponent implements OnInit {
 

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { routerTransition } from '../router.animations';
 import { environment } from 'src/environments/environment';
 import { LoginService } from '../services/auth/login.service';
 
@@ -8,7 +7,6 @@ import { LoginService } from '../services/auth/login.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  animations: [routerTransition()]
 })
 export class LoginComponent implements OnInit {
   loginData = {

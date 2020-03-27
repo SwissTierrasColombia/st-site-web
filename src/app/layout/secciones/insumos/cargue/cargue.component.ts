@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { slideToLeft } from 'src/app/router.animations';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
@@ -11,8 +10,7 @@ const moment = _moment;
 @Component({
   selector: 'app-cargue',
   templateUrl: './cargue.component.html',
-  styleUrls: ['./cargue.component.scss'],
-  animations: [slideToLeft()]
+  styleUrls: ['./cargue.component.scss']
 })
 export class CargueComponent implements OnInit {
   idInsumo: string;

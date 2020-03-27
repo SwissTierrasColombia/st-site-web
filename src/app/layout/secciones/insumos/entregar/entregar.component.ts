@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { slideToLeft } from 'src/app/router.animations';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
@@ -8,9 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-entregar',
   templateUrl: './entregar.component.html',
-  styleUrls: ['./entregar.component.scss'],
-  animations: [slideToLeft()]
-
+  styleUrls: ['./entregar.component.scss']
 })
 export class EntregarComponent implements OnInit {
 

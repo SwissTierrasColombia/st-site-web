@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { slideToLeft } from 'src/app/router.animations';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import * as _moment from 'moment';
 import { saveAs } from 'file-saver';
@@ -10,9 +9,7 @@ const moment = _moment;
 @Component({
   selector: 'app-download-supplies',
   templateUrl: './download-supplies.component.html',
-  styleUrls: ['./download-supplies.component.scss'],
-  animations: [slideToLeft()]
-
+  styleUrls: ['./download-supplies.component.scss']
 })
 export class DownloadSuppliesComponent implements OnInit {
 

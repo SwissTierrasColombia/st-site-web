@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { routerTransition } from 'src/app/router.animations';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import * as _moment from 'moment';
@@ -11,8 +10,7 @@ const moment = _moment;
 @Component({
   selector: 'app-operator-view',
   templateUrl: './operator-view.component.html',
-  styleUrls: ['./operator-view.component.scss'],
-  animations: [routerTransition()]
+  styleUrls: ['./operator-view.component.scss']
 })
 
 export class OperatorViewComponent implements OnInit {

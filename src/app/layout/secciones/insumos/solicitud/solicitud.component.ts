@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { slideToLeft } from 'src/app/router.animations';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-solicitud',
   templateUrl: './solicitud.component.html',
-  styleUrls: ['./solicitud.component.scss'],
-  animations: [slideToLeft()]
+  styleUrls: ['./solicitud.component.scss']
 })
 export class SolicitudComponent implements OnInit {
 

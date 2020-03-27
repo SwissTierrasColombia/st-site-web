@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { slideToBottom } from 'src/app/router.animations';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
@@ -11,8 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-integracion',
   templateUrl: './integracion.component.html',
-  styleUrls: ['./integracion.component.scss'],
-  animations: [slideToBottom()]
+  styleUrls: ['./integracion.component.scss']
 })
 export class IntegracionComponent implements OnInit {
 
