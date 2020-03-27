@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { slideToLeft } from 'src/app/router.animations';
 import { Router } from '@angular/router';
 import * as _moment from 'moment';
 
@@ -9,8 +8,7 @@ const moment = _moment;
 @Component({
   selector: 'app-deliveries-supplies',
   templateUrl: './deliveries-supplies.component.html',
-  styleUrls: ['./deliveries-supplies.component.scss'],
-  animations: [slideToLeft()]
+  styleUrls: ['./deliveries-supplies.component.scss']
 })
 export class DeliveriesSuppliesComponent implements OnInit {
   dataRequestPending: any;

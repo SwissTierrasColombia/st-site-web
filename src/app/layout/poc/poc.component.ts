@@ -1,14 +1,12 @@
 
 import { Component, OnInit } from '@angular/core';
-import { routerTransition } from 'src/app/router.animations';
 import { PocService } from 'src/app/services/poc/poc.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-poc',
   templateUrl: './poc.component.html',
-  styleUrls: ['./poc.component.scss'],
-  animations: [routerTransition()]
+  styleUrls: ['./poc.component.scss']
 })
 export class PocComponent implements OnInit {
   respuestaValidador: any;

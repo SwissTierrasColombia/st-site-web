@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AdministrationService } from 'src/app/services/administration/administration.service';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
-import { slideToLeft } from 'src/app/router.animations';
 
 @Component({
   selector: 'app-list-user',
   templateUrl: './list-user.component.html',
-  styleUrls: ['./list-user.component.scss'],
-  animations: [slideToLeft()]
+  styleUrls: ['./list-user.component.scss']
 })
 export class ListUserComponent implements OnInit {
 

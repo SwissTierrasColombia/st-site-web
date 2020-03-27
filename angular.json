@@ -22,19 +22,18 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
-              "src/assets",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
+              "src/styles.scss",
               "node_modules/font-awesome/css/font-awesome.css",
               "src/styles/app.scss",
-              "node_modules/ngx-toastr/toastr.css" // try adding '../' if you're using angular cli before 6
+              "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": [
-              "node_modules/chart.js/dist/Chart.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -49,7 +48,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -93,17 +91,13 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "src/assets",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "node_modules/font-awesome/css/font-awesome.css",
-              "src/styles/app.scss",
-              "node_modules/ngx-toastr/toastr.css" // try adding '../' if you're using angular cli before 6
+              "src/styles.scss"
             ],
-            "scripts": [
-              "node_modules/chart.js/dist/Chart.js"
-            ]
+            "scripts": []
           }
         },
         "lint": {
@@ -132,6 +126,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "st-site-web"
+    }
+  },
+  "defaultProject": "st-site-web",
+  "cli": {
+    "analytics": false
+  }
 }

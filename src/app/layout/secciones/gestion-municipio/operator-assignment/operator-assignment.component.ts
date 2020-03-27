@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { routerTransition } from 'src/app/router.animations';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
@@ -15,8 +14,7 @@ const moment = _moment;
 @Component({
   selector: 'app-operator-assignment',
   templateUrl: './operator-assignment.component.html',
-  styleUrls: ['./operator-assignment.component.scss'],
-  animations: [routerTransition()]
+  styleUrls: ['./operator-assignment.component.scss']
 })
 
 export class OperatorAssignmentComponent implements OnInit {
