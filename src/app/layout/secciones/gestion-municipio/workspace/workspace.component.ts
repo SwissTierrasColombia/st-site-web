@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
@@ -22,6 +23,8 @@ export class WorkspaceComponent implements OnInit {
   viewCreateWorkSpace: boolean;
   resultWorkSpace: any;
   listWorkSpace: any;
+  @ViewChild('myInput')
+  myInputVariable: ElementRef;
   constructor(
     private serviceManagers: ManagersService,
     private serviceWorkspaces: WorkspacesService,
@@ -46,8 +49,7 @@ export class WorkspaceComponent implements OnInit {
       numberAlphanumericParcels: 0,
       startDate: '',
       municipalityArea: 0
-    };
-
+    };    
   }
 
   ngOnInit() {
@@ -70,16 +72,23 @@ export class WorkspaceComponent implements OnInit {
       });
   }
   docSoport(file: File) {
-    var re = /zip*/;
-    if (file[0].type.match(re)) {
-      this.dataCreateWorkSpace.supportFile = file[0];
-    } else {
-      if (file[0].size / 1024 / 1024 > 1) {
-        this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
-        this.dataCreateWorkSpace.supportFile = '';
-      } else {
+    if (file[0].size / 1024 / 1024 <= 190) {
+      var re = /zip*/;
+      if (file[0].type.match(re)) {
         this.dataCreateWorkSpace.supportFile = file[0];
+      } else {
+        if (file[0].size / 1024 / 1024 > 1) {
+          this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
+          this.dataCreateWorkSpace.supportFile = '';
+          this.myInputVariable.nativeElement.value = "";
+        } else {
+          this.dataCreateWorkSpace.supportFile = file[0];
+        }
       }
+    } else {
+      this.dataCreateWorkSpace.supportFile = '';
+      this.myInputVariable.nativeElement.value = "";
+      this.toastr.error("No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.");
     }
   }
   changeDepartament() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
@@ -21,6 +21,8 @@ export class CargueComponent implements OnInit {
   button: any;
   closeRequestButton: boolean;
   closeRequestButtonArray: any;
+  @ViewChild('myInput')
+  myInputVariable: ElementRef;
   constructor(
     private toastr: ToastrService,
     private router: Router,
@@ -128,31 +130,10 @@ export class CargueComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   docSoport(files: FileList, idOut: number, idInt: number) {
-    var re = /zip*/;
-    if (files[0].type.match(re)) {
-      const formato = files[0].name.split('.').pop();
-      let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
-      formatoPermitido = formatoPermitido.map(
-        // tslint:disable-next-line:only-arrow-functions
-        function (elem: any) {
-          return elem.substr(1);
-        });
-      const archivoValido = formatoPermitido.filter(item => {
-        return item === formato;
-      });
+    if (files[0].size / 1024 / 1024 <= 190) {
 
-      if (archivoValido.length > 0) {
-        this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
-        this.validsendFile(idOut, idInt);
-      } else {
-        this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
-        this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
-      }
-    } else {
-      if (files[0].size / 1024 / 1024 > 1) {
-        this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
-        this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
-      } else {
+      var re = /zip*/;
+      if (files[0].type.match(re)) {
         const formato = files[0].name.split('.').pop();
         let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
         formatoPermitido = formatoPermitido.map(
@@ -171,7 +152,36 @@ export class CargueComponent implements OnInit {
           this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
           this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
         }
+      } else {
+        if (files[0].size / 1024 / 1024 > 1) {
+          this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
+          this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
+          this.myInputVariable.nativeElement.value = "";
+        } else {
+          const formato = files[0].name.split('.').pop();
+          let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
+          formatoPermitido = formatoPermitido.map(
+            // tslint:disable-next-line:only-arrow-functions
+            function (elem: any) {
+              return elem.substr(1);
+            });
+          const archivoValido = formatoPermitido.filter(item => {
+            return item === formato;
+          });
+
+          if (archivoValido.length > 0) {
+            this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
+            this.validsendFile(idOut, idInt);
+          } else {
+            this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
+            this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
+          }
+        }
       }
+    } else {
+      this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
+      this.myInputVariable.nativeElement.value = "";
+      this.toastr.error("No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.")
     }
   }
   validsendFile(idOut: number, idInt: number) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
@@ -34,6 +34,8 @@ export class OperatorAssignmentComponent implements OnInit {
   supportFileOperator: any;
   assingOperator: boolean;
   replaceOperator: boolean;
+  @ViewChild('myInput')
+  myInputVariable: ElementRef;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -123,16 +125,23 @@ export class OperatorAssignmentComponent implements OnInit {
   }
 
   docSoport(files: FileList) {
-    var re = /zip*/;
-    if (files[0].type.match(re)) {
-      this.supportFileOperator = files[0];
-    } else {
-      if (files[0].size / 1024 / 1024 > 1) {
-        this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
-        this.supportFileOperator = undefined;
-      } else {
+    if (files[0].size / 1024 / 1024 <= 190) {
+      var re = /zip*/;
+      if (files[0].type.match(re)) {
         this.supportFileOperator = files[0];
+      } else {
+        if (files[0].size / 1024 / 1024 > 1) {
+          this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
+          this.supportFileOperator = undefined;
+          this.myInputVariable.nativeElement.value = "";
+        } else {
+          this.supportFileOperator = files[0];
+        }
       }
+    } else {
+      this.supportFileOperator = undefined;
+      this.myInputVariable.nativeElement.value = "";
+      this.toastr.error("No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.");
     }
   }
 
