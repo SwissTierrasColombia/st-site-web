@@ -64,7 +64,7 @@
                 <div [ngSwitch]="supp.typeSupplyId">
                   <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
                     <div class="input-group">
-                      <input [accept]="supp.format" id="file{{idOut}}{{idInt}}" name="file{{idOut}}{{idInt}}"
+                      <input #myInput [accept]="supp.format" id="file{{idOut}}{{idInt}}" name="file{{idOut}}{{idInt}}"
                         class="form-control" type="file" (change)="docSoport($event.target.files,idOut, idInt )"
                         multiple>
                     </div>
