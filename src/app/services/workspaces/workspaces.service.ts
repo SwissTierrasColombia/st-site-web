@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -90,7 +90,8 @@ export class WorkspacesService {
    * loadSupplyFromRequest
    */
   public loadSupplyFromRequest(idInsumo: string, data: FormData) {
-    return this.httpClient.put(this.url + '/workspaces/v1/providers/requests/' + idInsumo, data);
+    const headers = new HttpHeaders({ 'Transfer-Encoding': 'chunked' });
+    return this.httpClient.put(this.url + '/workspaces/v1/providers/requests/' + idInsumo, data, { headers });
   }
   /**
    * closeRequest
