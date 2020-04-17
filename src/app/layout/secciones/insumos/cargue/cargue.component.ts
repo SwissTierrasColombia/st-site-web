@@ -80,6 +80,7 @@ export class CargueComponent implements OnInit {
           return element;
         }
       });
+      console.log(this.dataRequestPending);
       this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
         if (item.state.id === 1 || item.state.id === 5) {
           return item.state;
@@ -120,6 +121,8 @@ export class CargueComponent implements OnInit {
           }
         }
       }
+      this.dataRequestPending[0].suppliesRequested =
+        this.dataRequestPending[0].suppliesRequested.sort((a, b) => a.id - b.id)
     });
   }
   formatDate(date: string) {
@@ -153,7 +156,7 @@ export class CargueComponent implements OnInit {
           this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
         }
       } else {
-        if (files[0].size / 1024 / 1024 > 1) {
+        if (files[0].size / 1024 / 1024 > 10) {
           this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
           this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
           this.myInputVariable.nativeElement.value = "";
@@ -243,6 +246,8 @@ export class CargueComponent implements OnInit {
         let response = data.suppliesRequested.find(item => {
           return item.id == this.dataRequestPending[idOut].suppliesRequested[idInt].id;
         });
+        console.log("carg: ", response);
+        response.canUpload = true;
         response.type = this.clone(this.type);
         response.button = this.clone(this.button);
         response.format = this.clone(this.dataRequestPending[idOut].suppliesRequested[idInt].typeSupply.extensions.map(

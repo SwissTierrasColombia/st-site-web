@@ -15,7 +15,7 @@
                 <th>Departamento</th>
                 <th>Municipio</th>
                 <th>Gestor</th>
-                <th>Categoria</th>
+                <th>Número de Solicitud</th>
                 <th>Fecha de Solicitud</th>
                 <th>Fecha Limite</th>
                 <th>Ver</th>
@@ -27,7 +27,7 @@
                 <td scope="row">{{item.municipality.department.name}}</td>
                 <td scope="row">{{item.municipality.name}}</td>
                 <td scope="row">{{getEntity(item)}}</td>
-                <td scope="row">{{item.provider.providerCategory.name}}</td>
+                <td scope="row">{{item.id}}</td>
                 <td scope="row">{{formatDate(item.createdAt)}}</td>
                 <td scope="row">{{formatDate(item.deadline)}}</td>
                 <td scope="row">
