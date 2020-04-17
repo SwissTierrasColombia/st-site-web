@@ -80,7 +80,6 @@ export class CargueComponent implements OnInit {
           return element;
         }
       });
-      console.log(this.dataRequestPending);
       this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
         if (item.state.id === 1 || item.state.id === 5) {
           return item.state;
@@ -246,7 +245,6 @@ export class CargueComponent implements OnInit {
         let response = data.suppliesRequested.find(item => {
           return item.id == this.dataRequestPending[idOut].suppliesRequested[idInt].id;
         });
-        console.log("carg: ", response);
         response.canUpload = true;
         response.type = this.clone(this.type);
         response.button = this.clone(this.button);
