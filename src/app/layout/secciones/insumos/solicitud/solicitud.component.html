@@ -88,7 +88,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row mb-1" *ngIf="dataWorkSpaceMunicipality.id">
           <div class='col-12 col-sm-3 mb-1'>
             <div class="input-group">
               <div class="input-group-prepend">
@@ -101,7 +101,7 @@
               </select>
             </div>
           </div>
-          <div class='col-12 col-sm-3 mb-1'>
+          <div class='col-12 col-sm-4 mb-1'>
             <div class="input-group">
               <div class="input-group-prepend">
                 <label class="input-group-text" aria-required="true">* Insumos</label>
@@ -121,7 +121,7 @@
                 [(ngModel)]="observations"></textarea>
             </div>
           </div>
-          <div class='col-12 col-sm-1 mt-5'>
+          <div class='col-12 offset-sm-5 col-sm-2 mt-2'>
             <button type="button" name="agregar" id="agregar" class="btn btn-primary btn-sm btn-block"
               (click)="agregar()">Agregar</button>
           </div>
@@ -135,20 +135,20 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col" sortable="entidad">Entidad</th>
-            <th scope="col" sortable="insumo">Insumo</th>
-            <th scope="col" sortable="modelo">Modelo de Insumo</th>
-            <th scope="col" sortable="observacion">Observación</th>
+            <th>#</th>
+            <th>Entidad</th>
+            <th>Insumo</th>
+            <th>Modelo de Insumo</th>
+            <th>Observación</th>
             <th>Eliminar</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of tablesupplies">
-            <th>{{ item.idCount }}</th>
-            <td class="col-sm-1"> {{ item.entidad }} </td>
-            <td class="col-sm-2">{{ item.insumo}}</td>
-            <td class="col-sm-3">
+            <td scope="row"><strong>{{ item.idCount }}</strong></td>
+            <td scope="row"> {{ item.entidad }} </td>
+            <td scope="row">{{ item.insumo}}</td>
+            <td scope="row">
               <div class="input-group" *ngIf="item.modelRequired">
                 <div class="input-group-prepend">
                   <label class="input-group-text" aria-required="true">*</label>
@@ -162,17 +162,18 @@
               </div>
               <div *ngIf="!item.modelRequired">N/A</div>
             </td>
-            <td class="col-sm-4">{{ item.observacion }}</td>
-            <td class="col-sm-2"><i class="material-icons cursor" (click)="delete(item)">
+            <td scope="row">{{ item.observacion }}</td>
+            <td scope="row">
+              <i class="material-icons cursor" (click)="delete(item)">
                 delete_forever
               </i></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="card-footer text-muted text-center">
+    <div class="card-footer text-muted text-center mb-2">
       <div class="row">
-        <div class="col-12 col-sm-6 offset-sm-6 mt-2">
+        <div class="col-12 col-sm-6 offset-sm-6 mt-2" *ngIf="tablesupplies.length > 0">
           <div class="input-group">
             <div class="input-group-prepend">
               <label class="input-group-text">* Fecha Limite</label>
@@ -191,5 +192,36 @@
         </div>
       </div>
     </div>
+    <!-- {{tableSolicitudes | json}} -->
+    <!-- <div class="table-inverse table-responsive" *ngIf="tableSolicitudes.length > 0">
+      <div class="text-center mt-2 mb-2">
+        <h3>Registro Solicitud de Insumos</h3>
+      </div>
+      <table class="table table-striped">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Número de Solicitud</th>
+            <th>Insumos</th>
+            <th>Proveedor</th>
+            <th>fecha Límite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of tableSolicitudes">
+            <td scope="row"><strong>{{item.id}}</strong></td>
+            <td scope="row">
+              <div *ngFor="let supp of item.suppliesRequested">
+                {{supp.typeSupply.name}}
+              </div>
+            </td>
+            <td scope="row">
+              {{item.provider.name}}
+            </td>
+            <td scope="row">{{formatDate(item.deadline)}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+
   </div>
 </div>
