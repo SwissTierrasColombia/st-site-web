@@ -176,7 +176,7 @@ export class IntegracionComponent implements OnInit {
     this.serviceWorkspaces.GetIntegrationCadastreRegistration(this.selectMunicipality, data).subscribe(
       response => {
         // tslint:disable-next-line:max-line-length
-        this.msgAlert = '¡Se ha iniciado la integración!<br><strong>Por favor ingrese mas tarde, para ver los resultados de la integración</strong>';
+        this.msgAlert = '<strong>¡Se ha iniciado la integración!</strong><br>El sistema le enviará una notificación al correo una vez la finalice y podrá ver los resultados de integración en esta sección.';
         this.selectsupplyCadastre = 0;
         this.selectsupplyRegistration = 0;
         this.activateButtonIntegration = true;
@@ -187,7 +187,7 @@ export class IntegracionComponent implements OnInit {
       },
       error => {
         this.msgAlert = error.error.message +
-          '<br><strong>Por favor ingrese mas tarde, para ver los resultados de la integración</strong>';
+          '<br>El sistema le enviará una notificación al correo una vez la finalice y podrá ver los resultados de integración en esta sección.';
         this.selectsupplyCadastre = 0;
         this.selectsupplyRegistration = 0;
         this.activateButtonIntegration = true;

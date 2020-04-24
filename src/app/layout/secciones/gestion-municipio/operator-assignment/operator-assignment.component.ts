@@ -108,7 +108,7 @@ export class OperatorAssignmentComponent implements OnInit {
     });
     Promise.all([promise1]).then((values: any) => {
       this.serviceWorkspaces.getWorkSpace(this.idWorkspace).subscribe(
-        response => {
+        (response: any) => {
           this.dataWorkSpace = response;
           if (this.dataWorkSpace.operators.length > 0) {
             this.replaceOperator = true;

@@ -74,7 +74,7 @@ export class OperatorViewComponent implements OnInit {
     Promise.all([promise1]).then((values: any) => {
       this.idWorkspace = values[0];
       this.serviceWorkspaces.getWorkSpace(values[0]).subscribe(
-        response => {
+        (response: any) => {
           this.dataWorkSpace = response;
           if (this.dataWorkSpace.operators.length > 0) {
             this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
