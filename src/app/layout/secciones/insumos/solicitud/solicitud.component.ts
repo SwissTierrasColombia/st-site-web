@@ -133,7 +133,8 @@ export class SolicitudComponent implements OnInit {
               observacion: this.observations,
               modelRequired: true,
               modelVersion: this.selectModelSupplies,
-              versions: this.listModels
+              versions: this.listModels,
+              perfil: this.selectSupplies.providerProfile.name
             });
             this.count += 1;
             this.selectSupplies = 0;
@@ -152,7 +153,8 @@ export class SolicitudComponent implements OnInit {
               entidad: this.selectProvider.name,
               idInsumo: this.selectSupplies.id,
               insumo: this.selectSupplies.name,
-              observacion: this.observations
+              observacion: this.observations,
+              perfil: this.selectSupplies.providerProfile.name
             });
             this.count += 1;
             this.selectSupplies = 0;

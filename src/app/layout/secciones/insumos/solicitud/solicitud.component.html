@@ -147,7 +147,7 @@
           <tr *ngFor="let item of tablesupplies">
             <td scope="row"><strong>{{ item.idCount }}</strong></td>
             <td scope="row"> {{ item.entidad }} </td>
-            <td scope="row">{{ item.insumo}}</td>
+            <td scope="row">{{ item.insumo}} <br> <strong>{{item.perfil}}</strong> </td>
             <td scope="row">
               <div class="input-group" *ngIf="item.modelRequired">
                 <div class="input-group-prepend">
