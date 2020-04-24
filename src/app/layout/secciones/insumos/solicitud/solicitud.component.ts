@@ -181,6 +181,19 @@ export class SolicitudComponent implements OnInit {
       }
     });
     this.comprobarEnviarSolicitud();
+    if (this.tablesupplies.length === 0) {
+      this.count = 1;
+      this.observations = '';
+      this.splitZones = false;
+      this.listsupplies = {
+        deadline: '',
+        supplies: []
+      };
+      this.tablesupplies = [];
+      this.selectModelSupplies = '0';
+      this.enviarsolicitud = true;
+      this.tableSolicitudes = [];
+    }
   }
   comprobarEnviarSolicitud() {
     const send = this.listsupplies.supplies.find(
@@ -202,11 +215,17 @@ export class SolicitudComponent implements OnInit {
           //this.toastr.success('Solicitud enviada correctamente', 'Número de solicitud: ' + element.id, { disableTimeOut: true, closeButton: true, positionClass: "toast-center-center" });
         });
         this.toastr.success('Solicitud enviada correctamente');
-        this.tablesupplies = [];
+        this.count = 1;
+        this.observations = '';
+        this.splitZones = false;
         this.listsupplies = {
           deadline: '',
           supplies: []
         };
+        this.tablesupplies = [];
+        this.selectModelSupplies = '0';
+        this.enviarsolicitud = true;
+        this.tableSolicitudes = [];
       }
     );
   }
