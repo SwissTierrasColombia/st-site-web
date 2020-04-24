@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
+import * as _moment from 'moment';
+
+const moment = _moment;
 
 @Component({
   selector: 'app-solicitud',
@@ -28,6 +31,7 @@ export class SolicitudComponent implements OnInit {
   selectModelSupplies: string;
   listModels: any;
   enviarsolicitud: boolean;
+  tableSolicitudes: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
@@ -64,6 +68,7 @@ export class SolicitudComponent implements OnInit {
     this.selectModelSupplies = '0';
     this.listModels = [];
     this.enviarsolicitud = true;
+    this.tableSolicitudes = [];
   }
   ngOnInit() {
     this.serviceWorkspaces.getDepartments()
@@ -191,8 +196,17 @@ export class SolicitudComponent implements OnInit {
   }
   submitInfo() {
     this.serviceWorkspaces.createRequest(this.selectMunicipality, this.listsupplies).subscribe(
-      _ => {
+      (data: any) => {
+        data.forEach(element => {
+          this.tableSolicitudes.push(element)
+          //this.toastr.success('Solicitud enviada correctamente', 'Número de solicitud: ' + element.id, { disableTimeOut: true, closeButton: true, positionClass: "toast-center-center" });
+        });
         this.toastr.success('Solicitud enviada correctamente');
+        this.tablesupplies = [];
+        this.listsupplies = {
+          deadline: '',
+          supplies: []
+        };
       }
     );
   }
@@ -204,6 +218,11 @@ export class SolicitudComponent implements OnInit {
     });
     this.toastr.info('Ha seleccionado la versión del modelo de insumos: ' + itemModelVersion);
     this.comprobarEnviarSolicitud();
+  }
+
+  formatDate(date: string) {
+    moment.locale('es');
+    return moment(date).format('ll');
   }
 
 }
