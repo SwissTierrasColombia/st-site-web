@@ -134,6 +134,16 @@ export class WorkspaceComponent implements OnInit {
       this.serviceWorkspaces.createWorkspace(this.dataCreateWorkSpace).subscribe(
         _ => {
           this.toastr.success("Se ha asignado el espacio de trabajo para el municipio seleccionado.");
+          this.dataCreateWorkSpace = {
+            selectDepartment: '',
+            supportFile: '',
+            managerCode: '0',
+            municipalityId: '',
+            observations: '',
+            numberAlphanumericParcels: 0,
+            startDate: '',
+            municipalityArea: 0
+          }; 
           this.searchWorkSpace();
         }
       );
