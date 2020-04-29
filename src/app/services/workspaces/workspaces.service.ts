@@ -208,4 +208,7 @@ export class WorkspacesService {
   public downloadSupport(workspaceId: number, supportId: number) {
     return this.httpClient.get(this.url + '/workspaces/v1/workspaces/' + workspaceId + '/download-support/' + supportId, { responseType: 'arraybuffer', observe: 'response' });
   }
+  public getAttendedRequestByProvider() {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/closed-requests');
+  }
 }

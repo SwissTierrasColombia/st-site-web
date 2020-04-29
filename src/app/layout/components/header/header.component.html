@@ -53,9 +53,9 @@
           <i class="fa fa-bell"></i> <b class="caret"></b><span class="sr-only">(current)</span>
         </a>
         <div class="dropdown-menu-right" ngbDropdownMenu>
-          <a *ngIf="roleproveedor" [routerLink]="['/insumos/solicitudes']" href="javascript:void(0)"
+          <a *ngIf="roleproveedor" [routerLink]="['/insumos/solicitudes/pendientes']" href="javascript:void(0)"
             class="dropdown-item">
-            Solicitudes <span class="badge badge-info">{{taskProvider}}</span>
+            Solicitudes Pendientes <span class="badge badge-info">{{taskProvider}}</span>
           </a>
           <a *ngIf="roleoperator" [routerLink]="['/operador/entregas']" href="javascript:void(0)" class="dropdown-item">
             Entregas <span class="badge badge-info">{{taskOperator}}</span>

@@ -6,11 +6,14 @@ import { ModalService } from 'src/app/services/modal/modal.service';
   selector: 'jw-modal',
   template:
     `<div class="jw-modal">
-            <div class="jw-modal-body">
-                <ng-content></ng-content>
-            </div>
-        </div>
-        <div class="jw-modal-background"></div>`
+      <span tooltip="Volver" placement="bottom" show-delay="500">
+        <i class="material-icons cursor" (click)="close()">highlight_off</i>
+      </span>
+      <div class="jw-modal-body">
+        <ng-content></ng-content>
+      </div>
+    </div>
+    <div class="jw-modal-background"></div>`
 })
 export class DialogBoxComponent implements OnInit, OnDestroy {
   @Input() id: string;

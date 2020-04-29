@@ -2,8 +2,15 @@
   <app-page-header [heading]="'Cargue de Insumos'" [icon]="'fa-star'">
   </app-page-header>
   <div class="card text-center">
-    <div class="card-header">
-      <h3>Cargue de Insumos</h3>
+    <div class="card-header row">
+      <div class="col-1">
+        <span tooltip="Volver" placement="bottom" show-delay="500">
+          <i class="material-icons cursor" (click)="volver()">backspace</i>
+        </span>
+      </div>
+      <div class="col-10">
+        <h3>Cargue de Insumos</h3>
+      </div>
     </div>
     <div class="card-body">
       <div class="row justify-content-center">
@@ -149,6 +156,19 @@
                   {{supp.button.status ? 'Justificación enviada':'Enviar'}}
                 </button>
               </div>
+              <div class="col-12 col-lg-10">
+                <div *ngIf="supp.userDeliveryBy">
+                  <div class="input-group">
+                    <div class="input-group-prepend input-group-text">
+                      <div>Entregado</div>
+                    </div>
+                    <div class="form-control" style="background-color: lightsteelblue;">
+                      <strong>{{supp.userDeliveryBy.firstName}}
+                        {{supp.userDeliveryBy.lastName}}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -157,7 +177,7 @@
     <div class="row mt-3">
       <div class="col-12">
         <div class="alert alert-warning text-center" role="alert">
-          Se puede subir más de una versión de un insumo, <strong>pero recuerde que esta solicitud se vinculará al
+          Se puede cargar más de una versión de un insumo, <strong>pero recuerde que esta solicitud se vinculará al
             último archivo cargado.</strong>
         </div>
       </div>

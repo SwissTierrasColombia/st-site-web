@@ -122,6 +122,8 @@ export class CargueComponent implements OnInit {
       }
       this.dataRequestPending[0].suppliesRequested =
         this.dataRequestPending[0].suppliesRequested.sort((a, b) => a.id - b.id)
+      console.log(this.dataRequestPending);
+
     });
   }
   formatDate(date: string) {
@@ -275,13 +277,20 @@ export class CargueComponent implements OnInit {
         if (this.dataRequestPending[0].suppliesRequested.length === this.closeRequestButtonArray.length) {
           this.closeRequestButton = false;
         }
+        // this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
+        //   data => {
+        //     this.dataRequestPending = data;
+        //     console.log(this.dataRequestPending);
+        //   }
+        // );
+        console.log(response);
       }
     );
   }
   closeRequest() {
     this.serviceWorkspaces.closeRequest(this.dataRequestPending[0].id).subscribe(
       data => {
-        this.router.navigate(['/insumos/solicitudes/']);
+        this.router.navigate(['/insumos/solicitudes/pendientes']);
       }
     );
   }
@@ -305,5 +314,8 @@ export class CargueComponent implements OnInit {
       return elem.emitterType === "ENTITY"
     });
     return data.user.name
+  }
+  volver() {
+    this.router.navigate(['/insumos/solicitudes/pendientes']);
   }
 }

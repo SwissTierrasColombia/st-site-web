@@ -17,6 +17,8 @@ import { SearchComponent } from './buscar/search.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EntregarComponent } from './entregar/entregar.component';
 import { BsComponentModule } from '../../bs-component/bs-component.module';
+import { SolicitudesAtendidasComponent } from './solicitudes-atendidas/solicitudes-atendidas.component';
+import { AtendidaComponent } from './atendida/atendida.component';
 @NgModule({
   declarations: [
     CargueComponent,
@@ -24,7 +26,9 @@ import { BsComponentModule } from '../../bs-component/bs-component.module';
     IntegracionComponent,
     SolicitudesComponent,
     SearchComponent,
-    EntregarComponent
+    EntregarComponent,
+    SolicitudesAtendidasComponent,
+    AtendidaComponent
   ],
   imports: [
     CommonModule,
