@@ -178,7 +178,8 @@
             <div class="input-group-prepend">
               <label class="input-group-text">* Fecha Límite</label>
             </div>
-            <input class="form-control" type="date" name="deadline" [(ngModel)]="listsupplies.deadline">
+            <input class="form-control" type="date" name="deadline" [min]="currentDate"
+              [(ngModel)]="listsupplies.deadline">
           </div>
         </div>
         <div class="col-12 mt-3">

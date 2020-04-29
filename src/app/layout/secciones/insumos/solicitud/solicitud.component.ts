@@ -32,6 +32,7 @@ export class SolicitudComponent implements OnInit {
   listModels: any;
   enviarsolicitud: boolean;
   tableSolicitudes: any;
+  currentDate: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
@@ -71,6 +72,10 @@ export class SolicitudComponent implements OnInit {
     this.tableSolicitudes = [];
   }
   ngOnInit() {
+    this.currentDate = new Date();
+    this.currentDate.setDate(this.currentDate.getDate() + 16);
+    this.listsupplies.deadline = this.currentDate.toISOString().substring(0, 10);
+    this.currentDate = this.clone(this.listsupplies.deadline);
     this.serviceWorkspaces.getDepartments()
       .subscribe(response => {
         this.departments = response;
@@ -81,6 +86,9 @@ export class SolicitudComponent implements OnInit {
         this.listModels = response;
       }
     );
+  }
+  clone(obj: any) {
+    return JSON.parse(JSON.stringify(obj));
   }
   changeDepartament() {
     this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment.toString()).subscribe(
