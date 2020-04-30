@@ -12,9 +12,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { BsComponentModule } from '../../bs-component/bs-component.module';
+import { UpdateUserComponent } from './update-user/update-user.component';
 
 @NgModule({
-  declarations: [CreateUserComponent, ListUserComponent],
+  declarations: [CreateUserComponent, ListUserComponent, UpdateUserComponent],
   imports: [
     CommonModule,
     FormsModule,

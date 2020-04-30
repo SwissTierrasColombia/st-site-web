@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ModalService } from 'src/app/services/modal/modal.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-user',
@@ -18,7 +19,8 @@ export class ListUserComponent implements OnInit {
   idUserDisabled: number;
   constructor(
     private serviceWorkspace: WorkspacesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private router: Router
   ) {
     this.dataListUser = [];
     this.page = 1;
@@ -82,5 +84,8 @@ export class ListUserComponent implements OnInit {
     } else {
       this.modalService.close(modal);
     }
+  }
+  updateUser(idUser: number) {
+    this.router.navigate(['/administrador/usuario/' + idUser + '/modificar']);
   }
 }
