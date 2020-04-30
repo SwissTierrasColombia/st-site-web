@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 const moment = _moment;
 
 @Component({
-  selector: 'app-solicitudes',
-  templateUrl: './solicitudes.component.html',
-  styleUrls: ['./solicitudes.component.scss']
+  selector: 'app-solicitudes-atendidas',
+  templateUrl: './solicitudes-atendidas.component.html',
+  styleUrls: ['./solicitudes-atendidas.component.scss']
 })
-export class SolicitudesComponent implements OnInit {
+export class SolicitudesAtendidasComponent implements OnInit {
+
   dataRequestPending: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
@@ -21,9 +22,11 @@ export class SolicitudesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
+    this.serviceWorkspaces.getAttendedRequestByProvider().subscribe(
       data => {
         this.dataRequestPending = data;
+        console.log(this.dataRequestPending);
+        
       }
     );
   }
@@ -32,7 +35,7 @@ export class SolicitudesComponent implements OnInit {
     return moment(date).format('ll, h:mm a');
   }
   load(idInsumo: number) {
-    this.router.navigate(['/insumos/solicitudes/pendientes/cargar/' + idInsumo]);
+    this.router.navigate(['/insumos/solicitudes/atendidas/ver/' + idInsumo]);
   }
   getEntity(item: any) {
     let data = item.emitters.find((elem: any) => {
@@ -41,3 +44,4 @@ export class SolicitudesComponent implements OnInit {
     return data.user.name
   }
 }
+

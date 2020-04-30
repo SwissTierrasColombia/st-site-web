@@ -9,6 +9,8 @@ import { RoleProviderGuard } from 'src/app/guards/role-provider-guard.service';
 import { SearchComponent } from './buscar/search.component';
 import { RoleAdminManagerGuard } from 'src/app/guards/role-admin-manager-guard.service';
 import { EntregarComponent } from './entregar/entregar.component';
+import { SolicitudesAtendidasComponent } from './solicitudes-atendidas/solicitudes-atendidas.component';
+import { AtendidaComponent } from './atendida/atendida.component';
 
 
 const routes: Routes = [
@@ -18,12 +20,12 @@ const routes: Routes = [
     canActivate: [RoleManagerGuard]
   },
   {
-    path: 'solicitudes',
+    path: 'solicitudes/pendientes',
     component: SolicitudesComponent,
     canActivate: [RoleProviderGuard]
   },
   {
-    path: 'cargue/:idInsumo',
+    path: 'solicitudes/pendientes/cargar/:idInsumo',
     component: CargueComponent,
     canActivate: [RoleProviderGuard]
   },
@@ -41,7 +43,17 @@ const routes: Routes = [
     path: 'entrega',
     component: EntregarComponent,
     canActivate: [RoleAdminManagerGuard]
-  }
+  },
+  {
+    path: 'solicitudes/atendidas',
+    component: SolicitudesAtendidasComponent,
+    canActivate: [RoleProviderGuard]
+  },
+  {
+    path: 'solicitudes/atendidas/ver/:idInsumo',
+    component: AtendidaComponent,
+    canActivate: [RoleProviderGuard]
+  },
 
 ];
 

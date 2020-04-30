@@ -77,7 +77,7 @@ export class WorkspaceComponent implements OnInit {
       if (file[0].type.match(re)) {
         this.dataCreateWorkSpace.supportFile = file[0];
       } else {
-        if (file[0].size / 1024 / 1024 > 1) {
+        if (file[0].size / 1024 / 1024 > 10) {
           this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
           this.dataCreateWorkSpace.supportFile = '';
           this.myInputVariable.nativeElement.value = "";
@@ -134,6 +134,16 @@ export class WorkspaceComponent implements OnInit {
       this.serviceWorkspaces.createWorkspace(this.dataCreateWorkSpace).subscribe(
         _ => {
           this.toastr.success("Se ha asignado el espacio de trabajo para el municipio seleccionado.");
+          this.dataCreateWorkSpace = {
+            selectDepartment: '',
+            supportFile: '',
+            managerCode: '0',
+            municipalityId: '',
+            observations: '',
+            numberAlphanumericParcels: 0,
+            startDate: '',
+            municipalityArea: 0
+          }; 
           this.searchWorkSpace();
         }
       );

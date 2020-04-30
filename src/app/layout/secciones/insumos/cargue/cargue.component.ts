@@ -120,6 +120,10 @@ export class CargueComponent implements OnInit {
           }
         }
       }
+      this.dataRequestPending[0].suppliesRequested =
+        this.dataRequestPending[0].suppliesRequested.sort((a, b) => a.id - b.id)
+      console.log(this.dataRequestPending);
+
     });
   }
   formatDate(date: string) {
@@ -153,7 +157,7 @@ export class CargueComponent implements OnInit {
           this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
         }
       } else {
-        if (files[0].size / 1024 / 1024 > 1) {
+        if (files[0].size / 1024 / 1024 > 10) {
           this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
           this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
           this.myInputVariable.nativeElement.value = "";
@@ -200,7 +204,7 @@ export class CargueComponent implements OnInit {
     // https://stackoverflow.com/questions/8667070/javascript-regular-expression-to-validate-url
     function validateUrl(value) {
       // tslint:disable-next-line:max-line-length
-      return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+      return /^(?:(?:(?:https?|ftp|ftps|http):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
     }
     if (validateUrl(this.dataRequestPending[idOut].suppliesRequested[idInt].url)) {
       if (this.dataRequestPending[idOut].suppliesRequested[idInt].observations) {
@@ -243,6 +247,7 @@ export class CargueComponent implements OnInit {
         let response = data.suppliesRequested.find(item => {
           return item.id == this.dataRequestPending[idOut].suppliesRequested[idInt].id;
         });
+        response.canUpload = true;
         response.type = this.clone(this.type);
         response.button = this.clone(this.button);
         response.format = this.clone(this.dataRequestPending[idOut].suppliesRequested[idInt].typeSupply.extensions.map(
@@ -272,13 +277,20 @@ export class CargueComponent implements OnInit {
         if (this.dataRequestPending[0].suppliesRequested.length === this.closeRequestButtonArray.length) {
           this.closeRequestButton = false;
         }
+        // this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
+        //   data => {
+        //     this.dataRequestPending = data;
+        //     console.log(this.dataRequestPending);
+        //   }
+        // );
+        console.log(response);
       }
     );
   }
   closeRequest() {
     this.serviceWorkspaces.closeRequest(this.dataRequestPending[0].id).subscribe(
       data => {
-        this.router.navigate(['/insumos/solicitudes/']);
+        this.router.navigate(['/insumos/solicitudes/pendientes']);
       }
     );
   }
@@ -302,5 +314,8 @@ export class CargueComponent implements OnInit {
       return elem.emitterType === "ENTITY"
     });
     return data.user.name
+  }
+  volver() {
+    this.router.navigate(['/insumos/solicitudes/pendientes']);
   }
 }

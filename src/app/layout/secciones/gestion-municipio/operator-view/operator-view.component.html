@@ -49,7 +49,7 @@
       <div class="tab-content">
         <div class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel"><br>
           <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Área del Municipio:</label>
+            <label class="col-sm-4 col-form-label">Área del Municipio (km<sup>2</sup>) :</label>
             <div class="col-sm-8">
               <div class="form-control">
                 {{dataWorkSpace.municipalityArea}}
@@ -152,7 +152,7 @@
             </div>
             <label class="col-sm-1 col-form-label">Área de Trabajo:</label>
             <div class="col-sm-5">
-              <div class="form-control">{{dataOperatorsWorkSpace.workArea ? dataOperatorsWorkSpace.workArea:'0' }} m
+              <div class="form-control">{{dataOperatorsWorkSpace.workArea ? dataOperatorsWorkSpace.workArea:'0' }} km
                 <sup>2</sup></div>
             </div>
           </div>

@@ -71,7 +71,7 @@
                   <td scope="row">{{i+1}}</td>
                   <td scope="row">{{item.manager.name}}</td>
                   <td scope="row">{{item.numberAlphanumericParcels}}</td>
-                  <td scope="row">{{item.municipalityArea}} m <sup>2</sup></td>
+                  <td scope="row">{{item.municipalityArea}} km <sup>2</sup></td>
                   <td scope="row">{{item.startDate}}</td>
                   <td scope="row">{{item.observations}}</td>
                   <td scope="row">{{item.isActive ? 'Activo':'Inactivo'}}</td>
@@ -125,7 +125,7 @@
         <div class='col-12 col-sm-6 mb-1'>
           <div class="input-group">
             <div class="input-group-prepend">
-              <label class="input-group-text">Área del Municipio (m<sup>2</sup>)</label>
+              <label class="input-group-text">Área del Municipio (km<sup>2</sup>)</label>
             </div>
             <input class="form-control" type="number" name="municipalityArea"
               [(ngModel)]="dataCreateWorkSpace.municipalityArea">

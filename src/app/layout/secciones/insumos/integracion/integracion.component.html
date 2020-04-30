@@ -76,7 +76,7 @@
               </div>
               <div class="form-control">
                 {{dataWorkSpaceMunicipality.municipalityArea ? dataWorkSpaceMunicipality.municipalityArea: '0' }}
-                m <sup>2</sup>
+                km <sup>2</sup>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
           </div>
           <div class='col-12 col-sm-6 mb-1'>
             <div class="input-group">
-              <input class="form-control" type="text" disabled="true" placeholder="4" disabled="true">
+              <input class="form-control" type="text" disabled="true" placeholder="1" disabled="true">
             </div>
           </div>
         </div>
@@ -219,7 +219,8 @@
                               </i>
                             </span>
                           </div>
-                          <div class="col-12 col-sm-3" *ngIf="item.integrationState.id === 2 || item.integrationState.id === 7">
+                          <div class="col-12 col-sm-3"
+                            *ngIf="item.integrationState.id === 2 || item.integrationState.id === 7">
                             <span tooltip="Eliminar" placement="top" show-delay="500">
                               <i class="material-icons cursor" (click)="openModalcancel('modalCancel',item.id)">
                                 delete
@@ -342,7 +343,6 @@
     </jw-modal>
     <jw-modal id="modalIntegration" class="mt-5">
       <div class="card">
-        <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
         <div class="card-header">
           <i class="cui-arrow-bottom"></i>
           <h2 class="text-center font-weight-bold">

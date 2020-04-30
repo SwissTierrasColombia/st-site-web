@@ -108,7 +108,7 @@ export class OperatorAssignmentComponent implements OnInit {
     });
     Promise.all([promise1]).then((values: any) => {
       this.serviceWorkspaces.getWorkSpace(this.idWorkspace).subscribe(
-        response => {
+        (response: any) => {
           this.dataWorkSpace = response;
           if (this.dataWorkSpace.operators.length > 0) {
             this.replaceOperator = true;
@@ -130,7 +130,7 @@ export class OperatorAssignmentComponent implements OnInit {
       if (files[0].type.match(re)) {
         this.supportFileOperator = files[0];
       } else {
-        if (files[0].size / 1024 / 1024 > 1) {
+        if (files[0].size / 1024 / 1024 > 10) {
           this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
           this.supportFileOperator = undefined;
           this.myInputVariable.nativeElement.value = "";

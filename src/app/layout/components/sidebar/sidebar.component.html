@@ -72,11 +72,25 @@
               <span>Búsqueda</span>
             </a>
           </li>
-          <li *ngIf="roleproveedor ? roleproveedor.id: 0 === allroles.proveedor">
-            <a [routerLink]="['/insumos/solicitudes']">
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Solicitudes</span>
-            </a>
+          <a *ngIf="roleproveedor ? roleproveedor.id: 0 === allroles.proveedor" class="list-group-item" (click)="addExpandClass(listMenu[0].insumosSolicitudes)">
+            <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
+            <span>Solicitudes</span>
+          </a>
+          <li class="nested" [class.expand]="showMenu === listMenu[0].insumosSolicitudes">
+            <ul class="submenu">
+              <li *ngIf="roleproveedor ? roleproveedor.id: 0 === allroles.proveedor">
+                <a [routerLink]="['/insumos/solicitudes/pendientes']">
+                  <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+                  <span>Pendientes</span>
+                </a>
+              </li>
+              <li *ngIf="roleproveedor ? roleproveedor.id: 0 === allroles.proveedor">
+                <a [routerLink]="['/insumos/solicitudes/atendidas']">
+                  <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+                  <span>Atendidas</span>
+                </a>
+              </li>
+            </ul>
           </li>
           <li
             *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
@@ -176,8 +190,7 @@
         </ul>
       </li>
     </div>
-    <a href="https://agenciaimplementacion.github.io/Asistente-LADM_COL/" target="_blank"
-      class="list-group-item">
+    <a href="https://agenciaimplementacion.github.io/Asistente-LADM-COL/" target="_blank" class="list-group-item">
       <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
       <span>Asistente LADM-COL</span>
     </a>

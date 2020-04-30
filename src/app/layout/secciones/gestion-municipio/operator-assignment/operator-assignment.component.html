@@ -49,7 +49,7 @@
       <div class="tab-content">
         <div class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel"><br>
           <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Área del municipio:</label>
+            <label class="col-sm-4 col-form-label">Área del municipio (km<sup>2</sup>) :</label>
             <div class="col-sm-8">
               <input class="form-control" type="text" name="municipalityArea"
                 [(ngModel)]="dataWorkSpace.municipalityArea" disabled="{{editForm.municipalityArea}}">
@@ -191,7 +191,7 @@
               <div class='col-12 col-sm-6 mb-1'>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text">Área de Trabajo (m <sup>2</sup>)</label>
+                    <label class="input-group-text">Área de Trabajo (km <sup>2</sup>)</label>
                   </div>
                   <input disabled="{{!assingOperator}}" class="form-control" type="number" name="workArea"
                     [(ngModel)]="dataOperatorsWorkSpace.workArea">

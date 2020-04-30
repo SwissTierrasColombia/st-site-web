@@ -48,7 +48,8 @@ export class SidebarComponent implements OnInit {
         operacion: 'operacion',
         calidad: 'calidad',
         tramites: 'tramites',
-        administrador: 'administrador'
+        administrador: 'administrador',
+        insumosSolicitudes: 'insumosSolicitudes'
       }
     ];
     this.allroles = {};
