@@ -106,7 +106,7 @@
                 <input [(ngModel)]="selectsupplyCadastre" name="Catastro" class="form-check-input mt-2" type="radio"
                   value="{{item.id}}" id="{{item.id}}" (change)="comprobar()">
                 <label class="form-check-label" for="radio{{i+1}}">
-                  <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
+                  <span ngbTooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
                 </label>
@@ -129,7 +129,7 @@
                 <input [(ngModel)]="selectsupplyRegistration" name="Registro" class="form-check-input mt-2" type="radio"
                   value="{{item.id}}" id="{{item.id}}" (change)="comprobar()">
                 <label class="form-check-label" for="radio{{i+1}}">
-                  <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
+                  <span ngbTooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
                 </label>
@@ -152,7 +152,7 @@
                 <input [(ngModel)]="selectsupplyANT" name="ANT" class="form-check-input mt-2" type="radio"
                   value="{{item.id}}" id="{{item.id}}" (change)="comprobar()">
                 <label class="form-check-label" for="radio{{i+1}}">
-                  <span tooltip="{{item.observations}}" placement="bottom" show-delay="500">
+                  <span ngbTooltip="{{item.observations}}" placement="bottom" show-delay="500">
                     {{item.typeSupply.name}} v{{i+1}} {{globalFuntionDate(item.createdAt)}}
                   </span>
                 </label>
@@ -199,20 +199,20 @@
                       <td scope="row">
                         <div class="row justify-content-center text-center">
                           <div class="col-12 col-sm-3">
-                            <span tooltip="Ver detalle" placement="top" show-delay="500">
+                            <span ngbTooltip="Ver detalle" placement="top" show-delay="500">
                               <i class="material-icons cursor" (click)="openModal(item.id,'modal-1')">
                                 pageview
                               </i>
                             </span>
                           </div>
                           <div class="col-12 col-sm-3" *ngIf="item.integrationState.id === 2">
-                            <span tooltip="Generar XTF" placement="top" show-delay="500">
+                            <span ngbTooltip="Generar XTF" placement="top" show-delay="500">
                               <i class="material-icons cursor" (click)="openModalGenerateXTF('modalXTF',item.id)">
                                 assignment_turned_in
                               </i></span>
                           </div>
                           <div class="col-12 col-sm-3" *ngIf="item.integrationState.id === 2">
-                            <span tooltip="Iniciar integración asistida" placement="top" show-delay="500">
+                            <span ngbTooltip="Iniciar integración asistida" placement="top" show-delay="500">
                               <i class="material-icons cursor"
                                 (click)="openModalIntegrationAssited('modalIntegration',item.id)">
                                 important_devices
@@ -221,7 +221,7 @@
                           </div>
                           <div class="col-12 col-sm-3"
                             *ngIf="item.integrationState.id === 2 || item.integrationState.id === 7">
-                            <span tooltip="Eliminar" placement="top" show-delay="500">
+                            <span ngbTooltip="Eliminar" placement="top" show-delay="500">
                               <i class="material-icons cursor" (click)="openModalcancel('modalCancel',item.id)">
                                 delete
                               </i>

@@ -211,4 +211,46 @@ export class WorkspacesService {
   public getAttendedRequestByProvider() {
     return this.httpClient.get(this.url + '/workspaces/v1/providers/closed-requests');
   }
+  /**
+   * GetUsers
+   */
+  public GetUsers() {
+    return this.httpClient.get(this.url + '/workspaces/v1/administration/users');
+  }
+  /**
+   * CreateUser
+   */
+  public CreateUser(data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/administration/users', data);
+  }
+  /**
+   * UpdateUser
+   */
+  public UpdateUser(idUser: number, data: any) {
+    this.httpClient.put(this.url + '/api/workspaces/v1/administration/users/' + idUser, data);
+  }
+  /**
+   * DisableUser
+   */
+  public DisableUser(idUser: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/administration/users/' + idUser + '/disable', data);
+  }
+  /**
+   * EnableUser
+   */
+  public EnableUser(idUser: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/administration/users/' + idUser + '/enable', data);
+  }
+  /**
+   * AddProfileToUser
+   */
+  public AddProfileToUser(idUser: number, data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/administration/users/' + idUser + '/profiles', data);
+  }
+  /**
+   * RemoveProfileToUser
+   */
+  public RemoveProfileToUser(idUser: number, data: any) {
+    return this.httpClient.delete(this.url + '/workspaces/v1/administration/users/' + idUser + '/profiles', data);
+  }
 }

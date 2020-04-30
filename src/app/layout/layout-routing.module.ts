@@ -28,8 +28,7 @@ const routes: Routes = [
       { path: 'poc', loadChildren: () => import('./poc/poc.module').then(m => m.PocModule) },
       {
         path: 'administrador', loadChildren: () =>
-          import('./secciones/administrador/administrador.module').then(m => m.AdministradorModule),
-        canActivate: [RoleAdminGuard]
+          import('./secciones/administrador/administrador.module').then(m => m.AdministradorModule)
       },
       {
         path: 'cuenta', loadChildren: () =>

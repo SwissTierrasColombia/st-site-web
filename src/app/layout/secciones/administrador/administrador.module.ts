@@ -11,6 +11,7 @@ import { PageHeaderModule } from 'src/app/shared';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { BsComponentModule } from '../../bs-component/bs-component.module';
 
 @NgModule({
   declarations: [CreateUserComponent, ListUserComponent],
@@ -22,7 +23,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     PageHeaderModule,
     NgbModule,
     NgxPaginationModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    BsComponentModule
   ],
   providers: [
     FuntionsGlobalsHelper

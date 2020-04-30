@@ -168,7 +168,8 @@
         </ul>
       </li>
     </div> -->
-    <div class="nested-menu" *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador">
+    <!-- *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador" -->
+    <div class="nested-menu">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].administrador)">
         <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>Administrador</span>
@@ -176,9 +177,9 @@
       <li class="nested" [class.expand]="showMenu === listMenu[0].administrador">
         <ul class="submenu">
           <li>
-            <a [routerLink]="['/administrador/listar-usuarios']">
+            <a [routerLink]="['/administrador/usuarios']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Listar Usuarios</span>
+              <span>Usuarios</span>
             </a>
           </li>
           <li>
