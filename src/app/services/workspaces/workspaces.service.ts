@@ -227,7 +227,7 @@ export class WorkspacesService {
    * UpdateUser
    */
   public UpdateUser(idUser: number, data: any) {
-    this.httpClient.put(this.url + '/api/workspaces/v1/administration/users/' + idUser, data);
+    return this.httpClient.put(this.url + '/workspaces/v1/administration/users/' + idUser, data);
   }
   /**
    * DisableUser
@@ -251,6 +251,12 @@ export class WorkspacesService {
    * RemoveProfileToUser
    */
   public RemoveProfileToUser(idUser: number, data: any) {
-    return this.httpClient.delete(this.url + '/workspaces/v1/administration/users/' + idUser + '/profiles', data);
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: data,
+    };
+    return this.httpClient.delete(this.url + '/workspaces/v1/administration/users/' + idUser + '/profiles', options);
   }
 }

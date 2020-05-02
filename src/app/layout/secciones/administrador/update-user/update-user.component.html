@@ -1,25 +1,167 @@
 <div>
-    <app-page-header [heading]="'Modificar usuario'" [icon]="'fa-star'">
+    <app-page-header [heading]="'Modificar Usuario'" [icon]="'fa-star'">
     </app-page-header>
-
-    <div class="card text-center">
-        <div class="card-header row">
-            <div class="col-1">
-                <span ngbTooltip="Volver" placement="bottom" show-delay="500">
-                    <i class="material-icons cursor" (click)="volver()">backspace</i>
-                </span>
-            </div>
-            <div class="col-10">
-                <h3>Modificar Usuario</h3>
-            </div>
+    <div class="card">
+        <div class="card-header text-center">
+            <h2>Información del Usuario</h2>
         </div>
         <div class="card-body">
-            <h5 class="card-title">Title</h5>
-            <p class="card-text">Content</p>
-        </div>
-        <div class="card-footer">
-            Footer
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">Nombre</label>
+                            </div>
+                            <div class="form-control">
+                                {{profile.firstName}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">Apellido</label>
+                            </div>
+                            <div class="form-control">
+                                {{profile.lastName}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">Correo electrónico</label>
+                            </div>
+                            <div class="form-control">
+                                {{profile.email}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">Roles</label>
+                            </div>
+                            <div class="form-control">
+                                <div *ngFor="let item of profile.roles">
+                                    {{item.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div *ngIf="profile.profilesManager.length > 0">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text">Perfil</label>
+                                </div>
+                                <div class="form-control">
+                                    <div *ngFor="let perfil of profile.profilesManager">
+                                        {{perfil.name}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div *ngIf="profile.profilesProvider.length > 0">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text">Perfil</label>
+                                </div>
+                                <div class="form-control">
+                                    <div *ngFor="let perfil of profile.profilesProvider">
+                                        {{perfil.name}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-
+    <div class="card mt-2">
+        <div class="card-header text-center">
+            <h2>Actualizar Información</h2>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    Nombre
+                                </span>
+                            </div>
+                            <input type="text" name="firstName" class="form-control" placeholder="Nombre"
+                                [(ngModel)]="firstName">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    Apellido
+                                </span>
+                            </div>
+                            <input type="text" name="lastName" class="form-control" placeholder="Apellido"
+                                [(ngModel)]="lastName">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-muted text-center">
+            <div class="col-12">
+                <button type="button" class="btn btn-dark" (click)="submitChange()">
+                    Actualizar
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-2" *ngIf="manager">
+        <div class="card-header text-center">
+            <h2>Modificar Perfil</h2>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-4">
+                            <div class="input-group mt-2">
+                                <select class="custom-select" name="managersprfile" id="managersprofile"
+                                    [(ngModel)]="addprofiles">
+                                    <option value="0">Seleccione el perfil a agregar</option>
+                                    <option [ngValue]="item.id" *ngFor="let item of profilesManagers">{{item.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-dark mt-2" (click)="addprofileManager()"
+                                [disabled]="addprofiles == 0">
+                                Agregar Perfil
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-4">
+                            <div class="input-group mt-2">
+                                <select class="custom-select" name="managersprfile" id="managersprofile"
+                                    [(ngModel)]="deleteProfiles">
+                                    <option value="0">Seleccione el perfil a eliminar</option>
+                                    <option [ngValue]="item.id" *ngFor="let item of profilesManagers">{{item.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-dark mt-2" (click)="deleteprofileManager()"
+                                [disabled]="deleteProfiles == 0">
+                                Eliminar Perfil
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
