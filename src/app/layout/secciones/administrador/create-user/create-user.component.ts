@@ -20,7 +20,6 @@ export class CreateUserComponent implements OnInit {
   profilesManagers: any;
   profilesProviders: any;
   selectROL: number;
-  isManager: boolean;
   dataUserLogger: any;
   roleConnect: any;
   constructor(
@@ -79,13 +78,14 @@ export class CreateUserComponent implements OnInit {
     this.managers = [];
     this.operators = [];
     this.selectROL = 0;
-    this.isManager = false;
     this.dataUserLogger = {};
     this.roleConnect = {};
   }
 
   ngOnInit() {
     this.dataUserLogger = JwtHelper.getUserPublicInformation();
+    console.log(this.dataUserLogger);
+
     this.roleConnect = this.dataUserLogger.roles.find(elem => {
       return elem.id === 5;
     });
@@ -99,6 +99,11 @@ export class CreateUserComponent implements OnInit {
         return elem.id === 2;
       });
     }
+    if (!this.roleConnect) {
+      this.roleConnect = this.dataUserLogger.roles.find(elem => {
+        return elem.id === 4;
+      });
+    }
 
     if (this.roleConnect.id === 1) {
       this.registerData.state = [{
@@ -106,12 +111,17 @@ export class CreateUserComponent implements OnInit {
         name: 'Gestor',
       },
       {
-        id: 3,
-        name: 'Operador',
+        id: 4,
+        name: 'Proveedor',
       }];
       this.serviceManagers.getManagers().subscribe(
         data => {
           this.managers = data;
+        }
+      );
+      this.serviceProviders.getProviders().subscribe(
+        data => {
+          this.providers = data;
         }
       );
     }
@@ -122,7 +132,7 @@ export class CreateUserComponent implements OnInit {
         name: 'Administrador',
       }]
     }
-    this.isManager = this.dataUserLogger.is_manager_director;
+
     if (this.dataUserLogger.is_manager_director) {
       this.registerData.state = [
         {
@@ -132,10 +142,6 @@ export class CreateUserComponent implements OnInit {
         {
           id: 3,
           name: 'Operador',
-        },
-        {
-          id: 4,
-          name: 'Proveedor',
         }
       ];
       if (this.roleConnect.id === 2) {
@@ -144,21 +150,36 @@ export class CreateUserComponent implements OnInit {
             this.managers = data;
           }
         );
+        this.serviceOperators.getOperatorsByFilters().subscribe(
+          response => {
+            this.operators = response;
+          }
+        );
       }
     }
-    if (this.roleConnect.id === 4) {
-      this.serviceProviders.getProviders().subscribe(
-        data => {
-          this.providers = data;
+    if (this.dataUserLogger.is_provider_director) {
+      this.registerData.state = [
+        {
+          id: 3,
+          name: 'Operador',
+        },
+        {
+          id: 4,
+          name: 'Proveedor',
         }
-      );
-    }
-    if (this.roleConnect.id === 3) {
-      this.serviceOperators.getOperatorsByFilters().subscribe(
-        response => {
-          this.operators = response;
-        }
-      );
+      ];
+      if (this.roleConnect.id === 4) {
+        this.serviceProviders.getProviders().subscribe(
+          data => {
+            this.providers = data;
+          }
+        );
+        this.serviceOperators.getOperatorsByFilters().subscribe(
+          response => {
+            this.operators = response;
+          }
+        );
+      }
     }
   }
   getProfilesManager() {
@@ -171,11 +192,15 @@ export class CreateUserComponent implements OnInit {
     }
   }
   getProfilesProviders(id: number) {
-    this.serviceProviders.getProfilesByProvider(id).subscribe(
-      data => {
-        this.profilesProviders = data;
-      }
-    );
+    if (this.roleConnect.id === 1) {
+      this.registerData.roleProvider.profiles = [1];
+    } else {
+      this.serviceProviders.getProfilesByProvider(id).subscribe(
+        data => {
+          this.profilesProviders = data;
+        }
+      );
+    }
   }
   register() {
     if (this.registerData.password === this.registerData.confirmationPassword) {
@@ -278,9 +303,19 @@ export class CreateUserComponent implements OnInit {
               name: 'Gestor',
             },
             {
-              id: 3,
-              name: 'Operador',
-            }]
+              id: 4,
+              name: 'Proveedor',
+            }];
+            this.serviceManagers.getManagers().subscribe(
+              data => {
+                this.managers = data;
+              }
+            );
+            this.serviceProviders.getProviders().subscribe(
+              data => {
+                this.providers = data;
+              }
+            );
           }
           if (this.roleConnect.id === 5) {
             this.selectROL = 1;
