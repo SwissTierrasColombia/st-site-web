@@ -5,6 +5,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
+import { JwtHelper } from 'src/app/helpers/jwt';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -19,6 +20,9 @@ export class CreateUserComponent implements OnInit {
   profilesManagers: any;
   profilesProviders: any;
   selectROL: number;
+  isManager: boolean;
+  dataUserLogger: any;
+  roleConnect: any;
   constructor(
     private serviceManagers: ManagersService,
     private serviceProviders: ProvidersService,
@@ -75,29 +79,96 @@ export class CreateUserComponent implements OnInit {
     this.managers = [];
     this.operators = [];
     this.selectROL = 0;
+    this.isManager = false;
+    this.dataUserLogger = {};
+    this.roleConnect = {};
   }
 
   ngOnInit() {
-    this.serviceManagers.getManagers().subscribe(
-      data => {
-        this.managers = data;
+    this.dataUserLogger = JwtHelper.getUserPublicInformation();
+    this.roleConnect = this.dataUserLogger.roles.find(elem => {
+      return elem.id === 5;
+    });
+    if (!this.roleConnect) {
+      this.roleConnect = this.dataUserLogger.roles.find(elem => {
+        return elem.id === 1;
+      });
+    }
+    if (!this.roleConnect) {
+      this.roleConnect = this.dataUserLogger.roles.find(elem => {
+        return elem.id === 2;
+      });
+    }
+
+    if (this.roleConnect.id === 1) {
+      this.registerData.state = [{
+        id: 2,
+        name: 'Gestor',
+      },
+      {
+        id: 3,
+        name: 'Operador',
+      }];
+      this.serviceManagers.getManagers().subscribe(
+        data => {
+          this.managers = data;
+        }
+      );
+    }
+    if (this.roleConnect.id === 5) {
+      this.selectROL = 1;
+      this.registerData.state = [{
+        id: 1,
+        name: 'Administrador',
+      }]
+    }
+    this.isManager = this.dataUserLogger.is_manager_director;
+    if (this.dataUserLogger.is_manager_director) {
+      this.registerData.state = [
+        {
+          id: 2,
+          name: 'Gestor',
+        },
+        {
+          id: 3,
+          name: 'Operador',
+        },
+        {
+          id: 4,
+          name: 'Proveedor',
+        }
+      ];
+      if (this.roleConnect.id === 2) {
+        this.serviceManagers.getManagers().subscribe(
+          data => {
+            this.managers = data;
+          }
+        );
       }
-    );
-    this.serviceProviders.getProviders().subscribe(
-      data => {
-        this.providers = data;
-      }
-    );
-    this.serviceOperators.getOperatorsByFilters().subscribe(
-      response => {
-        this.operators = response;
-      }
-    );
+    }
+    if (this.roleConnect.id === 4) {
+      this.serviceProviders.getProviders().subscribe(
+        data => {
+          this.providers = data;
+        }
+      );
+    }
+    if (this.roleConnect.id === 3) {
+      this.serviceOperators.getOperatorsByFilters().subscribe(
+        response => {
+          this.operators = response;
+        }
+      );
+    }
   }
   getProfilesManager() {
-    this.serviceManagers.getManagersProfiles().subscribe(data => {
-      this.profilesManagers = data;
-    });
+    if (this.roleConnect.id === 1) {
+      this.registerData.roleManager.profiles = [1];
+    } else {
+      this.serviceManagers.getManagersProfiles().subscribe(data => {
+        this.profilesManagers = data;
+      });
+    }
   }
   getProfilesProviders(id: number) {
     this.serviceProviders.getProfilesByProvider(id).subscribe(
@@ -145,7 +216,7 @@ export class CreateUserComponent implements OnInit {
         delete data.roleProvider;
       }
 
-      this.serviceWorkSpace.createUser(data).subscribe(
+      this.serviceWorkSpace.CreateUser(data).subscribe(
         _ => {
           this.toast.success('Se ha registrado el usuario ' + FuntionsGlobalsHelper.clone(this.registerData.username) + ' Correctamente');
           this.registerData = {
@@ -191,6 +262,49 @@ export class CreateUserComponent implements OnInit {
               roleId: 4
             },
           };
+          if (!this.roleConnect) {
+            this.roleConnect = this.dataUserLogger.roles.find(elem => {
+              return elem.id === 1;
+            });
+          }
+          if (!this.roleConnect) {
+            this.roleConnect = this.dataUserLogger.roles.find(elem => {
+              return elem.id === 2;
+            });
+          }
+          if (this.roleConnect.id === 1) {
+            this.registerData.state = [{
+              id: 2,
+              name: 'Gestor',
+            },
+            {
+              id: 3,
+              name: 'Operador',
+            }]
+          }
+          if (this.roleConnect.id === 5) {
+            this.selectROL = 1;
+            this.registerData.state = [{
+              id: 1,
+              name: 'Administrador',
+            }]
+          }
+          if (this.dataUserLogger.is_manager_director && this.roleConnect.id === 2) {
+            this.registerData.state = [
+              {
+                id: 2,
+                name: 'Gestor',
+              },
+              {
+                id: 3,
+                name: 'Operador',
+              },
+              {
+                id: 4,
+                name: 'Proveedor',
+              }
+            ];
+          }
         }
       );
     } else {

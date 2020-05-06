@@ -100,12 +100,6 @@ export class WorkspacesService {
     return this.httpClient.put(this.url + '/workspaces/v1/providers/requests/' + idInsumo + '/close', {});
   }
   /**
-   * createUser
-   */
-  public createUser(data: any) {
-    return this.httpClient.post(this.url + '/workspaces/v1/administration/users', data);
-  }
-  /**
    * GetSuppliesByMunicipality
    */
   public GetSuppliesByMunicipalityXTF(idMunicipality: number) {
@@ -258,5 +252,11 @@ export class WorkspacesService {
       body: data,
     };
     return this.httpClient.delete(this.url + '/workspaces/v1/administration/users/' + idUser + '/profiles', options);
+  }
+  /**
+   * GetManagerProfiles
+   */
+  public GetManagerProfiles() {
+    return this.httpClient.get(this.url + '/managers/v1/profiles')
   }
 }
