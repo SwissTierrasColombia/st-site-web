@@ -57,7 +57,7 @@ export class HeaderComponent implements OnInit {
     this.roleoperator = this.user.roles.find((elem: any) => {
       return elem.id === this.roles.operador;
     });
-    if (this.roleproveedor) {
+    if (this.roleproveedor && this.user.is_provider_director === false) {
       this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
         (data: any) => {
           this.taskProvider = data.length;
@@ -90,7 +90,7 @@ export class HeaderComponent implements OnInit {
 
   onLoggedout() {
     localStorage.removeItem(environment.nameTokenSession);
-    this.router.navigate(['login']);
+    window.location.reload();
   }
 
 

@@ -259,4 +259,10 @@ export class WorkspacesService {
   public GetManagerProfiles() {
     return this.httpClient.get(this.url + '/managers/v1/profiles')
   }
+  /**
+   * GetProviderProfiles
+   */
+  public GetProviderProfiles() {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/profiles');
+  }
 }

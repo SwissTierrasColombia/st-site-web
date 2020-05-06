@@ -21,8 +21,8 @@
                 <th>Correo</th>
                 <th>Usuario</th>
                 <th>Fecha de Creación</th>
-                <th>Rol</th>
-                <th>Perfil</th>
+                <th *ngIf="!roleConnectManager && !roleConnectProvider">Rol</th>
+                <th *ngIf="!roleConnectSuperAdmin">Perfil</th>
                 <th>Opciones</th>
               </tr>
             </thead>
@@ -35,23 +35,29 @@
                 <td scope="row">{{item.email}}</td>
                 <td scope="row">{{item.username}}</td>
                 <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                <td scope="row">
+                <td scope="row" *ngIf="!roleConnectManager && !roleConnectProvider">
                   <div *ngFor="let rol of item.roles">
                     {{globalFuntionString(rol.name)}}
                   </div>
                 </td>
-                <td scope="row">
+                <td scope="row" *ngIf="!roleConnectSuperAdmin">
                   <div *ngIf="item.profilesManager.length > 0">
                     <div *ngFor="let perfil of item.profilesManager">
                       {{perfil.name}}
                     </div>
                   </div>
-                  <div *ngIf="item.profilesProvider.length > 0">
+                  <div *ngIf="item.profilesProvider.length > 0 && !roleConnectAdmin">
                     <div *ngFor="let perfil of item.profilesProvider">
                       {{perfil.name}}
                     </div>
                   </div>
-                  <div *ngIf="item.profilesManager.length === 0 && item.profilesProvider.length === 0">
+                  <div *ngIf="roleConnectAdmin">
+                    <div *ngFor="let perfil of item.rolesProvider">
+                      {{perfil.name}}
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="item.profilesManager.length === 0 && item.profilesProvider.length === 0 && item.rolesProvider.length == 0">
                     N/A
                   </div>
                 </td>

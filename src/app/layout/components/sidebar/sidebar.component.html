@@ -169,7 +169,7 @@
       </li>
     </div> -->
     <!-- *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador" -->
-    <div class="nested-menu">
+    <div class="nested-menu" *ngIf="administration">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].administrador)">
         <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>Administrador</span>

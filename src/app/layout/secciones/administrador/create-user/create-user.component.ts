@@ -111,6 +111,10 @@ export class CreateUserComponent implements OnInit {
         name: 'Gestor',
       },
       {
+        id: 3,
+        name: 'Operador',
+      },
+      {
         id: 4,
         name: 'Proveedor',
       }];
@@ -124,6 +128,11 @@ export class CreateUserComponent implements OnInit {
           this.providers = data;
         }
       );
+      this.serviceOperators.getOperatorsByFilters().subscribe(
+        response => {
+          this.operators = response;
+        }
+      );
     }
     if (this.roleConnect.id === 5) {
       this.selectROL = 1;
@@ -134,72 +143,49 @@ export class CreateUserComponent implements OnInit {
     }
 
     if (this.dataUserLogger.is_manager_director) {
+      this.selectROL = 2;
       this.registerData.state = [
         {
           id: 2,
           name: 'Gestor',
-        },
-        {
-          id: 3,
-          name: 'Operador',
         }
       ];
-      if (this.roleConnect.id === 2) {
-        this.serviceManagers.getManagers().subscribe(
-          data => {
-            this.managers = data;
+      this.serviceManagers.getManagersProfiles().subscribe(data => {
+        this.profilesManagers = data;
+        this.profilesManagers = this.profilesManagers.filter(
+          item => {
+            if (item.id != 1) {
+              return item;
+            }
           }
         );
-        this.serviceOperators.getOperatorsByFilters().subscribe(
-          response => {
-            this.operators = response;
-          }
-        );
-      }
+      });
     }
     if (this.dataUserLogger.is_provider_director) {
+      this.selectROL = 4;
       this.registerData.state = [
-        {
-          id: 3,
-          name: 'Operador',
-        },
         {
           id: 4,
           name: 'Proveedor',
         }
       ];
-      if (this.roleConnect.id === 4) {
-        this.serviceProviders.getProviders().subscribe(
-          data => {
-            this.providers = data;
-          }
-        );
-        this.serviceOperators.getOperatorsByFilters().subscribe(
-          response => {
-            this.operators = response;
-          }
-        );
-      }
+      this.serviceWorkSpace.GetProviderProfiles().subscribe(
+        data => {
+          this.profilesProviders = data;
+        }
+      );
     }
   }
   getProfilesManager() {
     if (this.roleConnect.id === 1) {
       this.registerData.roleManager.profiles = [1];
     } else {
-      this.serviceManagers.getManagersProfiles().subscribe(data => {
-        this.profilesManagers = data;
-      });
+
     }
   }
   getProfilesProviders(id: number) {
     if (this.roleConnect.id === 1) {
       this.registerData.roleProvider.profiles = [1];
-    } else {
-      this.serviceProviders.getProfilesByProvider(id).subscribe(
-        data => {
-          this.profilesProviders = data;
-        }
-      );
     }
   }
   register() {
@@ -303,6 +289,10 @@ export class CreateUserComponent implements OnInit {
               name: 'Gestor',
             },
             {
+              id: 3,
+              name: 'Operador',
+            },
+            {
               id: 4,
               name: 'Proveedor',
             }];
@@ -314,6 +304,16 @@ export class CreateUserComponent implements OnInit {
             this.serviceProviders.getProviders().subscribe(
               data => {
                 this.providers = data;
+              }
+            );
+            this.serviceProviders.getProviders().subscribe(
+              data => {
+                this.providers = data;
+              }
+            );
+            this.serviceOperators.getOperatorsByFilters().subscribe(
+              response => {
+                this.operators = response;
               }
             );
           }

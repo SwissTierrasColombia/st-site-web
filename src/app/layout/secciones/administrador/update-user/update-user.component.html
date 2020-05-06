@@ -164,4 +164,47 @@
             </form>
         </div>
     </div>
+    <div class="card mt-2" *ngIf="provider">
+        <div class="card-header text-center">
+            <h2>Modificar Perfil</h2>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-4">
+                            <div class="input-group mt-2">
+                                <select class="custom-select" name="providersprfile" id="providersprofile"
+                                    [(ngModel)]="addprofiles">
+                                    <option value="0">Seleccione el perfil a agregar</option>
+                                    <option [ngValue]="item.id" *ngFor="let item of profilesProvider">{{item.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-dark mt-2" (click)="addprofileProvider()"
+                                [disabled]="addprofiles == 0">
+                                Agregar Perfil
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-4">
+                            <div class="input-group mt-2">
+                                <select class="custom-select" name="providersprfile" id="providersprofile"
+                                    [(ngModel)]="deleteProfiles">
+                                    <option value="0">Seleccione el perfil a eliminar</option>
+                                    <option [ngValue]="item.id" *ngFor="let item of profilesProvider">{{item.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-dark mt-2" (click)="deleteprofileProvider()"
+                                [disabled]="deleteProfiles == 0">
+                                Eliminar Perfil
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

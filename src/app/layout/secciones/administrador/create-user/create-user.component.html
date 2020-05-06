@@ -10,6 +10,8 @@
                   <h1 class="text-center mb-2">Registro de Usuarios</h1>
                   <h2 class="text-center mb-2" *ngIf="roleConnect.id === 5">Administradores</h2>
                   <h2 class="text-center mb-2" *ngIf="roleConnect.id === 1">Directores</h2>
+                  <h2 class="text-center mb-2" *ngIf="roleConnect.id === 2">Gestor</h2>
+                  <h2 class="text-center mb-2" *ngIf="roleConnect.id === 4">Proveedor</h2>
                   <p class="text-muted">Ingrese los siguientes datos.</p>
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -77,17 +79,18 @@
                       placeholder="Confirmar contraseña" autocomplete="current-password"
                       [(ngModel)]="registerData.confirmationPassword" required>
                   </div>
-                  <fieldset class="form-group text-center" *ngIf="roleConnect.id === 1 || roleConnect.id === 2">
+                  <fieldset class="form-group text-center" *ngIf="roleConnect.id === 1">
                     <label class="radio-inline col-12 col-sm-3" *ngFor="let item of registerData.state; let i = index;">
                       <input [(ngModel)]="selectROL" [value]="item.id" [id]="item.id" name="roles" type="radio">
                       {{item.name}}
                     </label>
                   </fieldset>
-                  <small id="perfil" class="form-text text-muted mb-3">Seleccione el perfil para
+                  <small *ngIf="roleConnect.id === 1" id="perfil" class="form-text text-muted mb-3">Seleccione el perfil
+                    para
                     este usuario</small>
                   <div class="mb-3" *ngIf="selectROL === 2">
                     <!-- Gestor lista unica -->
-                    <div class="input-group">
+                    <div class="input-group" *ngIf="roleConnect.id === 1">
                       <div class="input-group-prepend">
                         <label class="input-group-text" aria-required="true">* Gestor</label>
                       </div>
@@ -107,7 +110,7 @@
                         <option [ngValue]="item.id" *ngFor="let item of profilesManagers">{{item.name}}</option>
                       </select>
                     </div>
-                    <small id="entities" class="form-text text-muted">Seleccione el Gestor y su perfil</small>
+                    <small id="entities" class="form-text text-muted">Seleccione el perfil del gestor</small>
                   </div>
                   <div class="mb-3" *ngIf="selectROL === 3">
                     <!-- Proveedor lista unica -->
@@ -125,7 +128,7 @@
                   </div>
                   <div class="mb-3" *ngIf="selectROL === 4">
                     <!-- Proveedor lista unica -->
-                    <div class="input-group">
+                    <div class="input-group" *ngIf="roleConnect.id === 1">
                       <div class="input-group-prepend">
                         <label class="input-group-text" aria-required="true">* Proveedor</label>
                       </div>
@@ -146,7 +149,7 @@
                         <option [ngValue]="item.id" *ngFor="let item of profilesProviders">{{item.name}}</option>
                       </select>
                     </div>
-                    <small id="entities" class="form-text text-muted">Seleccione el Proveedor y su perfil</small>
+                    <small id="entities" class="form-text text-muted">Seleccione el perfil del proveedor</small>
                   </div>
 
                   <div class="row mt-4">
@@ -155,7 +158,6 @@
                     </div>
                   </div>
                 </form>
-                <!-- <pre>{{registerData | json}}</!-->
               </div>
             </div>
           </div>

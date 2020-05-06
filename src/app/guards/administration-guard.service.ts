@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { JwtHelper } from '../helpers/jwt';
 import { RoleModel } from '../helpers/role.model';
 @Injectable()
-export class RoleAdminGuard implements CanActivate {
+export class AdministrationGuard implements CanActivate {
 
   rol: any;
 
@@ -17,7 +17,7 @@ export class RoleAdminGuard implements CanActivate {
     Observable<boolean> | Promise<boolean> | boolean {
     if (this.rol) {
       const role = this.rol.roles.find(elem => {
-        return elem.id === this.roles.superAdministrador;
+        return elem.id == this.roles.superAdministrador || elem.id == this.roles.administrador || (this.rol.is_manager_director == this.roles.gestorDirector && elem.id == this.roles.gestor) || (this.rol.is_provider_director == this.roles.proveedorDirector && elem.id == this.roles.proveedor);
       });
       if (!role) {
         this.router.navigate(['/inicio']);

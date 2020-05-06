@@ -8,6 +8,8 @@ export class RoleModel {
   gestor: number;
   operador: number;
   proveedor: number;
+  gestorDirector: boolean;
+  proveedorDirector: boolean;
 
   constructor() {
     this.administrador = 1;
@@ -15,6 +17,8 @@ export class RoleModel {
     this.operador = 3;
     this.proveedor = 4;
     this.superAdministrador = 5;
+    this.gestorDirector = true;
+    this.proveedorDirector = true;
   }
 
 }

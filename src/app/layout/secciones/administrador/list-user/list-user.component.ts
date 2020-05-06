@@ -3,6 +3,7 @@ import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { Router } from '@angular/router';
+import { JwtHelper } from 'src/app/helpers/jwt';
 
 @Component({
   selector: 'app-list-user',
@@ -17,6 +18,11 @@ export class ListUserComponent implements OnInit {
   searchText: string;
   idUserEnabled: number;
   idUserDisabled: number;
+  dataUserLogger: any;
+  roleConnectSuperAdmin: any;
+  roleConnectAdmin: any;
+  roleConnectManager: any;
+  roleConnectProvider: any;
   constructor(
     private serviceWorkspace: WorkspacesService,
     private modalService: ModalService,
@@ -27,13 +33,33 @@ export class ListUserComponent implements OnInit {
     this.pageSize = 10;
     this.idUserDisabled = 0;
     this.idUserEnabled = 0;
-
+    this.dataUserLogger = {};
+    this.roleConnectSuperAdmin = {};
+    this.roleConnectAdmin = {};
+    this.roleConnectManager = {};
+    this.roleConnectProvider = {};
   }
 
   ngOnInit() {
+    this.dataUserLogger = JwtHelper.getUserPublicInformation();
+    this.roleConnectSuperAdmin = this.dataUserLogger.roles.find(elem => {
+      return elem.id === 5;
+    });
+    this.roleConnectAdmin = this.dataUserLogger.roles.find(elem => {
+      return elem.id === 1;
+    });
+    this.roleConnectManager = this.dataUserLogger.roles.find(elem => {
+      return elem.id === 2;
+    });
+    this.roleConnectProvider = this.dataUserLogger.roles.find(elem => {
+      return elem.id === 4;
+    });
+    console.log(!this.roleConnectProvider);
+    
     this.serviceWorkspace.GetUsers().subscribe(
       (arg: any) => {
         this.dataListUser = arg
+        console.log("data: ", this.dataListUser);
       });
   }
 
