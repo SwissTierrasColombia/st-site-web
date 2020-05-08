@@ -54,12 +54,12 @@ export class ListUserComponent implements OnInit {
     this.roleConnectProvider = this.dataUserLogger.roles.find(elem => {
       return elem.id === 4;
     });
-    console.log(!this.roleConnectProvider);
-    
+    //console.log(!this.roleConnectProvider);
+
     this.serviceWorkspace.GetUsers().subscribe(
       (arg: any) => {
         this.dataListUser = arg
-        console.log("data: ", this.dataListUser);
+        //console.log("data: ", this.dataListUser);
       });
   }
 

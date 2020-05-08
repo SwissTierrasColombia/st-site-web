@@ -58,7 +58,7 @@ export class AtendidaComponent implements OnInit {
           return element;
         }
       });
-      console.log(this.dataRequestPending);
+      //console.log(this.dataRequestPending);
 
       this.suppliesRequested = this.clone(this.dataRequestPending[0].suppliesRequested);
     });

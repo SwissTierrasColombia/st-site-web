@@ -50,7 +50,8 @@ export class SidebarComponent implements OnInit {
         calidad: 'calidad',
         tramites: 'tramites',
         administrador: 'administrador',
-        insumosSolicitudes: 'insumosSolicitudes'
+        insumosSolicitudes: 'insumosSolicitudes',
+        caracterizacion: 'caracterizacion'
       }
     ];
     this.allroles = {};
@@ -75,6 +76,8 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.allroles = this.roles;
     this.user = JwtHelper.getUserPublicInformation();
+    //console.log(this.user);
+
     this.roleAdmin = this.user.roles.find(elem => {
       return elem.id === this.roles.administrador;
     });
