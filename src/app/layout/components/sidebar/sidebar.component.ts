@@ -23,6 +23,7 @@ export class SidebarComponent implements OnInit {
   roleproveedor: any;
 
   @Output() collapsedEvent = new EventEmitter<boolean>();
+  administration: any;
 
   constructor(
     public router: Router,
@@ -49,7 +50,8 @@ export class SidebarComponent implements OnInit {
         calidad: 'calidad',
         tramites: 'tramites',
         administrador: 'administrador',
-        insumosSolicitudes: 'insumosSolicitudes'
+        insumosSolicitudes: 'insumosSolicitudes',
+        caracterizacion: 'caracterizacion'
       }
     ];
     this.allroles = {};
@@ -74,6 +76,8 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.allroles = this.roles;
     this.user = JwtHelper.getUserPublicInformation();
+    //console.log(this.user);
+
     this.roleAdmin = this.user.roles.find(elem => {
       return elem.id === this.roles.administrador;
     });
@@ -85,6 +89,9 @@ export class SidebarComponent implements OnInit {
     });
     this.roleoperador = this.user.roles.find(elem => {
       return elem.id === this.roles.operador;
+    });
+    this.administration = this.user.roles.find(elem => {
+      return elem.id == this.roles.superAdministrador || elem.id == this.roles.administrador || (this.user.is_manager_director == this.roles.gestorDirector && elem.id == this.roles.gestor) || (this.user.is_provider_director == this.roles.proveedorDirector && elem.id == this.roles.proveedor);
     });
   }
 
@@ -122,6 +129,6 @@ export class SidebarComponent implements OnInit {
 
   onLoggedout() {
     localStorage.removeItem(environment.nameTokenSession);
-    this.router.navigate(['login']);
+    window.location.reload();
   }
 }

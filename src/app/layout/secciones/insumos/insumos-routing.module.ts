@@ -11,6 +11,8 @@ import { RoleAdminManagerGuard } from 'src/app/guards/role-admin-manager-guard.s
 import { EntregarComponent } from './entregar/entregar.component';
 import { SolicitudesAtendidasComponent } from './solicitudes-atendidas/solicitudes-atendidas.component';
 import { AtendidaComponent } from './atendida/atendida.component';
+import { CrearTipoInsumoComponent } from './crear-tipo-insumo/crear-tipo-insumo.component';
+import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-guard.service';
 
 
 const routes: Routes = [
@@ -54,6 +56,11 @@ const routes: Routes = [
     component: AtendidaComponent,
     canActivate: [RoleProviderGuard]
   },
+  {
+    path: 'caracterizacion/insumo',
+    component: CrearTipoInsumoComponent,
+    canActivate: [RoleProviderDirectorGuard]
+  }
 
 ];
 

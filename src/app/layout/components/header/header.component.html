@@ -53,7 +53,7 @@
           <i class="fa fa-bell"></i> <b class="caret"></b><span class="sr-only">(current)</span>
         </a>
         <div class="dropdown-menu-right" ngbDropdownMenu>
-          <a *ngIf="roleproveedor" [routerLink]="['/insumos/solicitudes/pendientes']" href="javascript:void(0)"
+          <a *ngIf="roleproveedor  && !user.is_provider_director" [routerLink]="['/insumos/solicitudes/pendientes']" href="javascript:void(0)"
             class="dropdown-item">
             Solicitudes Pendientes <span class="badge badge-info">{{taskProvider}}</span>
           </a>

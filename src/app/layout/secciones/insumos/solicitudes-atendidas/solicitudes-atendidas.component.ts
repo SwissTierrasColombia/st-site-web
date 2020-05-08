@@ -25,8 +25,8 @@ export class SolicitudesAtendidasComponent implements OnInit {
     this.serviceWorkspaces.getAttendedRequestByProvider().subscribe(
       data => {
         this.dataRequestPending = data;
-        console.log(this.dataRequestPending);
-        
+        //console.log(this.dataRequestPending);
+
       }
     );
   }

@@ -72,22 +72,40 @@
               <span>Búsqueda</span>
             </a>
           </li>
-          <a *ngIf="roleproveedor ? roleproveedor.id: 0 === allroles.proveedor" class="list-group-item" (click)="addExpandClass(listMenu[0].insumosSolicitudes)">
+          <a *ngIf="roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor"
+            class="list-group-item" (click)="addExpandClass(listMenu[0].insumosSolicitudes)">
             <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
             <span>Solicitudes</span>
           </a>
           <li class="nested" [class.expand]="showMenu === listMenu[0].insumosSolicitudes">
             <ul class="submenu">
-              <li *ngIf="roleproveedor ? roleproveedor.id: 0 === allroles.proveedor">
+              <li
+                *ngIf="roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor">
                 <a [routerLink]="['/insumos/solicitudes/pendientes']">
                   <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
                   <span>Pendientes</span>
                 </a>
               </li>
-              <li *ngIf="roleproveedor ? roleproveedor.id: 0 === allroles.proveedor">
+              <li
+                *ngIf="roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor">
                 <a [routerLink]="['/insumos/solicitudes/atendidas']">
                   <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
                   <span>Atendidas</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <a *ngIf="user.is_provider_director" class="list-group-item"
+            (click)="addExpandClass(listMenu[0].caracterizacion)">
+            <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
+            <span>Caracterización</span>
+          </a>
+          <li class="nested" [class.expand]="showMenu === listMenu[0].caracterizacion">
+            <ul class="submenu">
+              <li *ngIf="user.is_provider_director">
+                <a [routerLink]="['/insumos/caracterizacion/insumo']">
+                  <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+                  <span>Insumo</span>
                 </a>
               </li>
             </ul>
@@ -168,7 +186,8 @@
         </ul>
       </li>
     </div> -->
-    <div class="nested-menu" *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador">
+    <!-- *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador" -->
+    <div class="nested-menu" *ngIf="administration">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].administrador)">
         <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>Administrador</span>
@@ -176,9 +195,9 @@
       <li class="nested" [class.expand]="showMenu === listMenu[0].administrador">
         <ul class="submenu">
           <li>
-            <a [routerLink]="['/administrador/listar-usuarios']">
+            <a [routerLink]="['/administrador/usuarios']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Listar Usuarios</span>
+              <span>Usuarios</span>
             </a>
           </li>
           <li>
@@ -190,7 +209,7 @@
         </ul>
       </li>
     </div>
-    <a href="https://agenciaimplementacion.github.io/Asistente-LADM-COL/" target="_blank" class="list-group-item">
+    <a href="https://SwissTierrasColombia.github.io/Asistente-LADM-COL/" target="_blank" class="list-group-item">
       <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
       <span>Asistente LADM-COL</span>
     </a>

@@ -19,6 +19,7 @@ import { EntregarComponent } from './entregar/entregar.component';
 import { BsComponentModule } from '../../bs-component/bs-component.module';
 import { SolicitudesAtendidasComponent } from './solicitudes-atendidas/solicitudes-atendidas.component';
 import { AtendidaComponent } from './atendida/atendida.component';
+import { CrearTipoInsumoComponent } from './crear-tipo-insumo/crear-tipo-insumo.component';
 @NgModule({
   declarations: [
     CargueComponent,
@@ -28,7 +29,8 @@ import { AtendidaComponent } from './atendida/atendida.component';
     SearchComponent,
     EntregarComponent,
     SolicitudesAtendidasComponent,
-    AtendidaComponent
+    AtendidaComponent,
+    CrearTipoInsumoComponent
   ],
   imports: [
     CommonModule,
