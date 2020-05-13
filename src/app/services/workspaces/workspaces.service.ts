@@ -265,4 +265,28 @@ export class WorkspacesService {
   public GetProviderProfiles() {
     return this.httpClient.get(this.url + '/workspaces/v1/providers/profiles');
   }
+  /**
+   * GetProviderTypeSupplies
+   */
+  public GetProviderTypeSupplies() {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/types-supplies');
+  }
+  /**
+   * CreateTypeSupplies
+   */
+  public CreateTypeSupplies(data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/providers/types-supplies', data);
+  }
+  /**
+   * SaveTypeSupplies
+   */
+  public SaveTypeSupplies(id: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/providers/types-supplies/' + id, data);
+  }
+  /**
+   * deleteTypeSupplies
+   */
+  public deleteTypeSupplies(id: number) {
+    return this.httpClient.delete(this.url + '/workspaces/v1/providers/types-supplies/' + id);
+  }
 }
