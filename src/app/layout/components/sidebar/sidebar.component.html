@@ -206,6 +206,12 @@
               <span>Registrar Usuarios</span>
             </a>
           </li>
+          <li *ngIf="user.is_provider_director">
+            <a [routerLink]="['/administrador/crear/perfil']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Crear Perfiles</span>
+            </a>
+          </li>
         </ul>
       </li>
     </div>

@@ -254,15 +254,33 @@ export class WorkspacesService {
     return this.httpClient.delete(this.url + '/workspaces/v1/administration/users/' + idUser + '/profiles', options);
   }
   /**
-   * GetManagerProfiles
-   */
+ * GetManagerProfiles
+ */
   public GetManagerProfiles() {
-    return this.httpClient.get(this.url + '/managers/v1/profiles')
+    return this.httpClient.get(this.url + '/managers/v1/profiles');
+  }
+  /**
+   * createProfile
+   */
+  public createProfile(data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/providers/profiles', data);
   }
   /**
    * GetProviderProfiles
    */
   public GetProviderProfiles() {
     return this.httpClient.get(this.url + '/workspaces/v1/providers/profiles');
+  }
+  /**
+   * updateProfileProvider
+   */
+  public updateProfileProvider(data: any, id: number) {
+    return this.httpClient.put(this.url + '/workspaces/v1/providers/profiles/' + id, data);
+  }
+  /**
+   * deleteProfileProvider
+   */
+  public deleteProfileProvider(id: number) {
+    return this.httpClient.delete(this.url + '/workspaces/v1/providers/profiles/' + id);
   }
 }

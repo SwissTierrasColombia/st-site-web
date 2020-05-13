@@ -188,6 +188,10 @@ export class CreateUserComponent implements OnInit {
       this.registerData.roleProvider.profiles = [1];
     }
   }
+  validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
   register() {
     if (this.registerData.password === this.registerData.confirmationPassword) {
       const data = {
@@ -201,132 +205,90 @@ export class CreateUserComponent implements OnInit {
         roleOperator: {},
         roleProvider: {},
       };
+      if (this.validateEmail(this.registerData.email)) {
+        if (this.selectROL === 1) {
+          this.registerData.roleAdministrator.roleId = 1;
+          data.roleAdministrator = this.registerData.roleAdministrator;
+        } else {
+          delete data.roleAdministrator;
+        }
+        if (this.selectROL === 2) {
+          this.registerData.roleManager.roleId = 2;
+          data.roleManager = this.registerData.roleManager;
+        } else {
+          delete data.roleManager;
+        }
+        if (this.selectROL === 3) {
+          this.registerData.roleOperator.roleId = 3;
+          data.roleOperator = this.registerData.roleOperator;
+        } else {
+          delete data.roleOperator;
+        }
+        if (this.selectROL === 4) {
+          this.registerData.roleProvider.roleId = 4;
+          data.roleProvider = this.registerData.roleProvider;
+        } else {
+          delete data.roleProvider;
+        }
 
-      if (this.selectROL === 1) {
-        this.registerData.roleAdministrator.roleId = 1;
-        data.roleAdministrator = this.registerData.roleAdministrator;
-      } else {
-        delete data.roleAdministrator;
-      }
-      if (this.selectROL === 2) {
-        this.registerData.roleManager.roleId = 2;
-        data.roleManager = this.registerData.roleManager;
-      } else {
-        delete data.roleManager;
-      }
-      if (this.selectROL === 3) {
-        this.registerData.roleOperator.roleId = 3;
-        data.roleOperator = this.registerData.roleOperator;
-      } else {
-        delete data.roleOperator;
-      }
-      if (this.selectROL === 4) {
-        this.registerData.roleProvider.roleId = 4;
-        data.roleProvider = this.registerData.roleProvider;
-      } else {
-        delete data.roleProvider;
-      }
-
-      this.serviceWorkSpace.CreateUser(data).subscribe(
-        _ => {
-          this.toast.success('Se ha registrado el usuario ' + FuntionsGlobalsHelper.clone(this.registerData.username) + ' Correctamente');
-          this.registerData = {
-            state: [
-              {
-                id: 1,
-                name: 'Administrador',
+        this.serviceWorkSpace.CreateUser(data).subscribe(
+          _ => {
+            this.toast.success('Se ha registrado el usuario ' + FuntionsGlobalsHelper.clone(this.registerData.username) + ' Correctamente');
+            this.registerData = {
+              state: [
+                {
+                  id: 1,
+                  name: 'Administrador',
+                },
+                {
+                  id: 2,
+                  name: 'gestor',
+                },
+                {
+                  id: 3,
+                  name: 'Operador',
+                },
+                {
+                  id: 4,
+                  name: 'Proveedor',
+                }
+              ],
+              email: '',
+              username: '',
+              firstName: '',
+              lastName: '',
+              password: '',
+              confirmationPassword: '',
+              roleAdministrator: {
+                roleId: 1
               },
-              {
-                id: 2,
-                name: 'gestor',
+              roleManager: {
+                profiles: [],
+                managerId: 0,
+                roleId: 2
               },
-              {
-                id: 3,
-                name: 'Operador',
+              roleOperator: {
+                roleId: 3,
+                operatorId: 0
               },
-              {
-                id: 4,
-                name: 'Proveedor',
-              }
-            ],
-            email: '',
-            username: '',
-            firstName: '',
-            lastName: '',
-            password: '',
-            confirmationPassword: '',
-            roleAdministrator: {
-              roleId: 1
-            },
-            roleManager: {
-              profiles: [],
-              managerId: 0,
-              roleId: 2
-            },
-            roleOperator: {
-              roleId: 3,
-              operatorId: 0
-            },
-            roleProvider: {
-              profiles: [],
-              providerId: 0,
-              roleId: 4
-            },
-          };
-          if (!this.roleConnect) {
-            this.roleConnect = this.dataUserLogger.roles.find(elem => {
-              return elem.id === 1;
-            });
-          }
-          if (!this.roleConnect) {
-            this.roleConnect = this.dataUserLogger.roles.find(elem => {
-              return elem.id === 2;
-            });
-          }
-          if (this.roleConnect.id === 1) {
-            this.registerData.state = [{
-              id: 2,
-              name: 'Gestor',
-            },
-            {
-              id: 3,
-              name: 'Operador',
-            },
-            {
-              id: 4,
-              name: 'Proveedor',
-            }];
-            this.serviceManagers.getManagers().subscribe(
-              data => {
-                this.managers = data;
-              }
-            );
-            this.serviceProviders.getProviders().subscribe(
-              data => {
-                this.providers = data;
-              }
-            );
-            this.serviceProviders.getProviders().subscribe(
-              data => {
-                this.providers = data;
-              }
-            );
-            this.serviceOperators.getOperatorsByFilters().subscribe(
-              response => {
-                this.operators = response;
-              }
-            );
-          }
-          if (this.roleConnect.id === 5) {
-            this.selectROL = 1;
-            this.registerData.state = [{
-              id: 1,
-              name: 'Administrador',
-            }]
-          }
-          if (this.dataUserLogger.is_manager_director && this.roleConnect.id === 2) {
-            this.registerData.state = [
-              {
+              roleProvider: {
+                profiles: [],
+                providerId: 0,
+                roleId: 4
+              },
+            };
+            if (!this.roleConnect) {
+              this.roleConnect = this.dataUserLogger.roles.find(elem => {
+                return elem.id === 1;
+              });
+            }
+            if (!this.roleConnect) {
+              this.roleConnect = this.dataUserLogger.roles.find(elem => {
+                return elem.id === 2;
+              });
+            }
+            if (this.roleConnect.id === 1) {
+              this.registerData.state = [{
                 id: 2,
                 name: 'Gestor',
               },
@@ -337,13 +299,58 @@ export class CreateUserComponent implements OnInit {
               {
                 id: 4,
                 name: 'Proveedor',
-              }
-            ];
+              }];
+              this.serviceManagers.getManagers().subscribe(
+                data => {
+                  this.managers = data;
+                }
+              );
+              this.serviceProviders.getProviders().subscribe(
+                data => {
+                  this.providers = data;
+                }
+              );
+              this.serviceProviders.getProviders().subscribe(
+                data => {
+                  this.providers = data;
+                }
+              );
+              this.serviceOperators.getOperatorsByFilters().subscribe(
+                response => {
+                  this.operators = response;
+                }
+              );
+            }
+            if (this.roleConnect.id === 5) {
+              this.selectROL = 1;
+              this.registerData.state = [{
+                id: 1,
+                name: 'Administrador',
+              }]
+            }
+            if (this.dataUserLogger.is_manager_director && this.roleConnect.id === 2) {
+              this.registerData.state = [
+                {
+                  id: 2,
+                  name: 'Gestor',
+                },
+                {
+                  id: 3,
+                  name: 'Operador',
+                },
+                {
+                  id: 4,
+                  name: 'Proveedor',
+                }
+              ];
+            }
           }
-        }
-      );
+        );
+      } else {
+        this.toast.error('El correo electrónico ingresado no es válido.');
+      }
     } else {
-      this.toast.error('Las contraseñas no son iguales');
+      this.toast.error('Las contraseñas no son iguales.');
     }
 
   }

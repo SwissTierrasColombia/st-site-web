@@ -54,8 +54,6 @@ export class UpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     const data = JwtHelper.getUserPublicInformation();
-    //console.log(data);
-
     const promise1 = new Promise((resolve) => {
       this.activedRoute.params.subscribe(
         response => {
