@@ -14,9 +14,12 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { BsComponentModule } from '../../bs-component/bs-component.module';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { ProfilesComponent } from './profiles/profiles.component';
+import { GestorComponent } from './gestor/gestor.component';
+import { ProveedorComponent } from './proveedor/proveedor.component';
+import { OperadorComponent } from './operador/operador.component';
 
 @NgModule({
-  declarations: [CreateUserComponent, ListUserComponent, UpdateUserComponent, ProfilesComponent],
+  declarations: [CreateUserComponent, ListUserComponent, UpdateUserComponent, ProfilesComponent, GestorComponent, ProveedorComponent, OperadorComponent],
   imports: [
     CommonModule,
     FormsModule,
