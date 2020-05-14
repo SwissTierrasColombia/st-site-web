@@ -214,6 +214,33 @@
           </li>
         </ul>
       </li>
+      <a *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador" class="list-group-item"
+        (click)="addExpandClass(listMenu[0].registrar)">
+        <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
+        <span>Registrar</span>
+      </a>
+      <li class="nested" [class.expand]="showMenu === listMenu[0].registrar">
+        <ul class="submenu">
+          <li *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador">
+            <a [routerLink]="['/administrador/crear/gestor']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Gestor</span>
+            </a>
+          </li>
+          <li *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador">
+            <a [routerLink]="['/administrador/crear/operador']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Operador</span>
+            </a>
+          </li>
+          <li *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador">
+            <a [routerLink]="['/administrador/crear/proveedor']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Proveedor</span>
+            </a>
+          </li>
+        </ul>
+      </li>
     </div>
     <a href="https://SwissTierrasColombia.github.io/Asistente-LADM-COL/" target="_blank" class="list-group-item">
       <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;

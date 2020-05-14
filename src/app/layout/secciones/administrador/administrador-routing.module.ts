@@ -8,6 +8,7 @@ import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-
 import { GestorComponent } from './gestor/gestor.component';
 import { OperadorComponent } from './operador/operador.component';
 import { ProveedorComponent } from './proveedor/proveedor.component';
+import { RoleAdminGuard } from 'src/app/guards/role-admin-guard.service';
 
 const routes: Routes = [
   {
@@ -30,15 +31,18 @@ const routes: Routes = [
   },
   {
     path: 'crear/gestor',
-    component: GestorComponent
+    component: GestorComponent,
+    canActivate: [RoleAdminGuard]
   },
   {
     path: 'crear/operador',
-    component: OperadorComponent
+    component: OperadorComponent,
+    canActivate: [RoleAdminGuard]
   },
   {
     path: 'crear/proveedor',
-    component: ProveedorComponent
+    component: ProveedorComponent,
+    canActivate: [RoleAdminGuard]
   }
 ];
 
