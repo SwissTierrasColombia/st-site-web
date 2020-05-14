@@ -35,7 +35,7 @@
                 <td scope="row">{{item.lastName}}</td>
                 <td scope="row">{{item.email}}</td>
                 <td scope="row">{{item.username}}</td>
-                <td scope="row">{{item.entity.name}}</td>
+                <td scope="row" *ngIf="roleConnectAdmin">{{item.entity.name}}</td>
                 <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
                 <td scope="row" *ngIf="!roleConnectManager && !roleConnectProvider">
                   <div *ngFor="let rol of item.roles">
