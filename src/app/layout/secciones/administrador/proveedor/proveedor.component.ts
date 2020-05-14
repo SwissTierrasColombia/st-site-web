@@ -88,7 +88,7 @@ export class ProveedorComponent implements OnInit {
   updateProfile(item: any) {
     this.stateButton = false;
     const entity = this.clone(item);
-    console.log(entity);
+    //console.log(entity);
 
     this.data = {
       id: entity.id,

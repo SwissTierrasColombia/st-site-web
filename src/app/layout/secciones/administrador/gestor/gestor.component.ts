@@ -37,7 +37,7 @@ export class GestorComponent implements OnInit {
     this.serviceManager.getAllManagers().subscribe(
       element => {
         this.dataProfile = element;
-        console.log(this.dataProfile);
+        //console.log(this.dataProfile);
         this.dataProfile.sort((a, b) => a.id - b.id);
         this.dataProfile.forEach(element => {
           if (element.managerState.name == "INACTIVO") {
@@ -104,7 +104,7 @@ export class GestorComponent implements OnInit {
     this.stateButton = false;
 
     const entity = this.clone(item);
-    console.log(entity);
+    //console.log(entity);
     this.data = {
       id: entity.id,
       name: entity.name,
@@ -145,7 +145,7 @@ export class GestorComponent implements OnInit {
       );
       this.modalService.close(modal);
     } else {
-      console.log(this.idProfileEnable);
+      //console.log(this.idProfileEnable);
       this.idProfileEnable.state = false;
       this.modalService.close(modal);
     }
