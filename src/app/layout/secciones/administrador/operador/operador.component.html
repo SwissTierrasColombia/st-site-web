@@ -15,7 +15,7 @@
                                     * Nombre
                                 </span>
                             </div>
-                            <input (ngModelChange)="changeState()" type="text" name="name" class="form-control"
+                            <input (change)="changeState()" type="text" name="name" class="form-control"
                                 placeholder="Nombre" [(ngModel)]="data.name">
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                                     * NIT
                                 </span>
                             </div>
-                            <input (ngModelChange)="changeState()" type="text" name="taxIdentificationNumber"
+                            <input (change)="changeState()" type="text" name="taxIdentificationNumber"
                                 class="form-control" placeholder="NIT" [(ngModel)]="data.taxIdentificationNumber">
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                                     * Tipo de Empresa
                                 </span>
                             </div>
-                            <select (ngModelChange)="changeState()" class="custom-select" name="managersprfile"
+                            <select (change)="changeState()" class="custom-select" name="managersprfile"
                                 id="managersprofile" [(ngModel)]="data.isPublic">
                                 <option value="0">Seleccione el tipo de empresa</option>
                                 <option value="false">Privada

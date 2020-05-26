@@ -307,4 +307,28 @@ export class WorkspacesService {
   public deleteTypeSupplies(id: number) {
     return this.httpClient.delete(this.url + '/workspaces/v1/providers/types-supplies/' + id);
   }
+  /**
+   * searchSuppliesMunicipality
+   */
+  public searchSuppliesMunicipality(page: string, municipality: number) {
+    // if (municipality) {
+    let url = this.url + '/workspaces/v1/providers/requests/municipality?page=' + page
+    url = url + '&municipality=' + municipality
+    // }
+    return this.httpClient.get(url);
+  }
+  /**
+   * searchSuppliesProviders
+   */
+  public searchSuppliesProviders(page: string, idProvider: string) {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/requests/provider?page=' + page + '&provider=' + idProvider)
+  }
+  /**
+   * searchSuppliesOrder
+   */
+  public searchSuppliesOrder(idPackage: string) {
+    let url = this.url + '/workspaces/v1/providers/requests/package?package=' + idPackage;
+    return this.httpClient.get(url);
+  }
+
 }

@@ -57,7 +57,7 @@
                   <div>* Tipo</div>
                 </div>
                 <div class="form-control" *ngIf="supp.canUpload">
-                  <select (ngModelChange)="modelChanged(supp, idOut, idInt )" [(ngModel)]="supp.typeSupplyId"
+                  <select (change)="modelChanged(supp, idOut, idInt )" [(ngModel)]="supp.typeSupplyId"
                     name="tipos{{idOut}}{{idInt}}" id="tipo{{idOut}}{{idInt}}" [disabled]="!supp.canUpload">
                     <option value='0' selected>Seleccione el tipo</option>
                     <option [ngValue]="tipo.file" *ngFor="let tipo of supp.type">{{tipo.name}}</option>

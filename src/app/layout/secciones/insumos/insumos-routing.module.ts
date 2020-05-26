@@ -13,6 +13,7 @@ import { SolicitudesAtendidasComponent } from './solicitudes-atendidas/solicitud
 import { AtendidaComponent } from './atendida/atendida.component';
 import { CrearTipoInsumoComponent } from './crear-tipo-insumo/crear-tipo-insumo.component';
 import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-guard.service';
+import { BuscarSolicitudComponent } from './buscar-solicitud/buscar-solicitud.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,11 @@ const routes: Routes = [
     path: 'buscar',
     component: SearchComponent,
     canActivate: [RoleAdminManagerGuard]
+  },
+  {
+    path: 'buscar-solicitud',
+    component: BuscarSolicitudComponent,
+    canActivate: [RoleManagerGuard]
   },
   {
     path: 'entrega',

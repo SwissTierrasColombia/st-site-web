@@ -94,6 +94,8 @@ export class SolicitudComponent implements OnInit {
     this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment.toString()).subscribe(
       data => {
         this.municipalities = data;
+        // console.log(this.municipalities);
+        
       }
     );
   }
@@ -236,6 +238,11 @@ export class SolicitudComponent implements OnInit {
         this.selectModelSupplies = '0';
         this.enviarsolicitud = true;
         this.tableSolicitudes = [];
+        this.selectProvider = 0;
+        this.currentDate = new Date();
+        this.currentDate.setDate(this.currentDate.getDate() + 16);
+        this.listsupplies.deadline = this.currentDate.toISOString().substring(0, 10);
+        this.currentDate = this.clone(this.listsupplies.deadline);
       }
     );
   }

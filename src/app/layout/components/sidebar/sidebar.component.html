@@ -65,13 +65,6 @@
               <span>Integración</span>
             </a>
           </li>
-          <li
-            *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
-            <a href="" [routerLink]="['/insumos/buscar']">
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Búsqueda</span>
-            </a>
-          </li>
           <a *ngIf="roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor"
             class="list-group-item" (click)="addExpandClass(listMenu[0].insumosSolicitudes)">
             <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
@@ -95,6 +88,26 @@
               </li>
             </ul>
           </li>
+          <a *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor"
+            class="list-group-item" (click)="addExpandClass(listMenu[0].busqueda)">
+            <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
+            <span>Búsqueda</span>
+          </a>
+          <ul class="submenu">
+            <li
+              *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
+              <a href="" [routerLink]="['/insumos/buscar']">
+                <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+                <span>Insumo</span>
+              </a>
+            </li>
+            <li *ngIf="rolegestor ? rolegestor.id: 0 === allroles.gestor">
+              <a href="" [routerLink]="['/insumos/buscar-solicitud']">
+                <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+                <span>Solicitud</span>
+              </a>
+            </li>
+          </ul>
           <a *ngIf="user.is_provider_director" class="list-group-item"
             (click)="addExpandClass(listMenu[0].caracterizacion)">
             <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;

@@ -15,7 +15,7 @@
                                     * Nombre
                                 </span>
                             </div>
-                            <input (ngModelChange)="changeState()" type="text" name="name" class="form-control"
+                            <input (change)="changeState()" type="text" name="name" class="form-control"
                                 placeholder="Nombre" [(ngModel)]="data.name">
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                                     Descripción
                                 </span>
                             </div>
-                            <input (ngModelChange)="changeState()" type="text" name="description" class="form-control"
+                            <input (change)="changeState()" type="text" name="description" class="form-control"
                                 placeholder="Descripción" [(ngModel)]="data.description">
                         </div>
                     </div>
