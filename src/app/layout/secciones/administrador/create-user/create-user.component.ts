@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
 import { JwtHelper } from 'src/app/helpers/jwt';
+import { ModalService } from 'src/app/services/modal/modal.service';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -27,7 +28,8 @@ export class CreateUserComponent implements OnInit {
     private serviceProviders: ProvidersService,
     private serviceWorkSpace: WorkspacesService,
     private toast: ToastrService,
-    private serviceOperators: OperatorsService
+    private serviceOperators: OperatorsService,
+    private modalService: ModalService
   ) {
     this.profilesManagers = [];
     this.profilesProviders = [];
@@ -353,5 +355,16 @@ export class CreateUserComponent implements OnInit {
       this.toast.error('Las contraseñas no son iguales.');
     }
 
+  }
+  openModal(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModal(modal: string, option: boolean) {
+    if (option) {
+      this.register();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
+    }
   }
 }

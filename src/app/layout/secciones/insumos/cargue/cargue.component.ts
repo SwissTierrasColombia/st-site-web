@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import * as _moment from 'moment';
 import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
+import { ModalService } from 'src/app/services/modal/modal.service';
 
 const moment = _moment;
 
@@ -28,7 +29,8 @@ export class CargueComponent implements OnInit {
     private router: Router,
     private activedRoute: ActivatedRoute,
     private serviceWorkspaces: WorkspacesService,
-    public typeDataFieldModel: TypeDataSuppliesModel
+    public typeDataFieldModel: TypeDataSuppliesModel,
+    private modalService: ModalService
   ) {
     this.respuestaValidador = [
       {
@@ -317,5 +319,16 @@ export class CargueComponent implements OnInit {
   }
   volver() {
     this.router.navigate(['/insumos/solicitudes/pendientes']);
+  }
+  openModal(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModal(modal: string, option: boolean) {
+    if (option) {
+      this.closeRequest();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
+    }
   }
 }

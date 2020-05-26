@@ -86,7 +86,7 @@
             <button *ngIf="editForm.municipalityArea" type="button" class="btn btn-primary btn-sm btn-block"
               (click)="changeUpdate()">Editar</button>
             <button *ngIf="editForm.municipalityArea === false" type="button" class="btn btn-primary btn-sm btn-block"
-              (click)="update()">Actualizar</button>
+              (click)="openModalUpdate('modalRegistrar')">Actualizar</button>
           </div>
           <h3>Gestor</h3>
           <div class="form-group row">
@@ -258,6 +258,29 @@
         </div>
         <div class="text-center col-sm">
           <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false,'modal-operator');">
+            <h4>No</h4>
+          </button>
+        </div>
+      </div>
+    </div>
+  </jw-modal>
+  <jw-modal id="modalRegistrar" class="mt-5">
+    <div class="card">
+      <div class="card-header">
+        <i class="cui-arrow-bottom"></i>
+        <h2 class="text-center font-weight-bold">
+          ¿Está seguro de actualizar la información?
+        </h2>
+        <h5 class="alert alert-warning text-center">Advertencia: Esta acción actualizará la información del espacio de trabajo.</h5>
+      </div>
+      <div class="card-body row">
+        <div class="text-center col-sm">
+          <button type="button" class="btn btn-primary btn-block" (click)="closeModalUpdate('modalRegistrar',true);">
+            <h4>Sí</h4>
+          </button>
+        </div>
+        <div class="text-center col-sm">
+          <button type="button" class="btn btn-dark btn-block" (click)="closeModalUpdate('modalRegistrar',false);">
             <h4>No</h4>
           </button>
         </div>

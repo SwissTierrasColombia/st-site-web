@@ -4,6 +4,7 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { ToastrService } from 'ngx-toastr';
+import { ModalService } from 'src/app/services/modal/modal.service';
 @Component({
   selector: 'app-entregar',
   templateUrl: './entregar.component.html',
@@ -30,7 +31,8 @@ export class EntregarComponent implements OnInit {
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modalService: ModalService
   ) {
     this.usermanager = false;
     this.departments = [];
@@ -160,7 +162,8 @@ export class EntregarComponent implements OnInit {
         } else {
           this.serviceWorkspaces.deliveriesSupplies(this.idWorkSpace, this.deliverySupplies).subscribe(
             _ => {
-              this.toastr.success("Se ha realizado la entrega de los insumos al operador")
+              this.toastr.success("Se ha realizado la entrega de los insumos al operador");
+              this.getPage('1');
             }
           );
         }
@@ -169,6 +172,17 @@ export class EntregarComponent implements OnInit {
       }
     } else {
       this.toastr.error("No has seleccionado ningún insumo, ó te faltan las observaciones")
+    }
+  }
+  openModal(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModal(modal: string, option: boolean) {
+    if (option) {
+      this.sendSupplies();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
     }
   }
 }
