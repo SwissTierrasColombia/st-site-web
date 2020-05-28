@@ -87,7 +87,7 @@
                             <td scope="row">
                                 <label class="switch" [title]="item.state ? 'Desactivar':'Activar'"
                                     (click)="item.state ? deleteProfile('modalDisabled',item):activeManager('modalEnable',item)">
-                                    <input [(ngModel)]="item.state" type="checkbox">
+                                    <input (click)="clickCheckBox($event)" [(ngModel)]="item.state" type="checkbox">
                                     <span class="slider round"></span>
                                 </label>
                             </td>

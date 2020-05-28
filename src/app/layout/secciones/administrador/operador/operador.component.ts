@@ -159,5 +159,8 @@ export class OperadorComponent implements OnInit {
     this.modalService.open(modal)
     this.idProfileEnable = item;
   }
+  clickCheckBox(event: Event) {
+    event.preventDefault();
+  }
 
 }

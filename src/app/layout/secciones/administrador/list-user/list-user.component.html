@@ -18,10 +18,10 @@
                 <th *ngIf="roleConnectAdmin">Entidad</th>
                 <th *ngIf="!roleConnectManager && !roleConnectProvider">Rol</th>
                 <th *ngIf="!roleConnectSuperAdmin">Perfil</th>
+                <th>Usuario</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
                 <th>Correo</th>
-                <th>Usuario</th>
                 <th>Fecha de Creación</th>
                 <th>Opciones</th>
               </tr>
@@ -29,7 +29,7 @@
             <tbody>
               <tr
                 *ngFor="let item of dataListUser |filter:searchText | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                <td scope="row" *ngIf="roleConnectAdmin">{{item.entity.name}}</td>
+                <td scope="row" *ngIf="roleConnectAdmin">{{item.entity ? item.entity.name:'N/A'}}</td>
                 <td scope="row" *ngIf="!roleConnectManager && !roleConnectProvider">
                   <div *ngFor="let rol of item.roles">
                     {{globalFuntionString(rol.name)}}
@@ -52,14 +52,14 @@
                     </div>
                   </div>
                   <div
-                    *ngIf="item.profilesManager.length === 0 && item.profilesProvider.length === 0 && item.rolesProvider.length == 0">
+                    *ngIf="item.profilesManager.length == 0 && item.profilesProvider.length == 0 && item.rolesProvider.length == 0">
                     N/A
                   </div>
                 </td>
+                <td scope="row">{{item.username}}</td>
                 <td scope="row">{{item.firstName}}</td>
                 <td scope="row">{{item.lastName}}</td>
                 <td scope="row">{{item.email}}</td>
-                <td scope="row">{{item.username}}</td>
                 <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
                 <td scope="row">
                   <span ngbTooltip="Modificar Usuario" placement="bottom" show-delay="500">
