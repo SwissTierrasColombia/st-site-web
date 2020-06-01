@@ -28,6 +28,9 @@ export class DownloadSuppliesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.funtionInit();
+  }
+  funtionInit() {
     const promise1 = new Promise((resolve) => {
       this.activedRoute.params.subscribe(
         response => {
@@ -40,6 +43,7 @@ export class DownloadSuppliesComponent implements OnInit {
       this.serviceWorkspaces.GetDeliveriesToOperator().subscribe(
         response => {
           this.dataRequestPending = response;
+          console.log("hola: ", this.dataRequestPending);
           resolve(response)
         }
       );
@@ -53,40 +57,36 @@ export class DownloadSuppliesComponent implements OnInit {
       this.supplies = this.dataRequestPending[0].supplies;
     });
   }
-  reload() {
-    this.serviceWorkspaces.GetDeliveriesToOperator().subscribe(
-      response => {
-        this.dataRequestPending = response;
-        this.dataRequestPending = this.dataRequestPending.filter((element: any) => {
-          if (element.id.toString() === this.IdEntrega) {
-            return element;
-          }
-          this.supplies = this.dataRequestPending[0].supplies;
-        });
-      }
-    );
-  }
+  // reload() {
+  //   this.serviceWorkspaces.GetDeliveriesToOperator().subscribe(
+  //     response => {
+  //       this.dataRequestPending = response;
+  //       this.dataRequestPending = this.dataRequestPending.filter((element: any) => {
+  //         if (element.id.toString() === this.IdEntrega) {
+  //           return element;
+  //         }
+  //         this.supplies = this.dataRequestPending[0].supplies;
+  //       });
+  //     }
+  //   );
+  // }
   formatDate(date: string) {
     moment.locale('es');
     return moment(date).format('ll, h:mm a');
   }
   downloadSupplies(idSupplie: number, nameSupplie: string) {
-    const promise1 = new Promise((resolve) => {
-      this.serviceWorkspaces.downloadSupplie(idSupplie).subscribe(
-        (data: any) => {
-          const contentType = data.headers.get('content-type');
-          const type = contentType.split(',')[0];
-          //const ext = data.headers.get('Content-Disposition');
-          const dataFile = data.body;
-          const blob = new Blob([dataFile], { type });
-          const url = window.URL.createObjectURL(blob);
-          saveAs(blob, nameSupplie + '.zip');
-        }
-      );
-    });
-    Promise.all([promise1]).then(_ => {
-      this.reload()
-    });
+    this.serviceWorkspaces.downloadSupplie(idSupplie).subscribe(
+      (data: any) => {
+        const contentType = data.headers.get('content-type');
+        const type = contentType.split(',')[0];
+        //const ext = data.headers.get('Content-Disposition');
+        const dataFile = data.body;
+        const blob = new Blob([dataFile], { type });
+        const url = window.URL.createObjectURL(blob);
+        saveAs(blob, nameSupplie + '.zip');
+        this.funtionInit();
+      }
+    );
   }
   closeModal(option: boolean, modal: string) {
     if (option) {

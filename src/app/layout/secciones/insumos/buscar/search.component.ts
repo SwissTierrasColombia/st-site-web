@@ -91,6 +91,7 @@ export class SearchComponent implements OnInit {
           this.size = response.size;
           this.totalElements = response.totalElements;
           this.allSupplies = response.items;
+          console.log("hola:",this.allSupplies);
         }
       );
     }

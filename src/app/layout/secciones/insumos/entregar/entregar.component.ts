@@ -145,7 +145,7 @@ export class EntregarComponent implements OnInit {
           return item.id == element.supplyId;
         });
         item.observationsTosupplie = data ? data.observations : '';
-        this.toastr.info("La observación es obligatoria");
+        // this.toastr.info("La observación es obligatoria");
       }
     } else {
       this.toastr.error("No tienes los permisos necesarios para entregar el insumo.");
