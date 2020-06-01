@@ -189,5 +189,4 @@ export class UpdateUserComponent implements OnInit {
       this.toast.info("El usuario no tiene ese perfil.")
     }
   }
-
 }

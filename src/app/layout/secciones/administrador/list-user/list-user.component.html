@@ -23,7 +23,8 @@
                 <th>Apellidos</th>
                 <th>Correo</th>
                 <th>Fecha de Creación</th>
-                <th>Opciones</th>
+                <th>Editar</th>
+                <th>Activar/Desactivar</th>
               </tr>
             </thead>
             <tbody>
@@ -64,10 +65,17 @@
                 <td scope="row">
                   <span ngbTooltip="Modificar Usuario" placement="bottom" show-delay="500">
                     <i class="material-icons mr-2" (click)="updateUser(item.id)">
-                      settings
+                      edit
                     </i>
                   </span>
-                  <span ngbTooltip="Usuario activado, haga clic si desea desactivarlo." placement="bottom"
+                </td>
+                <td scope=row>
+                  <label class="switch" [title]="item.enabled ? 'Desactivar Usuario':'Activar Usuario'"
+                    (click)="item.enabled ? openModalDisabled('modalDisabled', item.id):openModalEnabled('modalEnabled', item.id)">
+                    <input (click)="clickCheckBox($event)" [(ngModel)]="item.enabled" type="checkbox">
+                    <span class="slider round"></span>
+                  </label>
+                  <!-- <span ngbTooltip="Usuario activado, haga clic si desea desactivarlo." placement="bottom"
                     show-delay="500" *ngIf="item.enabled">
                     <i class="material-icons" style="color: green;"
                       (click)="openModalDisabled('modalDisabled', item.id)">
@@ -79,7 +87,7 @@
                     <i class="material-icons" (click)="openModalEnabled('modalEnabled', item.id)">
                       people
                     </i>
-                  </span>
+                  </span> -->
                 </td>
               </tr>
             </tbody>

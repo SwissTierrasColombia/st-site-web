@@ -59,7 +59,7 @@ export class ListUserComponent implements OnInit {
     this.serviceWorkspace.GetUsers().subscribe(
       (arg: any) => {
         this.dataListUser = arg
-        //console.log("data: ", this.dataListUser);
+        console.log("data: ", this.dataListUser);
       });
   }
 
@@ -113,5 +113,8 @@ export class ListUserComponent implements OnInit {
   }
   updateUser(idUser: number) {
     this.router.navigate(['/administrador/usuario/' + idUser + '/modificar']);
+  }
+  clickCheckBox(event: Event) {
+    event.preventDefault();
   }
 }
