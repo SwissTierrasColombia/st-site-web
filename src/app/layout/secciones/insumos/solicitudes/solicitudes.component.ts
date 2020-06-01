@@ -12,18 +12,22 @@ const moment = _moment;
 })
 export class SolicitudesComponent implements OnInit {
   dataRequestPending: any;
+  numSolicitudes: any;
+  searchText: string;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private router: Router,
 
   ) {
     this.dataRequestPending = [];
+    this.numSolicitudes = 0;
   }
 
   ngOnInit() {
     this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
       data => {
         this.dataRequestPending = data;
+        this.numSolicitudes = this.dataRequestPending.length
       }
     );
   }
