@@ -1,0 +1,9 @@
+version: '3'
+services:
+  st-site-web:
+    container_name: st-site-web
+    image: st-site-web
+    build:
+      context: .    
+    ports:
+      - "8080:80"
