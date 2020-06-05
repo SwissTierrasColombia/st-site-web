@@ -5,11 +5,11 @@
       <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
       <span>Página Principal</span>
     </a>
-    <a href="http://sat.proadmintierra.info/autenticacion/login" target="_blank" class="list-group-item">
+    <!-- <a href="http://sat.proadmintierra.info/autenticacion/login" target="_blank" class="list-group-item">
       <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
       <span>Consulta</span><br>
       <span class="ml-3">(Punto único de verdad)</span>
-    </a>
+    </a> -->
     <div class="nested-menu"
       *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].gestion)">
@@ -236,14 +236,15 @@
       <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
       <span>Asistente LADM-COL</span>
     </a>
-    <!-- <a *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador" [routerLink]="['/poc']" class="list-group-item">
+    <a [routerLink]="['/colaboradores']" class="list-group-item">
       <i class="fa fa-fw fa-plus-circle"></i>&nbsp;
-      <span>Prueba de concepto</span>
-    </a> -->
+      <span>Acerca de</span>
+    </a>
     <div class="header-fields">
       <div class="nested-menu">
         <a class="list-group-item" (click)="addExpandClass('profile')">
-          <span><i class="fa fa-user"></i>&nbsp;{{user.first_name}}</span><br><span class="ml-4">{{user.last_name}}</span>
+          <span><i class="fa fa-user"></i>&nbsp;{{user.first_name}}</span><br><span
+            class="ml-4">{{user.last_name}}</span>
         </a>
         <li class="nested" [class.expand]="showMenu === 'profile'">
           <ul class="submenu">
@@ -271,6 +272,7 @@
         </li>
       </div>
     </div>
+
   </div>
   <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
     <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
