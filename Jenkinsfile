@@ -1,6 +1,11 @@
 properties([pipelineTriggers([githubPush()])])
 node {
     stage('preparation') {
-        echo 'Prueba de githook'
+        git(
+            url: 'https://github.com/SwissTierrasColombia/st-site-web.git',
+            credentialsId: '',
+            branch: 'develop'
+            )
+        echo 'Poc'
     }
 }
