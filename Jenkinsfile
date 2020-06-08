@@ -1,34 +1,18 @@
 properties([pipelineTriggers([githubPush()])])
- 
-pipeline {
-    /* specify nodes for executing */
-    agent any
- 
-    stages {
-        /* checkout repo */
-        stage('Checkout SCM') {
-            steps {
-                checkout([
-                 $class: 'GitSCM',
-                 branches: [[name: 'develop']],
-                 userRemoteConfigs: [[
-                    url: 'https://github.com/SwissTierrasColombia/st-site-web',
-                    credentialsId: '',
-                 ]]
-                ])
-            }
-        }
-         stage('Do the deployment') {
-            steps {
-                echo ">> Run deploy applications "
-            }
+node {
+    stage('Checkout SCM') {
+        steps {
+            checkout([
+      $class: 'GitSCM',
+      branches: [[name: 'develop']],
+      userRemoteConfigs: [[
+        url: 'https://github.com/SwissTierrasColombia/st-site-web.git',
+        credentialsId: '',
+      ]]
+     ])
         }
     }
- 
-    /* Cleanup workspace */
-    post {
-       always {
-           deleteDir()
-       }
-   }
+    stage('preparation') {
+        echo 'Poc'
+    }
 }
