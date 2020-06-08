@@ -7,3 +7,7 @@ services:
       context: .    
     ports:
       - "8080:80"
+    networks:
+      - st
+networks:
+  st:  
