@@ -4,7 +4,7 @@ node {
         git(
             url: 'https://github.com/SwissTierrasColombia/st-site-web.git',
             credentialsId: '',
-            branch: 'develop'
+            branch: '${branch}'
             )
         echo 'Poc'
     }
