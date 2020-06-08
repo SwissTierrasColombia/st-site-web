@@ -1,6 +1,6 @@
 properties([pipelineTriggers([githubPush()])])
 node {
-    stage("Hello world") {
-        echo "Hello world, mi perrito!!!"
+    stage("preparation") {
+        echo "Poc"
     }
 }
