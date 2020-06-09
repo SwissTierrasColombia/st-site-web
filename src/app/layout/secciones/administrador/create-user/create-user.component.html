@@ -8,10 +8,10 @@
               <div class="card-body">
                 <form #formulariologin="ngForm">
                   <h1 class="text-center mb-2">Registro de Usuarios</h1>
-                  <h2 class="text-center mb-2" *ngIf="roleConnect.id === 5">Administradores</h2>
-                  <h2 class="text-center mb-2" *ngIf="roleConnect.id === 1">Directores</h2>
-                  <h2 class="text-center mb-2" *ngIf="roleConnect.id === 2">Gestor</h2>
-                  <h2 class="text-center mb-2" *ngIf="roleConnect.id === 4">Proveedor</h2>
+                  <h3 class="text-center mb-2" *ngIf="roleConnect.id === 5">Administrador del Sistema</h3>
+                  <h3 class="text-center mb-2" *ngIf="roleConnect.id === 1">Perfil Administrador</h3>
+                  <h3 class="text-center mb-2" *ngIf="roleConnect.id === 2">Gestor</h3>
+                  <h3 class="text-center mb-2" *ngIf="roleConnect.id === 4">Proveedor</h3>
                   <p class="text-muted">Ingrese los siguientes datos.</p>
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -85,9 +85,9 @@
                       {{item.name}}
                     </label>
                   </fieldset>
-                  <small *ngIf="roleConnect.id === 1" id="perfil" class="form-text text-muted mb-3">Seleccione el perfil
-                    para
-                    este usuario</small>
+                  <small *ngIf="roleConnect.id === 1" id="perfil" class="form-text text-muted mb-3">
+                    Seleccione el rol que tendrá el usuario.
+                  </small>
                   <div class="mb-3" *ngIf="selectROL === 2">
                     <!-- Gestor lista unica -->
                     <div class="input-group" *ngIf="roleConnect.id === 1">
@@ -96,7 +96,7 @@
                       </div>
                       <select (change)="getProfilesManager()" class="custom-select" name="managers" id="managers"
                         [(ngModel)]="registerData.roleManager.managerId">
-                        <option value='0' selected>Seleccione el Gestor</option>
+                        <option value='0' selected>Seleccione entidad</option>
                         <option [ngValue]="item.id" *ngFor="let item of managers">{{item.name}}</option>
                       </select>
                     </div>
@@ -110,7 +110,7 @@
                         <option [ngValue]="item.id" *ngFor="let item of profilesManagers">{{item.name}}</option>
                       </select>
                     </div>
-                    <small id="entities" class="form-text text-muted">Seleccione el perfil del gestor</small>
+                    <!-- <small id="entities" class="form-text text-muted">Seleccione el perfil del gestor</small> -->
                   </div>
                   <div class="mb-3" *ngIf="selectROL === 3">
                     <!-- Proveedor lista unica -->
@@ -120,11 +120,11 @@
                       </div>
                       <select class="custom-select" name="operator" id="operator"
                         [(ngModel)]="registerData.roleOperator.operatorId">
-                        <option value='0' selected>Seleccione el Operador</option>
+                        <option value='0' selected>Seleccione entidad</option>
                         <option [ngValue]="item.id" *ngFor="let item of operators">{{item.name}}</option>
                       </select>
                     </div>
-                    <small id="entities" class="form-text text-muted">Seleccione el Operador</small>
+                    <!-- <small id="entities" class="form-text text-muted">Seleccione el Operador</small> -->
                   </div>
                   <div class="mb-3" *ngIf="selectROL === 4">
                     <!-- Proveedor lista unica -->
@@ -135,26 +135,27 @@
                       <select (change)="getProfilesProviders(registerData.roleProvider.providerId)"
                         class="custom-select" name="providers" id="providers"
                         [(ngModel)]="registerData.roleProvider.providerId">
-                        <option value='0' selected>Seleccione el Proveedor</option>
+                        <option value='0' selected>Seleccione entidad</option>
                         <option [ngValue]="item.id" *ngFor="let item of providers">{{item.name}}</option>
                       </select>
                     </div>
                     <!-- Perfiles Proveedor lista multiple -->
                     <div class="input-group mt-2" *ngIf="dataUserLogger.is_provider_director">
                       <div class="input-group-prepend">
-                        <label class="input-group-text" aria-required="true">* Perfil Proveedor</label>
+                        <label class="input-group-text" aria-required="true">* Areá de trabajo</label>
                       </div>
                       <select class="custom-select" name="profilesProviders" id="profilesProviders"
                         [(ngModel)]="registerData.roleProvider.profiles" multiple>
                         <option [ngValue]="item.id" *ngFor="let item of profilesProviders">{{item.name}}</option>
                       </select>
                     </div>
-                    <small id="entities" class="form-text text-muted">Seleccione el perfil del proveedor</small>
+                    <small id="entities" class="form-text text-muted">Seleccione el área o áreas de trabajo al que se vinculará el usuario.</small>
                   </div>
 
                   <div class="row mt-4">
                     <div class="col-6">
-                      <button type="button" class="btn btn-primary px-4" (click)="openModal('modalRegistrar')">Registrar</button>
+                      <button type="button" class="btn btn-primary px-4"
+                        (click)="openModal('modalRegistrar')">Registrar</button>
                     </div>
                   </div>
                 </form>

@@ -142,6 +142,11 @@ export class EntregarComponent implements OnInit {
             _ => {
               this.toastr.success("Se ha realizado la entrega de los insumos al operador");
               this.getPage('1');
+              this.deliverySupplies = {
+                observations: "",
+                supplies: []
+              }
+              this.enabledButton = true;
             }
           );
         }
