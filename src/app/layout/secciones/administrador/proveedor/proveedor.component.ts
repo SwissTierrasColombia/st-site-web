@@ -12,10 +12,11 @@ export class ProveedorComponent implements OnInit {
   @ViewChild('actionForm', { static: false }) actionForm: ElementRef;
   dataProfile: any;
   data: any;
-  stateButton: boolean;
   idProfileDelete: number;
-  activeButton: boolean;
   categoriesProviders: any;
+  editMode: boolean;
+  formOk: boolean;
+  id: number;
   constructor(
     private serviceProvider: ProvidersService,
     private toast: ToastrService,
@@ -24,12 +25,13 @@ export class ProveedorComponent implements OnInit {
     this.data = {
       name: "",
       taxIdentificationNumber: "",
-      providerCategoryId: 0
+      providerCategoryId: '0'
     }
-    this.stateButton = true;
-    this.activeButton = true;
     this.idProfileDelete = 0;
     this.categoriesProviders = [];
+    this.editMode = false;
+    this.formOk = false;
+    this.id = 0;
   }
   ngOnInit(): void {
     this.serviceProvider.getProviders().subscribe(
@@ -46,50 +48,18 @@ export class ProveedorComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   changeState() {
-    if (this.data.name != "" && this.data.taxIdentificationNumber != "" || this.data.providerCategoryId != 0) {
-      this.activeButton = false;
-    }
-  }
-  submitChange() {
-    if (this.stateButton) {
-      this.serviceProvider.createProvider(this.data).subscribe(
-        element => {
-          this.dataProfile.push(element);
-          this.data = {
-            name: "",
-            taxIdentificationNumber: "",
-            providerCategoryId: 0
-          }
-          this.toast.success("Se ha creado el proveedor correctamente.");
-          this.activeButton = true;
-        }
-      )
+    console.log(this.data.providerCategoryId);
+    if (this.data.name != "" &&
+      this.data.taxIdentificationNumber != "" &&
+      this.data.providerCategoryId !== '0') {
+      this.formOk = true;
     } else {
-      this.serviceProvider.updateProvider(this.data).subscribe(
-        _ => {
-          this.toast.success("Se ha actualizado el proveedor correctamente.");
-          this.activeButton = true;
-          this.stateButton = true;
-          this.data = {
-            name: "",
-            taxIdentificationNumber: "",
-            providerCategoryId: 0
-          }
-          this.serviceProvider.getProviders().subscribe(
-            element => {
-              this.dataProfile = element;
-              this.dataProfile.sort((a, b) => a.id - b.id);
-            }
-          );
-        }
-      );
+      this.formOk = false;
     }
   }
   updateProfile(item: any) {
-    this.stateButton = false;
     const entity = this.clone(item);
-    //console.log(entity);
-
+    this.id = entity.id;
     this.data = {
       id: entity.id,
       name: entity.name,
@@ -100,6 +70,7 @@ export class ProveedorComponent implements OnInit {
       behavior: 'smooth',
       block: 'start'
     });
+    this.editMode = true;
   }
   deleteProfile(modal: string, id: number) {
     this.modalService.open(modal)
@@ -122,6 +93,59 @@ export class ProveedorComponent implements OnInit {
       this.modalService.close(modal);
     } else {
       this.modalService.close(modal);
+    }
+  }
+  nitIsValid(nit) {
+    if (nit.length === 11) {
+      var nitRegExp = new RegExp('^[0-9]+(-?[0-9kK])?$');
+      if (nitRegExp.test(nit)) {
+        return true;
+      }
+    } else {
+      this.toast.error("El Número de Identificación Tributaria no es correcto, ejemplo: XXXXXXXXX-Y");
+    }
+  }
+
+  create() {
+    if (this.nitIsValid(this.data.taxIdentificationNumber)) {
+      this.serviceProvider.createProvider(this.data).subscribe(
+        element => {
+          this.dataProfile.push(element);
+          this.cancel();
+          this.toast.success("Se ha creado el proveedor correctamente.");
+        }
+      );
+    } else {
+      this.toast.error("Formato invalido del Número de Identificación Tributaria");
+    }
+  }
+  save() {
+    if (this.nitIsValid(this.data.taxIdentificationNumber)) {
+      this.serviceProvider.updateProvider(this.data).subscribe(
+        _ => {
+          this.toast.success("Se ha actualizado el proveedor correctamente.");
+          this.cancel();
+          this.serviceProvider.getProviders().subscribe(
+            element => {
+              this.dataProfile = element;
+              this.dataProfile.sort((a, b) => a.id - b.id);
+            }
+          );
+        }
+      );
+    } else {
+      this.toast.error("Formato invalido del Número de Identificación Tributaria");
+    }
+
+  }
+  cancel() {
+    this.id = 0;
+    this.editMode = false;
+    this.formOk = false;
+    this.data = {
+      name: "",
+      taxIdentificationNumber: "",
+      providerCategoryId: '0'
     }
   }
 

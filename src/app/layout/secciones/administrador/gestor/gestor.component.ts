@@ -184,25 +184,5 @@ export class GestorComponent implements OnInit {
     } else {
       this.toast.error("El Número de Identificación Tributaria no es correcto, ejemplo: XXXXXXXXX-Y");
     }
-    // nit = nit.replace(/-/, '');
-    // var lastChar = nit.length - 1;
-    // var number = nit.substring(0, lastChar);
-    // var expectedCheker = nit.substring(lastChar, lastChar + 1).toLowerCase();
-
-    // var factor = number.length + 1;
-    // var total = 0;
-
-    // for (var i = 0; i < number.length; i++) {
-    //   var character = number.substring(i, i + 1);
-    //   var digit = parseInt(character, 10);
-
-    //   total += (digit * factor);
-    //   factor = factor - 1;
-    // }
-
-    // var modulus = (11 - (total % 11)) % 11;
-    // var computedChecker = (modulus == 10 ? "k" : modulus.toString());
-
-    // return expectedCheker === computedChecker;
   }
 }
