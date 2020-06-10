@@ -12,11 +12,12 @@ export class GestorComponent implements OnInit {
   @ViewChild('actionForm', { static: false }) actionForm: ElementRef;
   dataProfile: any;
   data: any;
-  stateButton: boolean;
   idProfileDelete: any;
   idProfileEnable: any;
-  activeButton: boolean;
   categoriesProviders: any;
+  editMode: boolean;
+  formOk: boolean;
+  id: number;
   constructor(
     private serviceManager: ManagersService,
     private toast: ToastrService,
@@ -27,11 +28,12 @@ export class GestorComponent implements OnInit {
       taxIdentificationNumber: "",
       providerCategoryId: 0
     }
-    this.stateButton = true;
-    this.activeButton = true;
     this.idProfileDelete = {};
     this.categoriesProviders = [];
     this.idProfileEnable = {};
+    this.editMode = false;
+    this.formOk = false;
+    this.id = 0;
   }
   ngOnInit(): void {
     this.serviceManager.getAllManagers().subscribe(
@@ -53,58 +55,17 @@ export class GestorComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   changeState() {
-    if (this.data.name != "" && this.data.taxIdentificationNumber != "") {
-      this.activeButton = false;
-    }
-  }
-  submitChange() {
-    if (this.stateButton) {
-      this.serviceManager.createManager(this.data).subscribe(
-        (element: any) => {
-          element.state = true;
-          this.dataProfile.push(element);
-          this.data = {
-            name: "",
-            taxIdentificationNumber: "",
-            providerCategoryId: 0
-          }
-          this.toast.success("Se ha creado el gestor correctamente.");
-          this.activeButton = true;
-        }
-      )
+
+    if (this.data.name != "" &&
+      this.data.taxIdentificationNumber != "") {
+      this.formOk = true;
     } else {
-      this.serviceManager.updateManager(this.data).subscribe(
-        _ => {
-          this.toast.success("Se ha actualizado el gestor correctamente.");
-          this.activeButton = true;
-          this.stateButton = true;
-          this.data = {
-            name: "",
-            taxIdentificationNumber: "",
-            providerCategoryId: 0
-          }
-          this.serviceManager.getAllManagers().subscribe(
-            element => {
-              this.dataProfile = element;
-              this.dataProfile.sort((a, b) => a.id - b.id);
-              this.dataProfile.forEach(element => {
-                if (element.managerState.name == "INACTIVO") {
-                  element.state = false;
-                } else {
-                  element.state = true;
-                }
-              });
-            }
-          );
-        }
-      );
+      this.formOk = false;
     }
   }
   updateProfile(item: any) {
-    this.stateButton = false;
-
     const entity = this.clone(item);
-    //console.log(entity);
+    this.id = entity.id;
     this.data = {
       id: entity.id,
       name: entity.name,
@@ -114,6 +75,7 @@ export class GestorComponent implements OnInit {
       behavior: 'smooth',
       block: 'start'
     });
+    this.editMode = true;
   }
   deleteProfile(modal: string, item: any) {
     this.modalService.open(modal)
@@ -156,5 +118,91 @@ export class GestorComponent implements OnInit {
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
+  }
+  cancel() {
+    this.id = 0;
+    this.editMode = false;
+    this.formOk = false;
+    this.data = {
+      name: "",
+      taxIdentificationNumber: "",
+      providerCategoryId: 0
+    }
+  }
+  create() {
+    if (this.nitIsValid(this.data.taxIdentificationNumber)) {
+      this.serviceManager.createManager(this.data).subscribe(
+        (element: any) => {
+          element.state = true;
+          this.dataProfile.push(element);
+          this.data = {
+            name: "",
+            taxIdentificationNumber: "",
+            providerCategoryId: 0
+          }
+          this.toast.success("Se ha creado el gestor correctamente.");
+          this.editMode = false;
+          this.formOk = false;
+        }
+      );
+    } else {
+      this.toast.error("Formato invalido del Número de Identificación Tributaria");
+    }
+
+  }
+  save() {
+    if (this.nitIsValid(this.data.taxIdentificationNumber)) {
+      this.serviceManager.updateManager(this.data).subscribe(
+        _ => {
+          this.toast.success("Se ha actualizado el gestor correctamente.");
+          this.cancel();
+          this.serviceManager.getAllManagers().subscribe(
+            element => {
+              this.dataProfile = element;
+              this.dataProfile.sort((a, b) => a.id - b.id);
+              this.dataProfile.forEach(element => {
+                if (element.managerState.name == "INACTIVO") {
+                  element.state = false;
+                } else {
+                  element.state = true;
+                }
+              });
+            }
+          );
+        }
+      );
+    } else {
+      this.toast.error("Formato invalido del Número de Identificación Tributaria");
+    }
+  }
+  nitIsValid(nit) {
+    if (nit.length === 11) {
+      var nitRegExp = new RegExp('^[0-9]+(-?[0-9kK])?$');
+      if (nitRegExp.test(nit)) {
+        return true;
+      }
+    } else {
+      this.toast.error("El Número de Identificación Tributaria no es correcto, ejemplo: XXXXXXXXX-Y");
+    }
+    // nit = nit.replace(/-/, '');
+    // var lastChar = nit.length - 1;
+    // var number = nit.substring(0, lastChar);
+    // var expectedCheker = nit.substring(lastChar, lastChar + 1).toLowerCase();
+
+    // var factor = number.length + 1;
+    // var total = 0;
+
+    // for (var i = 0; i < number.length; i++) {
+    //   var character = number.substring(i, i + 1);
+    //   var digit = parseInt(character, 10);
+
+    //   total += (digit * factor);
+    //   factor = factor - 1;
+    // }
+
+    // var modulus = (11 - (total % 11)) % 11;
+    // var computedChecker = (modulus == 10 ? "k" : modulus.toString());
+
+    // return expectedCheker === computedChecker;
   }
 }
