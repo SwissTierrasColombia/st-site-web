@@ -1,10 +1,17 @@
 <div>
     <app-page-header [heading]="'Descarga de insumo pendiente'" [icon]="'fa-star'">
     </app-page-header>
-    <div class="row justify-content-center text-center mb-2">
+    <div class="justify-content-center text-center mb-2">
         <div class="card text-center">
             <div class="card-header">
-                <h3>Información general de los insumos</h3>
+                <div class="col-1">
+                    <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+                        <i class="material-icons cursor" (click)="volver()">backspace</i>
+                    </span>
+                </div>
+                <div class="col-12">
+                    <h3>Información general de los insumos</h3>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-inverse table-responsive">
@@ -34,7 +41,7 @@
             </div>
         </div>
     </div>
-    <div class="row justify-content-center text-center">
+    <div class="justify-content-center text-center">
         <div class="card text-center">
             <div class="card-header">
                 <h3>Descarga de insumos</h3>

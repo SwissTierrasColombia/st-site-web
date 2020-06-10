@@ -23,6 +23,7 @@ export class CreateUserComponent implements OnInit {
   selectROL: number;
   dataUserLogger: any;
   roleConnect: any;
+  botonRegistrar: boolean;
   constructor(
     private serviceManagers: ManagersService,
     private serviceProviders: ProvidersService,
@@ -82,6 +83,7 @@ export class CreateUserComponent implements OnInit {
     this.selectROL = 0;
     this.dataUserLogger = {};
     this.roleConnect = {};
+    this.botonRegistrar = true;
   }
 
   ngOnInit() {
@@ -181,6 +183,7 @@ export class CreateUserComponent implements OnInit {
   getProfilesManager() {
     if (this.roleConnect.id === 1) {
       this.registerData.roleManager.profiles = [1];
+      this.validfield();
     } else {
 
     }
@@ -188,11 +191,24 @@ export class CreateUserComponent implements OnInit {
   getProfilesProviders(id: number) {
     if (this.roleConnect.id === 1) {
       this.registerData.roleProvider.profiles = [1];
+      this.validfield();
     }
   }
   validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+  }
+  validfield() {
+    if (this.registerData.firstName &&
+      this.registerData.lastName &&
+      this.registerData.username &&
+      this.validateEmail(this.registerData.email) &&
+      this.registerData.password &&
+      this.registerData.confirmationPassword) {
+      this.botonRegistrar = false;
+    } else {
+      this.botonRegistrar = true;
+    }
   }
   register() {
     if (this.registerData.password === this.registerData.confirmationPassword) {

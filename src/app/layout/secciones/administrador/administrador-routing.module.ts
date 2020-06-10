@@ -25,7 +25,7 @@ const routes: Routes = [
     component: UpdateUserComponent
   },
   {
-    path: 'crear/perfil',
+    path: 'crear/area-trabajo',
     component: ProfilesComponent,
     canActivate: [RoleProviderDirectorGuard]
   },

@@ -105,4 +105,7 @@ export class DownloadSuppliesComponent implements OnInit {
       }
     );
   }
+  volver() {
+    this.router.navigate(['/operador/entregas/']);
+  }
 }

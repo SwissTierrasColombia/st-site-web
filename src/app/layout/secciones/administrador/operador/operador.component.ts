@@ -12,11 +12,12 @@ export class OperadorComponent implements OnInit {
   @ViewChild('actionForm', { static: false }) actionForm: ElementRef;
   dataProfile: any;
   data: any;
-  stateButton: boolean;
   idProfileDelete: any;
   idProfileEnable: any;
-  activeButton: boolean;
   categoriesProviders: any;
+  editMode: boolean;
+  formOk: boolean;
+  id: number;
   constructor(
     private serviceOperator: OperatorsService,
     private toast: ToastrService,
@@ -25,14 +26,15 @@ export class OperadorComponent implements OnInit {
     this.data = {
       name: "",
       taxIdentificationNumber: "",
-      providerCategoryId: 0,
-      isPublic: 0
+      providerCategoryId: '0',
+      isPublic: '0'
     }
-    this.stateButton = true;
-    this.activeButton = true;
     this.idProfileDelete = {};
     this.categoriesProviders = [];
     this.idProfileEnable = {};
+    this.editMode = false;
+    this.formOk = false;
+    this.id = 0;
   }
   ngOnInit(): void {
     this.serviceOperator.getAllOperators().subscribe(
@@ -56,69 +58,28 @@ export class OperadorComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   changeState() {
-    if (this.data.name != "" && this.data.taxIdentificationNumber != "") {
-      this.activeButton = false;
-    }
-  }
-  submitChange() {
-    if (this.stateButton) {
-      this.serviceOperator.createOperator(this.data).subscribe(
-        (element: any) => {
-          element.state = true;
-          this.dataProfile.push(element);
-          this.data = {
-            name: "",
-            taxIdentificationNumber: "",
-            providerCategoryId: 0,
-            isPublic: 0
-          }
-          this.toast.success("Se ha creado el operador correctamente.");
-          this.activeButton = true;
-        }
-      )
+    if (this.data.name != "" &&
+      this.data.taxIdentificationNumber != "" &&
+      this.data.isPublic !== '0') {
+      this.formOk = true;
     } else {
-      this.serviceOperator.updateOperator(this.data).subscribe(
-        _ => {
-          this.toast.success("Se ha actualizado el operador correctamente.");
-          this.activeButton = true;
-          this.stateButton = true;
-          this.data = {
-            name: "",
-            taxIdentificationNumber: "",
-            providerCategoryId: 0,
-            isPublic: 0
-          }
-          this.serviceOperator.getAllOperators().subscribe(
-            element => {
-              this.dataProfile = element;
-              this.dataProfile.sort((a, b) => a.id - b.id);
-              this.dataProfile.forEach(element => {
-                if (element.operatorState.name == "INACTIVO") {
-                  element.state = false;
-                } else {
-                  element.state = true;
-                }
-              });
-            }
-          );
-        }
-      );
+      this.formOk = false;
     }
   }
   updateProfile(item: any) {
-    this.stateButton = false;
-
     const entity = this.clone(item);
-    //console.log(entity);
+    this.id = entity.id;
     this.data = {
       id: entity.id,
       name: entity.name,
-      taxIdentificationNumber: entity.taxIdentificationNumber
+      taxIdentificationNumber: entity.taxIdentificationNumber,
+      isPublic: entity.isPublic
     }
     this.actionForm.nativeElement.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
     });
+    this.editMode = true;
   }
   deleteProfile(modal: string, item: any) {
     this.modalService.open(modal)
@@ -161,6 +122,66 @@ export class OperadorComponent implements OnInit {
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
+  }
+  create() {
+    if (this.nitIsValid(this.data.taxIdentificationNumber)) {
+      this.serviceOperator.createOperator(this.data).subscribe(
+        (element: any) => {
+          element.state = true;
+          this.dataProfile.push(element);
+          this.cancel();
+          this.toast.success("Se ha creado el operador correctamente.");
+        }
+      );
+    } else {
+      this.toast.error("Formato invalido del Número de Identificación Tributaria");
+    }
+  }
+  save() {
+    if (this.nitIsValid(this.data.taxIdentificationNumber)) {
+      this.serviceOperator.updateOperator(this.data).subscribe(
+        _ => {
+          this.toast.success("Se ha actualizado el operador correctamente.");
+          this.cancel();
+          this.serviceOperator.getAllOperators().subscribe(
+            element => {
+              this.dataProfile = element;
+              this.dataProfile.sort((a, b) => a.id - b.id);
+              this.dataProfile.forEach(element => {
+                if (element.operatorState.name == "INACTIVO") {
+                  element.state = false;
+                } else {
+                  element.state = true;
+                }
+              });
+            }
+          );
+        }
+      );
+    } else {
+      this.toast.error("Formato invalido del Número de Identificación Tributaria");
+    }
+  }
+  cancel() {
+    this.id = 0;
+    this.editMode = false;
+    this.formOk = false;
+    this.data = {
+      name: "",
+      taxIdentificationNumber: "",
+      providerCategoryId: '0',
+      isPublic: '0'
+    }
+  }
+  nitIsValid(nit) {
+    if (nit.length === 11) {
+      var nitRegExp = new RegExp('^[0-9]+(-?[0-9kK])?$');
+      if (nitRegExp.test(nit)) {
+        return true;
+      }
+    } else {
+      this.toast.error("El Número de Identificación Tributaria no es correcto, ejemplo: XXXXXXXXX-Y");
+    }
   }
 
 }
