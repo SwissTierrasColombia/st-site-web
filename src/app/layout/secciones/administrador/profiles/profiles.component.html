@@ -24,11 +24,16 @@
                         <div class="input-group mb-4">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                    Descripción
+                                    * Descripción
                                 </span>
                             </div>
                             <input (change)="changeState()" type="text" name="description" class="form-control"
                                 placeholder="Descripción" [(ngModel)]="data.description">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="alert alert-primary text-center" role="alert">
+                            Recuerde que los campos marcados con * son obligatorios.
                         </div>
                     </div>
                 </div>
