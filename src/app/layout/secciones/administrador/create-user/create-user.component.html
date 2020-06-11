@@ -152,7 +152,7 @@
                         <option [ngValue]="item.id" *ngFor="let item of profilesProviders">{{item.name}}</option>
                       </select>
                     </div>
-                    <small id="entities" class="form-text text-muted">Seleccione el área o áreas de trabajo al que se
+                    <small *ngIf="dataUserLogger.is_provider_director" id="entities" class="form-text text-muted">Seleccione el área o áreas de trabajo al que se
                       vinculará el usuario.</small>
                   </div>
                 </form>

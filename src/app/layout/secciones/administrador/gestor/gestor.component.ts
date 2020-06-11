@@ -146,7 +146,7 @@ export class GestorComponent implements OnInit {
         }
       );
     } else {
-      this.toast.error("Formato invalido del Número de Identificación Tributaria");
+      this.toast.error("Formato invalido del Número de Identificación Tributaria (NIT)");
     }
 
   }
@@ -172,7 +172,7 @@ export class GestorComponent implements OnInit {
         }
       );
     } else {
-      this.toast.error("Formato invalido del Número de Identificación Tributaria");
+      this.toast.error("Formato invalido del Número de Identificación Tributaria (NIT)");
     }
   }
   nitIsValid(nit) {
@@ -182,7 +182,7 @@ export class GestorComponent implements OnInit {
         return true;
       }
     } else {
-      this.toast.error("El Número de Identificación Tributaria no es correcto, ejemplo: XXXXXXXXX-Y");
+      this.toast.error("El Número de Identificación Tributaria (NIT) no es correcto, ejemplo: XXXXXXXXX-Y");
     }
   }
 }

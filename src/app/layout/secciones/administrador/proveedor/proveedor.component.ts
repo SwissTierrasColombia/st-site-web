@@ -102,7 +102,7 @@ export class ProveedorComponent implements OnInit {
         return true;
       }
     } else {
-      this.toast.error("El Número de Identificación Tributaria no es correcto, ejemplo: XXXXXXXXX-Y");
+      this.toast.error("El Número de Identificación Tributaria (NIT) no es correcto, ejemplo: XXXXXXXXX-Y");
     }
   }
 
@@ -116,7 +116,7 @@ export class ProveedorComponent implements OnInit {
         }
       );
     } else {
-      this.toast.error("Formato invalido del Número de Identificación Tributaria");
+      this.toast.error("Formato invalido del Número de Identificación Tributaria (NIT)");
     }
   }
   save() {
@@ -134,7 +134,7 @@ export class ProveedorComponent implements OnInit {
         }
       );
     } else {
-      this.toast.error("Formato invalido del Número de Identificación Tributaria");
+      this.toast.error("Formato invalido del Número de Identificación Tributaria (NIT)");
     }
 
   }

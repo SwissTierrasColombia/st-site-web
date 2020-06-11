@@ -88,7 +88,7 @@ export class ProfilesComponent implements OnInit {
         return true;
       }
     } else {
-      this.toast.error("El Número de Identificación Tributaria no es correcto, ejemplo: XXXXXXXXX-Y");
+      this.toast.error("El Número de Identificación Tributaria (NIT) no es correcto, ejemplo: XXXXXXXXX-Y");
     }
   }
   create() {

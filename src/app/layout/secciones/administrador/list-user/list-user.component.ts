@@ -42,6 +42,8 @@ export class ListUserComponent implements OnInit {
 
   ngOnInit() {
     this.dataUserLogger = JwtHelper.getUserPublicInformation();
+    console.log(this.dataUserLogger);
+
     this.roleConnectSuperAdmin = this.dataUserLogger.roles.find(elem => {
       return elem.id === 5;
     });
@@ -59,6 +61,11 @@ export class ListUserComponent implements OnInit {
     this.serviceWorkspace.GetUsers().subscribe(
       (arg: any) => {
         this.dataListUser = arg
+        this.dataListUser = this.dataListUser.filter(
+          (element: any) => {
+            return element.username !== this.dataUserLogger.user_name;
+          }
+        );
         console.log("data: ", this.dataListUser);
       });
   }
