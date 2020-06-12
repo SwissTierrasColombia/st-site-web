@@ -8,4 +8,15 @@ node {
             )
         echo 'Poc'
     }
+    stage('Build') {
+        steps {
+            script {
+                if (env.BRANCH_NAME == 'master') {
+                    echo 'this is branch master'
+            } else if (env.BRANCH_NAME == 'develop') {
+                    echo 'this is branch develop'
+                }
+            }
+        }
+    }
 }
