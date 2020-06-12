@@ -23,7 +23,12 @@ export class ErrorInterceptorService implements HttpInterceptor {
 
       switch (err.status) {
         case 400:
+          if (err.error.error === 'invalid_grant') {
+            this.toastrService.error("Autenticación fallida");
+          }
+          break;
         case 401:
+          console.log("error login", err.error.error)
           if (err.error.error === 'invalid_token') {
             localStorage.removeItem(environment.nameTokenSession);
             this.router.navigate(['/login']);
