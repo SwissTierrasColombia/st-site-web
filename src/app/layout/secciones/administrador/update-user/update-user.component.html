@@ -2,8 +2,13 @@
     <app-page-header [heading]="'Modificar Usuario'" [icon]="'fa-star'">
     </app-page-header>
     <div class="card">
-        <div class="card-header text-center">
-            <h2>Información del Usuario</h2>
+        <div class="card-header">
+            <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+                <i class="material-icons cursor" (click)="volver()">backspace</i>
+            </span>
+            <div class="text-center">
+                <h2>Información del Usuario</h2>
+            </div>
         </div>
         <div class="card-body">
             <form action="" method="post">

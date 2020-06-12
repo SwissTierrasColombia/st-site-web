@@ -9,34 +9,28 @@
         </ngb-pagination>
         <div class="search-hero">
           <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
-            placeholder="&#61442;  Buscar Usuario">
+            placeholder="&#61442;  Buscar">
         </div>
         <div class="table-inverse table-responsive">
           <table class="table table-striped">
             <thead class="thead-inverse">
               <tr>
-                <th>ID</th>
+                <th *ngIf="roleConnectAdmin">Entidad</th>
+                <th *ngIf="!roleConnectManager && !roleConnectProvider">Rol</th>
+                <th *ngIf="!roleConnectSuperAdmin">Perfil</th>
+                <th>Usuario</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
                 <th>Correo</th>
-                <th>Usuario</th>
-                <th *ngIf="roleConnectAdmin">Entidad</th>
                 <th>Fecha de Creación</th>
-                <th *ngIf="!roleConnectManager && !roleConnectProvider">Rol</th>
-                <th *ngIf="!roleConnectSuperAdmin">Perfil</th>
-                <th>Opciones</th>
+                <th>Editar</th>
+                <th>Activar/Desactivar</th>
               </tr>
             </thead>
             <tbody>
               <tr
                 *ngFor="let item of dataListUser |filter:searchText | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                <td scope="row">{{item.id}}</td>
-                <td scope="row">{{item.firstName}}</td>
-                <td scope="row">{{item.lastName}}</td>
-                <td scope="row">{{item.email}}</td>
-                <td scope="row">{{item.username}}</td>
-                <td scope="row" *ngIf="roleConnectAdmin">{{item.entity.name}}</td>
-                <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
+                <td scope="row" *ngIf="roleConnectAdmin">{{item.entity ? item.entity.name:'N/A'}}</td>
                 <td scope="row" *ngIf="!roleConnectManager && !roleConnectProvider">
                   <div *ngFor="let rol of item.roles">
                     {{globalFuntionString(rol.name)}}
@@ -59,17 +53,29 @@
                     </div>
                   </div>
                   <div
-                    *ngIf="item.profilesManager.length === 0 && item.profilesProvider.length === 0 && item.rolesProvider.length == 0">
+                    *ngIf="item.profilesManager.length == 0 && item.profilesProvider.length == 0 && item.rolesProvider.length == 0">
                     N/A
                   </div>
                 </td>
+                <td scope="row">{{item.username}}</td>
+                <td scope="row">{{item.firstName}}</td>
+                <td scope="row">{{item.lastName}}</td>
+                <td scope="row">{{item.email}}</td>
+                <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
                 <td scope="row">
                   <span ngbTooltip="Modificar Usuario" placement="bottom" show-delay="500">
                     <i class="material-icons mr-2" (click)="updateUser(item.id)">
-                      settings
+                      edit
                     </i>
                   </span>
-                  <span ngbTooltip="Usuario activado, haga clic si desea desactivarlo." placement="bottom"
+                </td>
+                <td scope=row>
+                  <label class="switch" [title]="item.enabled ? 'Desactivar Usuario':'Activar Usuario'"
+                    (click)="item.enabled ? openModalDisabled('modalDisabled', item.id):openModalEnabled('modalEnabled', item.id)">
+                    <input (click)="clickCheckBox($event)" [(ngModel)]="item.enabled" type="checkbox">
+                    <span class="slider round"></span>
+                  </label>
+                  <!-- <span ngbTooltip="Usuario activado, haga clic si desea desactivarlo." placement="bottom"
                     show-delay="500" *ngIf="item.enabled">
                     <i class="material-icons" style="color: green;"
                       (click)="openModalDisabled('modalDisabled', item.id)">
@@ -81,7 +87,7 @@
                     <i class="material-icons" (click)="openModalEnabled('modalEnabled', item.id)">
                       people
                     </i>
-                  </span>
+                  </span> -->
                 </td>
               </tr>
             </tbody>

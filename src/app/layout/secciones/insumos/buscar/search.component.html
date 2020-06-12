@@ -32,7 +32,7 @@
                             </select>
                         </div>
                     </div>
-                    <div *ngIf="usermanager" class='col-12 mb-1'>
+                    <!-- <div *ngIf="usermanager" class='col-12 mb-1'>
                         <div class="input-group mt-2">
                             <div class="input-group-prepend">
                                 <label class="input-group-text" aria-required="true">Solicitudes Gestor</label>
@@ -46,7 +46,7 @@
                             </select>
                         </div>
                         <small id="entities" class="form-text text-muted">Seleccione las solicitudes a buscar</small>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row mt-3">
                     <div class="col-12">
@@ -74,7 +74,7 @@
                     </ngb-pagination>
                     <div class="search-hero">
                         <input class="form-control" type="text" name="search" [(ngModel)]="searchText"
-                            autocomplete="off" placeholder="&#61442;  Buscar insumo">
+                            autocomplete="off" placeholder="&#61442;  Buscar">
                     </div>
                     <div class="table-inverse table-responsive">
                         <table class="table table-striped">
@@ -96,13 +96,18 @@
                                     <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
                                     <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
                                     <td scope="row">{{item.observations}}</td>
-                                    <td>
-                                        <i class="material-icons cursor"
-                                            (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
-                                            cloud_download </i>
+                                    <td scope="row">
+                                        <div *ngIf="item.url">
+                                            <strong>{{item.url ? item.url: 'N/A'}}</strong>
+                                        </div>
+                                        <div *ngIf="!item.url">
+                                            <i class="material-icons cursor"
+                                                (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
+                                                cloud_download </i>
+                                        </div>
                                     </td>
-                                    <td *ngIf="usermanager"><i class="material-icons cursor"
-                                            (click)="openModal(item.id, 'custom-modal-2')">
+                                    <td scope="row" *ngIf="usermanager">
+                                        <i class="material-icons cursor" (click)="openModal(item.id, 'custom-modal-2')">
                                             delete_forever
                                         </i></td>
                                 </tr>
@@ -121,7 +126,8 @@
                 <h2 class="text-center font-weight-bold">
                     ¿Está seguro de eliminar el insumo?
                 </h2>
-                <h5 class="alert alert-warning text-center">Advertencia: El insumo se borrará permanentemente del Sistema.</h5>
+                <h5 class="alert alert-warning text-center">Advertencia: El insumo se borrará permanentemente del
+                    Sistema.</h5>
             </div>
             <div class="card-body row">
                 <div class="text-center col-sm">

@@ -63,6 +63,7 @@ export class SearchComponent implements OnInit {
         this.departments = response;
       });
   }
+
   globalFuntionDate(date: any) {
     return FuntionsGlobalsHelper.formatDate(date);
   }
@@ -74,26 +75,35 @@ export class SearchComponent implements OnInit {
     );
   }
   getPage(page: string) {
-    if (this.selectSuppliesManagerRequest && this.selectSuppliesManagerRequest.length > 0) {
-      let itemsSupplies = this.selectSuppliesManagerRequest.join();
-      this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page, itemsSupplies).subscribe(
-        (response: any) => {
-          this.number = response.number + 1;
-          this.size = response.size;
-          this.totalElements = response.totalElements;
-          this.allSupplies = response.items;
+    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page).subscribe(
+      (response: any) => {
+        this.number = response.number + 1;
+        this.size = response.size;
+        this.totalElements = response.totalElements;
+        this.allSupplies = response.items;
+        for (let index = 0; index < this.allSupplies.length; index++) {
+          if (this.allSupplies[index].typeSupply === null) {
+            this.allSupplies[index].typeSupply = {
+              "provider": {
+                "name": "N/A"
+              },
+              "name": "N/A"
+            }
+          }
         }
-      );
-    } else {
-      this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page).subscribe(
-        (response: any) => {
-          this.number = response.number + 1;
-          this.size = response.size;
-          this.totalElements = response.totalElements;
-          this.allSupplies = response.items;
-        }
-      );
-    }
+        this.allSupplies.sort(function (a: any, b: any) {
+          if (a.typeSupply.provider.name > b.typeSupply.provider.name) {
+            return 1;
+          }
+          if (a.typeSupply.provider.name < b.typeSupply.provider.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
+      }
+    );
+
   }
   downloadSupplies(idSupplie: number, nameSupplie: string) {
     this.serviceWorkspaces.downloadSupplie(idSupplie).subscribe(

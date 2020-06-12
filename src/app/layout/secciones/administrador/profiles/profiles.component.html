@@ -1,9 +1,10 @@
 <div>
-    <app-page-header [heading]="'Crear perfiles proveedor'" [icon]="'fa-star'">
+    <app-page-header [heading]="'Crear áreas de trabajo'" [icon]="'fa-star'">
     </app-page-header>
     <div class="card">
         <div class="card-header text-center">
-            <h2>Crear Perfil Proveedor</h2>
+            <h2>{{id>0?"Actualizar":"Crear"}} área de trabajo <span *ngIf="id>0"><b>#{{id}}</b></span></h2>
+            <h4>(para asociar insumos)</h4>
         </div>
         <div class="card-body">
             <form action="" method="post">
@@ -23,31 +24,36 @@
                         <div class="input-group mb-4">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                    Descripción
+                                    * Descripción
                                 </span>
                             </div>
                             <input (change)="changeState()" type="text" name="description" class="form-control"
                                 placeholder="Descripción" [(ngModel)]="data.description">
                         </div>
                     </div>
+                    <div class="col-12">
+                        <div class="alert alert-primary text-center" role="alert">
+                            Recuerde que los campos marcados con * son obligatorios.
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
         <div class="card-footer text-muted text-center">
-            <div class="col-12">
-                <button type="button" class="btn btn-dark" (click)="submitChange()" [disabled]="activeButton">
-                    {{stateButton?"Guardar":"Actualizar"}}
-                </button>
-            </div>
+            <button type="button" [disabled]="!formOk" *ngIf="!editMode" class="btn btn-dark"
+                (click)="create()">Crear</button>
+            <button type="button" [disabled]="!formOk" *ngIf="editMode" class="btn btn-dark"
+                (click)="save()">Guardar</button>
+            <button type="button" style="margin-left: 10px;" class="btn btn-dark" (click)="cancel()">Cancelar</button>
         </div>
     </div>
     <div class="card mt-2">
         <div class="card-header text-center">
-            <h2>Lista de Perfiles</h2>
+            <h2>Áreas de trabajo</h2>
         </div>
         <div class="card-body">
             <div class="table-inverse table-responsive">
-                <table class="table table-striped">
+                <table *ngIf="dataProfile.length > 0" class="table table-striped">
                     <thead class="thead-inverse">
                         <tr>
                             <th>ID</th>
@@ -58,7 +64,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of dataProfile; let i = index">
+                        <tr [style.background-color]="item.id==id ? '#3ada1273' : ''"
+                            [style.font-weight]="item.id==id ? 'bold' : ''"
+                            *ngFor="let item of dataProfile; let i = index">
                             <td scope="row">{{i+1}}</td>
                             <td scope="row">{{item.name}}</td>
                             <td scope="row">{{item.description?item.description:'N/D'}}</td>
@@ -79,6 +87,13 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div *ngIf="dataProfile.length === 0" class="row mt-3">
+                <div class="col-12">
+                    <div class="alert alert-primary text-center" role="alert">
+                        No tienes áreas de trabajo
+                    </div>
+                </div>
             </div>
         </div>
         <jw-modal id="modalDisabled" class="mt-5">
