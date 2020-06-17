@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { ToastrService } from 'ngx-toastr';
-
+import { Select2OptionData } from 'ng-Select2';
+import { Options } from 'select2';
 @Component({
   selector: 'app-crear-tipo-insumo',
   templateUrl: './crear-tipo-insumo.component.html',
@@ -19,6 +20,8 @@ export class CrearTipoInsumoComponent implements OnInit {
   metadataRequired = false;
   modelRequired = false;
   extensions = '';
+  public exampleData: Array<Select2OptionData>;
+  public options: Options;
 
   providerProfiles: any[] = [];
   supplies: any = [];
@@ -37,6 +40,25 @@ export class CrearTipoInsumoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.exampleData = [
+      {
+        id: 'png',
+        text: 'png'
+      },
+      {
+        id: 'jpg',
+        text: 'jgp'
+      },
+      {
+        id: 'pdf',
+        text: 'pdf'
+      }
+    ];
+    this.options = {
+      width: '300',
+      multiple: true,
+      tags: true
+    };
     this.serviceWorkspaces.GetProviderProfiles()
       .subscribe((response: any[]) => {
         this.providerProfiles = response;

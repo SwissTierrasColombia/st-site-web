@@ -21,6 +21,8 @@ import { SolicitudesAtendidasComponent } from './solicitudes-atendidas/solicitud
 import { AtendidaComponent } from './atendida/atendida.component';
 import { CrearTipoInsumoComponent } from './crear-tipo-insumo/crear-tipo-insumo.component';
 import { BuscarSolicitudComponent } from './buscar-solicitud/buscar-solicitud.component';
+import { NgSelect2Module } from 'ng-select2';
+
 @NgModule({
   declarations: [
     CargueComponent,
@@ -44,7 +46,8 @@ import { BuscarSolicitudComponent } from './buscar-solicitud/buscar-solicitud.co
     NgxPaginationModule,
     NgbModule,
     Ng2SearchPipeModule,
-    BsComponentModule
+    BsComponentModule,
+    NgSelect2Module
   ],
   bootstrap: [IntegracionComponent],
   providers: [

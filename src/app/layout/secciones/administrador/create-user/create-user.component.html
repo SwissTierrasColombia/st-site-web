@@ -81,6 +81,9 @@
                       placeholder="Confirmar contraseña" autocomplete="current-password"
                       [(ngModel)]="registerData.confirmationPassword" required>
                   </div>
+                  <small *ngIf="roleConnect.id === 1" id="perfil" class="form-text text-muted mb-3">
+                    Seleccione el rol que tendrá el usuario.
+                  </small>
                   <fieldset class="form-group text-center" *ngIf="roleConnect.id === 1">
                     <label class="radio-inline col-12 col-sm-3" *ngFor="let item of registerData.state; let i = index;">
                       <input (change)="validfield()" [(ngModel)]="selectROL" [value]="item.id" [id]="item.id"
@@ -88,9 +91,6 @@
                       {{item.name}}
                     </label>
                   </fieldset>
-                  <small *ngIf="roleConnect.id === 1" id="perfil" class="form-text text-muted mb-3">
-                    Seleccione el rol que tendrá el usuario.
-                  </small>
                   <div class="mb-3" *ngIf="selectROL === 2">
                     <!-- Gestor lista unica -->
                     <div class="input-group" *ngIf="roleConnect.id === 1">

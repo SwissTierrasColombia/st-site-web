@@ -65,7 +65,16 @@ export class ListUserComponent implements OnInit {
             return element.username !== this.dataUserLogger.user_name;
           });
         console.log(this.dataListUser);
-
+        this.dataListUser.sort(function (a: any, b: any) {
+          if (a.entity.name > b.entity.name) {
+            return 1;
+          }
+          if (a.entity.name < b.entity.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
       });
   }
 

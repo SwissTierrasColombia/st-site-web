@@ -36,8 +36,8 @@
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" aria-required="true">* Nombre del insumo</label>
                                 </div>
-                                <input class="form-control" (change)="modelChanged()"
-                                    [(ngModel)]="typeSupplyName" type="text" name="typeSupplyName" placeholder="">
+                                <input class="form-control" (change)="modelChanged()" [(ngModel)]="typeSupplyName"
+                                    type="text" name="typeSupplyName" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -47,9 +47,8 @@
                                 <div class="input-group-prepend input-group-text">
                                     <div class="">Descripción</div>
                                 </div>
-                                <textarea class="form-control" id="observations" rows="2"
-                                    (change)="modelChanged()" [(ngModel)]="typeSupplyDescription"
-                                    name="typeSupplyDescription"></textarea>
+                                <textarea class="form-control" id="observations" rows="2" (change)="modelChanged()"
+                                    [(ngModel)]="typeSupplyDescription" name="typeSupplyDescription"></textarea>
                             </div>
                         </div>
                     </div>
@@ -85,8 +84,11 @@
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" aria-required="true">Formatos del insumo</label>
                                 </div>
-                                <input class="form-control"  (change)="modelChanged()" [(ngModel)]="extensions" type="text" name="extensions"
-                                    placeholder="">
+                                <ng-select2 [data]="exampleData" [options]="options" [width]="500"
+                                    [(ngModel)]="extensions" (valueChanged)="modelChanged()">
+                                </ng-select2>
+                                <!-- <input class="form-control" (change)="modelChanged()" [(ngModel)]="extensions"
+                                    type="text" name="extensions" placeholder=""> -->
                             </div>
                             <small class="form-text text-muted">Ingrese las extensiones soportadas separadas por
                                 comas (ej: png, jpg, bmp)</small>
