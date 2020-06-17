@@ -15,7 +15,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MomentModule } from 'ngx-moment';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
+import { NgxPaginationModule } from 'ngx-pagination';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -32,7 +33,7 @@ import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
     NgxPaginationModule
   ],
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   providers: [AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },

@@ -20,6 +20,8 @@ import { BsComponentModule } from '../../bs-component/bs-component.module';
 import { SolicitudesAtendidasComponent } from './solicitudes-atendidas/solicitudes-atendidas.component';
 import { AtendidaComponent } from './atendida/atendida.component';
 import { CrearTipoInsumoComponent } from './crear-tipo-insumo/crear-tipo-insumo.component';
+import { PreviewComponent } from '../../components/preview/preview.component';
+
 @NgModule({
   declarations: [
     CargueComponent,
@@ -30,7 +32,8 @@ import { CrearTipoInsumoComponent } from './crear-tipo-insumo/crear-tipo-insumo.
     EntregarComponent,
     SolicitudesAtendidasComponent,
     AtendidaComponent,
-    CrearTipoInsumoComponent
+    CrearTipoInsumoComponent,
+    PreviewComponent
   ],
   imports: [
     CommonModule,

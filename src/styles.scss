@@ -3,3 +3,12 @@
 .material-icons {
     cursor: pointer;
 }
+
+.btn-backspace {
+    z-index: 1;
+
+    span {
+        float: left;
+        margin-top: 8px;
+    }
+}
