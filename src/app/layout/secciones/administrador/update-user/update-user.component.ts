@@ -4,7 +4,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { ToastrService } from 'ngx-toastr';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { ManagersService } from 'src/app/services/managers/managers.service';
-import { ProvidersService } from 'src/app/services/providers/providers.service';
+import { ModalService } from 'src/app/services/modal/modal.service';
 
 @Component({
   selector: 'app-update-user',
@@ -26,13 +26,14 @@ export class UpdateUserComponent implements OnInit {
   manager: boolean;
   provider: boolean;
   profilesProvider: any;
+  dataJWT: any;
   constructor(
     private router: Router,
     private toast: ToastrService,
     private serviceManagers: ManagersService,
-    private serviceProviders: ProvidersService,
     private serviceWorkSpace: WorkspacesService,
     private activedRoute: ActivatedRoute,
+    private modalService: ModalService
   ) {
     this.idUser = 0;
     this.dataListUser = {};
@@ -46,20 +47,21 @@ export class UpdateUserComponent implements OnInit {
     };
     this.profilesManagers = [];
     this.profilesProvider = [];
-    this.addprofiles = 0;
-    this.deleteProfiles = 0;
+    this.addprofiles = {};
+    this.deleteProfiles = {};
     this.manager = false;
     this.provider = false;
+    this.dataJWT = {};
   }
 
   ngOnInit(): void {
-    const data = JwtHelper.getUserPublicInformation();
+    this.dataJWT = JwtHelper.getUserPublicInformation();
+    this.activedRoute.params.subscribe(
+      response => {
+        this.idUser = response.idUser;
+      }
+    );
     const promise1 = new Promise((resolve) => {
-      this.activedRoute.params.subscribe(
-        response => {
-          this.idUser = response.idUser;
-        }
-      );
       this.serviceWorkSpace.GetUsers().subscribe(
         (arg: any) => {
           this.dataListUser = arg
@@ -74,7 +76,7 @@ export class UpdateUserComponent implements OnInit {
         });
     });
     Promise.all([promise1]).then((values: any) => {
-      if (data.is_manager_director) {
+      if (this.dataJWT.is_manager_director) {
         this.manager = true;
         this.serviceManagers.getManagersProfiles().subscribe(data => {
           this.profilesManagers = data;
@@ -85,15 +87,41 @@ export class UpdateUserComponent implements OnInit {
               }
             }
           );
+          this.profilesManagers.forEach(element => {
+            let data = this.profile.profilesManager.find(item => {
+              return item.id == element.id
+            });
+            if (data) {
+              element.enabled = true;
+            } else {
+              element.enabled = false;
+            }
+          });
         });
       }
-      if (data.is_provider_director) {
+      if (this.dataJWT.is_provider_director) {
         this.provider = true;
         this.serviceWorkSpace.GetProviderProfiles().subscribe(data => {
           this.profilesProvider = data;
+          console.log("this.profilesProvider", this.profilesProvider);
+          console.log("this.profile", this.profile);
+
+          this.profilesProvider.forEach(element => {
+            let data = this.profile.profilesProvider.find(item => {
+              return item.id == element.id
+            });
+            if (data) {
+              element.enabled = true;
+            } else {
+              element.enabled = false;
+            }
+          });
         });
       }
     });
+  }
+  clone(obj: any) {
+    return JSON.parse(JSON.stringify(obj));
   }
   volver() {
     this.router.navigate(['/administrador/usuarios']);
@@ -104,89 +132,174 @@ export class UpdateUserComponent implements OnInit {
       "lastName": this.lastName
     }
     this.serviceWorkSpace.UpdateUser(this.idUser, data).subscribe(element => {
-      this.profile = element;
-      this.toast.success("Se ha actualizado la información del usuario.")
+      this.serviceWorkSpace.GetUsers().subscribe(
+        (arg: any) => {
+          this.dataListUser = arg
+          this.profile = this.dataListUser.find((element: any) => {
+            if (element.id == this.idUser) {
+              return element;
+            }
+          });
+          this.firstName = this.profile.firstName;
+          this.lastName = this.profile.lastName;
+          if (this.dataJWT.is_manager_director) {
+            this.profilesManagers.forEach(element => {
+              let data = this.profile.profilesManager.find(item => {
+                return item.id == element.id
+              });
+              if (data) {
+                element.enabled = true;
+              } else {
+                element.enabled = false;
+              }
+            });
+          }
+          if (this.dataJWT.is_provider_director) {
+            this.profilesProvider.forEach(element => {
+              let data = this.profile.profilesProvider.find(item => {
+                return item.id == element.id
+              });
+              if (data) {
+                element.enabled = true;
+              } else {
+                element.enabled = false;
+              }
+            });
+          }
+        });
+      this.toast.success("Se ha actualizado la información del usuario.");
     });
 
   }
   addprofileManager() {
-    let Checkprofile = true;
-    this.profile.profilesManager.forEach((element: any) => {
-      if (element.id == this.addprofiles) {
-        Checkprofile = false;
-      }
-    });
-    if (Checkprofile) {
-      let data = {
-        "profileId": this.addprofiles
-      }
-      this.serviceWorkSpace.AddProfileToUser(this.idUser, data).subscribe(element => {
-        this.profile = element;
-        this.toast.success("Se ha agregado el perfil correctamente.");
-        this.addprofiles = 0;
+    let data = {
+      "profileId": this.addprofiles.id
+    };
+    this.serviceWorkSpace.AddProfileToUser(this.idUser, data).subscribe(element => {
+      this.profile = element;
+      this.toast.success("Se ha agregado el perfil correctamente.");
+      this.addprofiles = {};
+      this.profilesManagers.forEach(element => {
+        let data = this.profile.profilesManager.find(item => {
+          return item.id == element.id
+        });
+        if (data) {
+          element.enabled = true;
+        } else {
+          element.enabled = false;
+        }
       });
-    } else {
-      this.toast.info("El perfil ya fue agregado.")
-    }
+    });
   }
   deleteprofileManager() {
-    let Checkprofile = false;
-    this.profile.profilesManager.forEach((element: any) => {
-      if (element.id == this.deleteProfiles) {
-        Checkprofile = true;
-      }
-    });
-    if (Checkprofile) {
-      let data = {
-        "profileId": this.deleteProfiles
-      }
-      this.serviceWorkSpace.RemoveProfileToUser(this.idUser, data).subscribe(element => {
-        this.profile = element;
-        this.toast.success("Se ha eliminado el perfil correctamente.");
-        this.deleteProfiles = 0;
+    let data = {
+      "profileId": this.deleteProfiles.id
+    };
+    this.serviceWorkSpace.RemoveProfileToUser(this.idUser, data).subscribe(element => {
+      this.profile = element;
+      this.toast.success("Se ha eliminado el perfil correctamente.");
+      this.deleteProfiles = {};
+      this.profilesManagers.forEach(element => {
+        let data = this.profile.profilesManager.find(item => {
+          return item.id == element.id
+        });
+        if (data) {
+          element.enabled = true;
+        } else {
+          element.enabled = false;
+        }
       });
-    } else {
-      this.toast.info("El usuario no tiene ese perfil.")
-    }
+    });
   }
   addprofileProvider() {
-    let Checkprofile = true;
-    this.profile.profilesProvider.forEach((element: any) => {
-      if (element.id == this.addprofiles) {
-        Checkprofile = false;
-      }
-    });
-    if (Checkprofile) {
-      let data = {
-        "profileId": this.addprofiles
-      }
-      this.serviceWorkSpace.AddProfileToUser(this.idUser, data).subscribe(element => {
-        this.profile = element;
-        this.toast.success("Se ha agregado el perfil correctamente.");
-        this.addprofiles = 0;
-      });
-    } else {
-      this.toast.info("El perfil ya fue agregado.")
+    let data = {
+      "profileId": this.addprofiles.id
     }
+    this.serviceWorkSpace.AddProfileToUser(this.idUser, data).subscribe(element => {
+      this.profile = element;
+      this.toast.success("Se ha agregado el perfil correctamente.");
+      this.addprofiles = {};
+      this.profilesProvider.forEach(element => {
+        let data = this.profile.profilesProvider.find(item => {
+          return item.id == element.id
+        });
+        if (data) {
+          element.enabled = true;
+        } else {
+          element.enabled = false;
+        }
+      });
+    });
   }
   deleteprofileProvider() {
-    let Checkprofile = false;
-    this.profile.profilesProvider.forEach((element: any) => {
-      if (element.id == this.deleteProfiles) {
-        Checkprofile = true;
-      }
-    });
-    if (Checkprofile) {
-      let data = {
-        "profileId": this.deleteProfiles
-      }
-      this.serviceWorkSpace.RemoveProfileToUser(this.idUser, data).subscribe(element => {
-        this.profile = element;
-        this.toast.success("Se ha eliminado el perfil correctamente.");
-        this.deleteProfiles = 0;
+    let data = {
+      "profileId": this.deleteProfiles.id
+    }
+    this.serviceWorkSpace.RemoveProfileToUser(this.idUser, data).subscribe(element => {
+      this.profile = element;
+      this.toast.success("Se ha eliminado el perfil correctamente.");
+      this.profilesProvider.forEach(element => {
+        let data = this.profile.profilesProvider.find(item => {
+          return item.id == element.id
+        });
+        if (data) {
+          element.enabled = true;
+        } else {
+          element.enabled = false;
+        }
       });
+    });
+  }
+  clickCheckBox(event: Event) {
+    event.preventDefault();
+  }
+  openModaladdManager(modal: string, item: any) {
+    this.addprofiles = this.clone(item);
+    this.modalService.open(modal);
+
+  }
+  closeModalEnabled(modal: string, option: boolean) {
+    if (option) {
+      this.addprofileManager();
+      this.modalService.close(modal);
     } else {
-      this.toast.info("El usuario no tiene ese perfil.")
+      this.modalService.close(modal);
+    }
+  }
+  openModalRemoveManager(modal: string, item: any) {
+    this.deleteProfiles = this.clone(item);
+    this.modalService.open(modal);
+  }
+  closeModalRemoveManager(modal: string, option: boolean) {
+    if (option) {
+      this.deleteprofileManager();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
+    }
+  }
+  openModalRemoveProvider(modal: string, item: any) {
+    this.deleteProfiles = this.clone(item);
+    this.modalService.open(modal);
+  }
+  openModaladdProvider(modal: string, item: any) {
+    this.addprofiles = this.clone(item);
+    this.modalService.open(modal);
+  }
+  closeModalEnabledProvider(modal: string, option: boolean) {
+    if (option) {
+      this.addprofileProvider();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
+    }
+  }
+  closeModalRemoveProvider(modal: string, option: boolean) {
+    if (option) {
+      this.deleteprofileProvider();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
     }
   }
 }

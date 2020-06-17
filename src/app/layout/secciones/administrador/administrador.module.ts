@@ -17,6 +17,7 @@ import { ProfilesComponent } from './profiles/profiles.component';
 import { GestorComponent } from './gestor/gestor.component';
 import { ProveedorComponent } from './proveedor/proveedor.component';
 import { OperadorComponent } from './operador/operador.component';
+import { NgSelect2Module } from 'ng-select2';
 
 @NgModule({
   declarations: [CreateUserComponent, ListUserComponent, UpdateUserComponent, ProfilesComponent, GestorComponent, ProveedorComponent, OperadorComponent],
@@ -29,7 +30,8 @@ import { OperadorComponent } from './operador/operador.component';
     NgbModule,
     NgxPaginationModule,
     Ng2SearchPipeModule,
-    BsComponentModule
+    BsComponentModule,
+    NgSelect2Module
   ],
   providers: [
     FuntionsGlobalsHelper
