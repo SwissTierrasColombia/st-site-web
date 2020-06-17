@@ -17,7 +17,8 @@
               <tr>
                 <th *ngIf="roleConnectAdmin">Entidad</th>
                 <th *ngIf="!roleConnectManager && !roleConnectProvider">Rol</th>
-                <th *ngIf="!roleConnectSuperAdmin">{{roleConnectAdmin?'Perfil':'Área de trabajo'}}</th>
+                <th *ngIf="!roleConnectSuperAdmin">
+                  {{(roleConnectAdmin || roleConnectManager)?'Perfil':'Área de trabajo'}}</th>
                 <th *ngIf="roleConnectAdmin">Área de trabajo</th>
                 <th>Usuario</th>
                 <th>Nombres</th>
