@@ -24,6 +24,8 @@ export class CargueComponent implements OnInit {
   closeRequestButtonArray: any;
   @ViewChild('myInput')
   myInputVariable: ElementRef;
+  previewData: FileList;
+  showPreview = false;
   constructor(
     private toastr: ToastrService,
     private router: Router,
@@ -136,8 +138,10 @@ export class CargueComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   docSoport(files: FileList, idOut: number, idInt: number) {
+    this.showPreview = false;
+    this.showPreview = true;
+    this.previewData = files;
     if (files[0].size / 1024 / 1024 <= 190) {
-
       var re = /zip*/;
       if (files[0].type.match(re)) {
         const formato = files[0].name.split('.').pop();
@@ -174,7 +178,6 @@ export class CargueComponent implements OnInit {
           const archivoValido = formatoPermitido.filter(item => {
             return item === formato;
           });
-
           if (archivoValido.length > 0) {
             this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
             this.validsendFile(idOut, idInt);
@@ -191,6 +194,7 @@ export class CargueComponent implements OnInit {
     }
   }
   validsendFile(idOut: number, idInt: number) {
+    this.showPreview = true;
     if (this.dataRequestPending[idOut].suppliesRequested[idInt].observations) {
       if (this.dataRequestPending[idOut].suppliesRequested[idInt].file) {
         this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
@@ -297,6 +301,7 @@ export class CargueComponent implements OnInit {
     );
   }
   modelChanged(item: any, idOut: number, idInt: number) {
+    this.showPreview = false;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].observations;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].file;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].url;

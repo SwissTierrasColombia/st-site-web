@@ -1,0 +1,8 @@
+<div [hidden]="!valid">
+    <jw-modal id="mapPreview" class="mt-5">
+        <div id="map" style="width: 75vw;height: 60vh;" [hidden]="!showmap"></div>
+        <iframe #pdfviewer type="application/pdf" [hidden]="showmap" frameborder="0" style="width: 75vw;height: 60vh;">
+        </iframe>
+    </jw-modal>
+    <button (click)="clickbtn()" class="btn btn-dark">Ver</button>
+</div>
