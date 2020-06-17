@@ -63,8 +63,9 @@ export class ListUserComponent implements OnInit {
         this.dataListUser = this.dataListUser.filter(
           (element: any) => {
             return element.username !== this.dataUserLogger.user_name;
-          }
-        );
+          });
+        console.log(this.dataListUser);
+
       });
   }
 
@@ -121,5 +122,23 @@ export class ListUserComponent implements OnInit {
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
+  }
+  isDirector(item) {
+    let data = item.profilesManager.find(element => {
+      return element.id === 1;
+    });
+    let data2 = item.roles.find(element => {
+      return element.name === "OPERADOR";
+    });
+    let data3 = item.rolesProvider.find(element => {
+      return element.id === 1;
+    });
+    return (data || data2 || data3) ? true : false;
+  }
+  isProvider(item) {
+    let data = item.roles.find(element => {
+      return element.id === 4;
+    });
+    return data ? true : false;
   }
 }

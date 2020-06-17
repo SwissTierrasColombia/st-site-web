@@ -17,7 +17,8 @@
               <tr>
                 <th *ngIf="roleConnectAdmin">Entidad</th>
                 <th *ngIf="!roleConnectManager && !roleConnectProvider">Rol</th>
-                <th *ngIf="!roleConnectSuperAdmin">Perfil</th>
+                <th *ngIf="!roleConnectSuperAdmin">{{roleConnectAdmin?'Perfil':'Área de trabajo'}}</th>
+                <th *ngIf="roleConnectAdmin">Área de trabajo</th>
                 <th>Usuario</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
@@ -56,38 +57,56 @@
                     *ngIf="item.profilesManager.length == 0 && item.profilesProvider.length == 0 && item.rolesProvider.length == 0">
                     N/A
                   </div>
+                  <div *ngIf="roleConnectAdmin && item.rolesProvider.length == 0 && isProvider(item)">
+                    TÉCNICO
+                  </div>
+                </td>
+                <td *ngIf="roleConnectAdmin">
+                  <div *ngIf="item.profilesProvider.length > 0">
+                    <div *ngFor="let perfil of item.profilesProvider">
+                      {{perfil.name}}
+                    </div>
+                  </div>
+                  <div *ngIf="item.profilesProvider.length === 0">
+                    N/A
+                  </div>
                 </td>
                 <td scope="row">{{item.username}}</td>
                 <td scope="row">{{item.firstName}}</td>
                 <td scope="row">{{item.lastName}}</td>
                 <td scope="row">{{item.email}}</td>
                 <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                <td scope="row">
+                <td scope="row" *ngIf="roleConnectAdmin">
+                  <div *ngIf="isDirector(item)">
+                    <span ngbTooltip="Modificar Usuario" placement="bottom" show-delay="500">
+                      <i class="material-icons mr-2" (click)="updateUser(item.id)">
+                        edit
+                      </i>
+                    </span>
+                  </div>
+                </td>
+                <td scope="row" *ngIf="!roleConnectAdmin">
                   <span ngbTooltip="Modificar Usuario" placement="bottom" show-delay="500">
                     <i class="material-icons mr-2" (click)="updateUser(item.id)">
                       edit
                     </i>
                   </span>
                 </td>
-                <td scope=row>
+                <td scope=row *ngIf="roleConnectAdmin">
+                  <div *ngIf="isDirector(item)">
+                    <label class="switch" [title]="item.enabled ? 'Desactivar Usuario':'Activar Usuario'"
+                      (click)="item.enabled ? openModalDisabled('modalDisabled', item.id):openModalEnabled('modalEnabled', item.id)">
+                      <input (click)="clickCheckBox($event)" [(ngModel)]="item.enabled" type="checkbox">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </td>
+                <td scope=row *ngIf="!roleConnectAdmin">
                   <label class="switch" [title]="item.enabled ? 'Desactivar Usuario':'Activar Usuario'"
                     (click)="item.enabled ? openModalDisabled('modalDisabled', item.id):openModalEnabled('modalEnabled', item.id)">
                     <input (click)="clickCheckBox($event)" [(ngModel)]="item.enabled" type="checkbox">
                     <span class="slider round"></span>
                   </label>
-                  <!-- <span ngbTooltip="Usuario activado, haga clic si desea desactivarlo." placement="bottom"
-                    show-delay="500" *ngIf="item.enabled">
-                    <i class="material-icons" style="color: green;"
-                      (click)="openModalDisabled('modalDisabled', item.id)">
-                      people
-                    </i>
-                  </span>
-                  <span ngbTooltip="Usuario desactivado, haga clic si desea activarlo." placement="bottom"
-                    show-delay="500" *ngIf="item.enabled === false">
-                    <i class="material-icons" (click)="openModalEnabled('modalEnabled', item.id)">
-                      people
-                    </i>
-                  </span> -->
                 </td>
               </tr>
             </tbody>
