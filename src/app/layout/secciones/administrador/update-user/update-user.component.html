@@ -46,7 +46,7 @@
                     <div class="col-12 col-md-6">
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
-                                <label class="input-group-text">Roles</label>
+                                <label class="input-group-text">Rol</label>
                             </div>
                             <div class="form-control">
                                 <div *ngFor="let item of profile.roles">
@@ -72,7 +72,7 @@
                         <div *ngIf="profile.profilesProvider.length > 0">
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text">Perfil</label>
+                                    <label class="input-group-text">Área de trabajo</label>
                                 </div>
                                 <div class="form-control">
                                     <div *ngFor="let perfil of profile.profilesProvider">
@@ -152,7 +152,7 @@
     </div>
     <div class="card mt-2" *ngIf="provider">
         <div class="card-header text-center">
-            <h2>Modificar Área de trabajo</h2>
+            <h2>Modificar Área de Trabajo</h2>
         </div>
         <div class="card-body">
             <form action="" method="post">
@@ -161,7 +161,7 @@
                         <ul>
                             <li *ngFor="let item of profilesProvider; let index=index">
                                 {{item.name}}
-                                <label class="switch" [title]="item.enabled ? 'Eliminar perfil':'Agregar perfil'"
+                                <label class="switch" [title]="item.enabled ? 'Eliminar área':'Agregar área'"
                                     (click)="item.enabled ? openModalRemoveProvider('modalRemoveProvider',item):openModaladdProvider('modalEnabledProvider',item)">
                                     <input name="changeProfilecheckProvider{{index}}" [(ngModel)]="item.enabled"
                                         type="checkbox" (click)="clickCheckBox($event)">

@@ -10,7 +10,7 @@
         <div class="card text-left col-12">
 
             <div class="card-header">
-                <h3>Insumo a caracterizar <span *ngIf="id>0"><b>#{{id}}</b></span></h3>
+                <h3>Insumo a {{id?'editar':'caracterizar'}} <span *ngIf="id>0"><b>#{{id}}</b></span></h3>
             </div>
             <div class="card-body">
 
@@ -20,7 +20,7 @@
                         <div class='col mb-1'>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" aria-required="true">* Perfil</label>
+                                    <label class="input-group-text" aria-required="true">Perfil</label>
                                 </div>
                                 <select class="custom-select" name="providerProfile" id="providerProfile"
                                     (change)="modelChanged()" [(ngModel)]="providerProfile">
@@ -34,7 +34,7 @@
                         <div class='col mb-1'>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" aria-required="true">* Nombre del insumo</label>
+                                    <label class="input-group-text" aria-required="true">Nombre del insumo</label>
                                 </div>
                                 <input class="form-control" (change)="modelChanged()" [(ngModel)]="typeSupplyName"
                                     type="text" name="typeSupplyName" placeholder="">
@@ -84,11 +84,11 @@
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" aria-required="true">Formatos del insumo</label>
                                 </div>
-                                <ng-select2 [data]="exampleData" [options]="options" [width]="500"
+                                <!-- <ng-select2 [data]="exampleData" [options]="options" [width]="500"
                                     [(ngModel)]="extensions" (valueChanged)="modelChanged()">
-                                </ng-select2>
-                                <!-- <input class="form-control" (change)="modelChanged()" [(ngModel)]="extensions"
-                                    type="text" name="extensions" placeholder=""> -->
+                                </ng-select2> -->
+                                <input class="form-control" (change)="modelChanged()" [(ngModel)]="extensions"
+                                    type="text" name="extensions" placeholder="">
                             </div>
                             <small class="form-text text-muted">Ingrese las extensiones soportadas separadas por
                                 comas (ej: png, jpg, bmp)</small>
@@ -109,7 +109,7 @@
     </div>
     <div class="row justify-content-center text-center m-2">
         <div class="card text-left col">
-            <div class="card-header">
+            <div class="card-header text-center">
                 <h3>Insumos caracterizados para su entidad</h3>
             </div>
             <div class="card-body">
@@ -118,9 +118,11 @@
                         <thead class="thead-inverse">
                             <tr>
                                 <th>ID</th>
+                                <th>Área de Trabajo</th>
                                 <th>Nombre Insumo</th>
                                 <th>Descripción</th>
                                 <th>Formato</th>
+                                <th>Metadato</th>
                                 <th>Editar</th>
                                 <th>Eliminar</th>
                             </tr>
@@ -130,10 +132,16 @@
                                 [style.font-weight]="item.id==id ? 'bold' : ''"
                                 *ngFor="let item of supplies; let i = index">
                                 <td scope="row">{{item.id}}</td>
+                                <td scope="row">
+                                    {{item.providerProfile.name}}
+                                </td>
                                 <td scope="row">{{item.name}}</td>
                                 <td scope="row">{{item.description}}</td>
                                 <td scope="row">
                                     {{extensionsToString(item.extensions)}}
+                                </td>
+                                <td scope=row>
+                                    {{item.metadataRequired ? 'SI':'NO'}}
                                 </td>
                                 <td scope="row" class="text-center">
                                     <i class="material-icons cursor" (click)="selectTypeSupply(item)">
