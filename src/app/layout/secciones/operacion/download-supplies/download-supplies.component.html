@@ -62,15 +62,10 @@
                                 <td scope="row">{{item.supply.typeSupply ? item.supply.typeSupply.name: 'N/A'}}</td>
                                 <td scope="row">{{item.observations}}</td>
                                 <td scope="row">
-                                    <div *ngIf="item.supply.url">
-                                        <strong>{{item.supply.url ? item.supply.url: 'N/A'}}</strong>
-                                    </div>
-                                    <div *ngIf="!item.supply.url">
-                                        <i class="material-icons cursor"
-                                            (click)="downloadSupplies(item.supplyCode, item.supply.typeSupply ? item.supply.typeSupply.name: 'Insumo')">
-                                            cloud_download
-                                        </i>
-                                    </div>
+                                    <i class="material-icons cursor"
+                                        (click)="downloadSupplies(item.supplyCode, item.supply.typeSupply ? item.supply.typeSupply.name: 'Insumo')">
+                                        cloud_download
+                                    </i>
                                 </td>
                                 <td scope="row">
                                     {{item.downloadedAt ? formatDate(item.downloadedAt):'No se ha descargado el insumo'}}

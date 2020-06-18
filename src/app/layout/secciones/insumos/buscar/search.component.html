@@ -97,14 +97,9 @@
                                     <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
                                     <td scope="row">{{item.observations}}</td>
                                     <td scope="row">
-                                        <div *ngIf="item.url">
-                                            <strong>{{item.url ? item.url: 'N/A'}}</strong>
-                                        </div>
-                                        <div *ngIf="!item.url">
-                                            <i class="material-icons cursor"
-                                                (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
-                                                cloud_download </i>
-                                        </div>
+                                        <i class="material-icons cursor"
+                                            (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
+                                            cloud_download </i>
                                     </td>
                                     <td scope="row" *ngIf="usermanager">
                                         <i class="material-icons cursor" (click)="openModal(item.id, 'custom-modal-2')">
