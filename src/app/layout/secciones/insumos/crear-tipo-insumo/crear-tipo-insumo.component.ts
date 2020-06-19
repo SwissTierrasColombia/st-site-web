@@ -59,8 +59,6 @@ export class CrearTipoInsumoComponent implements OnInit {
     this.serviceWorkspaces.GetProviderProfiles()
       .subscribe((response: any[]) => {
         this.providerProfiles = response;
-        console.log(this,this.providerProfile);
-        
       });
     this.loadProviderTypeSupplies();
   }

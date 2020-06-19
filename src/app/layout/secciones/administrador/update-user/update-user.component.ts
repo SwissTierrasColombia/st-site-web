@@ -103,8 +103,6 @@ export class UpdateUserComponent implements OnInit {
         this.provider = true;
         this.serviceWorkSpace.GetProviderProfiles().subscribe(data => {
           this.profilesProvider = data;
-          console.log("this.profilesProvider", this.profilesProvider);
-          console.log("this.profile", this.profile);
 
           this.profilesProvider.forEach(element => {
             let data = this.profile.profilesProvider.find(item => {

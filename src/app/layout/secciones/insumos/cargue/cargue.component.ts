@@ -126,7 +126,6 @@ export class CargueComponent implements OnInit {
       }
       this.dataRequestPending[0].suppliesRequested =
         this.dataRequestPending[0].suppliesRequested.sort((a, b) => a.id - b.id)
-      //console.log(this.dataRequestPending);
 
     });
   }
@@ -286,10 +285,8 @@ export class CargueComponent implements OnInit {
         // this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
         //   data => {
         //     this.dataRequestPending = data;
-        //     console.log(this.dataRequestPending);
         //   }
         // );
-        //console.log(response);
       }
     );
   }

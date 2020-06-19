@@ -88,8 +88,6 @@ export class CreateUserComponent implements OnInit {
 
   ngOnInit() {
     this.dataUserLogger = JwtHelper.getUserPublicInformation();
-    //console.log(this.dataUserLogger);
-
     this.roleConnect = this.dataUserLogger.roles.find(elem => {
       return elem.id === 5;
     });

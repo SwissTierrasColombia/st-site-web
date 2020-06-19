@@ -69,7 +69,6 @@ export class PreviewComponent implements OnInit, OnChanges {
         zoom: 5
       });
       this.map.on('load', function () {
-        console.log('A render event occurred.');
         this.loadLayers();
       }.bind(this));
     } else {
@@ -92,8 +91,6 @@ export class PreviewComponent implements OnInit, OnChanges {
                 let promise = new Promise(function (resolve, reject) {
                   this.previewService.getLayer(d.result_id, l.key, 'json').subscribe((geojson: any) => {
                     this.layers.push(geojson);
-                    console.log("OK");
-                    
                     resolve("Added");
                   });
                 }.bind(this));
@@ -102,8 +99,6 @@ export class PreviewComponent implements OnInit, OnChanges {
             }
             Promise.all(promises)
               .then(function () {
-                console.log("Ok layers", this.layers);
-                
                 if (this.layers.length>0) {
                   this.valid = true;
                 }

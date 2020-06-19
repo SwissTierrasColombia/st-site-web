@@ -55,7 +55,6 @@ export class ListUserComponent implements OnInit {
     this.roleConnectProvider = this.dataUserLogger.roles.find(elem => {
       return elem.id === 4;
     });
-    //console.log(!this.roleConnectProvider);
 
     this.serviceWorkspace.GetUsers().subscribe(
       (arg: any) => {
@@ -64,7 +63,6 @@ export class ListUserComponent implements OnInit {
           (element: any) => {
             return element.username !== this.dataUserLogger.user_name;
           });
-        console.log(this.dataListUser);
         this.dataListUser.sort(function (a: any, b: any) {
           if (a.entity.name > b.entity.name) {
             return 1;

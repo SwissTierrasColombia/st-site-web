@@ -43,7 +43,6 @@ export class DownloadSuppliesComponent implements OnInit {
       this.serviceWorkspaces.GetDeliveriesToOperator().subscribe(
         response => {
           this.dataRequestPending = response;
-          // console.log("hola: ", this.dataRequestPending);
           resolve(response)
         }
       );

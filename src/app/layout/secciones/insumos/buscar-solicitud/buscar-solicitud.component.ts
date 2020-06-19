@@ -88,8 +88,6 @@ export class BuscarSolicitudComponent implements OnInit {
     this.serviceWorkspaces.GetRequestByManager().subscribe(
       response => {
         this.numbersuppliesManagerRequest = response;
-        // console.log(this.numbersuppliesManagerRequest);
-
       }
     )
   }
@@ -120,7 +118,6 @@ export class BuscarSolicitudComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.infoTabProvider = response.items;
-        // console.log(this.infoTabProvider);
       }
     );
   }
@@ -128,7 +125,6 @@ export class BuscarSolicitudComponent implements OnInit {
     this.serviceWorkspaces.searchSuppliesOrder(this.selectPackage).subscribe((response: any) => {
       this.infoTabOrder = response[0].requests;
       this.totalElements = this.infoTabOrder.length;
-      // console.log(this.infoTabOrder);
     });
   }
   activebuttontab1() {

@@ -48,7 +48,6 @@ export class ProveedorComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   changeState() {
-    console.log(this.data.providerCategoryId);
     if (this.data.name != "" &&
       this.data.taxIdentificationNumber != "" &&
       this.data.providerCategoryId !== '0') {

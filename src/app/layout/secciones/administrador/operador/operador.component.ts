@@ -40,9 +40,7 @@ export class OperadorComponent implements OnInit {
     this.serviceOperator.getAllOperators().subscribe(
       element => {
         this.dataProfile = element;
-        //console.log(this.dataProfile);
 
-        //console.log(this.dataProfile);
         this.dataProfile.sort((a, b) => a.id - b.id);
         this.dataProfile.forEach(element => {
           if (element.operatorState.name == "INACTIVO") {
@@ -111,7 +109,6 @@ export class OperadorComponent implements OnInit {
       );
       this.modalService.close(modal);
     } else {
-      //console.log(this.idProfileEnable);
       this.idProfileEnable.state = false;
       this.modalService.close(modal);
     }

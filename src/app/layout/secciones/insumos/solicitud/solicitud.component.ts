@@ -96,8 +96,6 @@ export class SolicitudComponent implements OnInit {
     this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment.toString()).subscribe(
       data => {
         this.municipalities = data;
-        // console.log(this.municipalities);
-
       }
     );
   }

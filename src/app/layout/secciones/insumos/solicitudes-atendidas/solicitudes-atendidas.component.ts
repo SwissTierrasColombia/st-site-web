@@ -30,8 +30,6 @@ export class SolicitudesAtendidasComponent implements OnInit {
       data => {
         this.dataRequestPending = data;
         this.numSolicitudes = this.dataRequestPending.length
-        //console.log(this.dataRequestPending);
-
       }
     );
   }
