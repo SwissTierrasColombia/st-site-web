@@ -16,6 +16,7 @@ export class DownloadSuppliesComponent implements OnInit {
   IdEntrega: number;
   dataRequestPending: any;
   supplies: any;
+  isAllDownloadReports: boolean;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -25,6 +26,7 @@ export class DownloadSuppliesComponent implements OnInit {
     this.IdEntrega = 0;
     this.dataRequestPending = [];
     this.supplies = [];
+    this.isAllDownloadReports = false;
   }
 
   ngOnInit() {
@@ -54,6 +56,14 @@ export class DownloadSuppliesComponent implements OnInit {
         }
       });
       this.supplies = this.dataRequestPending[0].supplies;
+      let isDownloadGeneralReport = this.supplies.filter(item => {
+        return item.downloaded === true
+      });
+      if (isDownloadGeneralReport.length == this.supplies.length) {
+        this.isAllDownloadReports = true;
+      } else {
+        this.isAllDownloadReports = false;
+      }
     });
   }
   // reload() {
@@ -106,5 +116,33 @@ export class DownloadSuppliesComponent implements OnInit {
   }
   volver() {
     this.router.navigate(['/operador/entregas/']);
+  }
+  downloadReport(idSupplie: string, nameSupplie: string) {
+    this.serviceWorkspaces.DownloadReportIndividual(this.IdEntrega, idSupplie).subscribe(
+      (data: any) => {
+        const contentType = data.headers.get('content-type');
+        const type = contentType.split(',')[0];
+        //const ext = data.headers.get('Content-Disposition');
+        const dataFile = data.body;
+        const blob = new Blob([dataFile], { type });
+        const url = window.URL.createObjectURL(blob);
+        saveAs(blob, nameSupplie + '.pdf');
+        this.funtionInit();
+      }
+    );
+  }
+  downloadGeneralReport(nameSupplie: string) {
+    this.serviceWorkspaces.DownloadReportGeneral(this.IdEntrega).subscribe(
+      (data: any) => {
+        const contentType = data.headers.get('content-type');
+        const type = contentType.split(',')[0];
+        //const ext = data.headers.get('Content-Disposition');
+        const dataFile = data.body;
+        const blob = new Blob([dataFile], { type });
+        const url = window.URL.createObjectURL(blob);
+        saveAs(blob, nameSupplie + '.pdf');
+        this.funtionInit();
+      }
+    );
   }
 }

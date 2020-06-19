@@ -6,6 +6,7 @@ import { OperacionRoutingModule } from './operacion-routing.module';
 import { DeliveriesSuppliesComponent } from './deliveries-supplies/deliveries-supplies.component';
 import { DownloadSuppliesComponent } from './download-supplies/download-supplies.component';
 import { BsComponentModule } from '../../bs-component/bs-component.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,9 @@ import { BsComponentModule } from '../../bs-component/bs-component.module';
     FormsModule,
     ReactiveFormsModule,
     OperacionRoutingModule,
-    BsComponentModule
-  ]
+    BsComponentModule,
+    NgbModule
+  ],
+  bootstrap: [DownloadSuppliesComponent]
 })
 export class OperacionModule { }

@@ -330,5 +330,16 @@ export class WorkspacesService {
     let url = this.url + '/workspaces/v1/providers/requests/package?package=' + idPackage;
     return this.httpClient.get(url);
   }
-
+  /**
+   * DownloadReportIndividual
+   */
+  public DownloadReportIndividual(idDelivery: number, idSupply: string) {
+    return this.httpClient.get(this.url + '/workspaces/v1/operators/deliveries/' + idDelivery + '/reports-individual/' + idSupply, { responseType: 'arraybuffer', observe: 'response' });
+  }
+  /**
+   * DownloadReportGeneral
+   */
+  public DownloadReportGeneral(idDelivery: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/operators/deliveries/' + idDelivery + '/reports-total', { responseType: 'arraybuffer', observe: 'response' });
+  }
 }

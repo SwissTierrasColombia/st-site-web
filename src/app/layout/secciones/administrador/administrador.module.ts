@@ -20,7 +20,15 @@ import { OperadorComponent } from './operador/operador.component';
 import { NgSelect2Module } from 'ng-select2';
 
 @NgModule({
-  declarations: [CreateUserComponent, ListUserComponent, UpdateUserComponent, ProfilesComponent, GestorComponent, ProveedorComponent, OperadorComponent],
+  declarations: [
+    CreateUserComponent,
+    ListUserComponent,
+    UpdateUserComponent,
+    ProfilesComponent,
+    GestorComponent,
+    ProveedorComponent,
+    OperadorComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
