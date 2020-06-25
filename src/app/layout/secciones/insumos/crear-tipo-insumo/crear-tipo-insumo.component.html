@@ -42,6 +42,39 @@
                         </div>
                     </div>
                     <div class="row mb-2">
+                        <div class="col-12 col-md-6 mb-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" aria-required="true">Formatos del insumo</label>
+                                </div>
+                                <ng-select2 name="select2NewForm" [data]="exampleData" [options]="options" [width]="500"
+                                    [(ngModel)]="extensions" (valueChanged)="modelChanged()">
+                                </ng-select2>
+                            </div>
+
+                            <small class="form-text text-muted">Seleccione los formatos del insumo a caracterizar, si no
+                                los encuentra por favor seleccione la opción otros formatos.</small>
+                        </div>
+                        <div class='col-11 col-md-5 mb-1'>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" aria-required="true">Otros formatos</label>
+                                </div>
+                                <input class="form-control" (change)="modelChanged()" [(ngModel)]="extensions2"
+                                    type="text" name="extensions" placeholder="png, jpg, bmp"
+                                    [disabled]="!activeOtherFormat">
+                            </div>
+                            <small class="form-text text-muted">Ingrese las extensiones soportadas separadas por
+                                comas (ej: png, jpg, bmp)</small>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <label class="switch" [title]="activeOtherFormat ? 'Activar':'Desactivar'">
+                                <input name="checkOtherFormatName" [(ngModel)]="activeOtherFormat" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
                         <div class='col mb-1'>
                             <div class="input-group">
                                 <div class="input-group-prepend input-group-text">
@@ -78,23 +111,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-2">
-                        <div class='col mb-1'>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" aria-required="true">Formatos del insumo</label>
-                                </div>
-                                <!-- <ng-select2 [data]="exampleData" [options]="options" [width]="500"
-                                    [(ngModel)]="extensions" (valueChanged)="modelChanged()">
-                                </ng-select2> -->
-                                <input class="form-control" (change)="modelChanged()" [(ngModel)]="extensions"
-                                    type="text" name="extensions" placeholder="">
-                            </div>
-                            <small class="form-text text-muted">Ingrese las extensiones soportadas separadas por
-                                comas (ej: png, jpg, bmp)</small>
-                        </div>
-                    </div>
-
                 </form>
             </div>
             <div class="card-footer text-muted text-center">
