@@ -342,4 +342,10 @@ export class WorkspacesService {
   public DownloadReportGeneral(idDelivery: number) {
     return this.httpClient.get(this.url + '/workspaces/v1/operators/deliveries/' + idDelivery + '/reports-total', { responseType: 'arraybuffer', observe: 'response' });
   }
+  /**
+   * GetDeliveriesClosed
+   */
+  public GetDeliveriesClosed() {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/operators/deliveries/closed');
+  }
 }

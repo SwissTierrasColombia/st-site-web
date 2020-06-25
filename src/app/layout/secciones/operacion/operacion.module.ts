@@ -7,11 +7,15 @@ import { DeliveriesSuppliesComponent } from './deliveries-supplies/deliveries-su
 import { DownloadSuppliesComponent } from './download-supplies/download-supplies.component';
 import { BsComponentModule } from '../../bs-component/bs-component.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EntregasAtendidasComponent } from './entregas-atendidas/entregas-atendidas.component';
+import { EntregaAtendidaComponent } from './entrega-atendida/entrega-atendida.component';
 
 @NgModule({
   declarations: [
     DeliveriesSuppliesComponent,
     DownloadSuppliesComponent,
+    EntregasAtendidasComponent,
+    EntregaAtendidaComponent,
   ],
   imports: [
     CommonModule,
