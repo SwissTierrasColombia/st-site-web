@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { ToastrService } from 'ngx-toastr';
@@ -12,6 +12,7 @@ import { Options } from 'select2';
 export class CrearTipoInsumoComponent implements OnInit {
 
   @ViewChild('actionForm', { static: false }) actionForm: ElementRef;
+
   id: number;
   providerProfile: number;
   typeSupplyName: string;
@@ -24,11 +25,17 @@ export class CrearTipoInsumoComponent implements OnInit {
   editMode: boolean;
   formOk: boolean;
   activeOtherFormat: boolean;
-  extensions: string;
+  extensions: any;
   public exampleData: Array<Select2OptionData>;
   public options: Options;
   public value: string;
-  extensions2: string;
+  extensions2: any;
+  public exampleData2: Array<Select2OptionData>;
+  public options2: Options;
+  page: number;
+  pageSize: number;
+  searchText: string;
+  viewOtherFormat: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private modalService: ModalService,
@@ -49,25 +56,12 @@ export class CrearTipoInsumoComponent implements OnInit {
     this.editMode = false;
     this.formOk = false;
     this.activeOtherFormat = false;
-    this.extensions = '';
-    this.extensions2 = '';
+    this.extensions = [];
     this.exampleData = [
       {
         id: 'txt',
         text: 'txt'
       },
-      // {
-      //   id: 'zip',
-      //   text: 'zip'
-      // },
-      // {
-      //   id: '7zip',
-      //   text: '7zip'
-      // },
-      // {
-      //   id: 'rar',
-      //   text: 'rar'
-      // },
       {
         id: 'png',
         text: 'png'
@@ -100,14 +94,6 @@ export class CrearTipoInsumoComponent implements OnInit {
         id: 'shp',
         text: 'shp (Incluye dbf, shx, prj, otros)'
       },
-      // {
-      //   id: 'sbn',
-      //   text: 'sbn'
-      // },
-      // {
-      //   id: 'sbx',
-      //   text: 'sbx'
-      // },
       {
         id: 'gpkg',
         text: 'gpg'
@@ -138,6 +124,17 @@ export class CrearTipoInsumoComponent implements OnInit {
       multiple: true,
       tags: false
     };
+    this.exampleData2 = [];
+    this.extensions2 = [];
+    this.options2 = {
+      width: '350',
+      multiple: true,
+      tags: true,
+      placeholder: "Escriba la extesión que desea y de enter"
+    };
+    this.page = 1;
+    this.pageSize = 10;
+    this.viewOtherFormat = true;
   }
 
   ngOnInit(): void {
@@ -156,7 +153,15 @@ export class CrearTipoInsumoComponent implements OnInit {
       });
   }
 
+  autoScroll() {
+    this.actionForm.nativeElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
   selectTypeSupply(data) {
+    this.viewOtherFormat = false;
+    this.autoScroll();
     this.providerProfile = data.providerProfile.id;
     this.typeSupplyName = data.name;
     this.typeSupplyDescription = data.description;
@@ -167,18 +172,43 @@ export class CrearTipoInsumoComponent implements OnInit {
     for (const e of data.extensions) {
       exts.push(e.name);
     }
-    this.extensions = exts;
-    this.actionForm.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
+    let extdata = [];
+    let extdata2 = [];
+    exts.forEach(elem => {
+      this.exampleData.forEach(element => {
+        return elem == element.id ? extdata.push(element.id) : NaN;
+      });
     });
-    this.editMode = true;
-  }
+    extdata2 = exts.filter(function (obj) { return extdata.indexOf(obj) == -1; });
+    if (extdata2.length > 0) {
+      this.activeOtherFormat = true;
+      extdata2.forEach(element => {
 
+        this.exampleData2.push({
+          id: element,
+          text: element
+        });
+        //        this.extensions.push(element);
+      });
+      this.extensions2 = extdata2;
+    } else {
+      this.activeOtherFormat = false;
+      this.exampleData2.length = 0;
+      this.extensions2.length = 0;
+    }
+    this.extensions = extdata;
+    this.editMode = true;
+    this.viewOtherFormat = true;
+  }
   getObjectTypeSupply() {
+    function onlyUnique(value, index, self) {
+      return self.indexOf(value) === index;
+    }
     this.activeOtherFormat && this.extensions2 != '' ? this.extensions = this.extensions + ',' + this.extensions2 : this.extensions + '';
     if (this.activeOtherFormat && this.extensions2 != '') {
-      const exts = this.extensions.split(',');
+
+      let exts = this.extensions.split(',');
+      exts = exts.filter(onlyUnique);
       for (const e in exts) {
         exts[e].trim();
       }
@@ -227,8 +257,8 @@ export class CrearTipoInsumoComponent implements OnInit {
     this.typeSupplyDescription = '';
     this.metadataRequired = false;
     this.modelRequired = false;
-    this.extensions = '';
-    this.extensions2 = '';
+    this.extensions = [];
+    this.extensions2 = [];
     this.editMode = false;
     this.formOk = false;
     this.activeOtherFormat = false;
