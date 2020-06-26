@@ -37,7 +37,7 @@
                                 <td scope="row">{{item.observations}}</td>
                                 <td scope="row" *ngIf="isAllDownloadReports">
                                     <span ngbTooltip="Descargar reporte general" placement="bottom" show-delay="500">
-                                        <i class="material-icons"
+                                        <i class="material-icons" style="color: red;"
                                             (click)="downloadGeneralReport('Reporte-general-entrega')">
                                             description
                                         </i>
@@ -82,7 +82,7 @@
                                     {{item.downloadedAt ? formatDate(item.downloadedAt) :'No se ha descargado el insumo.'}}
                                     <div *ngIf="item.downloaded">
                                         <span ngbTooltip="Descargar reporte" placement="bottom" show-delay="500">
-                                            <i class="material-icons"
+                                            <i class="material-icons" style="color: red;"
                                                 (click)="downloadReport(item.supplyCode, item.supply.typeSupply ? item.supply.typeSupply.name: 'Insumo')">
                                                 description
                                             </i>

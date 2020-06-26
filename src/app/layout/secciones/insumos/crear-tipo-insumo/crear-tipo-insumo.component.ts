@@ -27,7 +27,7 @@ export class CrearTipoInsumoComponent implements OnInit {
   extensions: string;
   public exampleData: Array<Select2OptionData>;
   public options: Options;
-  public value: string[];
+  public value: string;
   extensions2: string;
   constructor(
     private serviceWorkspaces: WorkspacesService,
@@ -56,6 +56,18 @@ export class CrearTipoInsumoComponent implements OnInit {
         id: 'txt',
         text: 'txt'
       },
+      // {
+      //   id: 'zip',
+      //   text: 'zip'
+      // },
+      // {
+      //   id: '7zip',
+      //   text: '7zip'
+      // },
+      // {
+      //   id: 'rar',
+      //   text: 'rar'
+      // },
       {
         id: 'png',
         text: 'png'
@@ -65,14 +77,66 @@ export class CrearTipoInsumoComponent implements OnInit {
         text: 'jpg'
       },
       {
-        id: 'mp4',
-        text: 'mp4'
+        id: 'xtf',
+        text: 'xtf'
+      },
+      {
+        id: 'img',
+        text: 'img'
+      },
+      {
+        id: 'tif',
+        text: 'tif'
+      },
+      {
+        id: 'ecw',
+        text: 'ecw'
+      },
+      {
+        id: 'sid',
+        text: 'sid'
+      },
+      {
+        id: 'shp',
+        text: 'shp (Incluye dbf, shx, prj, otros)'
+      },
+      // {
+      //   id: 'sbn',
+      //   text: 'sbn'
+      // },
+      // {
+      //   id: 'sbx',
+      //   text: 'sbx'
+      // },
+      {
+        id: 'gpkg',
+        text: 'gpg'
+      },
+      {
+        id: 'gbd',
+        text: 'gdb'
+      },
+      {
+        id: 'pdf',
+        text: 'pdf'
+      },
+      {
+        id: 'GeoPDF',
+        text: 'GeoPDF'
+      },
+      {
+        id: 'geojson',
+        text: 'geojson'
+      },
+      {
+        id: 'KML',
+        text: 'KML'
       }
     ];
     this.options = {
       width: '350',
       multiple: true,
-      tags: true
+      tags: false
     };
   }
 
@@ -103,9 +167,7 @@ export class CrearTipoInsumoComponent implements OnInit {
     for (const e of data.extensions) {
       exts.push(e.name);
     }
-    this.extensions = exts.join(',');
-    console.log(this.extensions);
-
+    this.extensions = exts;
     this.actionForm.nativeElement.scrollIntoView({
       behavior: 'smooth',
       block: 'start'

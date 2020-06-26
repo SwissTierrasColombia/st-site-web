@@ -20,7 +20,7 @@
                         <div class='col mb-1'>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" aria-required="true">Perfil</label>
+                                    <label class="input-group-text" aria-required="true">* Perfil</label>
                                 </div>
                                 <select class="custom-select" name="providerProfile" id="providerProfile"
                                     (change)="modelChanged()" [(ngModel)]="providerProfile">
@@ -34,7 +34,7 @@
                         <div class='col mb-1'>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" aria-required="true">Nombre del insumo</label>
+                                    <label class="input-group-text" aria-required="true">* Nombre del insumo</label>
                                 </div>
                                 <input class="form-control" (change)="modelChanged()" [(ngModel)]="typeSupplyName"
                                     type="text" name="typeSupplyName" placeholder="">
@@ -45,7 +45,7 @@
                         <div class="col-12 col-md-6 mb-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" aria-required="true">Formatos del insumo</label>
+                                    <label class="input-group-text" aria-required="true">* Formatos del insumo</label>
                                 </div>
                                 <ng-select2 name="select2NewForm" [data]="exampleData" [options]="options" [width]="500"
                                     [(ngModel)]="extensions" (valueChanged)="modelChanged()">
@@ -78,7 +78,7 @@
                         <div class='col mb-1'>
                             <div class="input-group">
                                 <div class="input-group-prepend input-group-text">
-                                    <div class="">Descripción</div>
+                                    <div class="">* Descripción</div>
                                 </div>
                                 <textarea class="form-control" id="observations" rows="2" (change)="modelChanged()"
                                     [(ngModel)]="typeSupplyDescription" name="typeSupplyDescription"></textarea>
@@ -109,6 +109,11 @@
                                     </option>
                                 </select>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="alert alert-primary text-center" role="alert">
+                            Recuerde que los campos marcados con * son obligatorios.
                         </div>
                     </div>
                 </form>
