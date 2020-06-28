@@ -11,19 +11,24 @@ const moment = _moment;
   styleUrls: ['./deliveries-supplies.component.scss']
 })
 export class DeliveriesSuppliesComponent implements OnInit {
+
   dataRequestPending: any;
+  numEntregas: number;
 
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private router: Router
   ) {
+
     this.dataRequestPending = [];
+    this.numEntregas = 0;
   }
 
   ngOnInit() {
     this.serviceWorkspaces.GetDeliveriesToOperator().subscribe(
       response => {
         this.dataRequestPending = response;
+        this.numEntregas = this.dataRequestPending.length;
       }
     );
   }

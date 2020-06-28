@@ -32,7 +32,7 @@
                             </select>
                         </div>
                     </div>
-                    <div *ngIf="usermanager" class='col-12 mb-1'>
+                    <!-- <div *ngIf="usermanager" class='col-12 mb-1'>
                         <div class="input-group mt-2">
                             <div class="input-group-prepend">
                                 <label class="input-group-text" aria-required="true">Solicitudes Gestor</label>
@@ -46,7 +46,7 @@
                             </select>
                         </div>
                         <small id="entities" class="form-text text-muted">Seleccione las solicitudes a buscar</small>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row mt-3">
                     <div class="col-12">
@@ -75,7 +75,7 @@
                     </ngb-pagination>
                     <div class="search-hero">
                         <input class="form-control" type="text" name="search" [(ngModel)]="searchText"
-                            autocomplete="off" placeholder="&#61442;  Buscar insumo">
+                            autocomplete="off" placeholder="&#61442;  Buscar">
                     </div>
                     <div class="table-inverse table-responsive">
                         <table class="table table-striped" *ngIf="usermanager">
@@ -119,7 +119,7 @@
                                         <div class="input-group">
                                             <textarea class="form-control" id="observations{{item.id}}" rows="3"
                                                 name="observaciones{{item.id}}" [(ngModel)]="item.observationsTosupplie"
-                                                (change)="builddelivery(item, item.delivery, item.observationsTosupplie)"
+                                                (change)="builddelivery(item, item.delivery)"
                                                 [disabled]="item.delivery ? false:true"></textarea>
                                         </div>
                                     </td>
@@ -153,7 +153,8 @@
                                         {{globalFuntionDate(item.createdAt)}}
                                     </td>
                                     <td scope="row" *ngIf="item.delivered === true">{{item.observations}}</td>
-                                    <td scope="row" *ngIf="item.delivered === true">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
+                                    <td scope="row" *ngIf="item.delivered === true">
+                                        {{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
                                     <td *ngIf="item.delivered === true">
                                         <div *ngIf="item.delivered === true" class="form-check">
                                             <input class="form-check-input" type="checkbox" [checked]="item.delivered"
@@ -172,8 +173,8 @@
                                     <div class="">* Observaciones Generales</div>
                                 </div>
                                 <textarea class="form-control" id="observationsGeneral" rows="3"
-                                    name="observaciones Generales"
-                                    [(ngModel)]="deliverySupplies.observations"></textarea>
+                                    name="observaciones Generales" [(ngModel)]="deliverySupplies.observations"
+                                    (change)="clickCheckBox()"></textarea>
                             </div>
                         </div>
                     </div>
@@ -181,7 +182,33 @@
             </div>
         </div>
         <div *ngIf="usermanager" class="card-footer text-muted text-center">
-            <button type="button" class="btn btn-dark" (click)="sendSupplies()">Entregar Insumos</button>
+            <button [disabled]="enabledButton" type="button" class="btn btn-dark"
+                (click)="openModal('modalRegistrar')">Entregar Insumos</button>
         </div>
+        <!-- <pre>{{deliverySupplies | json}}</pre> -->
     </div>
+    <jw-modal id="modalRegistrar" class="mt-5">
+        <div class="card">
+            <div class="card-header">
+                <i class="cui-arrow-bottom"></i>
+                <h2 class="text-center font-weight-bold">
+                    ¿Está seguro de entregar los insumos?
+                </h2>
+                <h5 class="alert alert-warning text-center">Advertencia: Va a realizar una entrega de insumos.</h5>
+            </div>
+            <div class="card-body row">
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-primary btn-block"
+                        (click)="closeModal('modalRegistrar',true);">
+                        <h4>Sí</h4>
+                    </button>
+                </div>
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-dark btn-block" (click)="closeModal('modalRegistrar',false);">
+                        <h4>No</h4>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
 </div>

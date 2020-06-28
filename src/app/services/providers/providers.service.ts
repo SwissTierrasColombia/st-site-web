@@ -29,4 +29,26 @@ export class ProvidersService {
   public getProfilesByProvider(id: number) {
     return this.httpClient.get(this.url + '/providers-supplies/v1/providers/' + id + '/profiles');
   }
+  /**
+   * getCategoriesProviders
+   */
+  public getCategoriesProviders() {
+    return this.httpClient.get(this.url + '/providers-supplies/v1/categories');
+  }
+  public createProvider(data: any) {
+    return this.httpClient.post(this.url + '/providers-supplies/v1/providers', data);
+  }
+  /**
+   * updateProviders
+   */
+  public updateProvider(data: any) {
+    return this.httpClient.put(this.url + '/providers-supplies/v1/providers', data);
+  }
+  /**
+   * deleteProvider
+   */
+  public deleteProvider(providerId: number) {
+    return this.httpClient.delete(this.url + '/providers-supplies/v1/providers/' + providerId);
+  }
+
 }

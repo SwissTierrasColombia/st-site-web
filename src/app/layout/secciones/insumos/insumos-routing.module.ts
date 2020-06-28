@@ -11,6 +11,9 @@ import { RoleAdminManagerGuard } from 'src/app/guards/role-admin-manager-guard.s
 import { EntregarComponent } from './entregar/entregar.component';
 import { SolicitudesAtendidasComponent } from './solicitudes-atendidas/solicitudes-atendidas.component';
 import { AtendidaComponent } from './atendida/atendida.component';
+import { CrearTipoInsumoComponent } from './crear-tipo-insumo/crear-tipo-insumo.component';
+import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-guard.service';
+import { BuscarSolicitudComponent } from './buscar-solicitud/buscar-solicitud.component';
 
 
 const routes: Routes = [
@@ -40,6 +43,11 @@ const routes: Routes = [
     canActivate: [RoleAdminManagerGuard]
   },
   {
+    path: 'buscar-solicitud',
+    component: BuscarSolicitudComponent,
+    canActivate: [RoleManagerGuard]
+  },
+  {
     path: 'entrega',
     component: EntregarComponent,
     canActivate: [RoleAdminManagerGuard]
@@ -54,6 +62,11 @@ const routes: Routes = [
     component: AtendidaComponent,
     canActivate: [RoleProviderGuard]
   },
+  {
+    path: 'caracterizacion/insumo',
+    component: CrearTipoInsumoComponent,
+    canActivate: [RoleProviderDirectorGuard]
+  }
 
 ];
 

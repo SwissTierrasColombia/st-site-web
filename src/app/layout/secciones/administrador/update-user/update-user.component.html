@@ -1,0 +1,281 @@
+<div>
+    <app-page-header [heading]="'Modificar Usuario'" [icon]="'fa-star'">
+    </app-page-header>
+    <div class="card">
+        <div class="card-header">
+            <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+                <i class="material-icons cursor" (click)="volver()">backspace</i>
+            </span>
+            <div class="text-center">
+                <h2>Información del Usuario</h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">Nombre</label>
+                            </div>
+                            <div class="form-control">
+                                {{profile.firstName}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">Apellido</label>
+                            </div>
+                            <div class="form-control">
+                                {{profile.lastName}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">Correo electrónico</label>
+                            </div>
+                            <div class="form-control">
+                                {{profile.email}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">Rol</label>
+                            </div>
+                            <div class="form-control">
+                                <div *ngFor="let item of profile.roles">
+                                    {{item.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div *ngIf="profile.profilesManager.length > 0">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text">Perfil</label>
+                                </div>
+                                <div class="form-control">
+                                    <div *ngFor="let perfil of profile.profilesManager">
+                                        {{perfil.name}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div *ngIf="profile.profilesProvider.length > 0">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text">Área de trabajo</label>
+                                </div>
+                                <div class="form-control">
+                                    <div *ngFor="let perfil of profile.profilesProvider">
+                                        {{perfil.name}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card mt-2">
+        <div class="card-header text-center">
+            <h2>Actualizar Información</h2>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    Nombre
+                                </span>
+                            </div>
+                            <input type="text" name="firstName" class="form-control" placeholder="Nombre"
+                                [(ngModel)]="firstName">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    Apellido
+                                </span>
+                            </div>
+                            <input type="text" name="lastName" class="form-control" placeholder="Apellido"
+                                [(ngModel)]="lastName">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-muted text-center">
+            <div class="col-12">
+                <button type="button" class="btn btn-dark" (click)="submitChange()">
+                    Actualizar
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-2" *ngIf="manager">
+        <div class="card-header text-center">
+            <h2>Modificar Perfil</h2>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-12">
+                        <ul>
+                            <li *ngFor="let item of profilesManagers; let index=index">
+                                {{item.name}}
+                                <label class="switch" [title]="item.enabled ? 'Eliminar perfil':'Agregar perfil'"
+                                    (click)="item.enabled ? openModalRemoveManager('modalRemoveManager',item):openModaladdManager('modalEnabled',item)">
+                                    <input name="changeProfilecheck{{index}}" [(ngModel)]="item.enabled" type="checkbox"
+                                        (click)="clickCheckBox($event)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card mt-2" *ngIf="provider">
+        <div class="card-header text-center">
+            <h2>Modificar Área de Trabajo</h2>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-12">
+                        <ul>
+                            <li *ngFor="let item of profilesProvider; let index=index">
+                                {{item.name}}
+                                <label class="switch" [title]="item.enabled ? 'Eliminar área':'Agregar área'"
+                                    (click)="item.enabled ? openModalRemoveProvider('modalRemoveProvider',item):openModaladdProvider('modalEnabledProvider',item)">
+                                    <input name="changeProfilecheckProvider{{index}}" [(ngModel)]="item.enabled"
+                                        type="checkbox" (click)="clickCheckBox($event)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <jw-modal id="modalEnabled" class="mt-5">
+        <div class="card">
+            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+            <div class="card-header">
+                <i class="cui-arrow-bottom"></i>
+                <h2 class="text-center font-weight-bold">
+                    ¿Está seguro de agregar el perfil?
+                </h2>
+                <h5 class="alert alert-warning text-center">Advertencia: Esta acción agregara un perfil al usuario.</h5>
+            </div>
+            <div class="card-body row">
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-primary btn-block"
+                        (click)="closeModalEnabled('modalEnabled',true);">
+                        <h4>Sí</h4>
+                    </button>
+                </div>
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-dark btn-block"
+                        (click)="closeModalEnabled('modalEnabled',false);">
+                        <h4>No</h4>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
+    <jw-modal id="modalRemoveManager" class="mt-5">
+        <div class="card">
+            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+            <div class="card-header">
+                <i class="cui-arrow-bottom"></i>
+                <h2 class="text-center font-weight-bold">
+                    ¿Está seguro de quitar el perfil?
+                </h2>
+                <h5 class="alert alert-warning text-center">Advertencia: Esta acción quitará el perfil al usuario.</h5>
+            </div>
+            <div class="card-body row">
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-primary btn-block"
+                        (click)="closeModalRemoveManager('modalRemoveManager',true);">
+                        <h4>Sí</h4>
+                    </button>
+                </div>
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-dark btn-block"
+                        (click)="closeModalRemoveManager('modalRemoveManager',false);">
+                        <h4>No</h4>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
+    <jw-modal id="modalEnabledProvider" class="mt-5">
+        <div class="card">
+            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+            <div class="card-header">
+                <i class="cui-arrow-bottom"></i>
+                <h2 class="text-center font-weight-bold">
+                    ¿Está seguro de agregar el perfil?
+                </h2>
+                <h5 class="alert alert-warning text-center">Advertencia: Esta acción agregara un perfil al usuario.</h5>
+            </div>
+            <div class="card-body row">
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-primary btn-block"
+                        (click)="closeModalEnabledProvider('modalEnabledProvider',true);">
+                        <h4>Sí</h4>
+                    </button>
+                </div>
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-dark btn-block"
+                        (click)="closeModalEnabledProvider('modalEnabledProvider',false);">
+                        <h4>No</h4>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
+    <jw-modal id="modalRemoveProvider" class="mt-5">
+        <div class="card">
+            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+            <div class="card-header">
+                <i class="cui-arrow-bottom"></i>
+                <h2 class="text-center font-weight-bold">
+                    ¿Está seguro de quitar el perfil?
+                </h2>
+                <h5 class="alert alert-warning text-center">Advertencia: Esta acción quitará el perfil al usuario.</h5>
+            </div>
+            <div class="card-body row">
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-primary btn-block"
+                        (click)="closeModalRemoveProvider('modalRemoveProvider',true);">
+                        <h4>Sí</h4>
+                    </button>
+                </div>
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-dark btn-block"
+                        (click)="closeModalRemoveProvider('modalRemoveProvider',false);">
+                        <h4>No</h4>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
+</div>

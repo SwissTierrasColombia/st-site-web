@@ -25,5 +25,34 @@ export class OperatorsService {
   public getOperatorById(idOperator: string) {
     return this.httpClient.get(this.url + '/operators/v1/operators/' + idOperator);
   }
-
+  /**
+   * getAllOperators
+   */
+  public getAllOperators() {
+    return this.httpClient.get(this.url + '/operators/v1/operators');
+  }
+  /**
+   * createOperator
+   */
+  public createOperator(data: any) {
+    return this.httpClient.post(this.url + '/operators/v1/operators', data);
+  }
+  /**
+ * updateOperator
+ */
+  public updateOperator(data: any) {
+    return this.httpClient.put(this.url + '/operators/v1/operators', data);
+  }
+  /**
+   * disableOperator
+   */
+  public disableOperator(id: number) {
+    return this.httpClient.put(this.url + '/operators/v1/operators/' + id + '/disable', {});
+  }
+  /**
+   * enableOperator
+   */
+  public enableOperator(id: number) {
+    return this.httpClient.put(this.url + '/operators/v1/operators/' + id + '/enable', {});
+  }
 }

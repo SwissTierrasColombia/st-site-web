@@ -20,7 +20,7 @@
   </div>
   <hr>
   <div class="row justify-content-center justify-content-md-center">
-    <div *ngIf="roleproveedor" class="mt-1 mb-1 col-8 col-md-4">
+    <div *ngIf="roleproveedor && !user.is_provider_director" class="mt-1 mb-1 col-8 col-md-4">
       <app-stat [bgClass]="'success'" [icon]="'fa-tasks'" [count]="taskProvider" [label]="'SOLICITUDES PENDIENTES'"
         [url]="'/insumos/solicitudes/pendientes'">
       </app-stat>

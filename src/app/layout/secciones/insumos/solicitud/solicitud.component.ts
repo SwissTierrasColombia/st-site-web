@@ -3,6 +3,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 import * as _moment from 'moment';
+import { ModalService } from 'src/app/services/modal/modal.service';
 
 const moment = _moment;
 
@@ -37,6 +38,7 @@ export class SolicitudComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
     private toastr: ToastrService,
+    private modalService: ModalService
   ) {
     this.count = 1;
     this.observations = '';
@@ -236,6 +238,11 @@ export class SolicitudComponent implements OnInit {
         this.selectModelSupplies = '0';
         this.enviarsolicitud = true;
         this.tableSolicitudes = [];
+        this.selectProvider = 0;
+        this.currentDate = new Date();
+        this.currentDate.setDate(this.currentDate.getDate() + 16);
+        this.listsupplies.deadline = this.currentDate.toISOString().substring(0, 10);
+        this.currentDate = this.clone(this.listsupplies.deadline);
       }
     );
   }
@@ -253,5 +260,15 @@ export class SolicitudComponent implements OnInit {
     moment.locale('es');
     return moment(date).format('ll');
   }
-
+  openModal(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModal(modal: string, option: boolean) {
+    if (option) {
+      this.submitInfo();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
+    }
+  }
 }

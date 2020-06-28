@@ -280,4 +280,15 @@ export class IntegracionComponent implements OnInit {
   parcelNumber(number: number) {
     return new Intl.NumberFormat().format(number);
   }
+  openModalXTF(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModalXTF(modal: string, option: boolean) {
+    if (option) {
+      this.integrationSupplies();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
+    }
+  }
 }

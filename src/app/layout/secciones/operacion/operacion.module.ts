@@ -6,11 +6,16 @@ import { OperacionRoutingModule } from './operacion-routing.module';
 import { DeliveriesSuppliesComponent } from './deliveries-supplies/deliveries-supplies.component';
 import { DownloadSuppliesComponent } from './download-supplies/download-supplies.component';
 import { BsComponentModule } from '../../bs-component/bs-component.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EntregasAtendidasComponent } from './entregas-atendidas/entregas-atendidas.component';
+import { EntregaAtendidaComponent } from './entrega-atendida/entrega-atendida.component';
 
 @NgModule({
   declarations: [
     DeliveriesSuppliesComponent,
     DownloadSuppliesComponent,
+    EntregasAtendidasComponent,
+    EntregaAtendidaComponent,
   ],
   imports: [
     CommonModule,
@@ -18,7 +23,9 @@ import { BsComponentModule } from '../../bs-component/bs-component.module';
     FormsModule,
     ReactiveFormsModule,
     OperacionRoutingModule,
-    BsComponentModule
-  ]
+    BsComponentModule,
+    NgbModule
+  ],
+  bootstrap: [DownloadSuppliesComponent]
 })
 export class OperacionModule { }

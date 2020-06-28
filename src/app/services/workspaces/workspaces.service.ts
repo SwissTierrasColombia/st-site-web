@@ -100,12 +100,6 @@ export class WorkspacesService {
     return this.httpClient.put(this.url + '/workspaces/v1/providers/requests/' + idInsumo + '/close', {});
   }
   /**
-   * createUser
-   */
-  public createUser(data: any) {
-    return this.httpClient.post(this.url + '/workspaces/v1/administration/users', data);
-  }
-  /**
    * GetSuppliesByMunicipality
    */
   public GetSuppliesByMunicipalityXTF(idMunicipality: number) {
@@ -210,5 +204,148 @@ export class WorkspacesService {
   }
   public getAttendedRequestByProvider() {
     return this.httpClient.get(this.url + '/workspaces/v1/providers/closed-requests');
+  }
+  /**
+   * GetUsers
+   */
+  public GetUsers() {
+    return this.httpClient.get(this.url + '/workspaces/v1/administration/users');
+  }
+  /**
+   * CreateUser
+   */
+  public CreateUser(data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/administration/users', data);
+  }
+  /**
+   * UpdateUser
+   */
+  public UpdateUser(idUser: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/administration/users/' + idUser, data);
+  }
+  /**
+   * DisableUser
+   */
+  public DisableUser(idUser: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/administration/users/' + idUser + '/disable', data);
+  }
+  /**
+   * EnableUser
+   */
+  public EnableUser(idUser: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/administration/users/' + idUser + '/enable', data);
+  }
+  /**
+   * AddProfileToUser
+   */
+  public AddProfileToUser(idUser: number, data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/administration/users/' + idUser + '/profiles', data);
+  }
+  /**
+   * RemoveProfileToUser
+   */
+  public RemoveProfileToUser(idUser: number, data: any) {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: data,
+    };
+    return this.httpClient.delete(this.url + '/workspaces/v1/administration/users/' + idUser + '/profiles', options);
+  }
+  /**
+ * GetManagerProfiles
+ */
+  public GetManagerProfiles() {
+    return this.httpClient.get(this.url + '/managers/v1/profiles');
+  }
+  /**
+   * createProfile
+   */
+  public createProfile(data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/providers/profiles', data);
+  }
+  /**
+   * GetProviderProfiles
+   */
+  public GetProviderProfiles() {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/profiles');
+  }
+  /**
+   * updateProfileProvider
+   */
+  public updateProfileProvider(data: any, id: number) {
+    return this.httpClient.put(this.url + '/workspaces/v1/providers/profiles/' + id, data);
+  }
+  /**
+   * deleteProfileProvider
+   */
+  public deleteProfileProvider(id: number) {
+    return this.httpClient.delete(this.url + '/workspaces/v1/providers/profiles/' + id);
+  }
+  /**
+   * GetProviderTypeSupplies
+  */
+  public GetProviderTypeSupplies() {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/types-supplies');
+  }
+  /**
+   * CreateTypeSupplies
+   */
+  public CreateTypeSupplies(data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/providers/types-supplies', data);
+  }
+  /**
+   * SaveTypeSupplies
+   */
+  public SaveTypeSupplies(id: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/providers/types-supplies/' + id, data);
+  }
+  /**
+   * deleteTypeSupplies
+   */
+  public deleteTypeSupplies(id: number) {
+    return this.httpClient.delete(this.url + '/workspaces/v1/providers/types-supplies/' + id);
+  }
+  /**
+   * searchSuppliesMunicipality
+   */
+  public searchSuppliesMunicipality(page: string, municipality: number) {
+    // if (municipality) {
+    let url = this.url + '/workspaces/v1/providers/requests/municipality?page=' + page
+    url = url + '&municipality=' + municipality
+    // }
+    return this.httpClient.get(url);
+  }
+  /**
+   * searchSuppliesProviders
+   */
+  public searchSuppliesProviders(page: string, idProvider: string) {
+    return this.httpClient.get(this.url + '/workspaces/v1/providers/requests/provider?page=' + page + '&provider=' + idProvider)
+  }
+  /**
+   * searchSuppliesOrder
+   */
+  public searchSuppliesOrder(idPackage: string) {
+    let url = this.url + '/workspaces/v1/providers/requests/package?package=' + idPackage;
+    return this.httpClient.get(url);
+  }
+  /**
+   * DownloadReportIndividual
+   */
+  public DownloadReportIndividual(idDelivery: number, idSupply: string) {
+    return this.httpClient.get(this.url + '/workspaces/v1/operators/deliveries/' + idDelivery + '/reports-individual/' + idSupply, { responseType: 'arraybuffer', observe: 'response' });
+  }
+  /**
+   * DownloadReportGeneral
+   */
+  public DownloadReportGeneral(idDelivery: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/operators/deliveries/' + idDelivery + '/reports-total', { responseType: 'arraybuffer', observe: 'response' });
+  }
+  /**
+   * GetDeliveriesClosed
+   */
+  public GetDeliveriesClosed() {
+    return this.httpClient.get(this.url + '/workspaces/v1/workspaces/operators/deliveries/closed');
   }
 }

@@ -4,6 +4,7 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { ToastrService } from 'ngx-toastr';
+import { ModalService } from 'src/app/services/modal/modal.service';
 @Component({
   selector: 'app-entregar',
   templateUrl: './entregar.component.html',
@@ -27,10 +28,12 @@ export class EntregarComponent implements OnInit {
   sendSuppliesFilter: boolean;
   idWorkSpace: number;
   searchText: string;
+  enabledButton: Boolean;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modalService: ModalService
   ) {
     this.usermanager = false;
     this.departments = [];
@@ -49,6 +52,7 @@ export class EntregarComponent implements OnInit {
     }
     this.sendSuppliesFilter = true;
     this.idWorkSpace = 0;
+    this.enabledButton = true;
   }
 
   ngOnInit() {
@@ -58,11 +62,6 @@ export class EntregarComponent implements OnInit {
     });
     if (role) {
       this.usermanager = true;
-      this.serviceWorkspaces.GetRequestByManager().subscribe(
-        response => {
-          this.suppliesManagerRequest = response;
-        }
-      )
     }
     this.serviceWorkspaces.getDepartments()
       .subscribe(response => {
@@ -88,66 +87,47 @@ export class EntregarComponent implements OnInit {
     );
   }
   getPage(page: string) {
-    if (this.selectSuppliesManagerRequest && this.selectSuppliesManagerRequest.length > 0) {
-      let itemsSupplies = this.selectSuppliesManagerRequest.join();
-      this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page, itemsSupplies).subscribe(
-        (response: any) => {
-          this.number = response.number + 1;
-          this.size = response.size;
-          this.totalElements = response.totalElements;
-          this.allSupplies = response.items;
-        }
-      );
-    } else {
-      this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page).subscribe(
-        (response: any) => {
-          this.number = response.number + 1;
-          this.size = response.size;
-          this.totalElements = response.totalElements;
-          this.allSupplies = response.items;
-        }
-      );
-    }
+    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page).subscribe(
+      (response: any) => {
+        this.number = response.number + 1;
+        this.size = response.size;
+        this.totalElements = response.totalElements;
+        this.allSupplies = response.items;
+      }
+    );
   }
-  builddelivery(item: any, state: boolean, observations?: string) {
+  builddelivery(item: any, state: boolean) {
     if (this.usermanager) {
-      if (item.observationsTosupplie) {
-        if (state && item.observationsTosupplie.length > 0) {
-          let data = this.deliverySupplies.supplies.filter((element: any) => {
-            return element.supplyId === item.id;
-          });
-          if (data.length > 0) {
-            const data = this.deliverySupplies.supplies.filter((element: any) => {
-              return item.id != element.supplyId;
-            });
-            this.deliverySupplies.supplies = data;
-            this.deliverySupplies.supplies.push({
-              supplyId: item.id,
-              observations: item.observationsTosupplie
-            });
-          } else {
-            this.deliverySupplies.supplies.push({
-              supplyId: item.id,
-              observations: item.observationsTosupplie
-            });
+      if (state) {
+        let comprobarID = this.deliverySupplies.supplies.find(
+          element => {
+            return element.supplyId == item.id
           }
-        }
-        else {
-          const data = this.deliverySupplies.supplies.filter((element: any) => {
-            return item.id != element.supplyId;
+        );
+        if (comprobarID) {
+          this.deliverySupplies.supplies.forEach(element => {
+            if (item.id == element.supplyId) {
+              element.observations = item.observationsTosupplie
+            }
           });
-          this.deliverySupplies.supplies = data;
+          this.clickCheckBox();
+        } else {
+          this.deliverySupplies.supplies.push({
+            supplyId: item.id,
+            observations: item.observationsTosupplie ? item.observationsTosupplie : ""
+          });
+          this.clickCheckBox();
         }
       } else {
-        const data = this.deliverySupplies.supplies.find((element: any) => {
-          return item.id == element.supplyId;
-        });
-        item.observationsTosupplie = data ? data.observations : '';
-        this.toastr.info("La observación es obligatoria");
+        this.deliverySupplies.supplies = this.deliverySupplies.supplies.filter(e => e.supplyId !== item.id);
+        this.clickCheckBox();
       }
+
+
     } else {
       this.toastr.error("No tienes los permisos necesarios para entregar el insumo.");
     }
+
   }
   sendSupplies() {
     if (this.deliverySupplies.supplies.length > 0) {
@@ -160,7 +140,13 @@ export class EntregarComponent implements OnInit {
         } else {
           this.serviceWorkspaces.deliveriesSupplies(this.idWorkSpace, this.deliverySupplies).subscribe(
             _ => {
-              this.toastr.success("Se ha realizado la entrega de los insumos al operador")
+              this.toastr.success("Se ha realizado la entrega de los insumos al operador");
+              this.getPage('1');
+              this.deliverySupplies = {
+                observations: "",
+                supplies: []
+              }
+              this.enabledButton = true;
             }
           );
         }
@@ -169,6 +155,37 @@ export class EntregarComponent implements OnInit {
       }
     } else {
       this.toastr.error("No has seleccionado ningún insumo, ó te faltan las observaciones")
+    }
+  }
+  openModal(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModal(modal: string, option: boolean) {
+    if (option) {
+      this.sendSupplies();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
+    }
+  }
+  clickCheckBox() {
+    if (this.deliverySupplies.supplies.length > 0) {
+
+      if (this.deliverySupplies.observations != "") {
+
+        const data = this.deliverySupplies.supplies.find(element => {
+          return element.observations == "";
+        });
+        if (data) {
+          this.enabledButton = true;
+        } else {
+          this.enabledButton = false;
+        }
+      } else {
+        this.enabledButton = true;
+      }
+    } else {
+      this.enabledButton = true;
     }
   }
 }

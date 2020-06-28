@@ -1,10 +1,17 @@
 <div>
     <app-page-header [heading]="'Descarga de insumo pendiente'" [icon]="'fa-star'">
     </app-page-header>
-    <div class="row justify-content-center text-center mb-2">
+    <div class="justify-content-center text-center mb-2">
         <div class="card text-center">
             <div class="card-header">
-                <h3>Información general de los insumos</h3>
+                <div class="col-1">
+                    <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+                        <i class="material-icons cursor" (click)="volver()">backspace</i>
+                    </span>
+                </div>
+                <div class="col-12">
+                    <h3>Información general de los insumos</h3>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-inverse table-responsive">
@@ -17,6 +24,7 @@
                                 <th>Código Municipio</th>
                                 <th>Fecha de entrega</th>
                                 <th>Observaciones generales</th>
+                                <th *ngIf="isAllDownloadReports">Descargar reporte general</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,6 +35,14 @@
                                 <td scope="row">{{item.municipality.code}}</td>
                                 <td scope="row">{{formatDate(item.createdAt)}}</td>
                                 <td scope="row">{{item.observations}}</td>
+                                <td scope="row" *ngIf="isAllDownloadReports">
+                                    <span ngbTooltip="Descargar reporte general" placement="bottom" show-delay="500">
+                                        <i class="material-icons" style="color: red;"
+                                            (click)="downloadGeneralReport('Reporte-general-entrega')">
+                                            description
+                                        </i>
+                                    </span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -34,7 +50,7 @@
             </div>
         </div>
     </div>
-    <div class="row justify-content-center text-center">
+    <div class="justify-content-center text-center">
         <div class="card text-center">
             <div class="card-header">
                 <h3>Descarga de insumos</h3>
@@ -47,7 +63,7 @@
                                 <th>Insumo</th>
                                 <th>Observaciones</th>
                                 <th>Descargar</th>
-                                <th>Fecha de descarga</th>
+                                <th>Fecha de descarga y reporte</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,13 +71,23 @@
                                 <td scope="row">{{item.supply.typeSupply ? item.supply.typeSupply.name: 'N/A'}}</td>
                                 <td scope="row">{{item.observations}}</td>
                                 <td scope="row">
-                                    <i class="material-icons cursor"
-                                        (click)="downloadSupplies(item.supplyCode, item.supply.typeSupply ? item.supply.typeSupply.name: 'Insumo')">
-                                        cloud_download
-                                    </i>
+                                    <span ngbTooltip="Descargar insumo" placement="bottom" show-delay="500">
+                                        <i class="material-icons cursor"
+                                            (click)="downloadSupplies(item.supplyCode, item.supply.typeSupply ? item.supply.typeSupply.name: 'Insumo')">
+                                            cloud_download
+                                        </i>
+                                    </span>
                                 </td>
                                 <td scope="row">
-                                    {{item.downloadedAt ? formatDate(item.downloadedAt):'No se ha descargado el insumo'}}
+                                    {{item.downloadedAt ? formatDate(item.downloadedAt) :'No se ha descargado el insumo.'}}
+                                    <div *ngIf="item.downloaded">
+                                        <span ngbTooltip="Descargar reporte" placement="bottom" show-delay="500">
+                                            <i class="material-icons" style="color: red;"
+                                                (click)="downloadReport(item.supplyCode, item.supply.typeSupply ? item.supply.typeSupply.name: 'Insumo')">
+                                                description
+                                            </i>
+                                        </span>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import * as _moment from 'moment';
 import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
+import { ModalService } from 'src/app/services/modal/modal.service';
 
 const moment = _moment;
 
@@ -23,12 +24,15 @@ export class CargueComponent implements OnInit {
   closeRequestButtonArray: any;
   @ViewChild('myInput')
   myInputVariable: ElementRef;
+  previewData: FileList;
+  showPreview = false;
   constructor(
     private toastr: ToastrService,
     private router: Router,
     private activedRoute: ActivatedRoute,
     private serviceWorkspaces: WorkspacesService,
-    public typeDataFieldModel: TypeDataSuppliesModel
+    public typeDataFieldModel: TypeDataSuppliesModel,
+    private modalService: ModalService
   ) {
     this.respuestaValidador = [
       {
@@ -122,7 +126,6 @@ export class CargueComponent implements OnInit {
       }
       this.dataRequestPending[0].suppliesRequested =
         this.dataRequestPending[0].suppliesRequested.sort((a, b) => a.id - b.id)
-      console.log(this.dataRequestPending);
 
     });
   }
@@ -134,8 +137,10 @@ export class CargueComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   docSoport(files: FileList, idOut: number, idInt: number) {
+    this.showPreview = false;
+    this.showPreview = true;
+    this.previewData = files;
     if (files[0].size / 1024 / 1024 <= 190) {
-
       var re = /zip*/;
       if (files[0].type.match(re)) {
         const formato = files[0].name.split('.').pop();
@@ -172,7 +177,6 @@ export class CargueComponent implements OnInit {
           const archivoValido = formatoPermitido.filter(item => {
             return item === formato;
           });
-
           if (archivoValido.length > 0) {
             this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
             this.validsendFile(idOut, idInt);
@@ -189,6 +193,7 @@ export class CargueComponent implements OnInit {
     }
   }
   validsendFile(idOut: number, idInt: number) {
+    this.showPreview = true;
     if (this.dataRequestPending[idOut].suppliesRequested[idInt].observations) {
       if (this.dataRequestPending[idOut].suppliesRequested[idInt].file) {
         this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
@@ -204,7 +209,7 @@ export class CargueComponent implements OnInit {
     // https://stackoverflow.com/questions/8667070/javascript-regular-expression-to-validate-url
     function validateUrl(value) {
       // tslint:disable-next-line:max-line-length
-      return /^(?:(?:(?:https?|ftp|ftps|http):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+      return /^(?:(?:(?:https?|ftp?|ftps?|http?|ftpes?|sftp?|afp?|nfs?|smb?|ssh?|dav?|davs?):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
     }
     if (validateUrl(this.dataRequestPending[idOut].suppliesRequested[idInt].url)) {
       if (this.dataRequestPending[idOut].suppliesRequested[idInt].observations) {
@@ -280,10 +285,8 @@ export class CargueComponent implements OnInit {
         // this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
         //   data => {
         //     this.dataRequestPending = data;
-        //     console.log(this.dataRequestPending);
         //   }
         // );
-        console.log(response);
       }
     );
   }
@@ -295,6 +298,7 @@ export class CargueComponent implements OnInit {
     );
   }
   modelChanged(item: any, idOut: number, idInt: number) {
+    this.showPreview = false;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].observations;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].file;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].url;
@@ -317,5 +321,16 @@ export class CargueComponent implements OnInit {
   }
   volver() {
     this.router.navigate(['/insumos/solicitudes/pendientes']);
+  }
+  openModal(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModal(modal: string, option: boolean) {
+    if (option) {
+      this.closeRequest();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
+    }
   }
 }

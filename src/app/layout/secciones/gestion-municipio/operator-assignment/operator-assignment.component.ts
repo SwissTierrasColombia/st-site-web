@@ -269,4 +269,15 @@ export class OperatorAssignmentComponent implements OnInit {
       }
     );
   }
+  openModalUpdate(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModalUpdate(modal: string, option: boolean) {
+    if (option) {
+      this.update();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
+    }
+  }
 }

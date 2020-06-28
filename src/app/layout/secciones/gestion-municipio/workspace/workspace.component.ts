@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { ToastrService } from 'ngx-toastr';
+import { ModalService } from 'src/app/services/modal/modal.service';
 
 @Component({
   selector: 'app-workspace',
@@ -30,7 +31,8 @@ export class WorkspaceComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService,
     private router: Router,
     private roles: RoleModel,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modalService: ModalService
   ) {
     this.activeManagers = [];
     this.departments = [];
@@ -155,5 +157,15 @@ export class WorkspaceComponent implements OnInit {
   viewWorkSpace(idItem: number) {
     this.router.navigate(['gestion/workspace/' + idItem + '/ver/operador']);
   }
-
+  openModal(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModal(modal: string, option: boolean) {
+    if (option) {
+      this.createWorkSpace();
+      this.modalService.close(modal);
+    } else {
+      this.modalService.close(modal);
+    }
+  }
 }

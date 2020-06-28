@@ -14,6 +14,7 @@ export class JwtHelper {
     let decodedToken = null;
     try {
       decodedToken = helper.decodeToken(token);
+      
       return decodedToken;
     } catch (error) {
       decodedToken = null;

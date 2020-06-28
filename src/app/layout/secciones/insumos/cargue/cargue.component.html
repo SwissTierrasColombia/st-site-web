@@ -2,13 +2,13 @@
   <app-page-header [heading]="'Cargue de Insumos'" [icon]="'fa-star'">
   </app-page-header>
   <div class="card text-center">
-    <div class="card-header row">
-      <div class="col-1">
-        <span tooltip="Volver" placement="bottom" show-delay="500">
+    <div class="card-header">
+      <div class="col-1 btn-backspace">
+        <span ngbTooltip="Volver" placement="bottom" show-delay="500">
           <i class="material-icons cursor" (click)="volver()">backspace</i>
         </span>
       </div>
-      <div class="col-10">
+      <div class="col-12">
         <h3>Cargue de Insumos</h3>
       </div>
     </div>
@@ -57,7 +57,7 @@
                   <div>* Tipo</div>
                 </div>
                 <div class="form-control" *ngIf="supp.canUpload">
-                  <select (ngModelChange)="modelChanged(supp, idOut, idInt )" [(ngModel)]="supp.typeSupplyId"
+                  <select (change)="modelChanged(supp, idOut, idInt)" [(ngModel)]="supp.typeSupplyId"
                     name="tipos{{idOut}}{{idInt}}" id="tipo{{idOut}}{{idInt}}" [disabled]="!supp.canUpload">
                     <option value='0' selected>Seleccione el tipo</option>
                     <option [ngValue]="tipo.file" *ngFor="let tipo of supp.type">{{tipo.name}}</option>
@@ -73,6 +73,8 @@
                         <input #myInput [accept]="supp.format" id="file{{idOut}}{{idInt}}" name="file{{idOut}}{{idInt}}"
                           class="form-control" type="file" (change)="docSoport($event.target.files,idOut, idInt )"
                           multiple>
+                        <app-preview *ngIf="showPreview" style="margin-top: 3px; margin-left: 5px;"
+                          [files]="previewData"></app-preview>
                       </div>
                       <div *ngIf="supp.modelVersion" class="alert alert-info text-center" role="alert">
                         <strong>Modelo {{supp.modelVersion}}</strong>
@@ -180,12 +182,36 @@
           Se puede cargar más de una versión de un insumo, <strong>pero recuerde que esta solicitud se vinculará al
             último archivo cargado.</strong>
         </div>
+
       </div>
     </div>
     <div class="card-footer text-muted">
-      <button type="button" class="btn btn-dark" [disabled]="closeRequestButton" (click)="closeRequest()">
+      <button type="button" class="btn btn-dark" [disabled]="closeRequestButton" (click)="openModal('modalRegistrar')">
         Cerrar Solicitud
       </button>
     </div>
   </div>
+  <jw-modal id="modalRegistrar" class="mt-5">
+    <div class="card">
+      <div class="card-header">
+        <i class="cui-arrow-bottom"></i>
+        <h2 class="text-center font-weight-bold">
+          ¿Está seguro de cerrar la solicitud?
+        </h2>
+        <h5 class="alert alert-warning text-center">Advertencia: Va a cerrar la solicitud.</h5>
+      </div>
+      <div class="card-body row">
+        <div class="text-center col-sm">
+          <button type="button" class="btn btn-primary btn-block" (click)="closeModal('modalRegistrar',true);">
+            <h4>Sí</h4>
+          </button>
+        </div>
+        <div class="text-center col-sm">
+          <button type="button" class="btn btn-dark btn-block" (click)="closeModal('modalRegistrar',false);">
+            <h4>No</h4>
+          </button>
+        </div>
+      </div>
+    </div>
+  </jw-modal>
 </div>

@@ -16,6 +16,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MomentModule } from 'ngx-moment';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
+import { NgSelect2Module } from 'ng-select2';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -29,10 +31,11 @@ import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
     FontAwesomeModule,
     MomentModule,
     NgbModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgSelect2Module
   ],
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   providers: [AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },

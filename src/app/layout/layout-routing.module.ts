@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { AuthGuard } from '../shared/guard/auth.guard';
-import { RoleAdminGuard } from '../guards/role-admin-guard.service';
 import { RoleAdminManagerGuard } from '../guards/role-admin-manager-guard.service';
 import { RoleOperatorGuard } from '../guards/role-operator-guard.service';
+import { AdministrationGuard } from '../guards/administration-guard.service';
 
 const routes: Routes = [
   {
@@ -29,7 +29,7 @@ const routes: Routes = [
       {
         path: 'administrador', loadChildren: () =>
           import('./secciones/administrador/administrador.module').then(m => m.AdministradorModule),
-        canActivate: [RoleAdminGuard]
+        canActivate: [AdministrationGuard]
       },
       {
         path: 'cuenta', loadChildren: () =>

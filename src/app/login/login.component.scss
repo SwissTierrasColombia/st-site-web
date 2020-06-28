@@ -11,7 +11,7 @@ $topnav-background-color: #222;
   background: $topnav-background-color;
   text-align: center;
   color: #fff;
-  padding: 3em;
+  padding: 2em;
   .col-lg-4 {
     padding: 0;
   }
@@ -26,12 +26,12 @@ $topnav-background-color: #222;
     background: 0 0;
     border: none;
     box-shadow: none;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     color: #fff;
     border-radius: 0;
   }
   .input-underline:focus {
-    border-bottom: 2px solid #fff;
+    border-bottom: 1px solid #fff;
     box-shadow: none;
   }
   .rounded-btn {
@@ -49,14 +49,14 @@ $topnav-background-color: #222;
   .rounded-btn:active,
   .rounded-btn:visited {
     color: rgba(255, 255, 255, 1);
-    border: 2px solid rgba(255, 255, 255, 1);
+    border: 1px solid rgba(255, 255, 255, 1);
     outline: none;
   }
 
   h1 {
     font-weight: 300;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     font-size: 36px;
     small {
       color: rgba(255, 255, 255, 0.7);
@@ -97,4 +97,12 @@ $topnav-background-color: #222;
 }
 .imagenST {
   width: 100%;
+}
+
+.footer-agencia {
+  margin-top: 0em !important;
+  // background-color: #242939;
+  .logo {
+    width: 30%;
+  }
 }
