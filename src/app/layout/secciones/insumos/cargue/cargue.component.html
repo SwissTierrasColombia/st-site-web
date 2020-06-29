@@ -57,8 +57,9 @@
                   <div>* Tipo</div>
                 </div>
                 <div class="form-control" *ngIf="supp.canUpload">
-                  <select (change)="modelChanged(supp, idOut, idInt)" [(ngModel)]="supp.typeSupplyId"
-                    name="tipos{{idOut}}{{idInt}}" id="tipo{{idOut}}{{idInt}}" [disabled]="!supp.canUpload">
+                  <select style="width: 100%;" (change)="modelChanged(supp, idOut, idInt)"
+                    [(ngModel)]="supp.typeSupplyId" name="tipos{{idOut}}{{idInt}}" id="tipo{{idOut}}{{idInt}}"
+                    [disabled]="!supp.canUpload">
                     <option value='0' selected>Seleccione el tipo</option>
                     <option [ngValue]="tipo.file" *ngFor="let tipo of supp.type">{{tipo.name}}</option>
                   </select>
@@ -73,8 +74,6 @@
                         <input #myInput [accept]="supp.format" id="file{{idOut}}{{idInt}}" name="file{{idOut}}{{idInt}}"
                           class="form-control" type="file" (change)="docSoport($event.target.files,idOut, idInt )"
                           multiple>
-                        <app-preview *ngIf="showPreview" style="margin-top: 3px; margin-left: 5px;"
-                          [files]="previewData"></app-preview>
                       </div>
                       <div *ngIf="supp.modelVersion" class="alert alert-info text-center" role="alert">
                         <strong>Modelo {{supp.modelVersion}}</strong>
@@ -131,6 +130,8 @@
                   (click)="send(item.id, supp, idOut, idInt)" [disabled]="supp.button.status">
                   {{supp.button.status ? 'Insumo Cargado':'Reenviar'}}
                 </button>
+                <app-preview *ngIf="supp.preview" style="margin-top: 3px; margin-left: 5px;" [url]="supp.url">
+                </app-preview>
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 2">
                 <button type="button" class="btn" id="boton{{idOut}}{{idInt}}"

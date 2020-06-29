@@ -77,4 +77,30 @@ export class PreviewService {
     return this.httpClient.post(this.url + '/ili/xtf2json/v1/gpkg2json', form);
   }
 
+  /**
+   * getLayersKml
+   */
+  getLayersKml(files: FileList) {
+    const form = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      let ext = this.getFileExt(files.item(i).name);
+      switch (ext) {
+        case 'kml':
+          form.append('file[]', files.item(i), files.item(i).name + '');
+          break;
+      }
+    }
+    return this.httpClient.post(this.url + '/ili/xtf2json/v1/kml2json', form);
+  }
+
+
+  /**
+   * getLayersShp
+   */
+  getLayersSupply(file: string) {
+    const form = new FormData();
+    form.append('url', file);
+    return this.httpClient.post(this.url + '/ili/xtf2json/v1/supply2json', form);
+  }
+
 }
