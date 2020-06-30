@@ -25,7 +25,7 @@ export class CargueComponent implements OnInit {
   @ViewChild('myInput')
   myInputVariable: ElementRef;
   previewData: FileList;
-  showPreview = false;
+  fileUrl = '';
   constructor(
     private toastr: ToastrService,
     private router: Router,
@@ -98,6 +98,7 @@ export class CargueComponent implements OnInit {
         for (let index2 = 0; index2 < this.dataRequestPending[index].suppliesRequested.length; index2++) {
           this.dataRequestPending[index].suppliesRequested[index2].type = this.clone(this.type);
           this.dataRequestPending[index].suppliesRequested[index2].button = this.clone(this.button);
+          this.dataRequestPending[index].suppliesRequested[index2].preview = false;
           // tslint:disable-next-line:prefer-for-of
           for (let index3 = 0;
             index3 < this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions.length;
@@ -121,6 +122,11 @@ export class CargueComponent implements OnInit {
                 file: 'none'
               }];
             }
+
+              if (this.dataRequestPending[index].suppliesRequested[index2].state.id === 1) {
+                this.dataRequestPending[index].suppliesRequested[index2].preview = true;
+              }
+            
           }
         }
       }
@@ -137,8 +143,6 @@ export class CargueComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   docSoport(files: FileList, idOut: number, idInt: number) {
-    this.showPreview = false;
-    this.showPreview = true;
     this.previewData = files;
     if (files[0].size / 1024 / 1024 <= 190) {
       var re = /zip*/;
@@ -193,7 +197,6 @@ export class CargueComponent implements OnInit {
     }
   }
   validsendFile(idOut: number, idInt: number) {
-    this.showPreview = true;
     if (this.dataRequestPending[idOut].suppliesRequested[idInt].observations) {
       if (this.dataRequestPending[idOut].suppliesRequested[idInt].file) {
         this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
@@ -231,6 +234,7 @@ export class CargueComponent implements OnInit {
     }
   }
   send(idSolicitud: string, item: any, idOut: number, idInt: number) {
+    item.preview = false;
     const form = new FormData();
     if (item.hasOwnProperty('typeSupply')) {
       form.append('typeSupplyId', item.typeSupply.id);
@@ -274,6 +278,12 @@ export class CargueComponent implements OnInit {
           }
         }
         this.dataRequestPending[idOut].suppliesRequested[idInt] = this.clone(response);
+        for (let sr of this.dataRequestPending[idOut].suppliesRequested) {
+          if (this.dataRequestPending[0].suppliesRequested[idInt].state.id === 1) {
+            this.dataRequestPending[0].suppliesRequested[idInt].preview = true;
+            this.fileUrl = this.dataRequestPending[0].suppliesRequested[idInt].url;
+          }
+        }
         this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
           if (item.state.id === 1 || item.state.id === 5) {
             return item.state;
@@ -298,7 +308,6 @@ export class CargueComponent implements OnInit {
     );
   }
   modelChanged(item: any, idOut: number, idInt: number) {
-    this.showPreview = false;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].observations;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].file;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].url;
@@ -332,5 +341,8 @@ export class CargueComponent implements OnInit {
     } else {
       this.modalService.close(modal);
     }
+  }
+  preview(url: string) {
+    console.log(url);
   }
 }
