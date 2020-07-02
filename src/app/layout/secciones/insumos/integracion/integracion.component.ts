@@ -4,7 +4,7 @@ import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { ModalService } from 'src/app/services/modal/modal.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ViewportScroller } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
@@ -48,7 +48,8 @@ export class IntegracionComponent implements OnInit {
     private serviceProviders: ProvidersService,
     private toastr: ToastrService,
     private modalService: ModalService,
-    private router: Router
+    private router: Router,
+    private scroll: ViewportScroller
   ) {
     this.departments = [];
     this.munucipalities = [];
@@ -142,6 +143,10 @@ export class IntegracionComponent implements OnInit {
         this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
           resp => {
             this.integrationByWorkspace = resp;
+            let self = this;
+            setTimeout(function () {
+              self.scroll.scrollToAnchor("actionForm");
+            }, 1000);
           }
         );
       }
@@ -290,5 +295,11 @@ export class IntegracionComponent implements OnInit {
     } else {
       this.modalService.close(modal);
     }
+  }
+  integrationRunning() {
+    this.router.navigate(['/insumos/integraciones-corriendo']);
+  }
+  integrationPossibles() {
+    this.router.navigate(['/insumos/integraciones-posibles']);
   }
 }

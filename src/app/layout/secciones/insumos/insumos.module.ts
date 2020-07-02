@@ -23,6 +23,8 @@ import { CrearTipoInsumoComponent } from './crear-tipo-insumo/crear-tipo-insumo.
 import { BuscarSolicitudComponent } from './buscar-solicitud/buscar-solicitud.component';
 import { NgSelect2Module } from 'ng-select2';
 import { PreviewComponent } from '../../components/preview/preview.component';
+import { IntegrationsRunningComponent } from './integrations-running/integrations-running.component';
+import { IntegrationsPossiblesComponent } from './integrations-possibles/integrations-possibles.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { PreviewComponent } from '../../components/preview/preview.component';
     AtendidaComponent,
     CrearTipoInsumoComponent,
     BuscarSolicitudComponent,
-    PreviewComponent
+    PreviewComponent,
+    IntegrationsRunningComponent,
+    IntegrationsPossiblesComponent
   ],
   imports: [
     CommonModule,

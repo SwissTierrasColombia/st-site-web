@@ -348,4 +348,16 @@ export class WorkspacesService {
   public GetDeliveriesClosed() {
     return this.httpClient.get(this.url + '/workspaces/v1/workspaces/operators/deliveries/closed');
   }
+  /**
+   * GetIntegrationRunning
+   */
+  public GetIntegrationRunning() {
+    return this.httpClient.get(this.url + '/workspaces/v1/integrations/running');
+  }
+  /**
+   * GetPossiblesIntegration
+   */
+  public GetPossiblesIntegration() {
+    return this.httpClient.get(this.url + '/workspaces/v1/integrations/pending')
+  }
 }

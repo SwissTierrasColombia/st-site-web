@@ -38,6 +38,18 @@
             </div>
           </div>
         </div>
+        <div class="row text-center m-4">
+          <div class="col-12 col-md-6">
+            <button type="button" class="btn btn-dark btn-block boton-integation" (click)="integrationRunning()">
+              Integraciones corriendo
+            </button>
+          </div>
+          <div class="col-12 col-md-6">
+            <button type="button" class="btn btn-dark btn-block boton-integation" (click)="integrationPossibles()">
+              Integraciones posibles
+            </button>
+          </div>
+        </div>
         <div class="row mb-2" *ngIf="dataWorkSpaceMunicipality.manager.name !== ''">
           <div class='col-12 col-sm-6 mb-2'>
             <div class="input-group">
@@ -207,7 +219,8 @@
                 </span>
                 <span ngbTooltip="Iniciar integración asistida" placement="top" show-delay="500"
                   *ngIf="item.integrationState.id === 2">
-                  <i class="material-icons cursor ml-4" (click)="openModalIntegrationAssited('modalIntegration',item.id)">
+                  <i class="material-icons cursor ml-4"
+                    (click)="openModalIntegrationAssited('modalIntegration',item.id)">
                     important_devices
                   </i>
                 </span>
@@ -402,3 +415,4 @@
     </div>
   </div>
 </jw-modal>
+<div id="actionForm"></div>

@@ -14,6 +14,8 @@ import { AtendidaComponent } from './atendida/atendida.component';
 import { CrearTipoInsumoComponent } from './crear-tipo-insumo/crear-tipo-insumo.component';
 import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-guard.service';
 import { BuscarSolicitudComponent } from './buscar-solicitud/buscar-solicitud.component';
+import { IntegrationsRunningComponent } from './integrations-running/integrations-running.component';
+import { IntegrationsPossiblesComponent } from './integrations-possibles/integrations-possibles.component';
 
 
 const routes: Routes = [
@@ -66,8 +68,17 @@ const routes: Routes = [
     path: 'caracterizacion/insumo',
     component: CrearTipoInsumoComponent,
     canActivate: [RoleProviderDirectorGuard]
+  },
+  {
+    path: 'integraciones-corriendo',
+    component: IntegrationsRunningComponent,
+    canActivate: [RoleManagerGuard]
+  },
+  {
+    path: 'integraciones-posibles',
+    component: IntegrationsPossiblesComponent,
+    canActivate: [RoleManagerGuard]
   }
-
 ];
 
 @NgModule({
