@@ -343,6 +343,5 @@ export class CargueComponent implements OnInit {
     }
   }
   preview(url: string) {
-    console.log(url);
   }
 }
