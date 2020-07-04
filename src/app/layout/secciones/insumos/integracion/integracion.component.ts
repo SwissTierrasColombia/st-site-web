@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { ViewportScroller } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-integracion',
@@ -43,6 +43,7 @@ export class IntegracionComponent implements OnInit {
   idGenerateXTF: number;
   idStartAsistente: number;
   idCancel: number;
+  tab: number;
   SelectIntegrationPossible: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
@@ -118,6 +119,7 @@ export class IntegracionComponent implements OnInit {
     this.idStartAsistente = 0;
     this.idCancel = 0;
     this.SelectIntegrationPossible = {};
+    this.tab = 1;
   }
 
   ngOnInit() {
@@ -125,6 +127,11 @@ export class IntegracionComponent implements OnInit {
       this.activedRoute.params.subscribe(
         response => {
           this.SelectIntegrationPossible = response;
+          if (this.SelectIntegrationPossible.tab) {
+            console.log("hola", this.SelectIntegrationPossible);
+
+            this.tab = Number(this.SelectIntegrationPossible.tab);
+          }
           resolve(response);
         }
       );
@@ -155,6 +162,7 @@ export class IntegracionComponent implements OnInit {
           });
           this.selectMunicipality = idMunicipio.id;
           this.changeMunucipality();
+          this.tab = 3;
         }
       }
     );
@@ -325,10 +333,12 @@ export class IntegracionComponent implements OnInit {
       this.modalService.close(modal);
     }
   }
-  integrationRunning() {
-    this.router.navigate(['/insumos/integraciones-corriendo']);
+  tab1() {
+    this.tab = 1;
+    this.router.navigate(['/insumos/integracion', { tab: 1 }]);
   }
-  integrationPossibles() {
-    this.router.navigate(['/insumos/integraciones-posibles']);
+  tab2() {
+    this.tab = 2;
+    this.router.navigate(['/insumos/integracion', { tab: 2 }]);
   }
 }

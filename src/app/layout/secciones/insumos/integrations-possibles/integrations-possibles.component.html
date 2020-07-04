@@ -1,15 +1,8 @@
 <div>
-    <app-page-header [heading]="'Posibles Integraciones'" [icon]="'fa-star'">
-    </app-page-header>
     <div class="card text-center">
         <div class="card-header">
-            <div class="col-1">
-                <span ngbTooltip="Volver" placement="bottom" show-delay="500">
-                    <i class="material-icons cursor" (click)="volver()">backspace</i>
-                </span>
-            </div>
             <div class="col-12">
-                <h3>Posibles Integraciones</h3>
+                <h3>Candidatos a integración</h3>
             </div>
         </div>
         <div class="card-body">
@@ -40,7 +33,7 @@
                             </td>
                             <th>
                                 <span class="material-icons" (click)="openModalXTF('modalRegistrarxtf', item)">
-                                    send
+                                    input
                                 </span>
                             </th>
                         </tr>

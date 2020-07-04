@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { ModalService } from 'src/app/services/modal/modal.service';
 
 @Component({
@@ -18,6 +18,18 @@ export class IntegrationsPossiblesComponent implements OnInit {
   ) {
     this.dataIntegration = [];
     this.selectIntegration = {}
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    }
+
+    this.router.events.subscribe((evt) => {
+      if (evt instanceof NavigationEnd) {
+        // trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+        // if you need to scroll back to top, here is the right place
+        window.scrollTo(0, 0);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -27,28 +39,27 @@ export class IntegrationsPossiblesComponent implements OnInit {
       }
     );
   }
-  volver() {
-    this.router.navigate(['/insumos/integracion']);
-  }
   openModalXTF(modal: string, item: any) {
     this.selectIntegration = item;
     //this.modalService.open(modal);
     this.router.navigate(['/insumos/integracion',
       {
         departamento: this.selectIntegration.municipality.department.code,
-        municipio: this.selectIntegration.municipality.code
+        municipio: this.selectIntegration.municipality.code,
+        tab: 3
       }
     ]);
-
   }
   closeModalXTF(modal: string, option: boolean) {
     if (option) {
       this.router.navigate(['/insumos/integracion',
         {
           departamento: this.selectIntegration.municipality.department.code,
-          municipio: this.selectIntegration.municipality.code
+          municipio: this.selectIntegration.municipality.code,
+          tab: 3
         }
       ]);
+      location.reload();
     }
     this.selectIntegration = {};
     this.modalService.close(modal);
