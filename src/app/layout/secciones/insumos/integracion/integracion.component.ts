@@ -341,4 +341,8 @@ export class IntegracionComponent implements OnInit {
     this.tab = 2;
     this.router.navigate(['/insumos/integracion', { tab: 2 }]);
   }
+  tab3() {
+    this.tab = 3;
+    this.router.navigate(['/insumos/integracion', { tab: 3 }]);
+  }
 }
