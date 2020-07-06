@@ -36,6 +36,16 @@ export class IntegrationsPossiblesComponent implements OnInit {
     this.serviceWorkspace.GetPossiblesIntegration().subscribe(
       data => {
         this.dataIntegration = data;
+        this.dataIntegration.sort(function (a: any, b: any) {
+          if (a.municipalityDto.department.name > b.municipalityDto.department.name) {
+            return 1;
+          }
+          if (a.municipalityDto.department.name < b.municipalityDto.department.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
       }
     );
   }
