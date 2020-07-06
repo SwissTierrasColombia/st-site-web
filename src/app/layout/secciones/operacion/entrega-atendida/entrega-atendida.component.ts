@@ -55,8 +55,6 @@ export class EntregaAtendidaComponent implements OnInit {
         }
       });
       this.supplies = this.dataRequestPending[0].supplies;
-      console.log(this.supplies);
-      
       let isDownloadGeneralReport = this.supplies.filter(item => {
         return item.downloaded === true
       });

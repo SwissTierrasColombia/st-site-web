@@ -101,7 +101,7 @@
                                         style="float: left;"
                                             (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
                                             cloud_download </i>
-                                        <app-preview *ngIf="item.attachments" [icon]="true" [url]="item.attachments[0].urlDocumentaryRepository"></app-preview>
+                                        <app-preview *ngIf="item.attachments" [icon]="true" [url]="item.attachmentsitem.attachments[0].urlDocumentaryRepository"></app-preview>
                                     </td>
                                     <td scope="row" *ngIf="usermanager">
                                         <i class="material-icons cursor" (click)="openModal(item.id, 'custom-modal-2')">

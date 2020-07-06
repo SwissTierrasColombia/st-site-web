@@ -4,8 +4,8 @@ import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { ModalService } from 'src/app/services/modal/modal.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-integracion',
@@ -43,12 +43,16 @@ export class IntegracionComponent implements OnInit {
   idGenerateXTF: number;
   idStartAsistente: number;
   idCancel: number;
+  tab: number;
+  SelectIntegrationPossible: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
     private toastr: ToastrService,
     private modalService: ModalService,
-    private router: Router
+    private router: Router,
+    private scroll: ViewportScroller,
+    private activedRoute: ActivatedRoute
   ) {
     this.departments = [];
     this.munucipalities = [];
@@ -114,18 +118,52 @@ export class IntegracionComponent implements OnInit {
     this.idGenerateXTF = 0;
     this.idStartAsistente = 0;
     this.idCancel = 0;
+    this.SelectIntegrationPossible = {};
+    this.tab = 1;
   }
 
   ngOnInit() {
-    this.serviceWorkspaces.getDepartments()
-      .subscribe(response => {
+    const promise1 = new Promise((resolve) => {
+      this.activedRoute.params.subscribe(
+        response => {
+          this.SelectIntegrationPossible = response;
+          if (this.SelectIntegrationPossible.tab) {
+            console.log("hola", this.SelectIntegrationPossible);
+
+            this.tab = Number(this.SelectIntegrationPossible.tab);
+          }
+          resolve(response);
+        }
+      );
+    });
+    const promise2 = new Promise((resolve) => {
+      this.serviceWorkspaces.getDepartments().subscribe(response => {
         this.departments = response;
+        resolve(response);
       });
+    });
+    Promise.all([promise1, promise2]).then((values: any) => {
+      if (this.SelectIntegrationPossible.municipio) {
+        let idDepartamento = this.departments.find(item => {
+          return item.code === this.SelectIntegrationPossible.departamento;
+        });
+        this.selectDepartment = idDepartamento.id;
+        this.changeDepartament();
+      }
+    });
   }
   changeDepartament() {
     this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment).subscribe(
       data => {
         this.munucipalities = data;
+        if (this.SelectIntegrationPossible.municipio) {
+          let idMunicipio = this.munucipalities.find(item => {
+            return item.code === this.SelectIntegrationPossible.municipio;
+          });
+          this.selectMunicipality = idMunicipio.id;
+          this.changeMunucipality();
+          this.tab = 3;
+        }
       }
     );
   }
@@ -142,6 +180,10 @@ export class IntegracionComponent implements OnInit {
         this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
           resp => {
             this.integrationByWorkspace = resp;
+            let self = this;
+            setTimeout(function () {
+              self.scroll.scrollToAnchor("actionForm");
+            }, 1000);
           }
         );
       }
@@ -290,5 +332,17 @@ export class IntegracionComponent implements OnInit {
     } else {
       this.modalService.close(modal);
     }
+  }
+  tab1() {
+    this.tab = 1;
+    this.router.navigate(['/insumos/integracion', { tab: 1 }]);
+  }
+  tab2() {
+    this.tab = 2;
+    this.router.navigate(['/insumos/integracion', { tab: 2 }]);
+  }
+  tab3() {
+    this.tab = 3;
+    this.router.navigate(['/insumos/integracion', { tab: 3 }]);
   }
 }
