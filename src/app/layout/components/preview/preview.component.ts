@@ -180,18 +180,15 @@ export class PreviewComponent implements OnInit, OnChanges {
   }
 
   getPreviewUrl(file: string) {
-    console.log(file);
-
     this.previewService.getLayersSupply(file).subscribe((data: any) => {
       if (data) {
         this.layers.push(data);
         this.valid = true;
       } else {
-        console.log("Error");
-
+        this.valid = false;
       }
     }, (e) => {
-      console.log(e);
+      this.valid = false;
     });
   }
 
