@@ -37,10 +37,10 @@ export class IntegrationsPossiblesComponent implements OnInit {
       data => {
         this.dataIntegration = data;
         this.dataIntegration.sort(function (a: any, b: any) {
-          if (a.municipalityDto.department.name > b.municipalityDto.department.name) {
+          if (a.municipality.code > b.municipality.code) {
             return 1;
           }
-          if (a.municipalityDto.department.name < b.municipalityDto.department.name) {
+          if (a.municipality.code < b.municipality.code) {
             return -1;
           }
           //a must be equal to b

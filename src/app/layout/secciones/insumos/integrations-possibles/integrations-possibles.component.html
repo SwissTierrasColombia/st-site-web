@@ -10,26 +10,22 @@
                 <table class="table table-striped">
                     <thead class="thead-inverse">
                         <tr>
+                            <th>Código</th>
                             <th>Departamento</th>
-                            <th>Codigo</th>
                             <th>Municipio</th>
-                            <th>Codigo</th>
                             <th>Ver</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of dataIntegration; let i = index">
                             <td scope="row">
+                                {{item.municipality.code}}
+                            </td>
+                            <td scope="row">
                                 {{item.municipality.department.name}}
                             </td>
                             <td scope="row">
-                                {{item.municipality.department.code}}
-                            </td>
-                            <td scope="row">
                                 {{item.municipality.name}}
-                            </td>
-                            <td scope="row">
-                                {{item.municipality.code}}
                             </td>
                             <th>
                                 <span class="material-icons" (click)="openModalXTF('modalRegistrarxtf', item)">
