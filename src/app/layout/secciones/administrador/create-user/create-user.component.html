@@ -81,10 +81,18 @@
                       placeholder="Confirmar contraseña" autocomplete="current-password"
                       [(ngModel)]="registerData.confirmationPassword" required>
                   </div>
+                  <!-- Select profiles -->
                   <small *ngIf="roleConnect.id === 1" id="perfil" class="form-text text-muted mb-3">
                     Seleccione el rol que tendrá el usuario.
                   </small>
                   <fieldset class="form-group text-center" *ngIf="roleConnect.id === 1">
+                    <label class="radio-inline col-12 col-sm-3" *ngFor="let item of registerData.state; let i = index;">
+                      <input (change)="validfield()" [(ngModel)]="selectROL" [value]="item.id" [id]="item.id"
+                        name="roles" type="radio">
+                      {{item.name}}
+                    </label>
+                  </fieldset>
+                  <fieldset class="form-group text-center" *ngIf="dataUserLogger.is_provider_director">
                     <label class="radio-inline col-12 col-sm-3" *ngFor="let item of registerData.state; let i = index;">
                       <input (change)="validfield()" [(ngModel)]="selectROL" [value]="item.id" [id]="item.id"
                         name="roles" type="radio">
@@ -152,7 +160,8 @@
                         <option [ngValue]="item.id" *ngFor="let item of profilesProviders">{{item.name}}</option>
                       </select>
                     </div>
-                    <small *ngIf="dataUserLogger.is_provider_director" id="entities" class="form-text text-muted">Seleccione el área o áreas de trabajo al que se
+                    <small *ngIf="dataUserLogger.is_provider_director" id="entities"
+                      class="form-text text-muted">Seleccione el área o áreas de trabajo al que se
                       vinculará el usuario.</small>
                   </div>
                 </form>

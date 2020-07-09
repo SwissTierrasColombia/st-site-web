@@ -300,4 +300,10 @@ export class UpdateUserComponent implements OnInit {
       this.modalService.close(modal);
     }
   }
+  isDelegado() {
+    let data = this.profile.rolesProvider.find(element => {
+      return element.id === 2;
+    });
+    return data ? true : false;
+  }
 }

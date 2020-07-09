@@ -75,8 +75,6 @@ export class ListUserComponent implements OnInit {
             return 0;
           });
         }
-        console.log(this.dataListUser);
-
       });
   }
 

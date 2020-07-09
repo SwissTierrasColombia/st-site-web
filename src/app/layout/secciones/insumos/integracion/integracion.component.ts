@@ -128,8 +128,6 @@ export class IntegracionComponent implements OnInit {
         response => {
           this.SelectIntegrationPossible = response;
           if (this.SelectIntegrationPossible.tab) {
-            console.log("hola", this.SelectIntegrationPossible);
-
             this.tab = Number(this.SelectIntegrationPossible.tab);
           }
           resolve(response);
