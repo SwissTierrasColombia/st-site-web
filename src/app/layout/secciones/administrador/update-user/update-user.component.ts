@@ -27,6 +27,7 @@ export class UpdateUserComponent implements OnInit {
   provider: boolean;
   profilesProvider: any;
   dataJWT: any;
+  updateInfo: boolean;
   constructor(
     private router: Router,
     private toast: ToastrService,
@@ -52,6 +53,7 @@ export class UpdateUserComponent implements OnInit {
     this.manager = false;
     this.provider = false;
     this.dataJWT = {};
+    this.updateInfo = false;
   }
 
   ngOnInit(): void {
@@ -130,6 +132,7 @@ export class UpdateUserComponent implements OnInit {
       "lastName": this.lastName
     }
     this.serviceWorkSpace.UpdateUser(this.idUser, data).subscribe(element => {
+      this.updateInfo = false;
       this.serviceWorkSpace.GetUsers().subscribe(
         (arg: any) => {
           this.dataListUser = arg
@@ -305,5 +308,11 @@ export class UpdateUserComponent implements OnInit {
       return element.id === 2;
     });
     return data ? true : false;
+  }
+  changeInfoUser() {
+    this.updateInfo = false;
+    if (this.firstName != '' && this.lastName != '') {
+      this.updateInfo = true;
+    }
   }
 }

@@ -100,8 +100,8 @@
                                     Nombre
                                 </span>
                             </div>
-                            <input type="text" name="firstName" class="form-control" placeholder="Nombre"
-                                [(ngModel)]="firstName">
+                            <input type="text" (change)="changeInfoUser()" name="firstName" class="form-control"
+                                placeholder="Nombre" [(ngModel)]="firstName">
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
@@ -111,8 +111,8 @@
                                     Apellido
                                 </span>
                             </div>
-                            <input type="text" name="lastName" class="form-control" placeholder="Apellido"
-                                [(ngModel)]="lastName">
+                            <input type="text" (change)="changeInfoUser()" name="lastName" class="form-control"
+                                placeholder="Apellido" [(ngModel)]="lastName">
                         </div>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
         </div>
         <div class="card-footer text-muted text-center">
             <div class="col-12">
-                <button type="button" class="btn btn-dark" (click)="submitChange()">
+                <button type="button" class="btn btn-dark" (click)="submitChange()" [disabled]="!updateInfo">
                     Actualizar
                 </button>
             </div>
