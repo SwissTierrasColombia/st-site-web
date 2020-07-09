@@ -3,86 +3,23 @@
     <img class="image-st" src="assets/logos/st1.png" alt="">
   </a>
   <button class="navbar-toggler" type="button" (click)="toggleSidebar()">
-    <!-- <span class="navbar-toggler-icon"></span> -->
     <i class="fa fa-bars text-muted" aria-hidden="true"></i>
   </button>
   <div class="collapse navbar-collapse">
-    <!-- <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Buscar">
-    </form> -->
     <ul class="navbar-nav ml-auto">
-      <!--<li class="nav-item dropdown" ngbDropdown>
-        <a class="nav-link" href="javascript:void(0)" ngbDropdownToggle>
-          <i class="fa fa-envelope"></i> <b class="caret"></b><span class="sr-only">(corriente)</span>
-        </a>
-         <ul class="dropdown-menu-right messages" ngbDropdownMenu>
-          <li class="media">
-            <img class="d-flex align-self-center mr-3"
-              src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg"
-              alt="Generic placeholder image">
-            <div class="media-body">
-              <h5 class="mt-0 mb-1"> {{user.email}}</h5>
-              <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer a las 4:32 p.m.</p>
-              <p class="last"> Algún mensaje, puede ir aquí...</p>
-            </div>
-          </li>
-          <li class="media">
-            <img class="d-flex align-self-center mr-3"
-              src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg"
-              alt="Generic placeholder image">
-            <div class="media-body">
-              <h5 class="mt-0 mb-1"> {{user.email}}</h5>
-              <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer a las 4:32 p.m</p>
-              <p class="last"> Algún mensaje, puede ir aquí...</p>
-            </div>
-          </li>
-          <li class="media">
-            <img class="d-flex align-self-center mr-3"
-              src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg"
-              alt="Generic placeholder image" />
-            <div class="media-body">
-              <h5 class="mt-0 mb-1"> {{user.email}}</h5>
-              <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer a las 4:32 p.m</p>
-              <p class="last"> Algún mensaje, puede ir aquí...</p>
-            </div>
-          </li>
-        </ul> 
-      </li>-->
-      <li class="nav-item dropdown" ngbDropdown *ngIf="roleproveedor || roleoperator">
-        <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
-          <i class="fa fa-bell"></i> <b class="caret"></b><span class="sr-only">(current)</span>
-        </a>
-        <div class="dropdown-menu-right" ngbDropdownMenu>
-          <a *ngIf="roleproveedor  && !user.is_provider_director" [routerLink]="['/insumos/solicitudes/pendientes']" href="javascript:void(0)"
-            class="dropdown-item">
-            Solicitudes Pendientes <span class="badge badge-info">{{taskProvider}}</span>
-          </a>
-          <a *ngIf="roleoperator" [routerLink]="['/operador/entregas']" href="javascript:void(0)" class="dropdown-item">
-            Entregas <span class="badge badge-info">{{taskOperator}}</span>
-          </a>
-          <!-- <a href="javascript:void(0)" class="dropdown-item">
-            Integraciones <span class="badge badge-info">0</span>
-          </a> -->
-          <!-- <li class="dropdown-divider"></li>
-      <a href="javascript:void(0)" class="dropdown-item">
-        Mostrar Todo
-      </a> -->
-        </div>
-      </li>
       <li class="nav-item dropdown" ngbDropdown>
         <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
-          <i class="fa fa-user"></i> {{user.first_name}} {{user.last_name}} <b class="caret"></b>
+          <i class="fa fa-user"></i>
+          {{user.first_name}} {{user.last_name}}
+          <span *ngFor="let item of user.roles">
+            {{item.name}}
+          </span>
+          <b class="caret"></b>
         </a>
         <div class="dropdown-menu-right" ngbDropdownMenu>
           <a class="dropdown-item" [routerLink]="['/cuenta/perfil']">
             <i class="fa fa-fw fa-user"></i> Perfil
           </a>
-          <!-- <a class="dropdown-item" href="javascript:void(0)">
-        <i class="fa fa-fw fa-envelope"></i> Bandeja de entrada
-      </a>
-      <a class="dropdown-item" href="javascript:void(0)">
-        <i class="fa fa-fw fa-gear"></i> Configuración
-      </a> -->
           <a class="dropdown-item cursor" (click)="onLoggedout()">
             <i class="fa fa-fw fa-power-off"></i> Cerrar sesión
           </a>
