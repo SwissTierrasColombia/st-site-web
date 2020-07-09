@@ -28,6 +28,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@ng-bootstrap/ng-bootstrap": "^5.2.1",
+    "@types/file-saver": "^2.0.1",
     "angular-animations": "0.0.10",
     "chart.js": "2.7.3",
     "core-js": "2.5.7",
