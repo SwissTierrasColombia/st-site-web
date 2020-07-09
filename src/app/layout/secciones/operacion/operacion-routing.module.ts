@@ -8,19 +8,19 @@ import { EntregaAtendidaComponent } from './entrega-atendida/entrega-atendida.co
 
 const routes: Routes = [
   {
-    path: 'entregas',
+    path: 'descargas',
     component: DeliveriesSuppliesComponent
   },
   {
-    path: 'entrega/:IdEntrega/descargar',
+    path: 'descarga/:IdEntrega/insumo',
     component: DownloadSuppliesComponent
   },
   {
-    path: 'entregas-atendidas',
+    path: 'descargas-realizadas',
     component: EntregasAtendidasComponent
   },
   {
-    path: 'entrega/:IdEntrega/atendida',
+    path: 'descarga/:IdEntrega/realizada',
     component: EntregaAtendidaComponent
   }
 ];

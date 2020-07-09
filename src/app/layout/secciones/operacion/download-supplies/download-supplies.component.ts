@@ -110,12 +110,12 @@ export class DownloadSuppliesComponent implements OnInit {
   closeDelivery(idDelivery) {
     this.serviceWorkspaces.CloseDelivery(idDelivery).subscribe(
       _ => {
-        this.router.navigate(['/operador/entregas/']);
+        this.router.navigate(['/operador/descargas/']);
       }
     );
   }
   volver() {
-    this.router.navigate(['/operador/entregas/']);
+    this.router.navigate(['/operador/descargas/']);
   }
   downloadReport(idSupplie: string, nameSupplie: string) {
     this.serviceWorkspaces.DownloadReportIndividual(this.IdEntrega, idSupplie).subscribe(
