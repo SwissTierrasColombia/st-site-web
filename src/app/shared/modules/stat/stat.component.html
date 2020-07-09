@@ -11,8 +11,8 @@
         </div>
     </div>
     <div class="card-footer">
-        <span class="float-left">Ver detalles {{data}}</span>
-        <a href="javascript:void()" (click)="sendTopage()" class="float-right card-inverse">
+        <span class="float-left cursor" (click)="sendTopage()">Ver detalles {{data}}</span>
+        <a routerLink="url" (click)="sendTopage()" class="float-right card-inverse cursor">
             <span><i class="fa fa-arrow-circle-right"></i></span>
         </a>
     </div>

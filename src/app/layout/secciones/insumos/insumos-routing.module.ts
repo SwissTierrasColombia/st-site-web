@@ -7,13 +7,14 @@ import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 import { RoleManagerGuard } from 'src/app/guards/role-manager-guard.service';
 import { RoleProviderGuard } from 'src/app/guards/role-provider-guard.service';
 import { SearchComponent } from './buscar/search.component';
-import { RoleAdminManagerGuard } from 'src/app/guards/role-admin-manager-guard.service';
 import { EntregarComponent } from './entregar/entregar.component';
 import { SolicitudesAtendidasComponent } from './solicitudes-atendidas/solicitudes-atendidas.component';
 import { AtendidaComponent } from './atendida/atendida.component';
 import { CrearTipoInsumoComponent } from './crear-tipo-insumo/crear-tipo-insumo.component';
 import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-guard.service';
 import { BuscarSolicitudComponent } from './buscar-solicitud/buscar-solicitud.component';
+import { IntegrationsRunningComponent } from './integrations-running/integrations-running.component';
+import { IntegrationsPossiblesComponent } from './integrations-possibles/integrations-possibles.component';
 
 
 const routes: Routes = [
@@ -40,7 +41,7 @@ const routes: Routes = [
   {
     path: 'buscar',
     component: SearchComponent,
-    canActivate: [RoleAdminManagerGuard]
+    canActivate: [RoleManagerGuard]
   },
   {
     path: 'buscar-solicitud',
@@ -50,7 +51,7 @@ const routes: Routes = [
   {
     path: 'entrega',
     component: EntregarComponent,
-    canActivate: [RoleAdminManagerGuard]
+    canActivate: [RoleManagerGuard]
   },
   {
     path: 'solicitudes/atendidas',
@@ -66,8 +67,17 @@ const routes: Routes = [
     path: 'caracterizacion/insumo',
     component: CrearTipoInsumoComponent,
     canActivate: [RoleProviderDirectorGuard]
+  },
+  {
+    path: 'integraciones-corriendo',
+    component: IntegrationsRunningComponent,
+    canActivate: [RoleManagerGuard]
+  },
+  {
+    path: 'integraciones-posibles',
+    component: IntegrationsPossiblesComponent,
+    canActivate: [RoleManagerGuard]
   }
-
 ];
 
 @NgModule({

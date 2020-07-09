@@ -1,0 +1,215 @@
+<div>
+    <div class="card text-center">
+        <div class="card-header">
+            <div class="col-12">
+                <h3>Integraciones en ejecución</h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="search-hero" *ngIf="dataIntegration.length > 0">
+                <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
+                    placeholder="&#61442;  Buscar insumo">
+            </div>
+            <div class="table-responsive table-inverse" *ngIf="dataIntegration.length > 0">
+                <table class="table table-striped">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>ID</th>
+                            <th>Departamento</th>
+                            <th>Municipio</th>
+                            <th>Estado</th>
+                            <th>Descripción</th>
+                            <th>Insumos</th>
+                            <th>Número de Registros Catastrales</th>
+                            <th>Número de Registros SNR</th>
+                            <th>Registros Integrados</th>
+                            <th>Porcentaje</th>
+                            <th>Fecha de integración</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of dataIntegration |filter:searchText; let index = index">
+                            <td scope="row">{{index + 1}}</td>
+                            <td scope="row">{{item.municipalityDto.department.name}}</td>
+                            <td scope="row">{{item.municipalityDto.name}}</td>
+                            <td scope="row">{{item.integrationState.name}}</td>
+                            <td scope="row">
+                                {{item.integrationState ? item.integrationState.description: ''}}</td>
+                            <td scope="row">
+                                {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
+                            </td>
+                            <td scope="row">
+                                {{item.stats.length > 0 ? parcelNumber(item.stats[0].cadastreRecordsNumber): 'N/D'}}
+                            </td>
+                            <td scope="row">
+                                {{item.stats.length > 0 ? parcelNumber(item.stats[0].snrRecordsNumber): 'N/D'}}</td>
+                            <td scope="row">
+                                {{item.stats.length > 0 ? parcelNumber(item.stats[0].matchNumber): 'N/D'}}</td>
+                            <td scope="row">
+                                <b *ngIf="item.stats.length > 0">
+                                    {{roundDecimal(item.stats[0].percentage)}}%
+                                </b>
+                                <b *ngIf="item.stats.length == 0">
+                                    N/D
+                                </b>
+                            </td>
+                            <td scope="row">
+                                {{globalFuntionDate(item.startedAt)}}
+                            </td>
+                            <td scope="row">
+                                <span ngbTooltip="Ver detalle" placement="top" show-delay="500">
+                                    <i class="material-icons cursor ml-4" (click)="openModal(item,'modal-tab1')">
+                                        pageview
+                                    </i>
+                                </span>
+                                <span ngbTooltip="Generar XTF" placement="top" show-delay="500"
+                                    *ngIf="item.integrationState.id === 2">
+                                    <i class="material-icons cursor ml-4"
+                                        (click)="openModalGenerateXTF('modalXTF-tab1',item.id, item)">
+                                        assignment_turned_in
+                                    </i>
+                                </span>
+                                <span ngbTooltip="Iniciar integración asistida" placement="top" show-delay="500"
+                                    *ngIf="item.integrationState.id === 2">
+                                    <i class="material-icons cursor ml-4"
+                                        (click)="openModalIntegrationAssited('modalIntegration-tab1',item.id, item)">
+                                        important_devices
+                                    </i>
+                                </span>
+                                <span ngbTooltip="Eliminar" placement="top" show-delay="500"
+                                    *ngIf="item.integrationState.id === 2 || item.integrationState.id === 7">
+                                    <i class="material-icons cursor ml-4"
+                                        (click)="openModalcancel('modalCancel-tab1',item.id, item)">
+                                        delete
+                                    </i>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="dataIntegration.length === 0" class="row mt-3">
+                <div class="col-12">
+                    <div class="alert alert-primary text-center" role="alert">
+                        No tienes integraciones en curso.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+        </div>
+    </div>
+    <jw-modal id="modal-tab1">
+        <div class="card">
+            <div class="card-header text-center">
+                <h5>Histórico de la Integración</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-inverse table-responsive">
+                    <table class="table table-striped">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>ID</th>
+                                <th>Tipo</th>
+                                <th>Descripción</th>
+                                <th>Responsable</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of selectIntegration.histories; let index = index;">
+                                <td scope="row">{{index + 1}}</td>
+                                <td scope="row">{{item.state.name}}</td>
+                                <td scope="row">{{item.state.description}}</td>
+                                <td scope="row">{{item.userName}}</td>
+                                <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
+    <jw-modal id="modalXTF-tab1" class="mt-5">
+        <div class="card">
+            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+            <div class="card-header">
+                <i class="cui-arrow-bottom"></i>
+                <h2 class="text-center font-weight-bold">
+                    ¿Está seguro que desea generar el producto a partir de la integración automática?
+                </h2>
+                <h5 class="alert alert-warning text-center">Advertencia: Esta acción generará un nuevo XTF para el
+                    Municipio.
+                </h5>
+            </div>
+            <div class="card-body row">
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-primary btn-block"
+                        (click)="closeModalGenerateXTF('modalXTF-tab1',true);">
+                        <h4>Sí</h4>
+                    </button>
+                </div>
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-dark btn-block"
+                        (click)="closeModalGenerateXTF('modalXTF-tab1',false);">
+                        <h4>No</h4>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
+    <jw-modal id="modalIntegration-tab1" class="mt-5">
+        <div class="card">
+            <div class="card-header">
+                <i class="cui-arrow-bottom"></i>
+                <h2 class="text-center font-weight-bold">
+                    ¿Está seguro de iniciar la integración asistida?
+                </h2>
+                <h5 class="alert alert-warning text-center">Advertencia: Esta acción genera una tarea a los
+                    integradores, para
+                    que con ayuda del asistente puedan mejorar el porcentaje de integración.</h5>
+            </div>
+            <div class="card-body row">
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-primary btn-block"
+                        (click)="closeModalIntegrationAssited('modalIntegration-tab1', true);">
+                        <h4>Sí</h4>
+                    </button>
+                </div>
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-dark btn-block"
+                        (click)="closeModalIntegrationAssited('modalIntegration-tab1', false);">
+                        <h4>No</h4>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
+    <jw-modal id="modalCancel-tab1" class="mt-5">
+        <div class="card">
+            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+            <div class="card-header">
+                <i class="cui-arrow-bottom"></i>
+                <h2 class="text-center font-weight-bold">
+                    ¿Está seguro de eliminar la integración automática?
+                </h2>
+                <h5 class="alert alert-warning text-center">Advertencia: Esta acción eliminara la integración.</h5>
+            </div>
+            <div class="card-body row">
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-primary btn-block"
+                        (click)="closeModalcancel('modalCancel-tab1',true);">
+                        <h4>Sí</h4>
+                    </button>
+                </div>
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-dark btn-block"
+                        (click)="closeModalcancel('modalCancel-tab1',false);">
+                        <h4>No</h4>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
+</div>

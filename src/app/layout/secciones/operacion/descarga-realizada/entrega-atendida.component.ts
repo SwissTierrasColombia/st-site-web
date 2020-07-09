@@ -55,8 +55,6 @@ export class EntregaAtendidaComponent implements OnInit {
         }
       });
       this.supplies = this.dataRequestPending[0].supplies;
-      console.log(this.supplies);
-      
       let isDownloadGeneralReport = this.supplies.filter(item => {
         return item.downloaded === true
       });
@@ -72,7 +70,7 @@ export class EntregaAtendidaComponent implements OnInit {
     return moment(date).format('ll, h:mm a');
   }
   volver() {
-    this.router.navigate(['/operador/entregas-atendidas/']);
+    this.router.navigate(['/operador/descargas-realizadas/']);
   }
   downloadGeneralReport(nameSupplie: string) {
     this.serviceWorkspaces.DownloadReportGeneral(this.IdEntrega).subscribe(

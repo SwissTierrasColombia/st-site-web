@@ -1,0 +1,77 @@
+<div>
+    <div class="card text-center">
+        <div class="card-header">
+            <div class="col-12">
+                <h3>Candidatos a integración</h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table-inverse" *ngIf="dataIntegration.length > 0">
+                <table class="table table-striped">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>Código</th>
+                            <th>Departamento</th>
+                            <th>Municipio</th>
+                            <th>Ver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of dataIntegration; let i = index">
+                            <td scope="row">
+                                {{item.municipality.code}}
+                            </td>
+                            <td scope="row">
+                                {{item.municipality.department.name}}
+                            </td>
+                            <td scope="row">
+                                {{item.municipality.name}}
+                            </td>
+                            <th>
+                                <span class="material-icons" (click)="openModalXTF('modalRegistrarxtf', item)">
+                                    input
+                                </span>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="dataIntegration.length === 0" class="row mt-3">
+                <div class="col-12">
+                    <div class="alert alert-primary text-center" role="alert">
+                        No existen posibles integraciones.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+        </div>
+    </div>
+    <!-- <jw-modal id="modalRegistrarxtf" class="mt-5">
+        <div class="card">
+            <div class="card-header">
+                <i class="cui-arrow-bottom"></i>
+                <h2 class="text-center font-weight-bold">
+                    ¿Está seguro de realizar la integración?
+                </h2>
+                <h5 class="alert alert-warning text-center">
+                    Advertencia: Esta acción realizará la integración automatica dearchivos XTF.
+                </h5>
+            </div>
+            <div class="card-body row">
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-primary btn-block"
+                        (click)="closeModalXTF('modalRegistrarxtf',true);">
+                        <h4>Sí</h4>
+                    </button>
+                </div>
+                <div class="text-center col-sm">
+                    <button type="button" class="btn btn-dark btn-block"
+                        (click)="closeModalXTF('modalRegistrarxtf',false);">
+                        <h4>No</h4>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </jw-modal> -->
+</div>
