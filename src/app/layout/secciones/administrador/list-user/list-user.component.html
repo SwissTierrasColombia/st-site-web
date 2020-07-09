@@ -20,6 +20,7 @@
                 <th *ngIf="!roleConnectSuperAdmin">
                   {{(roleConnectAdmin || roleConnectManager)?'Perfil':'Área de trabajo'}}</th>
                 <th *ngIf="roleConnectAdmin">Área de trabajo</th>
+                <th *ngIf="roleConnectProvider">Perfil</th>
                 <th>Usuario</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
@@ -58,6 +59,10 @@
                     *ngIf="item.profilesManager.length == 0 && item.profilesProvider.length == 0 && item.rolesProvider.length == 0">
                     N/A
                   </div>
+                  <div
+                    *ngIf="item.profilesManager.length == 0 && item.profilesProvider.length == 0 && isDelegado(item) && roleConnectProvider">
+                    N/A
+                  </div>
                   <div *ngIf="roleConnectAdmin && item.rolesProvider.length == 0 && isProvider(item)">
                     TÉCNICO
                   </div>
@@ -70,6 +75,14 @@
                   </div>
                   <div *ngIf="item.profilesProvider.length === 0">
                     N/A
+                  </div>
+                </td>
+                <td scope="row" *ngIf="roleConnectProvider">
+                  <div *ngIf="isDelegado(item)">
+                    Revisor
+                  </div>
+                  <div *ngIf="!isDelegado(item)">
+                    Técnico
                   </div>
                 </td>
                 <td scope="row">{{item.username}}</td>

@@ -63,16 +63,20 @@ export class ListUserComponent implements OnInit {
           (element: any) => {
             return element.username !== this.dataUserLogger.user_name;
           });
-        this.dataListUser.sort(function (a: any, b: any) {
-          if (a.entity.name > b.entity.name) {
-            return 1;
-          }
-          if (a.entity.name < b.entity.name) {
-            return -1;
-          }
-          //a must be equal to b
-          return 0;
-        });
+        if (this.roleConnectAdmin) {
+          this.dataListUser.sort(function (a: any, b: any) {
+            if (a.entity.name > b.entity.name) {
+              return 1;
+            }
+            if (a.entity.name < b.entity.name) {
+              return -1;
+            }
+            //a must be equal to b
+            return 0;
+          });
+        }
+        console.log(this.dataListUser);
+
       });
   }
 
@@ -145,6 +149,12 @@ export class ListUserComponent implements OnInit {
   isProvider(item) {
     let data = item.roles.find(element => {
       return element.id === 4;
+    });
+    return data ? true : false;
+  }
+  isDelegado(item) {
+    let data = item.rolesProvider.find(element => {
+      return element.id === 2;
     });
     return data ? true : false;
   }
