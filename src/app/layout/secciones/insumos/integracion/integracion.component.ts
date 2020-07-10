@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { ViewportScroller } from '@angular/common';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-integracion',

@@ -11,3 +11,4 @@ export * from './rating/rating.component';
 export * from './tooltip/tooltip.component';
 export * from './timepicker/timepicker.component';
 export * from './dialog-box/dialog-box.component';
+export * from './modal-bootstrap/modal-bootstrap.component'

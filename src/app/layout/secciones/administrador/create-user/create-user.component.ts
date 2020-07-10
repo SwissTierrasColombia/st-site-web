@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
 import { JwtHelper } from 'src/app/helpers/jwt';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -30,7 +30,7 @@ export class CreateUserComponent implements OnInit {
     private serviceWorkSpace: WorkspacesService,
     private toast: ToastrService,
     private serviceOperators: OperatorsService,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.profilesManagers = [];
     this.profilesProviders = [];
@@ -393,15 +393,15 @@ export class CreateUserComponent implements OnInit {
     }
 
   }
-  openModal(modal: string) {
-    this.modalService.open(modal);
+  openModal(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModal(modal: string, option: boolean) {
+  closeModal(option: boolean) {
     if (option) {
       this.register();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
 }

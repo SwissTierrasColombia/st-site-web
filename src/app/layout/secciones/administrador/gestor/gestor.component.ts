@@ -1,7 +1,8 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { ModalService } from 'src/app/services/modal/modal.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-gestor',
@@ -9,7 +10,6 @@ import { ManagersService } from 'src/app/services/managers/managers.service';
   styleUrls: ['./gestor.component.scss']
 })
 export class GestorComponent implements OnInit {
-  @ViewChild('actionForm', { static: false }) actionForm: ElementRef;
   dataProfile: any;
   data: any;
   idProfileDelete: any;
@@ -21,7 +21,8 @@ export class GestorComponent implements OnInit {
   constructor(
     private serviceManager: ManagersService,
     private toast: ToastrService,
-    private modalService: ModalService) {
+    private modalService: NgbModal,
+    private scroll: ViewportScroller) {
     this.dataProfile = [];
     this.data = {
       name: "",
@@ -54,33 +55,28 @@ export class GestorComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   changeState() {
-
+    this.formOk = false;
     if (this.data.name != "" &&
       this.data.taxIdentificationNumber != "") {
       this.formOk = true;
-    } else {
-      this.formOk = false;
     }
   }
   updateProfile(item: any) {
-    const entity = this.clone(item);
+    let entity = this.clone(item);
     this.id = entity.id;
     this.data = {
       id: entity.id,
       name: entity.name,
       taxIdentificationNumber: entity.taxIdentificationNumber
     }
-    this.actionForm.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
+    this.scroll.scrollToAnchor("actionForm");
     this.editMode = true;
   }
-  deleteProfile(modal: string, item: any) {
-    this.modalService.open(modal)
+  deleteProfile(modal, item: any) {
     this.idProfileDelete = item;
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModalDisabled(modal: string, option: boolean) {
+  closeModalDisabled(option: boolean) {
     if (option) {
       this.serviceManager.disableManager(this.idProfileDelete.id).subscribe(
         _ => {
@@ -89,13 +85,13 @@ export class GestorComponent implements OnInit {
           this.idProfileDelete = {};
         }
       );
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
       this.idProfileDelete.state = true;
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
-  closeModalEnable(modal: string, option: boolean) {
+  closeModalEnable(option: boolean) {
     if (option) {
       this.serviceManager.enableManager(this.idProfileEnable.id).subscribe(
         _ => {
@@ -104,18 +100,19 @@ export class GestorComponent implements OnInit {
           this.idProfileEnable = {};
         }
       );
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
       this.idProfileEnable.state = false;
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
-  activeManager(modal: string, item: any) {
-    this.modalService.open(modal)
+  activeManager(modal: any, item: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
     this.idProfileEnable = item;
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
+    event.stopPropagation();
   }
   cancel() {
     this.id = 0;
