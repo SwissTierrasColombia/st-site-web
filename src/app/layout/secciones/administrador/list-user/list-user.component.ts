@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { ModalService } from 'src/app/services/modal/modal.service';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-list-user',
@@ -25,7 +25,7 @@ export class ListUserComponent implements OnInit {
   roleConnectProvider: any;
   constructor(
     private serviceWorkspace: WorkspacesService,
-    private modalService: ModalService,
+    private modalService: NgbModal,
     private router: Router
   ) {
     this.dataListUser = [];
@@ -84,20 +84,20 @@ export class ListUserComponent implements OnInit {
   globalFuntionString(item: string) {
     return FuntionsGlobalsHelper.itemToLowerCase(item);
   }
-  openModalEnabled(modal: string, idUser: number) {
-    this.modalService.open(modal);
+  openModalEnabled(modal: any, idUser: number) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
     this.idUserEnabled = idUser;
   }
-  openModalDisabled(modal: string, idUser: number) {
-    this.modalService.open(modal);
+  openModalDisabled(modal: any, idUser: number) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
     this.idUserDisabled = idUser;
   }
-  closeModalEnabled(modal: string, option: boolean) {
+  closeModalEnabled(option: boolean) {
     if (option) {
       this.serviceWorkspace.EnableUser(this.idUserEnabled, {})
         .subscribe(
           data => {
-            this.modalService.close(modal);
+            this.modalService.dismissAll();
             for (let index = 0; index < this.dataListUser.length; index++) {
               if (this.dataListUser[index].id === this.idUserEnabled) {
                 this.dataListUser[index] = data;
@@ -106,15 +106,15 @@ export class ListUserComponent implements OnInit {
           }
         );
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
-  closeModalDisabled(modal: string, option: boolean) {
+  closeModalDisabled(option: boolean) {
     if (option) {
       this.serviceWorkspace.DisableUser(this.idUserDisabled, {})
         .subscribe(
           data => {
-            this.modalService.close(modal);
+            this.modalService.dismissAll();
             for (let index = 0; index < this.dataListUser.length; index++) {
               if (this.dataListUser[index].id === this.idUserDisabled) {
                 this.dataListUser[index] = data;
@@ -123,7 +123,7 @@ export class ListUserComponent implements OnInit {
           }
         );
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
   updateUser(idUser: number) {
