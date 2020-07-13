@@ -248,15 +248,19 @@ export class CreateUserComponent implements OnInit {
 
         if (this.selectROL === 4 || this.selectROL === 5) {
           if (this.selectROL === 5) {
-            this.registerData.roleProvider.roleId = 4;
-            this.registerData.roleProvider.isTechnical = false;
-            this.registerData.roleProvider.profiles = [2];
-            data.roleProvider = this.registerData.roleProvider;
+            if (this.roleConnect.id === 4) {
+              this.registerData.roleProvider.roleId = 4;
+              this.registerData.roleProvider.isTechnical = false;
+              this.registerData.roleProvider.profiles = [2];
+              data.roleProvider = this.registerData.roleProvider;
+            }
           }
           if (this.selectROL === 4) {
             this.registerData.roleProvider.roleId = 4;
-            this.registerData.roleProvider.isTechnical = true;
             data.roleProvider = this.registerData.roleProvider;
+            if (this.roleConnect.id === 4) {
+              this.registerData.roleProvider.isTechnical = true;
+            }
           }
         } else {
           delete data.roleProvider;
