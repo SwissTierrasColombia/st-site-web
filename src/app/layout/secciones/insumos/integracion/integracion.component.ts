@@ -3,9 +3,9 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ViewportScroller } from '@angular/common';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-integracion',
@@ -49,7 +49,7 @@ export class IntegracionComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
     private toastr: ToastrService,
-    private modalService: ModalService,
+    private modalService: NgbModal,
     private router: Router,
     private scroll: ViewportScroller,
     private activedRoute: ActivatedRoute
@@ -242,44 +242,44 @@ export class IntegracionComponent implements OnInit {
   globalFuntionDate(date: any) {
     return FuntionsGlobalsHelper.formatDate(date);
   }
-  closeModal(option: number, id: string) {
-    this.modalService.close(id);
+  closeModal() {
+    this.modalService.dismissAll();
   }
-  openModal(id: number, modal: string) {
+  openModal(id: number, modal: any) {
     this.selectIntegration = this.integrationByWorkspace.filter(item => {
       return item.id === id;
     });
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true, size: 'lg' });
   }
-  openModalGenerateXTF(modal: string, idIntegration: number) {
+  openModalGenerateXTF(modal: any, idIntegration: number) {
     this.idGenerateXTF = idIntegration;
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  openModalIntegrationAssited(modal: string, idIntegration: number) {
+  openModalIntegrationAssited(modal: any, idIntegration: number) {
     this.idStartAsistente = idIntegration;
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  openModalcancel(modal: string, idIntegration: number) {
+  openModalcancel(modal: any, idIntegration: number) {
     this.idCancel = idIntegration;
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModalGenerateXTF(modal: string, option: boolean) {
+  closeModalGenerateXTF(option: boolean) {
     if (option) {
       this.generateXTF(this.idGenerateXTF);
     }
-    this.modalService.close(modal);
+    this.modalService.dismissAll();
   }
-  closeModalIntegrationAssited(modal: string, option: boolean) {
+  closeModalIntegrationAssited(option: boolean) {
     if (option) {
       this.startIntegrationAssited(this.idStartAsistente);
     }
-    this.modalService.close(modal);
+    this.modalService.dismissAll();
   }
-  closeModalcancel(modal: string, option: boolean) {
+  closeModalcancel(option: boolean) {
     if (option) {
       this.cancel(this.idCancel);
     }
-    this.modalService.close(modal);
+    this.modalService.dismissAll();
   }
   generateXTF(idIntegration: number) {
     this.serviceWorkspaces.GenerateProductFromIntegration(this.idWorkspace, idIntegration).subscribe(
@@ -320,15 +320,15 @@ export class IntegracionComponent implements OnInit {
   parcelNumber(number: number) {
     return new Intl.NumberFormat().format(number);
   }
-  openModalXTF(modal: string) {
-    this.modalService.open(modal);
+  openModalXTF(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModalXTF(modal: string, option: boolean) {
+  closeModalXTF(option: boolean) {
     if (option) {
       this.integrationSupplies();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
   tab1() {

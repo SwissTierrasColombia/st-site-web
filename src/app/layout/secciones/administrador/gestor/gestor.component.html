@@ -1,4 +1,4 @@
-<div #actionForm>
+<div id="actionForm">
     <app-page-header [heading]="'Crear Gestor'" [icon]="'fa-star'">
     </app-page-header>
     <div class="card">
@@ -36,21 +36,6 @@
                             Recuerde que los campos marcados con * son obligatorios.
                         </div>
                     </div>
-                    <!-- <div class="col-12">
-                        <div class="input-group mb-4">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    * Categoría
-                                </span>
-                            </div>
-                            <select (change)="changeState()" class="custom-select" name="managersprfile" id="managersprofile"
-                                [(ngModel)]="data.providerCategoryId">
-                                <option value="0">Seleccione la categoría del proveedor</option>
-                                <option [ngValue]="item.id" *ngFor="let item of categoriesProviders">{{item.name}}
-                                </option>
-                            </select>
-                        </div>
-                    </div> -->
                 </div>
             </form>
         </div>
@@ -94,7 +79,7 @@
                             </td>
                             <td scope="row">
                                 <label class="switch" [title]="item.state ? 'Desactivar':'Activar'"
-                                    (click)="item.state ? deleteProfile('modalDisabled',item):activeManager('modalEnable',item)">
+                                    (click)="item.state ? deleteProfile(modalDisabled,item):activeManager(modalEnable,item)">
                                     <input (click)="clickCheckBox($event)" [(ngModel)]="item.state" type="checkbox">
                                     <span class="slider round"></span>
                                 </label>
@@ -111,57 +96,45 @@
                 </div>
             </div>
         </div>
-        <jw-modal id="modalDisabled" class="mt-5">
-            <div class="card">
-                <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-                <div class="card-header">
-                    <i class="cui-arrow-bottom"></i>
-                    <h2 class="text-center font-weight-bold">
-                        ¿Está seguro de Desactivar el Gestor?
-                    </h2>
-                    <h5 class="alert alert-warning text-center">Advertencia: Esta acción deshabilita el Gestor.</h5>
+        <ng-template #modalDisabled let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title">¿Está seguro de Desactivar el Gestor?</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5 class="alert alert-warning text-center">Advertencia: Esta acción deshabilita el Gestor.</h5>
+            </div>
+            <div class="modal-footer">
+                <div class="col-6">
+                    <button type="button" class="btn btn-dark btn-block" (click)="closeModalDisabled(false)">No</button>
                 </div>
-                <div class="card-body row">
-                    <div class="text-center col-sm">
-                        <button type="button" class="btn btn-primary btn-block"
-                            (click)="closeModalDisabled('modalDisabled',true);">
-                            <h4>Sí</h4>
-                        </button>
-                    </div>
-                    <div class="text-center col-sm">
-                        <button type="button" class="btn btn-dark btn-block"
-                            (click)="closeModalDisabled('modalDisabled',false);">
-                            <h4>No</h4>
-                        </button>
-                    </div>
+                <div class="col-6 text-right">
+                    <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                        (click)="closeModalDisabled(true)">Si</button>
                 </div>
             </div>
-        </jw-modal>
-        <jw-modal id="modalEnable" class="mt-5">
-            <div class="card">
-                <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-                <div class="card-header">
-                    <i class="cui-arrow-bottom"></i>
-                    <h2 class="text-center font-weight-bold">
-                        ¿Está seguro de Habilita el Gestor?
-                    </h2>
-                    <h5 class="alert alert-warning text-center">Advertencia: Esta acción habilita el Gestor.</h5>
+        </ng-template>
+        <ng-template #modalEnable let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title">¿Está seguro de Habilitar el Gestor?</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5 class="alert alert-warning text-center">Advertencia: Esta acción habilitara el Gestor.</h5>
+            </div>
+            <div class="modal-footer">
+                <div class="col-6">
+                    <button type="button" class="btn btn-dark btn-block" (click)="closeModalEnable(false)">No</button>
                 </div>
-                <div class="card-body row">
-                    <div class="text-center col-sm">
-                        <button type="button" class="btn btn-primary btn-block"
-                            (click)="closeModalEnable('modalEnable',true);">
-                            <h4>Sí</h4>
-                        </button>
-                    </div>
-                    <div class="text-center col-sm">
-                        <button type="button" class="btn btn-dark btn-block"
-                            (click)="closeModalEnable('modalEnable',false);">
-                            <h4>No</h4>
-                        </button>
-                    </div>
+                <div class="col-6 text-right">
+                    <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                        (click)="closeModalEnable(true)">Si</button>
                 </div>
             </div>
-        </jw-modal>
+        </ng-template>
     </div>
 </div>

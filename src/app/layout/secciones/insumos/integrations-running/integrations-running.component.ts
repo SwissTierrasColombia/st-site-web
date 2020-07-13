@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -33,7 +33,7 @@ export class IntegrationsRunningComponent implements OnInit {
   constructor(
     private router: Router,
     private serviceWorkspace: WorkspacesService,
-    private modalService: ModalService,
+    private modalService: NgbModal,
     private toastr: ToastrService
   ) {
     this.dataIntegration = [];
@@ -127,47 +127,47 @@ export class IntegrationsRunningComponent implements OnInit {
     );
   }
   closeModal(id: string) {
-    this.modalService.close(id);
+    this.modalService.dismissAll();
   }
-  openModal(item: any, modal: string) {
+  openModal(item: any, modal: any) {
     this.selectIntegration = item;
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true, size: 'lg' });
   }
-  openModalGenerateXTF(modal: string, idIntegration: number, item: any) {
+  openModalGenerateXTF(modal: any, idIntegration: number, item: any) {
     this.idGenerateXTF = idIntegration;
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
     this.selectMunicipality = item.municipalityDto.id;
     this.changeState(this.selectMunicipality);
 
   }
-  openModalIntegrationAssited(modal: string, idIntegration: number, item: any) {
+  openModalIntegrationAssited(modal: any, idIntegration: number, item: any) {
     this.idStartAsistente = idIntegration;
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
     this.selectMunicipality = item.municipalityDto.id;
     this.changeState(this.selectMunicipality);
   }
-  openModalcancel(modal: string, idIntegration: number, item: any) {
+  openModalcancel(modal: any, idIntegration: number, item: any) {
     this.idCancel = idIntegration;
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
     this.selectMunicipality = item.municipalityDto.id;
     this.changeState(this.selectMunicipality);
   }
-  closeModalGenerateXTF(modal: string, option: boolean) {
+  closeModalGenerateXTF(option: boolean) {
     if (option) {
       this.generateXTF(this.idGenerateXTF);
     }
-    this.modalService.close(modal);
+    this.modalService.dismissAll();
   }
-  closeModalIntegrationAssited(modal: string, option: boolean) {
+  closeModalIntegrationAssited(option: boolean) {
     if (option) {
       this.startIntegrationAssited(this.idStartAsistente);
     }
-    this.modalService.close(modal);
+    this.modalService.dismissAll();
   }
-  closeModalcancel(modal: string, option: boolean) {
+  closeModalcancel(option: boolean) {
     if (option) {
       this.cancel(this.idCancel);
     }
-    this.modalService.close(modal);
+    this.modalService.dismissAll();
   }
 }

@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
 import { JwtHelper } from 'src/app/helpers/jwt';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -30,7 +30,7 @@ export class CreateUserComponent implements OnInit {
     private serviceWorkSpace: WorkspacesService,
     private toast: ToastrService,
     private serviceOperators: OperatorsService,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.profilesManagers = [];
     this.profilesProviders = [];
@@ -89,6 +89,8 @@ export class CreateUserComponent implements OnInit {
 
   ngOnInit() {
     this.dataUserLogger = JwtHelper.getUserPublicInformation();
+    console.log(this.dataUserLogger);
+
     this.roleConnect = this.dataUserLogger.roles.find(elem => {
       return elem.id === 5;
     });
@@ -165,16 +167,26 @@ export class CreateUserComponent implements OnInit {
       });
     }
     if (this.dataUserLogger.is_provider_director) {
-      this.registerData.state = [
-        {
-          id: 4,
-          name: 'Técnico',
-        },
-        {
-          id: 5,
-          name: 'Revisor'
-        }
-      ];
+      if (this.dataUserLogger.entity.id === 8) {
+        this.registerData.state = [
+          {
+            id: 4,
+            name: 'Técnico',
+          },
+          {
+            id: 5,
+            name: 'Revisor'
+          }
+        ];
+      } else {
+        this.selectROL = 4;
+        this.registerData.state = [
+          {
+            id: 4,
+            name: 'Técnico',
+          }
+        ];
+      }
       this.serviceWorkSpace.GetProviderProfiles().subscribe(
         data => {
           this.profilesProviders = data;
@@ -248,15 +260,19 @@ export class CreateUserComponent implements OnInit {
 
         if (this.selectROL === 4 || this.selectROL === 5) {
           if (this.selectROL === 5) {
-            this.registerData.roleProvider.roleId = 4;
-            this.registerData.roleProvider.isTechnical = false;
-            this.registerData.roleProvider.profiles = [2];
-            data.roleProvider = this.registerData.roleProvider;
+            if (this.roleConnect.id === 4) {
+              this.registerData.roleProvider.roleId = 4;
+              this.registerData.roleProvider.isTechnical = false;
+              this.registerData.roleProvider.profiles = [2];
+              data.roleProvider = this.registerData.roleProvider;
+            }
           }
           if (this.selectROL === 4) {
             this.registerData.roleProvider.roleId = 4;
-            this.registerData.roleProvider.isTechnical = true;
             data.roleProvider = this.registerData.roleProvider;
+            if (this.roleConnect.id === 4) {
+              this.registerData.roleProvider.isTechnical = true;
+            }
           }
         } else {
           delete data.roleProvider;
@@ -367,16 +383,26 @@ export class CreateUserComponent implements OnInit {
               });
             }
             if (this.dataUserLogger.is_provider_director) {
-              this.registerData.state = [
-                {
-                  id: 4,
-                  name: 'Técnico',
-                },
-                {
-                  id: 5,
-                  name: 'Revisor'
-                }
-              ];
+              if (this.dataUserLogger.entity.id === 8) {
+                this.registerData.state = [
+                  {
+                    id: 4,
+                    name: 'Técnico',
+                  },
+                  {
+                    id: 5,
+                    name: 'Revisor'
+                  }
+                ];
+              } else {
+                this.selectROL = 4;
+                this.registerData.state = [
+                  {
+                    id: 4,
+                    name: 'Técnico',
+                  }
+                ];
+              }
               this.serviceWorkSpace.GetProviderProfiles().subscribe(
                 data => {
                   this.profilesProviders = data;
@@ -393,15 +419,15 @@ export class CreateUserComponent implements OnInit {
     }
 
   }
-  openModal(modal: string) {
-    this.modalService.open(modal);
+  openModal(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModal(modal: string, option: boolean) {
+  closeModal(option: boolean) {
     if (option) {
       this.register();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
 }

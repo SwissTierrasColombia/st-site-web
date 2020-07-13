@@ -1,11 +1,11 @@
-import { Component, OnInit,ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { ToastrService } from 'ngx-toastr';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-workspace',
@@ -32,7 +32,7 @@ export class WorkspaceComponent implements OnInit {
     private router: Router,
     private roles: RoleModel,
     private toastr: ToastrService,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.activeManagers = [];
     this.departments = [];
@@ -51,7 +51,7 @@ export class WorkspaceComponent implements OnInit {
       numberAlphanumericParcels: 0,
       startDate: '',
       municipalityArea: 0
-    };    
+    };
   }
 
   ngOnInit() {
@@ -145,7 +145,7 @@ export class WorkspaceComponent implements OnInit {
             numberAlphanumericParcels: 0,
             startDate: '',
             municipalityArea: 0
-          }; 
+          };
           this.searchWorkSpace();
         }
       );
@@ -157,15 +157,15 @@ export class WorkspaceComponent implements OnInit {
   viewWorkSpace(idItem: number) {
     this.router.navigate(['gestion/workspace/' + idItem + '/ver/operador']);
   }
-  openModal(modal: string) {
-    this.modalService.open(modal);
+  openModal(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModal(modal: string, option: boolean) {
+  closeModal(option: boolean) {
     if (option) {
       this.createWorkSpace();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
 }

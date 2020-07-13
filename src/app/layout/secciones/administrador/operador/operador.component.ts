@@ -1,15 +1,15 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ViewportScroller } from '@angular/common';
 @Component({
   selector: 'app-operador',
   templateUrl: './operador.component.html',
   styleUrls: ['./operador.component.scss']
 })
 export class OperadorComponent implements OnInit {
-  @ViewChild('actionForm', { static: false }) actionForm: ElementRef;
+
   dataProfile: any;
   data: any;
   idProfileDelete: any;
@@ -21,7 +21,8 @@ export class OperadorComponent implements OnInit {
   constructor(
     private serviceOperator: OperatorsService,
     private toast: ToastrService,
-    private modalService: ModalService) {
+    private modalService: NgbModal,
+    private scroll: ViewportScroller) {
     this.dataProfile = [];
     this.data = {
       name: "",
@@ -65,7 +66,7 @@ export class OperadorComponent implements OnInit {
     }
   }
   updateProfile(item: any) {
-    const entity = this.clone(item);
+    let entity = this.clone(item);
     this.id = entity.id;
     this.data = {
       id: entity.id,
@@ -73,17 +74,14 @@ export class OperadorComponent implements OnInit {
       taxIdentificationNumber: entity.taxIdentificationNumber,
       isPublic: entity.isPublic
     }
-    this.actionForm.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
+    this.scroll.scrollToAnchor("actionForm");
     this.editMode = true;
   }
-  deleteProfile(modal: string, item: any) {
-    this.modalService.open(modal)
+  deleteProfile(modal: any, item: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true,  size: 'lg' });
     this.idProfileDelete = item;
   }
-  closeModalDisabled(modal: string, option: boolean) {
+  closeModalDisabled(option: boolean) {
     if (option) {
       this.serviceOperator.disableOperator(this.idProfileDelete.id).subscribe(
         _ => {
@@ -92,13 +90,13 @@ export class OperadorComponent implements OnInit {
           this.idProfileDelete = {};
         }
       );
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
       this.idProfileDelete.state = true;
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
-  closeModalEnable(modal: string, option: boolean) {
+  closeModalEnabled(option: boolean) {
     if (option) {
       this.serviceOperator.enableOperator(this.idProfileEnable.id).subscribe(
         _ => {
@@ -107,18 +105,19 @@ export class OperadorComponent implements OnInit {
           this.idProfileEnable = {};
         }
       );
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
       this.idProfileEnable.state = false;
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
-  activeManager(modal: string, item: any) {
-    this.modalService.open(modal)
+  activeManager(modal: any, item: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true,  size: 'lg' });
     this.idProfileEnable = item;
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
+    event.stopPropagation();
   }
   create() {
     if (this.nitIsValid(this.data.taxIdentificationNumber)) {

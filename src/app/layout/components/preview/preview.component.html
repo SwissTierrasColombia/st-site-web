@@ -1,14 +1,31 @@
 <div [hidden]="!valid">
-    <jw-modal id="mapPreview" class="mt-5">
-        <div *ngIf="!validCTM12" style="padding: 2px; position: absolute; top: 5px; z-index: 1; right: 50px; padding-left: 8px; padding-right: 8px; opacity: 0.85;" class="alert alert-warning text-center" role="alert">
-            <i class="material-icons cursor" style="color: #ffc404;font-size: 25px;position: relative; top: 14px; left: 0px;" >
-                warning</i> Los datos cargados no se encuentran en la proyección Cartográfica CTM12, <br>se encuentran en <i>{{crs}}</i>
+    <ng-template #mapPreview let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <div id="map" style="width: 100%;height: 85vh;" [hidden]="!showmap"></div>
-        <iframe #pdfviewer type="application/pdf" [hidden]="showmap" frameborder="0" style="width: 75vw;height: 60vh;">
-        </iframe>
-    </jw-modal>
-    <i alt="Ver" title="Ver" class="material-icons cursor" style="float: right;color: #57b557;" *ngIf="icon" (click)="clickbtn()">
+        <div class="modal-body">
+            <div *ngIf="!validCTM12"
+                style="padding: 2px; position: absolute; top: 5px; z-index: 1; right: 50px; padding-left: 8px; padding-right: 8px; opacity: 0.85;"
+                class="alert alert-warning text-center" role="alert">
+                <i class="material-icons cursor"
+                    style="color: #ffc404;font-size: 25px;position: relative; top: 14px; left: 0px;">
+                    warning</i> Los datos cargados no se encuentran en la proyección Cartográfica CTM12, <br>se
+                encuentran en <i>{{crs}}</i>
+            </div>
+            <div id="map" style="width: 100%;height: 85vh;" [hidden]="!showmap"></div>
+            <iframe #pdfviewer type="application/pdf" [hidden]="showmap" frameborder="0"
+                style="width: 75vw;height: 60vh;">
+            </iframe>
+        </div>
+        <div class="modal-footer">
+        </div>
+    </ng-template>
+    <i alt="Ver" title="Ver" class="material-icons cursor" style="float: right;color: #57b557;" *ngIf="icon"
+        (click)="clickbtn(mapPreview)">
         remove_red_eye</i>
-    <button (click)="clickbtn()" *ngIf="!icon" class="btn btn-dark mt-2">Previsualizar</button>
+    <button (click)="clickbtn(mapPreview)" *ngIf="!icon" class="btn btn-dark mt-2">Previsualizar</button>
 </div>

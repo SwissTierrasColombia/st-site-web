@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _moment from 'moment';
 import { saveAs } from 'file-saver';
 
@@ -21,7 +21,7 @@ export class EntregaAtendidaComponent implements OnInit {
     private router: Router,
     private activedRoute: ActivatedRoute,
     private serviceWorkspaces: WorkspacesService,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.IdEntrega = 0;
     this.dataRequestPending = [];

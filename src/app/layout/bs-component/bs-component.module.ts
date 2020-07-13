@@ -20,7 +20,7 @@ import {
   TimepickerComponent
 } from './components';
 import { PageHeaderModule } from '../../shared';
-import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
+import { ModalBootstrapComponent } from './components/modal-bootstrap/modal-bootstrap.component';
 
 @NgModule({
   imports: [
@@ -45,10 +45,9 @@ import { DialogBoxComponent } from './components/dialog-box/dialog-box.component
     RatingComponent,
     TooltipComponent,
     TimepickerComponent,
-    DialogBoxComponent
+    ModalBootstrapComponent
   ],
   exports: [
-    DialogBoxComponent
   ]
 })
 export class BsComponentModule { }

@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.pushRightClass = 'push-right';
     this.user = JwtHelper.getUserPublicInformation();
-    console.log(this.user)
+
     this.roleproveedor = this.user.roles.find((elem: any) => {
       return elem.id === this.roles.proveedor;
     });
@@ -92,5 +92,8 @@ export class HeaderComponent implements OnInit {
   onLoggedout() {
     localStorage.removeItem(environment.nameTokenSession);
     window.location.reload();
+  }
+  toUpperCasetoLowerCase(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
 }
