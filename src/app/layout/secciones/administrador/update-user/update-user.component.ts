@@ -4,7 +4,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { ToastrService } from 'ngx-toastr';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { ManagersService } from 'src/app/services/managers/managers.service';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-update-user',
@@ -34,7 +34,7 @@ export class UpdateUserComponent implements OnInit {
     private serviceManagers: ManagersService,
     private serviceWorkSpace: WorkspacesService,
     private activedRoute: ActivatedRoute,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.idUser = 0;
     this.dataListUser = {};
@@ -253,54 +253,55 @@ export class UpdateUserComponent implements OnInit {
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
+    event.stopPropagation();
   }
-  openModaladdManager(modal: string, item: any) {
+  openModaladdManager(modal: any, item: any) {
     this.addprofiles = this.clone(item);
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
 
   }
-  closeModalEnabled(modal: string, option: boolean) {
+  closeModalEnabled(option: boolean) {
     if (option) {
       this.addprofileManager();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
-  openModalRemoveManager(modal: string, item: any) {
+  openModalRemoveManager(modal: any, item: any) {
     this.deleteProfiles = this.clone(item);
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModalRemoveManager(modal: string, option: boolean) {
+  closeModalRemoveManager(option: boolean) {
     if (option) {
       this.deleteprofileManager();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
-  openModalRemoveProvider(modal: string, item: any) {
+  openModalRemoveProvider(modal: any, item: any) {
     this.deleteProfiles = this.clone(item);
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  openModaladdProvider(modal: string, item: any) {
+  openModaladdProvider(modal: any, item: any) {
     this.addprofiles = this.clone(item);
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModalEnabledProvider(modal: string, option: boolean) {
+  closeModalEnabledProvider(option: boolean) {
     if (option) {
       this.addprofileProvider();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
-  closeModalRemoveProvider(modal: string, option: boolean) {
+  closeModalRemoveProvider(option: boolean) {
     if (option) {
       this.deleteprofileProvider();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
   isDelegado() {

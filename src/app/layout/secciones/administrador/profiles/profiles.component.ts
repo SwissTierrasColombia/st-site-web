@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ToastrService } from 'ngx-toastr';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-profiles',
@@ -19,7 +19,7 @@ export class ProfilesComponent implements OnInit {
   constructor(
     private serviceWorkSpace: WorkspacesService,
     private toast: ToastrService,
-    private modalService: ModalService) {
+    private modalService: NgbModal) {
     this.dataProfile = [];
     this.data = {
       name: "",
@@ -58,11 +58,11 @@ export class ProfilesComponent implements OnInit {
     this.id = this.data.id;
     this.editMode = true; 
   }
-  deleteProfile(modal: string, id: number) {
+  deleteProfile(modal: any, id: number) {
     this.modalService.open(modal)
     this.idProfileDelete = id;
   }
-  closeModalDisabled(modal: string, option: boolean) {
+  closeModalDisabled(option: boolean) {
     if (option) {
       this.serviceWorkSpace.deleteProfileProvider(this.idProfileDelete).subscribe(
         _ => {
@@ -76,9 +76,9 @@ export class ProfilesComponent implements OnInit {
           );
         }
       );
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
   nitIsValid(nit) {

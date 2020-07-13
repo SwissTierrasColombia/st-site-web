@@ -131,4 +131,7 @@ export class SidebarComponent implements OnInit {
     localStorage.removeItem(environment.nameTokenSession);
     window.location.reload();
   }
+  toUpperCasetoLowerCase(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  }
 }

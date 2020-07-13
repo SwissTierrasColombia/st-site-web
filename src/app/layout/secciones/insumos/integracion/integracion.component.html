@@ -225,26 +225,26 @@
                 <td scope="row">{{globalFuntionDate(item.startedAt)}}</td>
                 <td scope="row">
                   <span ngbTooltip="Ver detalle" placement="top" show-delay="500">
-                    <i class="material-icons cursor ml-4" (click)="openModal(item.id,'modal-1')">
+                    <i class="material-icons cursor ml-4" (click)="openModal(item.id,modal1)">
                       pageview
                     </i>
                   </span>
                   <span ngbTooltip="Generar XTF" placement="top" show-delay="500"
                     *ngIf="item.integrationState.id === 2">
-                    <i class="material-icons cursor ml-4" (click)="openModalGenerateXTF('modalXTF',item.id)">
+                    <i class="material-icons cursor ml-4" (click)="openModalGenerateXTF(modalXTF,item.id)">
                       assignment_turned_in
                     </i>
                   </span>
                   <span ngbTooltip="Iniciar integración asistida" placement="top" show-delay="500"
                     *ngIf="item.integrationState.id === 2">
                     <i class="material-icons cursor ml-4"
-                      (click)="openModalIntegrationAssited('modalIntegration',item.id)">
+                      (click)="openModalIntegrationAssited(modalIntegration,item.id)">
                       important_devices
                     </i>
                   </span>
                   <span ngbTooltip="Eliminar" placement="top" show-delay="500"
                     *ngIf="item.integrationState.id === 2 || item.integrationState.id === 7">
-                    <i class="material-icons cursor ml-4" (click)="openModalcancel('modalCancel',item.id)">
+                    <i class="material-icons cursor ml-4" (click)="openModalcancel(modalCancel,item.id)">
                       delete
                     </i>
                   </span>
@@ -256,178 +256,177 @@
       </div>
     </div>
   </div>
-  <jw-modal id="modal-1">
-    <div class="card text-center text-white bg-dark mb-3">
-      <div class="card-header text-center">
-        <h5>Resultados de la Integración</h5>
+  <ng-template #modal1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        Resultados y Histórico de la Integración
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="table-inverse table-responsive">
+        <table class="table table-striped">
+          <thead class="thead-inverse">
+            <tr>
+              <th>Tipo de Integración</th>
+              <th>Descripción</th>
+              <th>Insumos</th>
+              <th *ngIf="selectIntegration[0].stats.length > 0">Número de Registros
+                Catastrales</th>
+              <th *ngIf="selectIntegration[0].stats.length > 0">Número de Registros SNR
+              </th>
+              <th *ngIf="selectIntegration[0].stats.length > 0">Registros Integrados</th>
+              <th *ngIf="selectIntegration[0].stats.length > 0">Porcentaje</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of selectIntegration; let i = index">
+              <td scope="row">{{item.integrationState.name}}</td>
+              <td scope="row">
+                {{item.integrationState ? item.integrationState.description: ''}}</td>
+              <td scope="row">
+                {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
+              </td>
+              <td scope="row" *ngIf="item.stats.length > 0">
+                {{item.stats.length > 0 ? parcelNumber(item.stats[0].cadastreRecordsNumber): ''}}</td>
+              <td scope="row" *ngIf="item.stats.length > 0">
+                {{item.stats.length > 0 ? parcelNumber(item.stats[0].snrRecordsNumber): ''}}</td>
+              <td scope="row" *ngIf="item.stats.length > 0">
+                {{item.stats.length > 0 ? parcelNumber(item.stats[0].matchNumber): '0'}}</td>
+              <td scope="row" *ngIf="item.stats.length > 0">
+                <b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="card-body">
-        <div class="table-inverse table-responsive">
-          <table class="table table-striped">
-            <thead class="thead-inverse">
-              <tr>
-                <th>Tipo de Integración</th>
-                <th>Descripción</th>
-                <th>Insumos</th>
-                <th *ngIf="selectIntegration[0].stats.length > 0">Número de Registros
-                  Catastrales</th>
-                <th *ngIf="selectIntegration[0].stats.length > 0">Número de Registros SNR
-                </th>
-                <th *ngIf="selectIntegration[0].stats.length > 0">Registros Integrados</th>
-                <th *ngIf="selectIntegration[0].stats.length > 0">Porcentaje</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of selectIntegration; let i = index">
-                <td scope="row">{{item.integrationState.name}}</td>
-                <td scope="row">
-                  {{item.integrationState ? item.integrationState.description: ''}}</td>
-                <td scope="row">
-                  {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
-                </td>
-                <td scope="row" *ngIf="item.stats.length > 0">
-                  {{item.stats.length > 0 ? parcelNumber(item.stats[0].cadastreRecordsNumber): ''}}</td>
-                <td scope="row" *ngIf="item.stats.length > 0">
-                  {{item.stats.length > 0 ? parcelNumber(item.stats[0].snrRecordsNumber): ''}}</td>
-                <td scope="row" *ngIf="item.stats.length > 0">
-                  {{item.stats.length > 0 ? parcelNumber(item.stats[0].matchNumber): '0'}}</td>
-                <td scope="row" *ngIf="item.stats.length > 0">
-                  <b>{{item.stats.length > 0 ? roundDecimal(item.stats[0].percentage): '0'}}%</b>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="table-inverse table-responsive">
+        <table class="table table-striped">
+          <thead class="thead-inverse">
+            <tr>
+              <th>ID</th>
+              <th>Tipo</th>
+              <th>Descripción</th>
+              <th>Responsable</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of selectIntegration[0].histories; let index = index;">
+              <td scope="row">{{index + 1}}</td>
+              <td scope="row">{{item.state.name}}</td>
+              <td scope="row">{{item.state.description}}</td>
+              <td scope="row">{{item.userName}}</td>
+              <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    <div class="card">
-      <div class="card-header text-center">
-        <h5>Histórico de la Integración</h5>
+    <div class="modal-footer">
+    </div>
+  </ng-template>
+  <ng-template #modalXTF let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro que desea generar el producto a partir de la integración automática?
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción generará un nuevo XTF para el Municipio.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModalGenerateXTF(false)">No</button>
       </div>
-      <div class="card-body">
-        <div class="table-inverse table-responsive">
-          <table class="table table-striped">
-            <thead class="thead-inverse">
-              <tr>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Responsable</th>
-                <th>Fecha</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of selectIntegration[0].histories; let index = index;">
-                <td scope="row">{{index + 1}}</td>
-                <td scope="row">{{item.state.name}}</td>
-                <td scope="row">{{item.state.description}}</td>
-                <td scope="row">{{item.userName}}</td>
-                <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="col-6 text-right">
+        <button type="button" ngbAutofocus class="btn btn-success btn-block"
+          (click)="closeModalGenerateXTF(true)">Si</button>
       </div>
     </div>
-  </jw-modal>
-  <jw-modal id="modalXTF" class="mt-5">
-    <div class="card">
-      <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-      <div class="card-header">
-        <i class="cui-arrow-bottom"></i>
-        <h2 class="text-center font-weight-bold">
-          ¿Está seguro que desea generar el producto a partir de la integración automática?
-        </h2>
-        <h5 class="alert alert-warning text-center">Advertencia: Esta acción generará un nuevo XTF para el Municipio.
-        </h5>
+  </ng-template>
+
+  <ng-template #modalIntegration let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de iniciar la integración asistida?
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción genera una tarea a los integradores, para que con ayuda del asistente puedan mejorar el
+        porcentaje de integración.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModalIntegrationAssited(false)">No</button>
       </div>
-      <div class="card-body row">
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-primary btn-block" (click)="closeModalGenerateXTF('modalXTF',true);">
-            <h4>Sí</h4>
-          </button>
-        </div>
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-dark btn-block" (click)="closeModalGenerateXTF('modalXTF',false);">
-            <h4>No</h4>
-          </button>
-        </div>
+      <div class="col-6 text-right">
+        <button type="button" ngbAutofocus class="btn btn-success btn-block"
+          (click)="closeModalIntegrationAssited(true)">Si</button>
       </div>
     </div>
-  </jw-modal>
-  <jw-modal id="modalIntegration" class="mt-5">
-    <div class="card">
-      <div class="card-header">
-        <i class="cui-arrow-bottom"></i>
-        <h2 class="text-center font-weight-bold">
-          ¿Está seguro de iniciar la integración asistida?
-        </h2>
-        <h5 class="alert alert-warning text-center">Advertencia: Esta acción genera una tarea a los integradores, para
-          que con ayuda del asistente puedan mejorar el porcentaje de integración.</h5>
+  </ng-template>
+
+  <ng-template #modalCancel let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de eliminar la integración automática?
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción eliminara la integración.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModalcancel(false)">No</button>
       </div>
-      <div class="card-body row">
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-primary btn-block"
-            (click)="closeModalIntegrationAssited('modalIntegration', true);">
-            <h4>Sí</h4>
-          </button>
-        </div>
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-dark btn-block"
-            (click)="closeModalIntegrationAssited('modalIntegration', false);">
-            <h4>No</h4>
-          </button>
-        </div>
+      <div class="col-6 text-right">
+        <button type="button" ngbAutofocus class="btn btn-success btn-block"
+          (click)="closeModalcancel(true)">Si</button>
       </div>
     </div>
-  </jw-modal>
-  <jw-modal id="modalCancel" class="mt-5">
-    <div class="card">
-      <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-      <div class="card-header">
-        <i class="cui-arrow-bottom"></i>
-        <h2 class="text-center font-weight-bold">
-          ¿Está seguro de eliminar la integración automática?
-        </h2>
-        <h5 class="alert alert-warning text-center">Advertencia: Esta acción eliminara la integración.</h5>
+  </ng-template>
+
+  <ng-template #modalRegistrarxtf let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de realizar la integración?
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción realizará la integración automatica de
+        archivos XTF.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModalXTF(false)">No</button>
       </div>
-      <div class="card-body row">
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-primary btn-block" (click)="closeModalcancel('modalCancel',true);">
-            <h4>Sí</h4>
-          </button>
-        </div>
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-dark btn-block" (click)="closeModalcancel('modalCancel',false);">
-            <h4>No</h4>
-          </button>
-        </div>
+      <div class="col-6 text-right">
+        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModalXTF(true)">Si</button>
       </div>
     </div>
-  </jw-modal>
-  <jw-modal id="modalRegistrarxtf" class="mt-5">
-    <div class="card">
-      <div class="card-header">
-        <i class="cui-arrow-bottom"></i>
-        <h2 class="text-center font-weight-bold">
-          ¿Está seguro de realizar la integración?
-        </h2>
-        <h5 class="alert alert-warning text-center">Advertencia: Esta acción realizará la integración automatica de
-          archivos XTF.</h5>
-      </div>
-      <div class="card-body row">
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-primary btn-block" (click)="closeModalXTF('modalRegistrarxtf',true);">
-            <h4>Sí</h4>
-          </button>
-        </div>
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-dark btn-block" (click)="closeModalXTF('modalRegistrarxtf',false);">
-            <h4>No</h4>
-          </button>
-        </div>
-      </div>
-    </div>
-  </jw-modal>
+  </ng-template>
   <div id="actionForm"></div>
 </div>

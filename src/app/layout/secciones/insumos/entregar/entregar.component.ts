@@ -4,7 +4,7 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { ToastrService } from 'ngx-toastr';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-entregar',
   templateUrl: './entregar.component.html',
@@ -33,7 +33,7 @@ export class EntregarComponent implements OnInit {
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
     private toastr: ToastrService,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.usermanager = false;
     this.departments = [];
@@ -157,15 +157,15 @@ export class EntregarComponent implements OnInit {
       this.toastr.error("No has seleccionado ningún insumo, ó te faltan las observaciones")
     }
   }
-  openModal(modal: string) {
-    this.modalService.open(modal);
+  openModal(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModal(modal: string, option: boolean) {
+  closeModal(option: boolean) {
     if (option) {
       this.sendSupplies();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
   clickCheckBox() {

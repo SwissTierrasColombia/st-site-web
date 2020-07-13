@@ -184,7 +184,7 @@
                                     -->
                                 </td>
                                 <td class="text-center">
-                                    <i class="material-icons" (click)="deleteTypeSupply('modalDisabled', item.id)">
+                                    <i class="material-icons" (click)="deleteTypeSupply(modalDisabled, item.id)">
                                         delete
                                     </i>
                                 </td>
@@ -204,30 +204,27 @@
         </div>
     </div>
 </div>
-
-<jw-modal id="modalDisabled" class="mt-5">
-    <div class="card">
-        <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-        <div class="card-header">
-            <i class="cui-arrow-bottom"></i>
-            <h2 class="text-center font-weight-bold">
-                ¿Está seguro de Eliminar el tipo de insumo?
-            </h2>
-            <h5 class="alert alert-warning text-center">Advertencia: Esta acción eliminará el tipo de insumo.</h5>
+<ng-template #modalDisabled let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">
+            ¿Está seguro de Eliminar el tipo de insumo?
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <h5 class="alert alert-warning text-center">
+            Advertencia: Esta acción eliminará el tipo de insumo.
+        </h5>
+    </div>
+    <div class="modal-footer">
+        <div class="col-6">
+            <button type="button" class="btn btn-dark btn-block" (click)="closeModalDisabled(false)">No</button>
         </div>
-        <div class="card-body row">
-            <div class="text-center col-sm">
-                <button type="button" class="btn btn-primary btn-block"
-                    (click)="closeModalDisabled('modalDisabled',true);">
-                    <h4>Sí</h4>
-                </button>
-            </div>
-            <div class="text-center col-sm">
-                <button type="button" class="btn btn-dark btn-block"
-                    (click)="closeModalDisabled('modalDisabled',false);">
-                    <h4>No</h4>
-                </button>
-            </div>
+        <div class="col-6 text-right">
+            <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                (click)="closeModalDisabled(true)">Si</button>
         </div>
     </div>
-</jw-modal>
+</ng-template>

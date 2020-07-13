@@ -4,7 +4,7 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { saveAs } from 'file-saver';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-search',
@@ -29,7 +29,7 @@ export class SearchComponent implements OnInit {
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
-    private modalService: ModalService,
+    private modalService: NgbModal,
     private toastr: ToastrService
   ) {
     this.usermanager = false;
@@ -125,14 +125,14 @@ export class SearchComponent implements OnInit {
       }
     );
   }
-  closeModal(option: boolean, modal: string) {
-    this.modalService.close(modal);
+  closeModal(option: boolean) {
+    this.modalService.dismissAll();
     if (option) {
       this.deleteSupplies(this.idSupplieDelete);
     }
   }
-  openModal(idSupplieDelete: number, modal: string) {
+  openModal(idSupplieDelete: number, modal: any) {
     this.idSupplieDelete = idSupplieDelete;
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
 }

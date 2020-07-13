@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-integrations-possibles',
@@ -14,7 +14,7 @@ export class IntegrationsPossiblesComponent implements OnInit {
   constructor(
     private router: Router,
     private serviceWorkspace: WorkspacesService,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.dataIntegration = [];
     this.selectIntegration = {}
@@ -49,9 +49,9 @@ export class IntegrationsPossiblesComponent implements OnInit {
       }
     );
   }
-  openModalXTF(modal: string, item: any) {
+  openModalXTF(modal: any, item: any) {
     this.selectIntegration = item;
-    //this.modalService.open(modal);
+    //this.modalService.open(modal, { centered: true, scrollable: true });
     this.router.navigate(['/insumos/integracion',
       {
         departamento: this.selectIntegration.municipality.department.code,
@@ -60,7 +60,7 @@ export class IntegrationsPossiblesComponent implements OnInit {
       }
     ]);
   }
-  closeModalXTF(modal: string, option: boolean) {
+  closeModalXTF(option: boolean) {
     if (option) {
       this.router.navigate(['/insumos/integracion',
         {
@@ -72,7 +72,7 @@ export class IntegrationsPossiblesComponent implements OnInit {
       location.reload();
     }
     this.selectIntegration = {};
-    this.modalService.close(modal);
+    this.modalService.dismissAll();
   }
 
 }

@@ -262,8 +262,23 @@
         <a class="list-group-item" (click)="addExpandClass('profile')">
           <span><i class="fa fa-user"></i>&nbsp;{{user.first_name}}</span>
           <div class="ml-4">{{user.last_name}}</div>
-          <div class="ml-1" *ngFor="let item of user.roles">
-            {{item.name}}
+          <div class="ml-4" *ngIf="!user.is_provider_director">
+            <div *ngFor="let item of user.roles">
+              {{toUpperCasetoLowerCase(item.name)}}
+            </div>
+          </div>
+          <div class="ml-4" *ngIf="user.manager_sub_roles">
+            <div *ngFor="let item of user.manager_sub_roles">
+              {{toUpperCasetoLowerCase(item.name)}}
+            </div>
+          </div>
+          <div class="ml-4" *ngIf="user.provider_sub_roles">
+            <div *ngFor="let item of user.provider_sub_roles">
+              {{toUpperCasetoLowerCase(item.name)}}
+            </div>
+          </div>
+          <div class="ml-4" *ngIf="user.entity">
+            {{user.entity.name}}
           </div>
         </a>
         <li class="nested" [class.expand]="showMenu === 'profile'">

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { saveAs } from 'file-saver';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
@@ -37,7 +37,7 @@ export class BuscarSolicitudComponent implements OnInit {
   buttonTab3: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
-    private modalService: ModalService,
+    private modalService: NgbModal,
     private toastr: ToastrService,
     private serviceProvider: ProvidersService
   ) {

@@ -89,6 +89,8 @@ export class CreateUserComponent implements OnInit {
 
   ngOnInit() {
     this.dataUserLogger = JwtHelper.getUserPublicInformation();
+    console.log(this.dataUserLogger);
+
     this.roleConnect = this.dataUserLogger.roles.find(elem => {
       return elem.id === 5;
     });
@@ -165,16 +167,26 @@ export class CreateUserComponent implements OnInit {
       });
     }
     if (this.dataUserLogger.is_provider_director) {
-      this.registerData.state = [
-        {
-          id: 4,
-          name: 'Técnico',
-        },
-        {
-          id: 5,
-          name: 'Revisor'
-        }
-      ];
+      if (this.dataUserLogger.entity.id === 8) {
+        this.registerData.state = [
+          {
+            id: 4,
+            name: 'Técnico',
+          },
+          {
+            id: 5,
+            name: 'Revisor'
+          }
+        ];
+      } else {
+        this.selectROL = 4;
+        this.registerData.state = [
+          {
+            id: 4,
+            name: 'Técnico',
+          }
+        ];
+      }
       this.serviceWorkSpace.GetProviderProfiles().subscribe(
         data => {
           this.profilesProviders = data;
@@ -371,16 +383,26 @@ export class CreateUserComponent implements OnInit {
               });
             }
             if (this.dataUserLogger.is_provider_director) {
-              this.registerData.state = [
-                {
-                  id: 4,
-                  name: 'Técnico',
-                },
-                {
-                  id: 5,
-                  name: 'Revisor'
-                }
-              ];
+              if (this.dataUserLogger.entity.id === 8) {
+                this.registerData.state = [
+                  {
+                    id: 4,
+                    name: 'Técnico',
+                  },
+                  {
+                    id: 5,
+                    name: 'Revisor'
+                  }
+                ];
+              } else {
+                this.selectROL = 4;
+                this.registerData.state = [
+                  {
+                    id: 4,
+                    name: 'Técnico',
+                  }
+                ];
+              }
               this.serviceWorkSpace.GetProviderProfiles().subscribe(
                 data => {
                   this.profilesProviders = data;

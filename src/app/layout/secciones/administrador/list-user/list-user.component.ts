@@ -131,6 +131,7 @@ export class ListUserComponent implements OnInit {
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
+    event.stopPropagation();
   }
   isDirector(item) {
     let data = item.profilesManager.find(element => {

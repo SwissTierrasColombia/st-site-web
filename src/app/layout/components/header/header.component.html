@@ -11,8 +11,23 @@
         <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
           <i class="fa fa-user"></i>
           {{user.first_name}} {{user.last_name}}
-          <span *ngFor="let item of user.roles">
-            {{item.name}}
+          <span *ngIf="!user.is_provider_director">
+            <span *ngFor="let item of user.roles">
+              {{toUpperCasetoLowerCase(item.name)}}
+            </span>
+          </span>
+          <span *ngIf="user.manager_sub_roles">
+            <span *ngFor="let item of user.manager_sub_roles">
+              {{toUpperCasetoLowerCase(item.name)}}
+            </span>
+          </span>
+          <span *ngIf="user.provider_sub_roles">
+            <span *ngFor="let item of user.provider_sub_roles">
+              {{toUpperCasetoLowerCase(item.name)}}
+            </span>
+          </span>
+          <span *ngIf="user.entity">
+            {{user.entity.name}}
           </span>
           <b class="caret"></b>
         </a>
