@@ -59,28 +59,28 @@
                             </td>
                             <td scope="row">
                                 <span ngbTooltip="Ver detalle" placement="top" show-delay="500">
-                                    <i class="material-icons cursor ml-4" (click)="openModal(item,'modal-tab1')">
+                                    <i class="material-icons cursor ml-4" (click)="openModal(item, modaltab1)">
                                         pageview
                                     </i>
                                 </span>
                                 <span ngbTooltip="Generar XTF" placement="top" show-delay="500"
                                     *ngIf="item.integrationState.id === 2">
                                     <i class="material-icons cursor ml-4"
-                                        (click)="openModalGenerateXTF('modalXTF-tab1',item.id, item)">
+                                        (click)="openModalGenerateXTF(modalXTFtab1,item.id, item)">
                                         assignment_turned_in
                                     </i>
                                 </span>
                                 <span ngbTooltip="Iniciar integración asistida" placement="top" show-delay="500"
                                     *ngIf="item.integrationState.id === 2">
                                     <i class="material-icons cursor ml-4"
-                                        (click)="openModalIntegrationAssited('modalIntegration-tab1',item.id, item)">
+                                        (click)="openModalIntegrationAssited(modalIntegrationtab1,item.id, item)">
                                         important_devices
                                     </i>
                                 </span>
                                 <span ngbTooltip="Eliminar" placement="top" show-delay="500"
                                     *ngIf="item.integrationState.id === 2 || item.integrationState.id === 7">
                                     <i class="material-icons cursor ml-4"
-                                        (click)="openModalcancel('modalCancel-tab1',item.id, item)">
+                                        (click)="openModalcancel(modalCanceltab1,item.id, item)">
                                         delete
                                     </i>
                                 </span>
@@ -100,116 +100,118 @@
         <div class="card-footer text-muted">
         </div>
     </div>
-    <jw-modal id="modal-tab1">
-        <div class="card">
-            <div class="card-header text-center">
-                <h5>Histórico de la Integración</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-inverse table-responsive">
-                    <table class="table table-striped">
-                        <thead class="thead-inverse">
-                            <tr>
-                                <th>ID</th>
-                                <th>Tipo</th>
-                                <th>Descripción</th>
-                                <th>Responsable</th>
-                                <th>Fecha</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of selectIntegration.histories; let index = index;">
-                                <td scope="row">{{index + 1}}</td>
-                                <td scope="row">{{item.state.name}}</td>
-                                <td scope="row">{{item.state.description}}</td>
-                                <td scope="row">{{item.userName}}</td>
-                                <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <ng-template #modaltab1 let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Histórico de la Integración
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="table-inverse table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>ID</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Responsable</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of selectIntegration.histories; let index = index;">
+                            <td scope="row">{{index + 1}}</td>
+                            <td scope="row">{{item.state.name}}</td>
+                            <td scope="row">{{item.state.description}}</td>
+                            <td scope="row">{{item.userName}}</td>
+                            <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </jw-modal>
-    <jw-modal id="modalXTF-tab1" class="mt-5">
-        <div class="card">
-            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-            <div class="card-header">
-                <i class="cui-arrow-bottom"></i>
-                <h2 class="text-center font-weight-bold">
-                    ¿Está seguro que desea generar el producto a partir de la integración automática?
-                </h2>
-                <h5 class="alert alert-warning text-center">Advertencia: Esta acción generará un nuevo XTF para el
-                    Municipio.
-                </h5>
+        <div class="modal-footer">
+        </div>
+    </ng-template>
+    <ng-template #modalXTFtab1 let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro que desea generar el producto a partir de la integración automática?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción generará un nuevo XTF para el Municipio.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModalGenerateXTF(false)">No</button>
             </div>
-            <div class="card-body row">
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-primary btn-block"
-                        (click)="closeModalGenerateXTF('modalXTF-tab1',true);">
-                        <h4>Sí</h4>
-                    </button>
-                </div>
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-dark btn-block"
-                        (click)="closeModalGenerateXTF('modalXTF-tab1',false);">
-                        <h4>No</h4>
-                    </button>
-                </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                    (click)="closeModalGenerateXTF(true)">Si</button>
             </div>
         </div>
-    </jw-modal>
-    <jw-modal id="modalIntegration-tab1" class="mt-5">
-        <div class="card">
-            <div class="card-header">
-                <i class="cui-arrow-bottom"></i>
-                <h2 class="text-center font-weight-bold">
-                    ¿Está seguro de iniciar la integración asistida?
-                </h2>
-                <h5 class="alert alert-warning text-center">Advertencia: Esta acción genera una tarea a los
-                    integradores, para
-                    que con ayuda del asistente puedan mejorar el porcentaje de integración.</h5>
+    </ng-template>
+
+    <ng-template #modalIntegrationtab1 let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de iniciar la integración asistida?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción genera una tarea a los integradores, para que con ayuda del asistente puedan
+                mejorar el
+                porcentaje de integración.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block"
+                    (click)="closeModalIntegrationAssited(false)">No</button>
             </div>
-            <div class="card-body row">
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-primary btn-block"
-                        (click)="closeModalIntegrationAssited('modalIntegration-tab1', true);">
-                        <h4>Sí</h4>
-                    </button>
-                </div>
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-dark btn-block"
-                        (click)="closeModalIntegrationAssited('modalIntegration-tab1', false);">
-                        <h4>No</h4>
-                    </button>
-                </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                    (click)="closeModalIntegrationAssited(true)">Si</button>
             </div>
         </div>
-    </jw-modal>
-    <jw-modal id="modalCancel-tab1" class="mt-5">
-        <div class="card">
-            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-            <div class="card-header">
-                <i class="cui-arrow-bottom"></i>
-                <h2 class="text-center font-weight-bold">
-                    ¿Está seguro de eliminar la integración automática?
-                </h2>
-                <h5 class="alert alert-warning text-center">Advertencia: Esta acción eliminara la integración.</h5>
+    </ng-template>
+
+
+    <ng-template #modalCanceltab1 let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de eliminar la integración automática?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción eliminara la integración.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModalcancel(false)">No</button>
             </div>
-            <div class="card-body row">
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-primary btn-block"
-                        (click)="closeModalcancel('modalCancel-tab1',true);">
-                        <h4>Sí</h4>
-                    </button>
-                </div>
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-dark btn-block"
-                        (click)="closeModalcancel('modalCancel-tab1',false);">
-                        <h4>No</h4>
-                    </button>
-                </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                    (click)="closeModalcancel(true)">Si</button>
             </div>
         </div>
-    </jw-modal>
+    </ng-template>
 </div>

@@ -100,8 +100,8 @@
                                     Nombre
                                 </span>
                             </div>
-                            <input type="text" name="firstName" class="form-control" placeholder="Nombre"
-                                [(ngModel)]="firstName">
+                            <input type="text" (change)="changeInfoUser()" name="firstName" class="form-control"
+                                placeholder="Nombre" [(ngModel)]="firstName">
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
@@ -111,8 +111,8 @@
                                     Apellido
                                 </span>
                             </div>
-                            <input type="text" name="lastName" class="form-control" placeholder="Apellido"
-                                [(ngModel)]="lastName">
+                            <input type="text" (change)="changeInfoUser()" name="lastName" class="form-control"
+                                placeholder="Apellido" [(ngModel)]="lastName">
                         </div>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
         </div>
         <div class="card-footer text-muted text-center">
             <div class="col-12">
-                <button type="button" class="btn btn-dark" (click)="submitChange()">
+                <button type="button" class="btn btn-dark" (click)="submitChange()" [disabled]="!updateInfo">
                     Actualizar
                 </button>
             </div>
@@ -138,7 +138,7 @@
                             <li *ngFor="let item of profilesManagers; let index=index">
                                 {{item.name}}
                                 <label class="switch" [title]="item.enabled ? 'Eliminar perfil':'Agregar perfil'"
-                                    (click)="item.enabled ? openModalRemoveManager('modalRemoveManager',item):openModaladdManager('modalEnabled',item)">
+                                    (click)="item.enabled ? openModalRemoveManager(modalRemoveManager,item):openModaladdManager(modalEnabled,item)">
                                     <input name="changeProfilecheck{{index}}" [(ngModel)]="item.enabled" type="checkbox"
                                         (click)="clickCheckBox($event)">
                                     <span class="slider round"></span>
@@ -150,7 +150,7 @@
             </form>
         </div>
     </div>
-    <div class="card mt-2" *ngIf="provider">
+    <div class="card mt-2" *ngIf="provider && !isDelegado()">
         <div class="card-header text-center">
             <h2>Modificar Área de Trabajo</h2>
         </div>
@@ -162,7 +162,7 @@
                             <li *ngFor="let item of profilesProvider; let index=index">
                                 {{item.name}}
                                 <label class="switch" [title]="item.enabled ? 'Eliminar área':'Agregar área'"
-                                    (click)="item.enabled ? openModalRemoveProvider('modalRemoveProvider',item):openModaladdProvider('modalEnabledProvider',item)">
+                                    (click)="item.enabled ? openModalRemoveProvider(modalRemoveProvider,item):openModaladdProvider(modalEnabledProvider,item)">
                                     <input name="changeProfilecheckProvider{{index}}" [(ngModel)]="item.enabled"
                                         type="checkbox" (click)="clickCheckBox($event)">
                                     <span class="slider round"></span>
@@ -174,108 +174,103 @@
             </form>
         </div>
     </div>
-    <jw-modal id="modalEnabled" class="mt-5">
-        <div class="card">
-            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-            <div class="card-header">
-                <i class="cui-arrow-bottom"></i>
-                <h2 class="text-center font-weight-bold">
-                    ¿Está seguro de agregar el perfil?
-                </h2>
-                <h5 class="alert alert-warning text-center">Advertencia: Esta acción agregara un perfil al usuario.</h5>
+    <ng-template #modalEnabled let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de agregar el perfil?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción agregara un perfil al usuario.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModalEnabled(false)">No</button>
             </div>
-            <div class="card-body row">
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-primary btn-block"
-                        (click)="closeModalEnabled('modalEnabled',true);">
-                        <h4>Sí</h4>
-                    </button>
-                </div>
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-dark btn-block"
-                        (click)="closeModalEnabled('modalEnabled',false);">
-                        <h4>No</h4>
-                    </button>
-                </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                    (click)="closeModalEnabled(true)">Si</button>
             </div>
         </div>
-    </jw-modal>
-    <jw-modal id="modalRemoveManager" class="mt-5">
-        <div class="card">
-            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-            <div class="card-header">
-                <i class="cui-arrow-bottom"></i>
-                <h2 class="text-center font-weight-bold">
-                    ¿Está seguro de quitar el perfil?
-                </h2>
-                <h5 class="alert alert-warning text-center">Advertencia: Esta acción quitará el perfil al usuario.</h5>
+    </ng-template>
+    <ng-template #modalRemoveManager let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de quitar el perfil?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción quitará el perfil al usuario.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block"
+                    (click)="closeModalRemoveManager(false)">No</button>
             </div>
-            <div class="card-body row">
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-primary btn-block"
-                        (click)="closeModalRemoveManager('modalRemoveManager',true);">
-                        <h4>Sí</h4>
-                    </button>
-                </div>
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-dark btn-block"
-                        (click)="closeModalRemoveManager('modalRemoveManager',false);">
-                        <h4>No</h4>
-                    </button>
-                </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                    (click)="closeModalRemoveManager(true)">Si</button>
             </div>
         </div>
-    </jw-modal>
-    <jw-modal id="modalEnabledProvider" class="mt-5">
-        <div class="card">
-            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-            <div class="card-header">
-                <i class="cui-arrow-bottom"></i>
-                <h2 class="text-center font-weight-bold">
-                    ¿Está seguro de agregar el perfil?
-                </h2>
-                <h5 class="alert alert-warning text-center">Advertencia: Esta acción agregara un perfil al usuario.</h5>
+    </ng-template>
+    <ng-template #modalEnabledProvider let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de agregar el perfil?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción agregara un perfil al usuario.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block"
+                    (click)="closeModalEnabledProvider(false)">No</button>
             </div>
-            <div class="card-body row">
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-primary btn-block"
-                        (click)="closeModalEnabledProvider('modalEnabledProvider',true);">
-                        <h4>Sí</h4>
-                    </button>
-                </div>
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-dark btn-block"
-                        (click)="closeModalEnabledProvider('modalEnabledProvider',false);">
-                        <h4>No</h4>
-                    </button>
-                </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                    (click)="closeModalEnabledProvider(true)">Si</button>
             </div>
         </div>
-    </jw-modal>
-    <jw-modal id="modalRemoveProvider" class="mt-5">
-        <div class="card">
-            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-            <div class="card-header">
-                <i class="cui-arrow-bottom"></i>
-                <h2 class="text-center font-weight-bold">
-                    ¿Está seguro de quitar el perfil?
-                </h2>
-                <h5 class="alert alert-warning text-center">Advertencia: Esta acción quitará el perfil al usuario.</h5>
+    </ng-template>
+    <ng-template #modalRemoveProvider let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de quitar el perfil?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción quitará el perfil al usuario.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block"
+                    (click)="closeModalRemoveProvider(false)">No</button>
             </div>
-            <div class="card-body row">
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-primary btn-block"
-                        (click)="closeModalRemoveProvider('modalRemoveProvider',true);">
-                        <h4>Sí</h4>
-                    </button>
-                </div>
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-dark btn-block"
-                        (click)="closeModalRemoveProvider('modalRemoveProvider',false);">
-                        <h4>No</h4>
-                    </button>
-                </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                    (click)="closeModalRemoveProvider(true)">Si</button>
             </div>
         </div>
-    </jw-modal>
+    </ng-template>
 </div>

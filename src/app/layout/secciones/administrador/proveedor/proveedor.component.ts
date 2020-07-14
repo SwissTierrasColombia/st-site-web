@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class ProveedorComponent implements OnInit {
   constructor(
     private serviceProvider: ProvidersService,
     private toast: ToastrService,
-    private modalService: ModalService) {
+    private modalService: NgbModal) {
     this.dataProfile = [];
     this.data = {
       name: "",
@@ -71,11 +71,11 @@ export class ProveedorComponent implements OnInit {
     });
     this.editMode = true;
   }
-  deleteProfile(modal: string, id: number) {
+  deleteProfile(modal: any, id: number) {
     this.modalService.open(modal)
     this.idProfileDelete = id;
   }
-  closeModalDisabled(modal: string, option: boolean) {
+  closeModalDisabled(option: boolean) {
     if (option) {
       this.serviceProvider.deleteProvider(this.idProfileDelete).subscribe(
         _ => {
@@ -89,9 +89,9 @@ export class ProveedorComponent implements OnInit {
           );
         }
       );
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
   nitIsValid(nit) {

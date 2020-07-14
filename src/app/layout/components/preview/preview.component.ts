@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewService } from 'src/app/services/preview/preview.service';
 
 import Map from 'ol/Map';
@@ -31,12 +31,15 @@ export class PreviewComponent implements OnInit, OnChanges {
   @Input() files: FileList = null;
 
   @Input() url: string = '';
+  @Input() version: string = '';
   @Input() icon = false;
 
   showmap = true;
   pdfdata = null;
   valid = false;
   validCTM12 = false;
+  active = false;
+  hasPreview=true;
 
   crs = 'una proyección desconocida';
 
@@ -115,7 +118,7 @@ export class PreviewComponent implements OnInit, OnChanges {
   };
 
   constructor(
-    private modalService: ModalService,
+    private modalService: NgbModal,
     private previewService: PreviewService
   ) { }
 
@@ -128,8 +131,8 @@ export class PreviewComponent implements OnInit, OnChanges {
   ngOnInit(): void {
   }
 
-  clickbtn() {
-    this.modalService.open('mapPreview');
+  clickbtn(modal: any) {
+    this.modalService.open(modal, { scrollable: true, size: 'xl' });
     if (this.showmap) {
 
       if (this.map !== null && this.map !== undefined) {
@@ -180,15 +183,21 @@ export class PreviewComponent implements OnInit, OnChanges {
   }
 
   getPreviewUrl(file: string) {
-
-    this.previewService.getLayersSupply(file).subscribe((data: any) => {
+    this.showmap = true;
+    this.previewService.getLayersSupply(file, this.version).subscribe((data: any) => {
       if (data) {
-        this.layers.push(data);
-        this.valid = true;
+        if (Object.keys(data).length === 0 && data.constructor === Object) {
+          this.valid = false;
+          this.hasPreview =false;
+        } else {
+          this.layers.push(data);
+          this.valid = true;
+        }
       } else {
+        this.valid = false;
       }
     }, (e) => {
-      console.log(e);
+      this.valid = false;
     });
   }
 
@@ -210,7 +219,7 @@ export class PreviewComponent implements OnInit, OnChanges {
       };
       let validation = (new GeoJSON()).readFeatures(l);
       for (let f of validation) {
-        if (!containsExtent(f.getGeometry().getExtent(), [ 5700000, 3100000, 3980000, 1080000])) {
+        if (!containsExtent(f.getGeometry().getExtent(), [5700000, 3100000, 3980000, 1080000])) {
           this.validCTM12 = false;
           params = {
             featureProjection: 'EPSG:38820'
@@ -220,7 +229,7 @@ export class PreviewComponent implements OnInit, OnChanges {
       }
 
       let features = (new GeoJSON(params)).readFeatures(l);
-      
+
       let vectorSource = new VectorSource({
         features: features,
         loader: function () {
@@ -232,7 +241,7 @@ export class PreviewComponent implements OnInit, OnChanges {
         style: this.styleFunction.bind(this)
       });
       this.map.addLayer(vectorLayer);
-      
+
     }
   }
 

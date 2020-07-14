@@ -85,7 +85,7 @@
                                     <th>Fecha de Cargue</th>
                                     <th>Modelo</th>
                                     <th>Observación</th>
-                                    <th>Descargar</th>
+                                    <th>Opciones</th>
                                     <th *ngIf="usermanager">Eliminar</th>
                                 </tr>
                             </thead>
@@ -95,16 +95,16 @@
                                     <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'N/A'}}</td>
                                     <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
                                     <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
-                                    <td scope="row">{{item.observations}}</td>
+                                    <td scope="row"><textarea readonly style="border: none; background: #dedede;">{{item.observations}}</textarea></td>
                                     <td scope="row">
-                                        <i alt="Descargar" title="Descargar" class="material-icons cursor"
+                                        <i alt="Descargar" title="Descargar insumo" class="material-icons cursor"
                                         style="float: left;"
                                             (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
                                             cloud_download </i>
-                                        <app-preview *ngIf="item.attachments" [icon]="true" [url]="item.attachments[0].urlDocumentaryRepository"></app-preview>
+                                        <app-preview *ngIf="item&&item.attachments?item.attachments:false" [icon]="true" [url]="item&&item.attachments.length>0?item.attachments[0].urlDocumentaryRepository:''"></app-preview>
                                     </td>
                                     <td scope="row" *ngIf="usermanager">
-                                        <i class="material-icons cursor" (click)="openModal(item.id, 'custom-modal-2')">
+                                        <i class="material-icons cursor" (click)="openModal(item.id, customModal2)">
                                             delete_forever
                                         </i></td>
                                 </tr>
@@ -115,30 +115,28 @@
             </div>
         </div>
     </div>
-    <jw-modal id="custom-modal-2" class="mt-5">
-        <div class="card">
-            <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-            <div class="card-header">
-                <i class="cui-arrow-bottom"></i>
-                <h2 class="text-center font-weight-bold">
-                    ¿Está seguro de eliminar el insumo?
-                </h2>
-                <h5 class="alert alert-warning text-center">Advertencia: El insumo se borrará permanentemente del
-                    Sistema.</h5>
+    <ng-template #customModal2 let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de eliminar el insumo?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: El insumo se borrará permanentemente del Sistema.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
             </div>
-            <div class="card-body row">
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-primary btn-block"
-                        (click)="closeModal(true,'custom-modal-2');">
-                        <h4>Sí</h4>
-                    </button>
-                </div>
-                <div class="text-center col-sm">
-                    <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false,'custom-modal-2');">
-                        <h4>No</h4>
-                    </button>
-                </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                    (click)="closeModal(true)">Si</button>
             </div>
         </div>
-    </jw-modal>
+    </ng-template>
 </div>

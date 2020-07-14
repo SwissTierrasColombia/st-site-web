@@ -95,36 +95,32 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="button" class="btn btn-dark" (click)="openModal('custom-modal-3')">Cerrar entrega</button>
+                <button type="button" class="btn btn-dark" (click)="openModal(custommodal3)">Cerrar entrega</button>
             </div>
         </div>
-        <jw-modal id="custom-modal-3">
-            <div class="card">
-                <div class="card-header">
-                    <i class="cui-arrow-bottom"></i>
-                    <h2 class="text-center font-weight-bold">
-                        ¿Está seguro de cerrar la entrega?
-                    </h2>
+        <ng-template #custommodal3 let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    ¿Está seguro de cerrar la entrega?
+                </h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5 class="alert alert-warning text-center">
+                    Tenga en cuenta, que una vez cerrada la entrega, no podrá descargar nuevamente estos insumos.
+                </h5>
+            </div>
+            <div class="modal-footer">
+                <div class="col-6">
+                    <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
                 </div>
-                <div class="card-body row">
-                    <div class="card-title col-12">
-                        <h5>Tenga en cuenta, que una vez cerrada la entrega, no podrá descargar nuevamente estos
-                            insumos.</h5>
-                    </div>
-                    <div class="text-center col-sm">
-                        <button type="button" class="btn btn-primary btn-block"
-                            (click)="closeModal(true,'custom-modal-3');">
-                            <h4>Sí</h4>
-                        </button>
-                    </div>
-                    <div class="text-center col-sm">
-                        <button type="button" class="btn btn-dark btn-block"
-                            (click)="closeModal(false,'custom-modal-3');">
-                            <h4>No</h4>
-                        </button>
-                    </div>
+                <div class="col-6 text-right">
+                    <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                        (click)="closeModal(true)">Si</button>
                 </div>
             </div>
-        </jw-modal>
+        </ng-template>
     </div>
 </div>

@@ -86,7 +86,7 @@
             <button *ngIf="editForm.municipalityArea" type="button" class="btn btn-primary btn-sm btn-block"
               (click)="changeUpdate()">Editar</button>
             <button *ngIf="editForm.municipalityArea === false" type="button" class="btn btn-primary btn-sm btn-block"
-              (click)="openModalUpdate('modalRegistrar')">Actualizar</button>
+              (click)="openModalUpdate(modalRegistrar)">Actualizar</button>
           </div>
           <h3>Gestor</h3>
           <div class="form-group row">
@@ -198,7 +198,7 @@
                 </div>
               </div>
             </div>
-                      <!-- <div class='col-12 col-sm-6  mb-1'>
+            <!-- <div class='col-12 col-sm-6  mb-1'>
             <div class="form-group form-check">
               <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1"
                 [(ngModel)]="splitZones" disabled="true">
@@ -245,58 +245,58 @@
             <button *ngIf="replaceOperator === false" type="button" class="btn btn-dark"
               (click)="assingOperatorInWorkSpace()">Asignar Operador</button>
             <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark"
-              (click)="openModal('modal-operator')">Asignar Operador</button>
+              (click)="openModal(modalOperator)">Asignar Operador</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <jw-modal id="modal-operator" class="mt-5">
-    <div class="card">
-      <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-      <div class="card-header">
-        <i class="cui-arrow-bottom"></i>
-        <h2 class="text-center font-weight-bold">
-          ¿Está seguro de modificar los datos del Operador?
-        </h2>
-        <h5 class="alert alert-warning text-center">Advertencia: Esta acción generará un nuevo espacio de trabajo para
-          el Municipio.</h5>
+  <ng-template #modalOperator let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de modificar los datos del Operador?
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción generará un nuevo espacio de trabajo para el Municipio.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
       </div>
-      <div class="card-body row">
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-primary btn-block" (click)="closeModal(true,'modal-operator');">
-            <h4>Sí</h4>
-          </button>
-        </div>
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false,'modal-operator');">
-            <h4>No</h4>
-          </button>
-        </div>
+      <div class="col-6 text-right">
+        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true)">Si</button>
       </div>
     </div>
-  </jw-modal>
-  <jw-modal id="modalRegistrar" class="mt-5">
-    <div class="card">
-      <div class="card-header">
-        <i class="cui-arrow-bottom"></i>
-        <h2 class="text-center font-weight-bold">
-          ¿Está seguro de actualizar la información?
-        </h2>
-        <h5 class="alert alert-warning text-center">Advertencia: Esta acción actualizará la información del espacio de trabajo.</h5>
+  </ng-template>
+
+  <ng-template #modalRegistrar let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de actualizar la información?
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción actualizará la información del espacio de trabajo.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModalUpdate(false)">No</button>
       </div>
-      <div class="card-body row">
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-primary btn-block" (click)="closeModalUpdate('modalRegistrar',true);">
-            <h4>Sí</h4>
-          </button>
-        </div>
-        <div class="text-center col-sm">
-          <button type="button" class="btn btn-dark btn-block" (click)="closeModalUpdate('modalRegistrar',false);">
-            <h4>No</h4>
-          </button>
-        </div>
+      <div class="col-6 text-right">
+        <button type="button" ngbAutofocus class="btn btn-success btn-block"
+          (click)="closeModalUpdate(true)">Si</button>
       </div>
     </div>
-  </jw-modal>
+  </ng-template>
 </div>

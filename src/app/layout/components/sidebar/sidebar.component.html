@@ -260,8 +260,26 @@
     <div class="header-fields">
       <div class="nested-menu">
         <a class="list-group-item" (click)="addExpandClass('profile')">
-          <span><i class="fa fa-user"></i>&nbsp;{{user.first_name}}</span><br><span
-            class="ml-4">{{user.last_name}}</span>
+          <span><i class="fa fa-user"></i>&nbsp;{{user.first_name}}</span>
+          <div class="ml-4">{{user.last_name}}</div>
+          <div class="ml-4" *ngIf="!user.is_provider_director">
+            <div *ngFor="let item of user.roles">
+              {{toUpperCasetoLowerCase(item.name)}}
+            </div>
+          </div>
+          <div class="ml-4" *ngIf="user.manager_sub_roles">
+            <div *ngFor="let item of user.manager_sub_roles">
+              {{toUpperCasetoLowerCase(item.name)}}
+            </div>
+          </div>
+          <div class="ml-4" *ngIf="user.provider_sub_roles">
+            <div *ngFor="let item of user.provider_sub_roles">
+              {{toUpperCasetoLowerCase(item.name)}}
+            </div>
+          </div>
+          <div class="ml-4" *ngIf="user.entity">
+            {{user.entity.name}}
+          </div>
         </a>
         <li class="nested" [class.expand]="showMenu === 'profile'">
           <ul class="submenu">
@@ -270,16 +288,6 @@
                 <span><i class="fa fa-fw fa-user"></i> Perfil</span>
               </a>
             </li>
-            <!-- <li>
-              <a href="javascript:void(0)">
-                <span><i class="fa fa-fw fa-envelope"></i> Bandeja de entrada</span>
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <span><i class="fa fa-fw fa-gear"></i> Configuración</span>
-              </a>
-            </li> -->
             <li>
               <a [routerLink]="['/login']" (click)="onLoggedout()">
                 <span><i class="fa fa-fw fa-power-off"></i> Cerrar sesión</span>
