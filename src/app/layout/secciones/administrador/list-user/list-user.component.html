@@ -20,6 +20,7 @@
                 <th *ngIf="!roleConnectSuperAdmin">
                   {{(roleConnectAdmin || roleConnectManager)?'Perfil':'Área de trabajo'}}</th>
                 <th *ngIf="roleConnectAdmin">Área de trabajo</th>
+                <th *ngIf="roleConnectProvider">Perfil</th>
                 <th>Usuario</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
@@ -58,6 +59,10 @@
                     *ngIf="item.profilesManager.length == 0 && item.profilesProvider.length == 0 && item.rolesProvider.length == 0">
                     N/A
                   </div>
+                  <div
+                    *ngIf="item.profilesManager.length == 0 && item.profilesProvider.length == 0 && isDelegado(item) && roleConnectProvider">
+                    N/A
+                  </div>
                   <div *ngIf="roleConnectAdmin && item.rolesProvider.length == 0 && isProvider(item)">
                     TÉCNICO
                   </div>
@@ -70,6 +75,14 @@
                   </div>
                   <div *ngIf="item.profilesProvider.length === 0">
                     N/A
+                  </div>
+                </td>
+                <td scope="row" *ngIf="roleConnectProvider">
+                  <div *ngIf="isDelegado(item)">
+                    Revisor
+                  </div>
+                  <div *ngIf="!isDelegado(item)">
+                    Técnico
                   </div>
                 </td>
                 <td scope="row">{{item.username}}</td>
@@ -96,7 +109,7 @@
                 <td scope=row *ngIf="roleConnectAdmin">
                   <div *ngIf="isDirector(item)">
                     <label class="switch" [title]="item.enabled ? 'Desactivar Usuario':'Activar Usuario'"
-                      (click)="item.enabled ? openModalDisabled('modalDisabled', item.id):openModalEnabled('modalEnabled', item.id)">
+                      (click)="item.enabled ? openModalDisabled(modalDisabled, item.id):openModalEnabled(modalEnabled, item.id)">
                       <input (click)="clickCheckBox($event)" [(ngModel)]="item.enabled" type="checkbox">
                       <span class="slider round"></span>
                     </label>
@@ -104,7 +117,7 @@
                 </td>
                 <td scope=row *ngIf="!roleConnectAdmin">
                   <label class="switch" [title]="item.enabled ? 'Desactivar Usuario':'Activar Usuario'"
-                    (click)="item.enabled ? openModalDisabled('modalDisabled', item.id):openModalEnabled('modalEnabled', item.id)">
+                    (click)="item.enabled ? openModalDisabled(modalDisabled, item.id):openModalEnabled(modalEnabled, item.id)">
                     <input (click)="clickCheckBox($event)" [(ngModel)]="item.enabled" type="checkbox">
                     <span class="slider round"></span>
                   </label>
@@ -114,57 +127,48 @@
           </table>
         </div>
       </div>
-      <jw-modal id="modalDisabled" class="mt-5">
-        <div class="card">
-          <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-          <div class="card-header">
-            <i class="cui-arrow-bottom"></i>
-            <h2 class="text-center font-weight-bold">
-              ¿Está seguro de desactivar el usuario?
-            </h2>
-            <h5 class="alert alert-warning text-center">Advertencia: Esta acción deshabilita el usuario y no lo dejara
-              ingresar al sistema.</h5>
+      <ng-template #modalDisabled let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">¿Está seguro de desactivar el usuario?</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5 class="alert alert-warning text-center">Advertencia: Esta acción deshabilita el usuario y no lo dejara
+            ingresar al sistema.</h5>
+        </div>
+        <div class="modal-footer">
+          <div class="col-6">
+            <button type="button" class="btn btn-dark btn-block" (click)="closeModalDisabled(false)">No</button>
           </div>
-          <div class="card-body row">
-            <div class="text-center col-sm">
-              <button type="button" class="btn btn-primary btn-block"
-                (click)="closeModalDisabled('modalDisabled',true);">
-                <h4>Sí</h4>
-              </button>
-            </div>
-            <div class="text-center col-sm">
-              <button type="button" class="btn btn-dark btn-block" (click)="closeModalDisabled('modalDisabled',false);">
-                <h4>No</h4>
-              </button>
-            </div>
+          <div class="col-6 text-right">
+            <button type="button" ngbAutofocus class="btn btn-success btn-block"
+              (click)="closeModalDisabled(true)">Si</button>
           </div>
         </div>
-      </jw-modal>
-      <jw-modal id="modalEnabled" class="mt-5">
-        <div class="card">
-          <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-          <div class="card-header">
-            <i class="cui-arrow-bottom"></i>
-            <h2 class="text-center font-weight-bold">
-              ¿Está seguro de activar el usuario?
-            </h2>
-            <h5 class="alert alert-warning text-center">Advertencia: Esta acción habilita el usuario y le permitirá el
-              ingreso al sistema.</h5>
+      </ng-template>
+      <ng-template #modalEnabled let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">¿Está seguro de activar el usuario?</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5 class="alert alert-warning text-center">Advertencia: Esta acción habilita el usuario y le permitirá el
+            ingreso al sistema.</h5>
+        </div>
+        <div class="modal-footer">
+          <div class="col-6">
+            <button type="button" class="btn btn-dark btn-block" (click)="closeModalEnabled(false)">No</button>
           </div>
-          <div class="card-body row">
-            <div class="text-center col-sm">
-              <button type="button" class="btn btn-primary btn-block" (click)="closeModalEnabled('modalEnabled',true);">
-                <h4>Sí</h4>
-              </button>
-            </div>
-            <div class="text-center col-sm">
-              <button type="button" class="btn btn-dark btn-block" (click)="closeModalEnabled('modalEnabled',false);">
-                <h4>No</h4>
-              </button>
-            </div>
+          <div class="col-6 text-right">
+            <button type="button" ngbAutofocus class="btn btn-success btn-block"
+              (click)="closeModalEnabled(true)">Si</button>
           </div>
         </div>
-      </jw-modal>
+      </ng-template>
     </div>
   </div>
 </div>

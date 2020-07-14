@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Select2OptionData } from 'ng-select2';
 import { Options } from 'select2';
@@ -38,7 +38,7 @@ export class CrearTipoInsumoComponent implements OnInit {
   viewOtherFormat: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
-    private modalService: ModalService,
+    private modalService: NgbModal,
     private toast: ToastrService
   ) {
     this.id = 0;
@@ -272,12 +272,12 @@ export class CrearTipoInsumoComponent implements OnInit {
     return names.join(', ');
   }
 
-  deleteTypeSupply(modal: string, id: number) {
+  deleteTypeSupply(modal: any, id: number) {
     this.modalService.open(modal)
     this.id = id;
   }
 
-  closeModalDisabled(modal: string, option: boolean) {
+  closeModalDisabled(option: boolean) {
     if (option) {
       this.serviceWorkspaces.deleteTypeSupplies(this.id).subscribe(
         _ => {
@@ -286,9 +286,9 @@ export class CrearTipoInsumoComponent implements OnInit {
           this.loadProviderTypeSupplies();
         }
       );
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
 

@@ -37,7 +37,7 @@ export class DeliveriesSuppliesComponent implements OnInit {
     return moment(date).format('ll, h:mm a');
   }
   load(IdEntrega: number) {
-    this.router.navigate(['/operador/entrega/' + IdEntrega + '/descargar']);
+    this.router.navigate(['/operador/descarga/' + IdEntrega + '/insumo']);
   }
 
 }

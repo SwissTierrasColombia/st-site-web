@@ -1,5 +1,5 @@
 <div>
-    <app-page-header [heading]="'Información entrega atendida'" [icon]="'fa-star'">
+    <app-page-header [heading]="'Descarga de insumo pendiente'" [icon]="'fa-star'">
     </app-page-header>
     <div class="justify-content-center text-center mb-2">
         <div class="card text-center">
@@ -10,7 +10,7 @@
                     </span>
                 </div>
                 <div class="col-12">
-                    <h3>Información general de los insumos atendidos</h3>
+                    <h3>Información general de los insumos</h3>
                 </div>
             </div>
             <div class="card-body">
@@ -37,7 +37,7 @@
                                 <td scope="row">{{item.observations}}</td>
                                 <td scope="row" *ngIf="isAllDownloadReports">
                                     <span ngbTooltip="Descargar reporte general" placement="bottom" show-delay="500">
-                                        <i class="material-icons"
+                                        <i class="material-icons" style="color: red;"
                                             (click)="downloadGeneralReport('Reporte-general-entrega')">
                                             description
                                         </i>
@@ -53,7 +53,7 @@
     <div class="justify-content-center text-center">
         <div class="card text-center">
             <div class="card-header">
-                <h3>Insumos</h3>
+                <h3>Descarga de insumos</h3>
             </div>
             <div class="card-body">
                 <div class="table-inverse table-responsive">
@@ -62,9 +62,8 @@
                             <tr>
                                 <th>Insumo</th>
                                 <th>Observaciones</th>
-                                <th>Fecha de descarga</th>
-                                <th>Descargado por</th>
-                                <th>Correo</th>
+                                <th>Descargar</th>
+                                <th>Fecha de descarga y reporte</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,19 +71,56 @@
                                 <td scope="row">{{item.supply.typeSupply ? item.supply.typeSupply.name: 'N/A'}}</td>
                                 <td scope="row">{{item.observations}}</td>
                                 <td scope="row">
-                                    {{item.downloadedAt ? formatDate(item.downloadedAt) :'No se ha descargado el insumo.'}}
-                                </td>
-                                <td scope=row>
-                                    {{item.userDownloaded.firstName}} <br>{{item.userDownloaded.lastName}}
+                                    <span ngbTooltip="Descargar insumo" placement="bottom" show-delay="500">
+                                        <i class="material-icons cursor"
+                                            (click)="downloadSupplies(item.supplyCode, item.supply.typeSupply ? item.supply.typeSupply.name: 'Insumo')">
+                                            cloud_download
+                                        </i>
+                                    </span>
                                 </td>
                                 <td scope="row">
-                                    {{item.userDownloaded.email}}
+                                    {{item.downloadedAt ? formatDate(item.downloadedAt) :'No se ha descargado el insumo.'}}
+                                    <div *ngIf="item.downloaded">
+                                        <span ngbTooltip="Descargar reporte" placement="bottom" show-delay="500">
+                                            <i class="material-icons" style="color: red;"
+                                                (click)="downloadReport(item.supplyCode, item.supply.typeSupply ? item.supply.typeSupply.name: 'Insumo')">
+                                                description
+                                            </i>
+                                        </span>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-dark" (click)="openModal(custommodal3)">Cerrar entrega</button>
+            </div>
         </div>
+        <ng-template #custommodal3 let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    ¿Está seguro de cerrar la entrega?
+                </h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5 class="alert alert-warning text-center">
+                    Tenga en cuenta, que una vez cerrada la entrega, no podrá descargar nuevamente estos insumos.
+                </h5>
+            </div>
+            <div class="modal-footer">
+                <div class="col-6">
+                    <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
+                </div>
+                <div class="col-6 text-right">
+                    <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                        (click)="closeModal(true)">Si</button>
+                </div>
+            </div>
+        </ng-template>
     </div>
 </div>

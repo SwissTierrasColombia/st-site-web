@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
 import { JwtHelper } from 'src/app/helpers/jwt';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -30,7 +30,7 @@ export class CreateUserComponent implements OnInit {
     private serviceWorkSpace: WorkspacesService,
     private toast: ToastrService,
     private serviceOperators: OperatorsService,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.profilesManagers = [];
     this.profilesProviders = [];
@@ -72,6 +72,7 @@ export class CreateUserComponent implements OnInit {
         operatorId: 0
       },
       roleProvider: {
+        isTechnical: false,
         profiles: [],
         providerId: 0,
         roleId: 4
@@ -88,6 +89,8 @@ export class CreateUserComponent implements OnInit {
 
   ngOnInit() {
     this.dataUserLogger = JwtHelper.getUserPublicInformation();
+    console.log(this.dataUserLogger);
+
     this.roleConnect = this.dataUserLogger.roles.find(elem => {
       return elem.id === 5;
     });
@@ -164,13 +167,26 @@ export class CreateUserComponent implements OnInit {
       });
     }
     if (this.dataUserLogger.is_provider_director) {
-      this.selectROL = 4;
-      this.registerData.state = [
-        {
-          id: 4,
-          name: 'Proveedor',
-        }
-      ];
+      if (this.dataUserLogger.entity.id === 8) {
+        this.registerData.state = [
+          {
+            id: 4,
+            name: 'Técnico',
+          },
+          {
+            id: 5,
+            name: 'Revisor'
+          }
+        ];
+      } else {
+        this.selectROL = 4;
+        this.registerData.state = [
+          {
+            id: 4,
+            name: 'Técnico',
+          }
+        ];
+      }
       this.serviceWorkSpace.GetProviderProfiles().subscribe(
         data => {
           this.profilesProviders = data;
@@ -202,7 +218,8 @@ export class CreateUserComponent implements OnInit {
       this.registerData.username &&
       this.validateEmail(this.registerData.email) &&
       this.registerData.password &&
-      this.registerData.confirmationPassword) {
+      this.registerData.confirmationPassword
+      && this.selectROL != 0) {
       this.botonRegistrar = false;
     } else {
       this.botonRegistrar = true;
@@ -210,7 +227,7 @@ export class CreateUserComponent implements OnInit {
   }
   register() {
     if (this.registerData.password === this.registerData.confirmationPassword) {
-      const data = {
+      let data = {
         email: this.registerData.email,
         username: this.registerData.username,
         firstName: this.registerData.firstName,
@@ -240,13 +257,26 @@ export class CreateUserComponent implements OnInit {
         } else {
           delete data.roleOperator;
         }
-        if (this.selectROL === 4) {
-          this.registerData.roleProvider.roleId = 4;
-          data.roleProvider = this.registerData.roleProvider;
+
+        if (this.selectROL === 4 || this.selectROL === 5) {
+          if (this.selectROL === 5) {
+            if (this.roleConnect.id === 4) {
+              this.registerData.roleProvider.roleId = 4;
+              this.registerData.roleProvider.isTechnical = false;
+              this.registerData.roleProvider.profiles = [2];
+              data.roleProvider = this.registerData.roleProvider;
+            }
+          }
+          if (this.selectROL === 4) {
+            this.registerData.roleProvider.roleId = 4;
+            data.roleProvider = this.registerData.roleProvider;
+            if (this.roleConnect.id === 4) {
+              this.registerData.roleProvider.isTechnical = true;
+            }
+          }
         } else {
           delete data.roleProvider;
         }
-
         this.serviceWorkSpace.CreateUser(data).subscribe(
           _ => {
             this.toast.success('Se ha registrado el usuario ' + FuntionsGlobalsHelper.clone(this.registerData.username) + ' Correctamente');
@@ -258,7 +288,7 @@ export class CreateUserComponent implements OnInit {
                 },
                 {
                   id: 2,
-                  name: 'gestor',
+                  name: 'Gestor',
                 },
                 {
                   id: 3,
@@ -288,21 +318,14 @@ export class CreateUserComponent implements OnInit {
                 operatorId: 0
               },
               roleProvider: {
+                isTechnical: false,
                 profiles: [],
                 providerId: 0,
                 roleId: 4
-              },
+              }
             };
-            if (!this.roleConnect) {
-              this.roleConnect = this.dataUserLogger.roles.find(elem => {
-                return elem.id === 1;
-              });
-            }
-            if (!this.roleConnect) {
-              this.roleConnect = this.dataUserLogger.roles.find(elem => {
-                return elem.id === 2;
-              });
-            }
+            this.botonRegistrar = true;
+            this.selectROL = 0;
             if (this.roleConnect.id === 1) {
               this.registerData.state = [{
                 id: 2,
@@ -326,11 +349,6 @@ export class CreateUserComponent implements OnInit {
                   this.providers = data;
                 }
               );
-              this.serviceProviders.getProviders().subscribe(
-                data => {
-                  this.providers = data;
-                }
-              );
               this.serviceOperators.getOperatorsByFilters().subscribe(
                 response => {
                   this.operators = response;
@@ -344,21 +362,52 @@ export class CreateUserComponent implements OnInit {
                 name: 'Administrador',
               }]
             }
-            if (this.dataUserLogger.is_manager_director && this.roleConnect.id === 2) {
+
+            if (this.dataUserLogger.is_manager_director) {
+              this.selectROL = 2;
               this.registerData.state = [
                 {
                   id: 2,
                   name: 'Gestor',
-                },
-                {
-                  id: 3,
-                  name: 'Operador',
-                },
-                {
-                  id: 4,
-                  name: 'Proveedor',
                 }
               ];
+              this.serviceManagers.getManagersProfiles().subscribe(data => {
+                this.profilesManagers = data;
+                this.profilesManagers = this.profilesManagers.filter(
+                  item => {
+                    if (item.id != 1) {
+                      return item;
+                    }
+                  }
+                );
+              });
+            }
+            if (this.dataUserLogger.is_provider_director) {
+              if (this.dataUserLogger.entity.id === 8) {
+                this.registerData.state = [
+                  {
+                    id: 4,
+                    name: 'Técnico',
+                  },
+                  {
+                    id: 5,
+                    name: 'Revisor'
+                  }
+                ];
+              } else {
+                this.selectROL = 4;
+                this.registerData.state = [
+                  {
+                    id: 4,
+                    name: 'Técnico',
+                  }
+                ];
+              }
+              this.serviceWorkSpace.GetProviderProfiles().subscribe(
+                data => {
+                  this.profilesProviders = data;
+                }
+              );
             }
           }
         );
@@ -370,15 +419,15 @@ export class CreateUserComponent implements OnInit {
     }
 
   }
-  openModal(modal: string) {
-    this.modalService.open(modal);
+  openModal(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModal(modal: string, option: boolean) {
+  closeModal(option: boolean) {
     if (option) {
       this.register();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewService } from 'src/app/services/preview/preview.service';
 
 import Map from 'ol/Map';
@@ -118,7 +118,7 @@ export class PreviewComponent implements OnInit, OnChanges {
   };
 
   constructor(
-    private modalService: ModalService,
+    private modalService: NgbModal,
     private previewService: PreviewService
   ) { }
 
@@ -131,8 +131,8 @@ export class PreviewComponent implements OnInit, OnChanges {
   ngOnInit(): void {
   }
 
-  clickbtn() {
-    this.modalService.open('mapPreview');
+  clickbtn(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true, size: 'xl' });
     if (this.showmap) {
 
       if (this.map !== null && this.map !== undefined) {

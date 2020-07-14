@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import * as _moment from 'moment';
 import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 const moment = _moment;
 
@@ -32,7 +32,7 @@ export class CargueComponent implements OnInit {
     private activedRoute: ActivatedRoute,
     private serviceWorkspaces: WorkspacesService,
     public typeDataFieldModel: TypeDataSuppliesModel,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.respuestaValidador = [
       {
@@ -123,10 +123,10 @@ export class CargueComponent implements OnInit {
               }];
             }
 
-              if (this.dataRequestPending[index].suppliesRequested[index2].state.id === 1) {
-                this.dataRequestPending[index].suppliesRequested[index2].preview = true;
-              }
-            
+            if (this.dataRequestPending[index].suppliesRequested[index2].state.id === 1) {
+              this.dataRequestPending[index].suppliesRequested[index2].preview = true;
+            }
+
           }
         }
       }
@@ -303,7 +303,7 @@ export class CargueComponent implements OnInit {
   }
   closeRequest() {
     this.serviceWorkspaces.closeRequest(this.dataRequestPending[0].id).subscribe(
-      data => {
+      _ => {
         this.router.navigate(['/insumos/solicitudes/pendientes']);
       }
     );
@@ -332,15 +332,15 @@ export class CargueComponent implements OnInit {
   volver() {
     this.router.navigate(['/insumos/solicitudes/pendientes']);
   }
-  openModal(modal: string) {
-    this.modalService.open(modal);
+  openModal(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModal(modal: string, option: boolean) {
+  closeModal(option: boolean) {
     if (option) {
       this.closeRequest();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
   preview(url: string) {

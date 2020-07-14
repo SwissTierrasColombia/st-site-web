@@ -7,7 +7,6 @@ import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 import { RoleManagerGuard } from 'src/app/guards/role-manager-guard.service';
 import { RoleProviderGuard } from 'src/app/guards/role-provider-guard.service';
 import { SearchComponent } from './buscar/search.component';
-import { RoleAdminManagerGuard } from 'src/app/guards/role-admin-manager-guard.service';
 import { EntregarComponent } from './entregar/entregar.component';
 import { SolicitudesAtendidasComponent } from './solicitudes-atendidas/solicitudes-atendidas.component';
 import { AtendidaComponent } from './atendida/atendida.component';
@@ -42,7 +41,7 @@ const routes: Routes = [
   {
     path: 'buscar',
     component: SearchComponent,
-    canActivate: [RoleAdminManagerGuard]
+    canActivate: [RoleManagerGuard]
   },
   {
     path: 'buscar-solicitud',
@@ -52,7 +51,7 @@ const routes: Routes = [
   {
     path: 'entrega',
     component: EntregarComponent,
-    canActivate: [RoleAdminManagerGuard]
+    canActivate: [RoleManagerGuard]
   },
   {
     path: 'solicitudes/atendidas',

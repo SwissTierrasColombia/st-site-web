@@ -1,14 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { ManagersService } from 'src/app/services/managers/managers.service';
 import * as _moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { saveAs } from 'file-saver';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 const moment = _moment;
 @Component({
@@ -40,11 +39,10 @@ export class OperatorAssignmentComponent implements OnInit {
     private router: Router,
     private activedRoute: ActivatedRoute,
     private serviceWorkspaces: WorkspacesService,
-    private serviceManagers: ManagersService,
     private toastr: ToastrService,
     private serviceOperators: OperatorsService,
     private roles: RoleModel,
-    private modalService: ModalService,
+    private modalService: NgbModal,
 
   ) {
     this.dataWorkSpace = {
@@ -243,14 +241,14 @@ export class OperatorAssignmentComponent implements OnInit {
       );
     }
   }
-  closeModal(option: boolean, modal: string) {
+  closeModal(option: boolean) {
     if (option) {
       this.assingOperatorInWorkSpace();
     }
-    this.modalService.close(modal);
+    this.modalService.dismissAll();
   }
-  openModal(modal: string) {
-    this.modalService.open(modal);
+  openModal(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
   public onKey(event: any) {
     if (event.key === 'Enter') {
@@ -269,15 +267,15 @@ export class OperatorAssignmentComponent implements OnInit {
       }
     );
   }
-  openModalUpdate(modal: string) {
-    this.modalService.open(modal);
+  openModalUpdate(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModalUpdate(modal: string, option: boolean) {
+  closeModalUpdate(option: boolean) {
     if (option) {
       this.update();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
 }

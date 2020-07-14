@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import * as _moment from 'moment';
 import { saveAs } from 'file-saver';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 const moment = _moment;
 @Component({
@@ -21,7 +21,7 @@ export class DownloadSuppliesComponent implements OnInit {
     private router: Router,
     private activedRoute: ActivatedRoute,
     private serviceWorkspaces: WorkspacesService,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.IdEntrega = 0;
     this.dataRequestPending = [];
@@ -97,25 +97,26 @@ export class DownloadSuppliesComponent implements OnInit {
       }
     );
   }
-  closeModal(option: boolean, modal: string) {
+  closeModal(option: boolean) {
     if (option) {
       this.closeDelivery(this.IdEntrega);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
-  openModal(modal: string) {
-    this.modalService.open(modal);
+  openModal(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
   closeDelivery(idDelivery) {
     this.serviceWorkspaces.CloseDelivery(idDelivery).subscribe(
       _ => {
-        this.router.navigate(['/operador/entregas/']);
+        this.router.navigate(['/operador/descargas/']);
       }
     );
   }
   volver() {
-    this.router.navigate(['/operador/entregas/']);
+    this.router.navigate(['/operador/descargas/']);
   }
   downloadReport(idSupplie: string, nameSupplie: string) {
     this.serviceWorkspaces.DownloadReportIndividual(this.IdEntrega, idSupplie).subscribe(

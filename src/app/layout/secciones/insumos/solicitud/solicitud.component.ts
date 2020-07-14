@@ -3,7 +3,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 import * as _moment from 'moment';
-import { ModalService } from 'src/app/services/modal/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 const moment = _moment;
 
@@ -38,7 +38,7 @@ export class SolicitudComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
     private toastr: ToastrService,
-    private modalService: ModalService
+    private modalService: NgbModal
   ) {
     this.count = 1;
     this.observations = '';
@@ -260,15 +260,15 @@ export class SolicitudComponent implements OnInit {
     moment.locale('es');
     return moment(date).format('ll');
   }
-  openModal(modal: string) {
-    this.modalService.open(modal);
+  openModal(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModal(modal: string, option: boolean) {
+  closeModal(option: boolean) {
     if (option) {
       this.submitInfo();
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     } else {
-      this.modalService.close(modal);
+      this.modalService.dismissAll();
     }
   }
 }

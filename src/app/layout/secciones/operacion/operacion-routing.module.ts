@@ -1,26 +1,26 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DeliveriesSuppliesComponent } from './deliveries-supplies/deliveries-supplies.component';
-import { DownloadSuppliesComponent } from './download-supplies/download-supplies.component';
-import { EntregasAtendidasComponent } from './entregas-atendidas/entregas-atendidas.component';
-import { EntregaAtendidaComponent } from './entrega-atendida/entrega-atendida.component';
+import { DeliveriesSuppliesComponent } from './descargas-pendientes/deliveries-supplies.component';
+import { DownloadSuppliesComponent } from './descargar-insumo/download-supplies.component';
+import { EntregasAtendidasComponent } from './descargas-realizadas/entregas-atendidas.component';
+import { EntregaAtendidaComponent } from './descarga-realizada/entrega-atendida.component';
 
 
 const routes: Routes = [
   {
-    path: 'entregas',
+    path: 'descargas',
     component: DeliveriesSuppliesComponent
   },
   {
-    path: 'entrega/:IdEntrega/descargar',
+    path: 'descarga/:IdEntrega/insumo',
     component: DownloadSuppliesComponent
   },
   {
-    path: 'entregas-atendidas',
+    path: 'descargas-realizadas',
     component: EntregasAtendidasComponent
   },
   {
-    path: 'entrega/:IdEntrega/atendida',
+    path: 'descarga/:IdEntrega/realizada',
     component: EntregaAtendidaComponent
   }
 ];

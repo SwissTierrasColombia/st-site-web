@@ -33,7 +33,7 @@ export class EntregasAtendidasComponent implements OnInit {
     return moment(date).format('ll, h:mm a');
   }
   load(IdEntrega: number) {
-    this.router.navigate(['/operador/entrega/' + IdEntrega + '/atendida']);
+    this.router.navigate(['/operador/descarga/' + IdEntrega + '/realizada']);
   }
 
 }
