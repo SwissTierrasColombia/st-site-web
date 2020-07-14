@@ -97,9 +97,10 @@ export class PreviewService {
   /**
    * getLayersShp
    */
-  getLayersSupply(file: string) {
+  getLayersSupply(file: string, version: string) {
     const form = new FormData();
     form.append('url', file);
+    form.append('version', version);
     return this.httpClient.post(this.url + '/ili/xtf2json/v1/supply2json', form);
   }
 

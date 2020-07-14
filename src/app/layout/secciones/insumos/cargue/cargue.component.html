@@ -130,7 +130,9 @@
                   (click)="send(item.id, supp, idOut, idInt)" [disabled]="supp.button.status">
                   {{supp.button.status ? 'Insumo Cargado':'Reenviar'}}
                 </button>
-                <app-preview *ngIf="supp.preview" style="margin-top: 3px; margin-left: 5px;" [url]="supp.url">
+                <app-preview *ngIf="supp.preview" 
+                style="margin-top: 3px; margin-left: 5px;" 
+                [url]="supp.url" [version]="supp.modelVersion?supp.modelVersion:''">
                 </app-preview>
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 2">

@@ -279,10 +279,11 @@ export class CargueComponent implements OnInit {
         }
         this.dataRequestPending[idOut].suppliesRequested[idInt] = this.clone(response);
         for (let sr of this.dataRequestPending[idOut].suppliesRequested) {
-          if (this.dataRequestPending[0].suppliesRequested[idInt].state.id === 1) {
+          //if (this.dataRequestPending[0].suppliesRequested[idInt].state.id === 1) {
             this.dataRequestPending[0].suppliesRequested[idInt].preview = true;
             this.fileUrl = this.dataRequestPending[0].suppliesRequested[idInt].url;
-          }
+            console.log(this.dataRequestPending[0].suppliesRequested[idInt]);
+          //}
         }
         this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
           if (item.state.id === 1 || item.state.id === 5) {
