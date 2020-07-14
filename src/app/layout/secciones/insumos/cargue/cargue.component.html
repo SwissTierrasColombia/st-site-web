@@ -125,13 +125,12 @@
                 </div>
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 1">
-                <button type="button" class="btn" id="boton{{idOut}}{{idInt}}"
+                <button type="button" class="btn btn-block" id="boton{{idOut}}{{idInt}}"
                   [ngClass]="supp.button.status ? 'btn-success':'btn-warning'"
                   (click)="send(item.id, supp, idOut, idInt)" [disabled]="supp.button.status">
                   {{supp.button.status ? 'Insumo Cargado':'Reenviar'}}
                 </button>
                 <app-preview *ngIf="supp.preview" 
-                style="margin-top: 3px; margin-left: 5px;" 
                 [url]="supp.url" [version]="supp.modelVersion?supp.modelVersion:''">
                 </app-preview>
               </div>

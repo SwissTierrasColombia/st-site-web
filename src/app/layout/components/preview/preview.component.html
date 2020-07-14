@@ -1,4 +1,4 @@
-<div>
+<div style="width: 100%;">
   <style>
     .btn-dark:disabled {
       background-color: #343a4078;
@@ -115,31 +115,51 @@
       transform: rotate(30deg);
       top: 12px;
     }
+
+
+
+    
   </style>
-  <jw-modal id="mapPreview" class="mt-5">
-    <div *ngIf="!validCTM12"
-      style="padding: 2px; position: absolute; top: 5px; z-index: 1; right: 50px; padding-left: 40px; padding-right: 8px; opacity: 0.85;"
-      class="alert alert-warning" role="alert">
-      <i class="material-icons cursor" style="color: #ffc404;font-size: 25px;position: absolute; top: 14px; left: 9px;">
-        warning</i>
-      <div>
-        Los datos cargados no se encuentran en la proyección
-      </div>
-      <div>
-        Cartográfica de origen único para Colombia (CTM12).
-      </div>
+
+  <ng-template #modalMapa let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Mapa</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-    <div id="map" style="width: 100%;height: 85vh;" [hidden]="!showmap"></div>
-    <div
-      style="position: absolute; bottom: 0px; left: 15px; font-size: 10px; background-color: white; padding: 2px 10px;">
-      Proyección Cartográfica: origen único para Colombia - CTM12(Res.IGAC 388/2020)</div>
-    <iframe #pdfviewer type="application/pdf" [hidden]="showmap" frameborder="0" style="width: 75vw;height: 60vh;">
-    </iframe>
-  </jw-modal>
+    <div class="modal-body">
+      <div *ngIf="!validCTM12"
+        style="padding: 2px; position: absolute; top: 25px; z-index: 1; right: 50px; padding-left: 40px; padding-right: 8px; opacity: 0.85;"
+        class="alert alert-warning" role="alert">
+        <i class="material-icons cursor"
+          style="color: #ffc404;font-size: 25px;position: absolute; top: 14px; left: 9px;">
+          warning</i>
+        <div>
+          Los datos cargados no se encuentran en la proyección
+        </div>
+        <div>
+          Cartográfica de origen único para Colombia (CTM12).
+        </div>
+      </div>
+      <div id="map" style="width: 100%;height: 68vh;" [hidden]="!showmap"></div>
+      <div
+        style="position: absolute; bottom: 15px; left: 15px; font-size: 10px; background-color: white; padding: 2px 10px;">
+        Proyección Cartográfica: origen único para Colombia - CTM12(Res.IGAC 388/2020)</div>
+      <iframe #pdfviewer type="application/pdf" [hidden]="showmap" frameborder="0" style="width: 75vw;height: 60vh;">
+      </iframe>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </ng-template>
+
   <i alt="Ver" title="Previsualizar" [style.color]="hasPreview?'#fbb71f':'silver'" class="material-icons cursor"
-    style="float: right;" *ngIf="icon" [ngClass]="{'btn-vico': !hasPreview}" (click)="clickbtn()">
+    style="float: right;" *ngIf="icon" [ngClass]="{'btn-vico': !hasPreview}" (click)="clickbtn(modalMapa)">
     remove_red_eye</i>
-  <button (click)="clickbtn()" *ngIf="!icon" style="width: 100%;" [disabled]="!valid" class="btn btn-dark mt-2">
+
+
+  <button (click)="clickbtn(modalMapa)" *ngIf="!icon" [disabled]="!valid"
+    class="btn btn-dark mt-2 btn-block ">
     <span *ngIf="hasPreview" title="Ver en el visor">Previsualizar&nbsp;</span>
     <span *ngIf="!hasPreview" style="color: #4e4e4e;" title="No disponible">
       Previsualizar&nbsp;

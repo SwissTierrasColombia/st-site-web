@@ -132,7 +132,7 @@ export class PreviewComponent implements OnInit, OnChanges {
   }
 
   clickbtn(modal: any) {
-    this.modalService.open(modal, { centered: true, scrollable: true, size: 'xl' });
+    this.modalService.open(modal, { scrollable: true, size: 'xl' });
     if (this.showmap) {
 
       if (this.map !== null && this.map !== undefined) {
