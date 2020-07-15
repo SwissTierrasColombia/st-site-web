@@ -344,4 +344,12 @@ export class CargueComponent implements OnInit {
   }
   preview(url: string) {
   }
+  nameButton() {
+    let data = this.dataRequestPending.find(element => {
+      return element.suppliesRequested.find(item => {
+        return item.typeSupply.id === 12;
+      });
+    });
+    return data ? true : false;
+  }
 }

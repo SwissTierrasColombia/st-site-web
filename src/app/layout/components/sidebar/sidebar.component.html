@@ -66,14 +66,16 @@
               <span>Integración</span>
             </a>
           </li>
-          <li *ngIf="roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor">
+          <li
+            *ngIf="(roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor) && !this.delegate">
             <a [routerLink]="['/insumos/solicitudes/pendientes']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Solicitudes</span><br>
               <span class="ml-4">Pendientes</span>
             </a>
           </li>
-          <li *ngIf="roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor">
+          <li
+            *ngIf="(roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor) && !this.delegate">
             <a [routerLink]="['/insumos/solicitudes/atendidas']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Solicitudes</span><br>
