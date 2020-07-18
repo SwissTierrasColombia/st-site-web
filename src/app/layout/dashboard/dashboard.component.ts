@@ -104,9 +104,11 @@ export class DashboardComponent implements OnInit {
     this.roleoperator = this.user.roles.find((elem: any) => {
       return elem.id === this.roles.operador;
     });
-    this.delegate = this.user.provider_sub_roles.find((elem: any) => {
-      return elem.id === 2;
-    });
+    if (this.user.provider_sub_roles) {
+      this.delegate = this.user.provider_sub_roles.find((elem: any) => {
+        return elem.id === 2;
+      });
+    }
     if (this.roleproveedor && this.user.is_provider_director === false && !this.delegate) {
       this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
         (data: any) => {

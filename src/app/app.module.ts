@@ -32,7 +32,7 @@ import { NgSelect2Module } from 'ng-select2';
     MomentModule,
     NgbModule,
     NgxPaginationModule,
-    NgSelect2Module
+    NgSelect2Module,
   ],
   declarations: [
     AppComponent

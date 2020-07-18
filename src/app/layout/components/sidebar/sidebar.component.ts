@@ -94,9 +94,11 @@ export class SidebarComponent implements OnInit {
     this.administration = this.user.roles.find(elem => {
       return elem.id == this.roles.superAdministrador || elem.id == this.roles.administrador || (this.user.is_manager_director == this.roles.gestorDirector && elem.id == this.roles.gestor) || (this.user.is_provider_director == this.roles.proveedorDirector && elem.id == this.roles.proveedor);
     });
-    this.delegate = this.user.provider_sub_roles.find((elem: any) => {
-      return elem.id === 2;
-    });
+    if (this.user.provider_sub_roles) {
+      this.delegate = this.user.provider_sub_roles.find((elem: any) => {
+        return elem.id === 2;
+      });
+    }
   }
 
   eventCalled() {
