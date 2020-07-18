@@ -3,6 +3,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-revision-pendiente',
@@ -62,7 +63,6 @@ export class RevisionPendienteComponent implements OnInit {
     this.serviceWorkspace.GetRecordsFromXTF(this.supplyRequestedId, page).subscribe((response: any) => {
       this.dataRecordsXTF = response.records;
       this.currentPage = page;
-      console.log(this.currentPage);
       let cont = 0;
       this.dataRecordsXTF.forEach(element => {
         if (element.fileId) {
@@ -101,7 +101,6 @@ export class RevisionPendienteComponent implements OnInit {
       this.dataRecordsXTF.forEach(element => {
         if (element.fileId) {
           cont = cont + 1;
-          console.log(cont);
         }
       });
       this.numDataRecords = cont / this.totalElements;
@@ -110,4 +109,20 @@ export class RevisionPendienteComponent implements OnInit {
       this.toastr.error('Por favor seleccione un archivo PDF');
     });
   }
+  openModalCloseRecord(modal: any) {
+    this.modalService.open(modal, { scrollable: true, centered: true });
+
+  }
+  closeRecords(option: boolean) {
+    if (option) {
+      this.serviceWorkspace.closeRevisionRecord(this.supplyRequestedId).subscribe((response: any) => {
+        this.toastr.success(response.message);
+        setTimeout(() => {
+          this.router.navigate(['/insumos/revisiones-pendientes']);
+        }, 1000);
+      });
+    }
+    this.modalService.dismissAll();
+  }
+
 }

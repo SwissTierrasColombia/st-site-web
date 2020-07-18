@@ -31,7 +31,6 @@ export class RevisionesPendientesComponent implements OnInit {
     this.serviceWorkspace.GetSuppliesRequestedToReview().subscribe(response => {
       this.data = response;
       this.numSolicitudes = this.data.length;
-      console.log(this.data);
     });
   }
   formatDate(date: string) {
@@ -51,7 +50,6 @@ export class RevisionesPendientesComponent implements OnInit {
         this.serviceWorkspace.GetSuppliesRequestedToReview().subscribe(response => {
           this.data = response;
           this.numSolicitudes = this.data.length;
-          console.log(this.data);
         });
       }
     );

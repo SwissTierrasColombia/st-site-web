@@ -84,7 +84,7 @@
                       <div class="modal-body">
                         <div class="row align-items-center">
                           <div class="col-12 col-sm-6">
-                            <h5>Registro por página {{(index+1)}} de {{size}}.</h5>
+                            <h5>Registro por página {{(page)}} de {{totalElements/size}}.</h5>
                           </div>
                           <div class="col-12 col-sm-6 text-right" style="color:green">
                             {{numDataRecords}}% de registros revisados por página.
@@ -158,6 +158,35 @@
               </tbody>
             </table>
           </div>
+          <div>
+            <button type="button" class="btn btn-dark" (click)="openModalCloseRecord(ModalCloseRecord)">
+              Cerrar Revisión
+            </button>
+          </div>
+          <ng-template #ModalCloseRecord let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title">
+                ¿Está seguro de cerrar la revisión?
+              </h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h5 class="alert alert-warning text-center">
+                Advertencia: Va a cerrar la revisión.
+              </h5>
+            </div>
+            <div class="modal-footer">
+              <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block" (click)="closeRecords(false)">No</button>
+              </div>
+              <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                  (click)="closeRecords(true)">Si</button>
+              </div>
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>

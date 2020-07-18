@@ -387,4 +387,10 @@ export class WorkspacesService {
     return this.httpClient.post(this.url + '/workspaces/v1/providers/supplies-review/' +
       supplyRequestedId + '/update/' + boundarySpaceId, form);
   }
+  /**
+   * closeRevisionRecord
+   */
+  public closeRevisionRecord(supplyRequestedId: number) {
+    return this.httpClient.post(this.url + '/workspaces/v1/providers/supplies-review/' + supplyRequestedId + '/close', {});
+  }
 }
