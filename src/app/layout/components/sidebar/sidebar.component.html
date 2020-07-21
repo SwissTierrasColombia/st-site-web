@@ -75,7 +75,15 @@
             </a>
           </li>
           <li
-            *ngIf="(roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor) && !this.delegate">
+            *ngIf="(roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor) && this.delegate">
+            <a [routerLink]="['/insumos/revisiones-pendientes']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Revisiones</span><br>
+              <span class="ml-4">Pendientes</span>
+            </a>
+          </li>
+          <li
+            *ngIf="(roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor) || this.delegate">
             <a [routerLink]="['/insumos/solicitudes/atendidas']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Solicitudes</span><br>
@@ -121,14 +129,6 @@
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Descargas</span><br>
               <span class="mt-4">realizadas</span>
-            </a>
-          </li>
-          <li
-            *ngIf="(roleproveedor ? roleproveedor.id && user.is_provider_director===false: 0 === allroles.proveedor) && this.delegate">
-            <a [routerLink]="['/insumos/revisiones-pendientes']">
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Revisiones</span><br>
-              <span class="mt-4">Pendientes</span>
             </a>
           </li>
         </ul>

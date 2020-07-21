@@ -54,6 +54,7 @@
                   <th>Fecha del documento</th>
                   <th>Tipo de documento</th>
                   <th>Revisar</th>
+                  <th>Estado</th>
                 </tr>
               </thead>
               <tbody>
@@ -83,8 +84,11 @@
                       </div>
                       <div class="modal-body">
                         <div class="row align-items-center">
+                          <div class="col-12">
+                            Grupo {{currentPage}}
+                          </div>
                           <div class="col-12 col-sm-6">
-                            <h5>Registro por página {{(page)}} de {{totalElements/size}}.</h5>
+                            <h5>Página {{(page)}} de {{totalElements/size}}.</h5>
                           </div>
                           <div class="col-12 col-sm-6 text-right" style="color:green">
                             {{numDataRecords}}% de registros revisados por página.
@@ -123,13 +127,13 @@
                               </div>
                               <div class="card-body">
                                 <textarea class="form-control" id="exampleFormControlTextarea1" disabled="true"
-                                  rows="5">{{item.boundarySpace}}</textarea>
+                                  rows="7">{{item.boundarySpace}}</textarea>
                               </div>
                             </div>
                           </div>
                           <div class="col-12 col-md-6 pl-5 pr-5">
                             <span class="form-text text-danger mb-3" *ngIf="item.fileId">
-                              Ya has subido un archivo PDF, si subes otro archivo el anterior será remplazado.
+                              Ya ha subido un archivo PDF, si subes otro archivo el anterior será remplazado.
                             </span>
                             <div class="input-group">
                               <div class="input-group-prepend">
@@ -153,6 +157,14 @@
                         <button type="button" class="btn btn-dark bnt-block" (click)="sendSoport(item)">Guardar</button>
                       </div>
                     </ng-template>
+                  </th>
+                  <th scope="row">
+                    <div *ngIf="item.fileId">
+                      <span class="badge badge-success">Revisado</span>
+                    </div>
+                    <div *ngIf="!item.fileId">
+                      <span class="badge badge-warning">No revisado</span>
+                    </div>
                   </th>
                 </tr>
               </tbody>

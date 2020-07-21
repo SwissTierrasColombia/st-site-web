@@ -16,7 +16,7 @@
           <table *ngIf="data.length > 0" class="table table-striped">
             <thead class="thead-inverse">
               <tr>
-                <th>Número de Solicitud</th>
+                <th>ID</th>
                 <th>Departamento</th>
                 <th>Municipio</th>
                 <th>Areá de trabajo</th>
@@ -36,7 +36,31 @@
                 <td scope="row">{{item.typeSupply.name}}</td>
                 <td scope="row">{{item.observations}}</td>
                 <td scope="row">{{formatDate(item.deliveredAt)}}</td>
-                <td scope="row">{{item.state.name}}</td>
+                <td scope="row">
+                  <div *ngIf="item.state.id === 7">
+                    <div ngbTooltip="Configurando base de datos para iniciar la revisión" placement="top"
+                      show-delay="500">
+                      <span class="badge badge-info">
+                        {{item.state.name}}
+                      </span>
+                    </div>
+                  </div>
+                  <div *ngIf="item.state.id === 8">
+                    <div ngbTooltip="Ingrese para que realice la revisión" placement="top">
+                      <span class="badge badge-success">
+                        {{item.state.name}}
+                      </span>
+                    </div>
+                  </div>
+                  <div *ngIf="item.state.id === 9">
+                    <div ngbTooltip="Se esta generando el XTF final y entregando al Gestor" placement="top">
+                      <span class="badge badge-secondary">{{item.state.name}}</span>
+                    </div>
+                  </div>
+                  <div *ngIf="item.state.id !== 7 && item.state.id !== 8 && item.state.id !== 9">
+                    {{item.state.name}}
+                  </div>
+                </td>
                 <td scope="row">
                   <div *ngIf="item.state.id === 6">
                     <div ngbTooltip="Iniciar Revisión" placement="left" show-delay="500">
@@ -50,8 +74,8 @@
                       </span>
                     </div>
                   </div>
-                  <div *ngIf="item.state.id === 7 || item.state.id === 9">
-                    N/A
+                  <div *ngIf="item.state.id === 7">
+                    --
                   </div>
                   <div *ngIf="item.state.id === 8">
                     <div ngbTooltip="Revisar" placement="left" show-delay="500">
@@ -59,6 +83,9 @@
                         input
                       </i>
                     </div>
+                  </div>
+                  <div *ngIf="item.state.id === 9">
+                    --
                   </div>
                 </td>
                 <ng-template #modalRevision let-modal>
