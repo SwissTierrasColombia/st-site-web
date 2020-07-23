@@ -28,7 +28,10 @@
                                 <td scope="row">{{item.municipality.name}}</td>
                                 <td scope="row">{{item.municipality.code}}</td>
                                 <td scope="row">{{formatDate(item.createdAt)}}</td>
-                                <td scope="row">{{item.observations}}</td>
+                                <td scope="row">
+                                    <textarea class="form-control" rows="3" maxlength="255"
+                                        disabled="true">{{item.observations}}</textarea>
+                                </td>
                                 <td scope="row">
                                     <i class="material-icons cursor" (click)="load(item.id)">
                                         input

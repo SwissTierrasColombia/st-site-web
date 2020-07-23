@@ -34,7 +34,10 @@
                 <td scope="row">municipio</td>
                 <td scope="row">{{item.typeSupply.providerProfile.name}}</td>
                 <td scope="row">{{item.typeSupply.name}}</td>
-                <td scope="row">{{item.observations}}</td>
+                <td scope="row">
+                  <textarea class="form-control" rows="3" maxlength="255"
+                    disabled="true">{{item.observations}}</textarea>
+                </td>
                 <td scope="row">{{formatDate(item.deliveredAt)}}</td>
                 <td scope="row">
                   <div *ngIf="item.state.id === 7">

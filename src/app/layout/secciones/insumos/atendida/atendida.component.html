@@ -58,7 +58,10 @@
                                 <td>{{i+1}}</td>
                                 <td scope="row">{{item.typeSupply.name}}</td>
                                 <td scope="row">{{item.state.name}}</td>
-                                <td scope="row">{{item.description}}</td>
+                                <td scope="row">
+                                    <textarea class="form-control" rows="3" maxlength="255"
+                                        disabled="true">{{item.description}}</textarea>
+                                </td>
                                 <td scope="row">{{item.deliveredAt?formatDate(item.deliveredAt):'N/A'}}</td>
                                 <td scope="row">{{item.userDeliveryBy.firstName}} <br> {{item.userDeliveryBy.lastName }}
                                 </td>

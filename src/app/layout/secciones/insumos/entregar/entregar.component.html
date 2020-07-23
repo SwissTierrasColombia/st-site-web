@@ -101,7 +101,10 @@
                                     <td scope="row">
                                         {{globalFuntionDate(item.createdAt)}}
                                     </td>
-                                    <td scope="row">{{item.observations}}</td>
+                                    <td scope="row">
+                                        <textarea class="form-control" rows="3" maxlength="255"
+                                            disabled="true">{{item.observations}}</textarea>
+                                    </td>
                                     <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
                                     <td>
                                         <div class="form-check"
@@ -117,8 +120,9 @@
                                     </td>
                                     <td *ngIf="item.delivered === null || item.delivered === false">
                                         <div class="input-group">
-                                            <textarea class="form-control" id="observations{{item.id}}" rows="3"
-                                                name="observaciones{{item.id}}" [(ngModel)]="item.observationsTosupplie"
+                                            <textarea maxlength="255" class="form-control" id="observations{{item.id}}"
+                                                rows="3" name="observaciones{{item.id}}"
+                                                [(ngModel)]="item.observationsTosupplie"
                                                 (change)="builddelivery(item, item.delivery)"
                                                 [disabled]="item.delivery ? false:true"></textarea>
                                         </div>
@@ -172,7 +176,7 @@
                                 <div class="input-group-prepend input-group-text">
                                     <div class="">* Observaciones Generales</div>
                                 </div>
-                                <textarea class="form-control" id="observationsGeneral" rows="3"
+                                <textarea maxlength="255" class="form-control" id="observationsGeneral" rows="3"
                                     name="observaciones Generales" [(ngModel)]="deliverySupplies.observations"
                                     (change)="clickCheckBox()"></textarea>
                             </div>

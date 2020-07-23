@@ -69,7 +69,10 @@
                             *ngFor="let item of dataProfile; let i = index">
                             <td scope="row">{{i+1}}</td>
                             <td scope="row">{{item.name}}</td>
-                            <td scope="row">{{item.description?item.description:'N/D'}}</td>
+                            <td scope="row">
+                                <textarea class="form-control" rows="3" maxlength="255"
+                                    disabled="true">{{item.description?item.description:'N/D'}}</textarea>
+                            </td>
                             <td scope="row">
                                 <span ngbTooltip="Modificar perfil" placement="bottom" show-delay="500">
                                     <i class="material-icons mr-2" (click)="updateProfile(item)">

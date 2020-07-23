@@ -117,7 +117,7 @@
               <div class="input-group-prepend input-group-text">
                 <div class="">* Alcance / Observaciones</div>
               </div>
-              <textarea class="form-control" id="observations" rows="3" name="observaciones"
+              <textarea maxlength="255" class="form-control" id="observations" rows="3" name="observaciones"
                 [(ngModel)]="observations"></textarea>
             </div>
           </div>
@@ -162,7 +162,9 @@
               </div>
               <div *ngIf="!item.modelRequired">N/A</div>
             </td>
-            <td scope="row">{{ item.observacion }}</td>
+            <td scope="row">
+              <textarea class="form-control" rows="3" maxlength="255" disabled="true">{{ item.observacion }}</textarea>
+            </td>
             <td scope="row">
               <i class="material-icons cursor" (click)="delete(item)">
                 delete_forever

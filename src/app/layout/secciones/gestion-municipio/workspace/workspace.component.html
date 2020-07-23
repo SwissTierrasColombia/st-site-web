@@ -73,7 +73,10 @@
                   <td scope="row">{{item.numberAlphanumericParcels}}</td>
                   <td scope="row">{{item.municipalityArea}} km <sup>2</sup></td>
                   <td scope="row">{{item.startDate}}</td>
-                  <td scope="row">{{item.observations}}</td>
+                  <td scope="row">
+                    <textarea class="form-control" rows="3" maxlength="255"
+                      disabled="true">{{item.observations}}</textarea>
+                  </td>
                   <td scope="row">{{item.isActive ? 'Activo':'Inactivo'}}</td>
                   <td *ngIf="item.isActive === true">
                     <i class="material-icons cursor" (click)="updateWorkSpace()">
@@ -171,8 +174,8 @@
             <div class="input-group-prepend input-group-text">
               <div class="">* Alcance / Observaciones</div>
             </div>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observaciones"
-              [(ngModel)]="dataCreateWorkSpace.observations"></textarea>
+            <textarea maxlength="255" class="form-control" id="exampleFormControlTextarea1" rows="3"
+              name="observaciones" [(ngModel)]="dataCreateWorkSpace.observations"></textarea>
           </div>
         </div>
       </div>

@@ -81,7 +81,7 @@
                         <div class="input-group-prepend input-group-text">
                           <div>* Observación</div>
                         </div>
-                        <textarea (change)="validsendFile(idOut, idInt)" class="form-control"
+                        <textarea maxlength="255" (change)="validsendFile(idOut, idInt)" class="form-control"
                           id="observations{{idOut}}{{idInt}}" type="text" name="observations{{idOut}}{{idInt}}"
                           [(ngModel)]="supp.observations" rows="2"></textarea>
                       </div>
@@ -98,7 +98,7 @@
                         <div class="input-group-prepend input-group-text">
                           <div>* Observación</div>
                         </div>
-                        <textarea (change)="intoValidURL(idOut, idInt)" class="form-control"
+                        <textarea maxlength="255" (change)="intoValidURL(idOut, idInt)" class="form-control"
                           id="observations{{idOut}}{{idInt}}" type="text" name="observations{{idOut}}{{idInt}}"
                           [(ngModel)]="supp.observations" rows="2"></textarea>
                       </div>
@@ -108,7 +108,7 @@
                         <div class="input-group-prepend input-group-text">
                           <div>* Justifique</div>
                         </div>
-                        <textarea (change)="intoValidJustification(idOut, idInt)" class="form-control"
+                        <textarea maxlength="255" (change)="intoValidJustification(idOut, idInt)" class="form-control"
                           id="justificationNone{{idOut}}{{idInt}}" type="text"
                           name="justificationNone{{idOut}}{{idInt}}" [(ngModel)]="supp.justification"
                           rows="2"></textarea>
