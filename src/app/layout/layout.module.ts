@@ -18,6 +18,7 @@ import { RoleOperatorGuard } from '../guards/role-operator-guard.service';
 import { RoleAdminManagerGuard } from '../guards/role-admin-manager-guard.service';
 import { AdministrationGuard } from '../guards/administration-guard.service';
 import { RoleProviderDirectorGuard } from '../guards/role-providerDirector-guard.service';
+import { RoleRevisorGuard } from '../guards/role-revisor-guard.service';
 
 @NgModule({
   imports: [
@@ -34,7 +35,17 @@ import { RoleProviderDirectorGuard } from '../guards/role-providerDirector-guard
     FooterComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [RoleModel, AuthGuard, RoleAdminGuard, RoleManagerGuard, RoleProviderGuard, RoleOperatorGuard, RoleAdminManagerGuard, AdministrationGuard,
-    RoleProviderDirectorGuard]
+  providers: [
+    RoleModel,
+    AuthGuard,
+    RoleAdminGuard,
+    RoleManagerGuard,
+    RoleProviderGuard,
+    RoleOperatorGuard,
+    RoleAdminManagerGuard,
+    AdministrationGuard,
+    RoleProviderDirectorGuard,
+    RoleRevisorGuard
+  ]
 })
 export class LayoutModule { }

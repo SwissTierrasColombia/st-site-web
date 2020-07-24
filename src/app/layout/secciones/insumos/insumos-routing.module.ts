@@ -15,6 +15,9 @@ import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-
 import { BuscarSolicitudComponent } from './buscar-solicitud/buscar-solicitud.component';
 import { IntegrationsRunningComponent } from './integrations-running/integrations-running.component';
 import { IntegrationsPossiblesComponent } from './integrations-possibles/integrations-possibles.component';
+import { RevisionesPendientesComponent } from './revisiones-pendientes/revisiones-pendientes.component';
+import { RoleRevisorGuard } from 'src/app/guards/role-revisor-guard.service';
+import { RevisionPendienteComponent } from './revision-pendiente/revision-pendiente.component';
 
 
 const routes: Routes = [
@@ -77,6 +80,16 @@ const routes: Routes = [
     path: 'integraciones-posibles',
     component: IntegrationsPossiblesComponent,
     canActivate: [RoleManagerGuard]
+  },
+  {
+    path: 'revisiones-pendientes',
+    component: RevisionesPendientesComponent,
+    canActivate: [RoleRevisorGuard]
+  },
+  {
+    path: 'revisiones-pendientes/registros/:supplyRequestedId',
+    component: RevisionPendienteComponent,
+    canActivate: [RoleRevisorGuard]
   }
 ];
 

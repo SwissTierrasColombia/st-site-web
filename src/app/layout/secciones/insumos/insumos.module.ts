@@ -25,6 +25,8 @@ import { NgSelect2Module } from 'ng-select2';
 import { PreviewComponent } from '../../components/preview/preview.component';
 import { IntegrationsRunningComponent } from './integrations-running/integrations-running.component';
 import { IntegrationsPossiblesComponent } from './integrations-possibles/integrations-possibles.component';
+import { RevisionesPendientesComponent } from './revisiones-pendientes/revisiones-pendientes.component';
+import { RevisionPendienteComponent } from './revision-pendiente/revision-pendiente.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { IntegrationsPossiblesComponent } from './integrations-possibles/integra
     BuscarSolicitudComponent,
     PreviewComponent,
     IntegrationsRunningComponent,
-    IntegrationsPossiblesComponent
+    IntegrationsPossiblesComponent,
+    RevisionesPendientesComponent,
+    RevisionPendienteComponent
   ],
   imports: [
     CommonModule,

@@ -95,7 +95,7 @@
                                     <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'N/A'}}</td>
                                     <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
                                     <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
-                                    <td scope="row"><textarea readonly style="border: none; background: #dedede;">{{item.observations}}</textarea></td>
+                                    <td scope="row"><textarea maxlength="255" readonly style="border: none; background: #dedede;">{{item.observations}}</textarea></td>
                                     <td scope="row">
                                         <i alt="Descargar" title="Descargar insumo" class="material-icons cursor"
                                         style="float: left;"

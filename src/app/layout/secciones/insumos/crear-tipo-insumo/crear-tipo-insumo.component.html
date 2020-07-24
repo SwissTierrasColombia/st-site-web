@@ -80,8 +80,9 @@
                                 <div class="input-group-prepend input-group-text">
                                     <div class="">* Descripción</div>
                                 </div>
-                                <textarea class="form-control" id="observations" rows="2" (change)="modelChanged()"
-                                    [(ngModel)]="typeSupplyDescription" name="typeSupplyDescription"></textarea>
+                                <textarea maxlength="255" class="form-control" id="observations" rows="2"
+                                    (change)="modelChanged()" [(ngModel)]="typeSupplyDescription"
+                                    name="typeSupplyDescription"></textarea>
                             </div>
                         </div>
                     </div>
@@ -164,7 +165,10 @@
                                     {{item.providerProfile.name}}
                                 </td>
                                 <td scope="row">{{item.name}}</td>
-                                <td scope="row">{{item.description}}</td>
+                                <td scope="row">
+                                    <textarea class="form-control" rows="3" maxlength="255"
+                                        disabled="true">{{item.description}}</textarea>
+                                </td>
                                 <td scope="row">
                                     {{extensionsToString(item.extensions)}}
                                 </td>

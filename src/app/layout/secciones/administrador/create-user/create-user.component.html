@@ -164,6 +164,11 @@
                       class="form-text text-muted">Seleccione el área o áreas de trabajo al que se
                       vinculará el usuario.</small>
                   </div>
+                  <div class="mb-3" *ngIf="selectROL === 5">
+                    <small *ngIf="dataUserLogger.is_provider_director" id="entities" class="form-text text-muted">
+                      <b>Generador PDF:</b> Este usuario revisará y agregará los archivos soporte, para cabida y linderos en el archivo XTF.
+                    </small>
+                  </div>
                 </form>
               </div>
               <div class="text-muted text-center">
@@ -181,7 +186,7 @@
       <h4 class="modal-title">Registro de Usuarios</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
-    </button>
+      </button>
     </div>
     <div class="modal-body">
       <h2 class="text-center font-weight-bold">

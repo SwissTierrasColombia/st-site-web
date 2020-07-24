@@ -28,7 +28,7 @@
                                 {{item.municipality.name}}
                             </td>
                             <th>
-                                <span class="material-icons" (click)="openModalXTF('modalRegistrarxtf', item)">
+                                <span class="material-icons" (click)="openModalXTF(modalRegistrarxtf, item)">
                                     input
                                 </span>
                             </th>
@@ -47,4 +47,29 @@
         <div class="card-footer text-muted">
         </div>
     </div>
+    <ng-template #modalRegistrarxtf let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de realizar la integración?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción realizará la integración automatica de
+                archivos XTF.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModalXTF(false)">No</button>
+            </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                    (click)="closeModalXTF(true)">Si</button>
+            </div>
+        </div>
+    </ng-template>
 </div>

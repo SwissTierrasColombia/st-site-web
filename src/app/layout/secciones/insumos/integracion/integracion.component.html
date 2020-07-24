@@ -193,7 +193,7 @@
             <div class="alert alert-warning text-center" role="alert">
               <span [innerHTML]="msgAlert"></span>
             </div>
-            <button type="button" class="btn btn-dark" (click)="openModalXTF('modalRegistrarxtf')"
+            <button type="button" class="btn btn-dark" (click)="openModalXTF(modalRegistrarxtf1)"
               [disabled]="activateButtonIntegration">
               Realizar integración automatica de archivos XTF</button>
           </div>
@@ -403,8 +403,7 @@
       </div>
     </div>
   </ng-template>
-
-  <ng-template #modalRegistrarxtf let-modal>
+  <ng-template #modalRegistrarxtf1 let-modal>
     <div class="modal-header">
       <h4 class="modal-title">
         ¿Está seguro de realizar la integración?

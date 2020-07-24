@@ -27,7 +27,7 @@ export class SolicitudesComponent implements OnInit {
     this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
       data => {
         this.dataRequestPending = data;
-        this.numSolicitudes = this.dataRequestPending.length
+        this.numSolicitudes = this.dataRequestPending.length;
       }
     );
   }
@@ -39,9 +39,9 @@ export class SolicitudesComponent implements OnInit {
     this.router.navigate(['/insumos/solicitudes/pendientes/cargar/' + idInsumo]);
   }
   getEntity(item: any) {
-    let data = item.emitters.find((elem: any) => {
-      return elem.emitterType === "ENTITY"
+    const data = item.emitters.find((elem: any) => {
+      return elem.emitterType === 'ENTITY';
     });
-    return data.user.name
+    return data.user.name;
   }
 }
