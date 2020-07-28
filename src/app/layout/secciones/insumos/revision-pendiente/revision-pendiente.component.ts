@@ -21,6 +21,7 @@ export class RevisionPendienteComponent implements OnInit {
   numDataRecords: number;
   document: any;
   currentPage: number;
+  buttonActive: boolean;
   constructor(
     private serviceWorkspace: WorkspacesService,
     private router: Router,
@@ -30,11 +31,12 @@ export class RevisionPendienteComponent implements OnInit {
   ) {
     this.dataRecordsXTF = [];
     this.supplyRequestedId = 0;
-    this.size = 10;
+    this.size = 20;
     this.page = 1;
     this.totalElements = 1000;
     this.currentPage = 1;
     this.totalPages = 1;
+    this.buttonActive = false;
   }
 
   ngOnInit(): void {
@@ -64,6 +66,7 @@ export class RevisionPendienteComponent implements OnInit {
       this.dataRecordsXTF = response.records;
       this.currentPage = page;
       let cont = 0;
+      this.page = 1;
       this.dataRecordsXTF.forEach(element => {
         if (element.fileId) {
           cont = cont + 1;
@@ -74,6 +77,7 @@ export class RevisionPendienteComponent implements OnInit {
     });
   }
   openModal(modal: any) {
+    this.document = null;
     this.modalService.open(modal, { size: 'xl', scrollable: true, centered: true });
   }
   closeModal() {
@@ -84,18 +88,22 @@ export class RevisionPendienteComponent implements OnInit {
     if (file.length === 1) {
       if (file[0].size / 1024 / 1024 <= 190) {
         this.document = file[0];
+        this.buttonActive = true;
       } else {
         this.document = null;
+        this.buttonActive = false;
         this.toastr.error('No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.');
       }
     } else {
       this.document = null;
+      this.buttonActive = false;
       this.toastr.error('Por favor seleccione solo un archivo PDF');
     }
   }
   sendSoport(item: any) {
     this.serviceWorkspace.UpdateRecordPDF(this.supplyRequestedId, item.boundaryId, this.document).subscribe((response: any) => {
       this.toastr.success(response.message);
+      this.buttonActive = false;
       item.fileId = 1;
       let cont = 0;
       this.dataRecordsXTF.forEach(element => {
@@ -103,6 +111,7 @@ export class RevisionPendienteComponent implements OnInit {
           cont = cont + 1;
         }
       });
+      this.document = null;
       this.numDataRecords = cont / this.totalElements;
       this.numDataRecords = Number(this.numDataRecords.toFixed(6));
     }, error => {
@@ -110,6 +119,7 @@ export class RevisionPendienteComponent implements OnInit {
     });
   }
   openModalCloseRecord(modal: any) {
+    this.document = null;
     this.modalService.open(modal, { scrollable: true, centered: true });
 
   }
@@ -122,6 +132,7 @@ export class RevisionPendienteComponent implements OnInit {
         }, 1000);
       });
     }
+    this.document = null;
     this.modalService.dismissAll();
   }
 

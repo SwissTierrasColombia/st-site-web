@@ -11,6 +11,11 @@
           </div>
           <div class="col-12">
             <h3>Resultados de Búsqueda</h3>
+            <h4>
+              <span class="badge badge-info">
+                Grupo {{currentPage}} de {{totalPages}}
+              </span>
+            </h4>
           </div>
         </div>
         <div class="card-body">
@@ -25,7 +30,7 @@
             </div>
             <div class="col-8">
               <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="page"
-                [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [maxSize]="8" [ellipses]="false"
+                [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [maxSize]="10" [ellipses]="false"
                 [boundaryLinks]="true">
               </ngb-pagination>
             </div>
@@ -77,6 +82,9 @@
                       <div class="modal-header">
                         <h4 class="modal-title">
                           Interfaz de edición
+                          <span class="badge badge-info">
+                            Grupo {{currentPage}} de {{totalPages}}
+                          </span>
                         </h4>
                         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                           <span aria-hidden="true">&times;</span>
@@ -84,14 +92,11 @@
                       </div>
                       <div class="modal-body">
                         <div class="row align-items-center">
-                          <div class="col-12">
-                            Grupo {{currentPage}}
-                          </div>
                           <div class="col-12 col-sm-6">
                             <h5>Página {{(page)}} de {{totalElements/size}}.</h5>
                           </div>
                           <div class="col-12 col-sm-6 text-right" style="color:green">
-                            {{numDataRecords}}% de registros revisados por página.
+                            {{numDataRecords}}% de registros revisados para este grupo.
                           </div>
                           <div class="col-12">
                             <div class="table-inverse table-responsive">
@@ -126,14 +131,14 @@
                                 <h3>Cabida y linderos</h3>
                               </div>
                               <div class="card-body">
-                                <textarea maxlength="255" class="form-control" id="exampleFormControlTextarea1" disabled="true"
-                                  rows="7">{{item.boundarySpace}}</textarea>
+                                <textarea maxlength="255" class="form-control" id="exampleFormControlTextarea1"
+                                  disabled="true" rows="7">{{item.boundarySpace}}</textarea>
                               </div>
                             </div>
                           </div>
                           <div class="col-12 col-md-6 pl-5 pr-5">
                             <span class="form-text text-danger mb-3" *ngIf="item.fileId">
-                              Ya ha subido un archivo PDF, si subes otro archivo el anterior será remplazado.
+                              Ya ha subido un archivo PDF, si sube otro archivo el anterior será remplazado.
                             </span>
                             <div class="input-group">
                               <div class="input-group-prepend">
@@ -154,13 +159,19 @@
                       <div class="modal-footer">
                         <button type="button" class="btn btn-dark bnt-block"
                           (click)="modal.close('Close click')">Cerrar</button>
-                        <button type="button" class="btn btn-dark bnt-block" (click)="sendSoport(item)">Guardar</button>
+                        <button type="button" class="btn btn-dark bnt-block" (click)="sendSoport(item)"
+                          [disabled]="!buttonActive">Guardar</button>
                       </div>
                     </ng-template>
                   </th>
                   <th scope="row">
                     <div *ngIf="item.fileId">
                       <span class="badge badge-success">Revisado</span>
+                      <span [ngbTooltip]="'Archivo cargado!'" placement="top" show-delay="500">
+                        <span class="material-icons" style="color: red;">
+                          picture_as_pdf
+                        </span>
+                      </span>
                     </div>
                     <div *ngIf="!item.fileId">
                       <span class="badge badge-warning">No revisado</span>
