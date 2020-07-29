@@ -116,11 +116,18 @@
                                 </thead>
                                 <tbody>
                                   <tr>
+                                    <td scope="row">{{item.id}}</td>
                                     <td scope="row">{{item.newFmi?item.newFmi:'N/A'}}</td>
                                     <td scope="row">{{item.oldFmi?item.oldFmi:'N/A'}}</td>
                                     <td scope="row">{{item.orip?item.orip:'N/A'}}</td>
                                     <td scope="row">{{item.realEstateRegistration?item.realEstateRegistration:'N/A'}}
                                     </td>
+                                    <td scope="row">
+                                      <textarea maxlength="255" class="form-control" id="exampleFormControlTextarea1"
+                                        disabled="true" rows="2" cols="50">{{item.nomenclature}}</textarea>
+                                    </td>
+                                    <td scope="row">{{item.documentDate}}</td>
+                                    <td scope="row">{{item.documentType? item.documentType:'N/A'}}</td>
                                     <td scope="row">{{item.issuingCity?item.issuingCity:'N/A'}}</td>
                                     <td scope="row">{{item.issuingEntity?item.issuingEntity:'N/A'}}</td>
                                   </tr>

@@ -48,6 +48,7 @@ export class RevisionPendienteComponent implements OnInit {
     this.serviceWorkspace.GetRecordsFromXTF(this.supplyRequestedId, this.currentPage).subscribe((response: any) => {
       this.totalPages = response.totalPages;
       this.dataRecordsXTF = response.records;
+      console.log(this.dataRecordsXTF);
       let cont = 0;
       this.dataRecordsXTF.forEach(element => {
         if (element.fileId) {
@@ -64,7 +65,6 @@ export class RevisionPendienteComponent implements OnInit {
   getPage(page: number) {
     this.serviceWorkspace.GetRecordsFromXTF(this.supplyRequestedId, page).subscribe((response: any) => {
       this.dataRecordsXTF = response.records;
-      console.log(this.dataRecordsXTF);
       this.currentPage = page;
       let cont = 0;
       this.page = 1;
