@@ -64,6 +64,7 @@ export class RevisionPendienteComponent implements OnInit {
   getPage(page: number) {
     this.serviceWorkspace.GetRecordsFromXTF(this.supplyRequestedId, page).subscribe((response: any) => {
       this.dataRecordsXTF = response.records;
+      console.log(this.dataRecordsXTF);
       this.currentPage = page;
       let cont = 0;
       this.page = 1;
