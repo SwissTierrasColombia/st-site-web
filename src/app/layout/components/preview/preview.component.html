@@ -115,10 +115,6 @@
       transform: rotate(30deg);
       top: 12px;
     }
-
-
-
-    
   </style>
 
   <ng-template #modalMapa let-modal>
@@ -139,7 +135,7 @@
           Los datos cargados no se encuentran en la proyección
         </div>
         <div>
-          Cartográfica de origen único para Colombia (CTM12).
+          Cartográfica de origen único para Colombia (CTM12), se encuentran en {{crs}}
         </div>
       </div>
       <div id="map" style="width: 100%;height: 68vh;" [hidden]="!showmap"></div>
@@ -158,8 +154,7 @@
     remove_red_eye</i>
 
 
-  <button (click)="clickbtn(modalMapa)" *ngIf="!icon" [disabled]="!valid"
-    class="btn btn-dark mt-2 btn-block ">
+  <button (click)="clickbtn(modalMapa)" *ngIf="!icon" [disabled]="!valid" class="btn btn-dark mt-2 btn-block ">
     <span *ngIf="hasPreview" title="Ver en el visor">Previsualizar&nbsp;</span>
     <span *ngIf="!hasPreview" style="color: #4e4e4e;" title="No disponible">
       Previsualizar&nbsp;

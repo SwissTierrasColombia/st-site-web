@@ -39,7 +39,7 @@ export class PreviewComponent implements OnInit, OnChanges {
   valid = false;
   validCTM12 = false;
   active = false;
-  hasPreview=true;
+  hasPreview = false;
 
   crs = 'una proyección desconocida';
 
@@ -132,72 +132,87 @@ export class PreviewComponent implements OnInit, OnChanges {
   }
 
   clickbtn(modal: any) {
-    this.modalService.open(modal, { scrollable: true, size: 'xl' });
-    if (this.showmap) {
+    if (this.hasPreview) {
+      this.modalService.open(modal, { scrollable: true, size: 'xl' });
+      if (this.showmap) {
 
-      if (this.map !== null && this.map !== undefined) {
-        this.map.setTarget(null);
-        this.map = null;
-      }
-
-      if (this.map == null) {
-
-        var projExtent = getProjection('EPSG:3857').getExtent();
-        var startResolution = getWidth(projExtent) / 256;
-        var resolutions = new Array(22);
-        for (var i = 0, ii = resolutions.length; i < ii; ++i) {
-          resolutions[i] = startResolution / Math.pow(2, i);
+        if (this.map !== null && this.map !== undefined) {
+          this.map.setTarget(null);
+          this.map = null;
         }
-        var tileGrid = new TileGrid({
-          extent: [-20026376.39, -20048966.10, 20026376.39, 20048966.10],
-          resolutions: resolutions,
-          tileSize: [512, 256]
-        });
 
-        proj4.defs("EPSG:38820", "+proj=tmerc +lat_0=4.0 +lon_0=-73.0 +k=0.9992 +x_0=5000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
-        register(proj4);
+        if (this.map == null) {
 
-        const swissProjection = getProjection('EPSG:38820');
+          var projExtent = getProjection('EPSG:3857').getExtent();
+          var startResolution = getWidth(projExtent) / 256;
+          var resolutions = new Array(22);
+          for (var i = 0, ii = resolutions.length; i < ii; ++i) {
+            resolutions[i] = startResolution / Math.pow(2, i);
+          }
+          var tileGrid = new TileGrid({
+            extent: [-20026376.39, -20048966.10, 20026376.39, 20048966.10],
+            resolutions: resolutions,
+            tileSize: [512, 256]
+          });
 
-        this.map = new Map({
-          target: 'map',
-          layers: [
-            new TileLayer({
-              source: new OSM(),
-              tileGrid: tileGrid
+          proj4.defs("EPSG:38820", "+proj=tmerc +lat_0=4.0 +lon_0=-73.0 +k=0.9992 +x_0=5000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+          register(proj4);
+
+          const swissProjection = getProjection('EPSG:38820');
+
+          this.map = new Map({
+            target: 'map',
+            layers: [
+              new TileLayer({
+                source: new OSM(),
+                tileGrid: tileGrid
+              })
+            ],
+            view: new View({
+              projection: swissProjection,
+              center: [5000000, 2000000],
+              zoom: 8
             })
-          ],
-          view: new View({
-            projection: swissProjection,
-            center: [5000000, 2000000],
-            zoom: 8
-          })
-        });
+          });
+        } else {
+          this.map.setLayerGroup(new Group());
+        }
+        this.loadLayers();
       } else {
-        this.map.setLayerGroup(new Group());
+        this.pdfviewer.nativeElement.src = this.pdfdata;
       }
-      this.loadLayers();
-    } else {
-      this.pdfviewer.nativeElement.src = this.pdfdata;
     }
   }
 
   getPreviewUrl(file: string) {
     this.showmap = true;
     this.previewService.getLayersSupply(file, this.version).subscribe((data: any) => {
+      console.log(data);
+      if (data.crs) {
+        this.crs = data.crs.properties.name;
+      }
       if (data) {
         if (Object.keys(data).length === 0 && data.constructor === Object) {
           this.valid = false;
-          this.hasPreview =false;
+          this.hasPreview = false;
         } else {
-          this.layers.push(data);
+          if (data instanceof Array) {
+            for (let g of data) {
+              this.layers.push(g);
+            }
+          } else {
+            this.layers.push(data);
+          }
           this.valid = true;
+          this.hasPreview = true;
         }
       } else {
         this.valid = false;
+        this.hasPreview = false;
       }
     }, (e) => {
       this.valid = false;
+      this.hasPreview = false;
     });
   }
 
