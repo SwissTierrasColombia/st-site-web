@@ -40,6 +40,11 @@
                 </td>
                 <td scope="row">{{formatDate(item.deliveredAt)}}</td>
                 <td scope="row">
+                  <div *ngIf="item.state.id === 6">
+                    <div ngbTooltip="Puede iniciar revisión o omitirla" placement="top">
+                      <span class="badge badge-warning">{{item.state.name}}</span>
+                    </div>
+                  </div>
                   <div *ngIf="item.state.id === 7">
                     <div ngbTooltip="Configurando base de datos para iniciar la revisión" placement="top"
                       show-delay="500">
@@ -60,9 +65,6 @@
                       <span class="badge badge-secondary">{{item.state.name}}</span>
                     </div>
                   </div>
-                  <div *ngIf="item.state.id !== 7 && item.state.id !== 8 && item.state.id !== 9">
-                    {{item.state.name}}
-                  </div>
                 </td>
                 <td scope="row">
                   <div *ngIf="item.state.id === 6">
@@ -71,7 +73,8 @@
                         not_started
                       </span>
                     </div>
-                    <div ngbTooltip="Entregar sin revisar" placement="left" show-delay="500" style="color: grey;">
+                    <div ngbTooltip="Entregar sin revisar" placement="left" show-delay="500"
+                      (click)="openModalskip(modalSkip)">
                       <span class="material-icons">
                         switch_camera
                       </span>
@@ -113,6 +116,31 @@
                     <div class="col-6 text-right">
                       <button type="button" ngbAutofocus class="btn btn-success btn-block"
                         (click)="closeModal(item.id,true)">Si</button>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template #modalSkip let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title">
+                      ¿Está seguro de omitir la revisión?
+                    </h4>
+                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h5 class="alert alert-warning text-center">
+                      Advertencia: Va a omitir la revisión.
+                    </h5>
+                  </div>
+                  <div class="modal-footer">
+                    <div class="col-6">
+                      <button type="button" class="btn btn-dark btn-block"
+                        (click)="closeModalSkip(item.id,false)">No</button>
+                    </div>
+                    <div class="col-6 text-right">
+                      <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                        (click)="closeModalSkip(item.id,true)">Si</button>
                     </div>
                   </div>
                 </ng-template>

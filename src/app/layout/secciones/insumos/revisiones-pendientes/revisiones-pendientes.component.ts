@@ -54,6 +54,15 @@ export class RevisionesPendientesComponent implements OnInit {
       }
     );
   }
+  skipRevision(supplyRequestedId: number) {
+    this.serviceWorkspace.skipRevision(supplyRequestedId).subscribe((item: any) => {
+      this.toastr.success(item.message);
+      this.serviceWorkspace.GetSuppliesRequestedToReview().subscribe(response => {
+        this.data = response;
+        this.numSolicitudes = this.data.length;
+      });
+    });
+  }
   viewRecords(supplyRequestedId: number) {
     this.router.navigate(['/insumos/revisiones-pendientes/registros/' + supplyRequestedId]);
   }
@@ -67,5 +76,13 @@ export class RevisionesPendientesComponent implements OnInit {
     }
     this.modalService.dismissAll();
   }
-
+  openModalskip(modal: any) {
+    this.modalService.open(modal, { scrollable: true, centered: true });
+  }
+  closeModalSkip(supplyRequestedId: number, option: boolean) {
+    if (option) {
+      this.skipRevision(supplyRequestedId);
+    }
+    this.modalService.dismissAll();
+  }
 }
