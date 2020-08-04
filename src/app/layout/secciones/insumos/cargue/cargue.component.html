@@ -46,7 +46,7 @@
             <div class="row mt-1">
               <div class="input-group col-12 col-lg-3 mb-2">
                 <div class="input-group-prepend input-group-text">
-                  <div>* Insumo</div>
+                  <div>Insumo</div>
                 </div>
                 <div class="form-control" [ngClass]="{uploadSupply: !supp.canUpload}">
                   {{supp.typeSupply.name}} <br> <strong>{{supp.typeSupply.providerProfile.name}}</strong>
@@ -106,7 +106,7 @@
                     <div *ngSwitchCase="typeDataFieldModel.typeDataNone">
                       <div class="input-group">
                         <div class="input-group-prepend input-group-text">
-                          <div>* Justifique</div>
+                          <div>* Justificación</div>
                         </div>
                         <textarea maxlength="255" (change)="intoValidJustification(idOut, idInt)" class="form-control"
                           id="justificationNone{{idOut}}{{idInt}}" type="text"
@@ -168,7 +168,18 @@
                   En revisión
                 </button>
               </div>
-              <div class="col-12 col-lg-10">
+              <div class="col-12 col-lg-10 mb-2">
+                <div class="input-group">
+                  <div class="input-group-prepend input-group-text">
+                    <div>Observación GESTOR</div>
+                  </div>
+                  <div class="form-control">
+                    <textarea style="width: 100%;" maxlength="255" class="form-control" id="observations" rows="1"
+                      [(ngModel)]="supp.description" name="typeSupplyDescription" disabled="true"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-lg-10 mb-3">
                 <div *ngIf="supp.userDeliveryBy">
                   <div class="input-group">
                     <div class="input-group-prepend input-group-text">
@@ -182,6 +193,7 @@
                 </div>
               </div>
             </div>
+            <hr>
           </div>
         </div>
       </div>
