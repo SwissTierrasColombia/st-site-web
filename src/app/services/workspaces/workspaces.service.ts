@@ -393,4 +393,10 @@ export class WorkspacesService {
   public closeRevisionRecord(supplyRequestedId: number) {
     return this.httpClient.post(this.url + '/workspaces/v1/providers/supplies-review/' + supplyRequestedId + '/close', {});
   }
+  /**
+   * skipRevision
+   */
+  public skipRevision(supplyRequestedId: number) {
+    return this.httpClient.post(this.url + '/workspaces/v1/providers/supplies-review/' + supplyRequestedId + '/skip', {});
+  }
 }
