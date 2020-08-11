@@ -51,13 +51,11 @@
             <table class="table table-striped">
               <thead class="thead-inverse">
                 <tr>
-                  <th>Registro</th>
-                  <th>Número predial nuevo FMI</th>
-                  <th>Número predial anterior FMI</th>
-                  <th>Código ORIP</th>
-                  <th>Matricula inmobiliaria</th>
-                  <th>Fecha del documento</th>
-                  <th>Tipo de documento</th>
+                  <th>Código <br> ORIP</th>
+                  <th>Matricula <br> inmobiliaria</th>
+                  <th>Número predial <br> nuevo FMI</th>
+                  <th>Fecha del <br> documento</th>
+                  <th>Cabidas y linderos</th>
                   <th>Revisar</th>
                   <th>Estado</th>
                 </tr>
@@ -65,13 +63,14 @@
               <tbody>
                 <tr
                   *ngFor="let item of dataRecordsXTF |filter:searchText | slice: (page-1) * size : (page-1) * size + size; let index=index">
-                  <td scope="row">{{item.id}}</td>
-                  <td scope="row">{{item.newFmi?item.newFmi:'N/A'}}</td>
-                  <td scope="row">{{item.oldFmi?item.oldFmi:'N/A'}}</td>
                   <td scope="row">{{item.orip?item.orip:'N/A'}}</td>
                   <td scope="row">{{item.realEstateRegistration?item.realEstateRegistration:'N/A'}}</td>
+                  <td scope="row">{{item.newFmi?item.newFmi:'N/A'}}</td>
                   <td scope="row">{{item.documentDate}}</td>
-                  <td scope="row">{{item.issuingEntity}}</td>
+                  <td scope="row">
+                    <textarea maxlength="255" class="form-control" id="exampleFormControlTextarea1" disabled="true"
+                      rows="5" cols="70">{{item.boundarySpace}}</textarea>
+                  </td>
                   <th scope="row">
                     <div [ngbTooltip]="item.fileId ?'Actualizar PDF':'Subir PDF'" placement="left" show-delay="500">
                       <span class="material-icons" (click)="openModal(modal)" [ngClass]="item.fileId ?'valid':''">
@@ -103,21 +102,32 @@
                               <table class="table table-striped">
                                 <thead class="thead-inverse">
                                   <tr>
+                                    <th>Registro</th>
                                     <th>Número predial nuevo FMI</th>
                                     <th>Número predial anterior FMI</th>
                                     <th>Código ORIP</th>
                                     <th>Matricula inmobiliaria</th>
+                                    <th>Nomenclatura</th>
+                                    <th>Fecha del documento</th>
+                                    <th>Tipo de documento</th>
                                     <th>Ciudad emisora</th>
                                     <th>Entidad emisora</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr>
+                                    <td scope="row">{{item.id}}</td>
                                     <td scope="row">{{item.newFmi?item.newFmi:'N/A'}}</td>
                                     <td scope="row">{{item.oldFmi?item.oldFmi:'N/A'}}</td>
                                     <td scope="row">{{item.orip?item.orip:'N/A'}}</td>
                                     <td scope="row">{{item.realEstateRegistration?item.realEstateRegistration:'N/A'}}
                                     </td>
+                                    <td scope="row">
+                                      <textarea maxlength="255" class="form-control" id="exampleFormControlTextarea1"
+                                        disabled="true" rows="2" cols="50">{{item.nomenclature}}</textarea>
+                                    </td>
+                                    <td scope="row">{{item.documentDate}}</td>
+                                    <td scope="row">{{item.documentType? item.documentType:'N/A'}}</td>
                                     <td scope="row">{{item.issuingCity?item.issuingCity:'N/A'}}</td>
                                     <td scope="row">{{item.issuingEntity?item.issuingEntity:'N/A'}}</td>
                                   </tr>
