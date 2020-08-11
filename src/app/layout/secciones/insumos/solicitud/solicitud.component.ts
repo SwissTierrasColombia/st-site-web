@@ -175,10 +175,10 @@ export class SolicitudComponent implements OnInit {
         }
         this.comprobarEnviarSolicitud();
       } else {
-        this.toastr.error("Las observaciones son obligatorias.")
+        this.toastr.error('Las observaciones son obligatorias.');
       }
     } else {
-      this.toastr.error("No ha seleccionado ningún insumo.")
+      this.toastr.error('No ha seleccionado ningún insumo.');
     }
   }
   delete(item: any) {
@@ -222,9 +222,11 @@ export class SolicitudComponent implements OnInit {
   submitInfo() {
     this.serviceWorkspaces.createRequest(this.selectMunicipality, this.listsupplies).subscribe(
       (data: any) => {
-        data.forEach(element => {
-          this.tableSolicitudes.push(element)
-          //this.toastr.success('Solicitud enviada correctamente', 'Número de solicitud: ' + element.id, { disableTimeOut: true, closeButton: true, positionClass: "toast-center-center" });
+        data.forEach( element => {
+          this.tableSolicitudes.push(element);
+          // this.toastr.success('Solicitud enviada correctamente',
+          // 'Número de solicitud: ' + element.id, { disableTimeOut: true,
+          // closeButton: true, positionClass: "toast-center-center" });
         });
         this.toastr.success('Solicitud enviada correctamente');
         this.count = 1;

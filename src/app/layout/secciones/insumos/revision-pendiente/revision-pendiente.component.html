@@ -176,7 +176,6 @@
                   </th>
                   <th scope="row">
                     <div *ngIf="item.fileId">
-                      <span class="badge badge-success">Revisado</span>
                       <span [ngbTooltip]="'Archivo cargado!'" placement="top" show-delay="500">
                         <span class="material-icons" style="color: red;">
                           picture_as_pdf
@@ -184,7 +183,6 @@
                       </span>
                     </div>
                     <div *ngIf="!item.fileId">
-                      <span class="badge badge-warning">No revisado</span>
                     </div>
                   </th>
                 </tr>
