@@ -84,7 +84,7 @@
                   <th>Insumo</th>
                   <th>Fecha de Cargue</th>
                   <th>Observación del Insumo</th>
-                  <th>Modelo</th>
+                  <!-- <th>Modelo</th> -->
                   <th>Selección</th>
                   <th>Observación /<br />Fecha de Entrega</th>
                 </tr>
@@ -104,7 +104,7 @@
                     <textarea class="form-control" rows="3" maxlength="255"
                       disabled="true">{{item.observations}}</textarea>
                   </td>
-                  <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
+                  <!-- <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
                   <td>
                     <div class="form-check" *ngIf="item.delivered === null || item.delivered === false">
                       <input class="form-check-input" type="checkbox" [(ngModel)]="item.delivery" value=""
