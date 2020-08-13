@@ -4,6 +4,7 @@ import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 import * as _moment from 'moment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router, ActivatedRoute } from '@angular/router';
 
 const moment = _moment;
 
@@ -34,11 +35,14 @@ export class SolicitudComponent implements OnInit {
   enviarsolicitud: boolean;
   tableSolicitudes: any;
   currentDate: any;
+  tab: number;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router,
+    private activedRoute: ActivatedRoute
   ) {
     this.count = 1;
     this.observations = '';
@@ -72,8 +76,16 @@ export class SolicitudComponent implements OnInit {
     this.listModels = [];
     this.enviarsolicitud = true;
     this.tableSolicitudes = [];
+    this.tab = 1;
   }
   ngOnInit() {
+    this.activedRoute.params.subscribe(
+      response => {
+        if (response.tab) {
+          this.tab = Number(response.tab);
+        }
+      }
+    );
     this.currentDate = new Date();
     this.currentDate.setDate(this.currentDate.getDate() + 16);
     this.listsupplies.deadline = this.currentDate.toISOString().substring(0, 10);
@@ -222,7 +234,7 @@ export class SolicitudComponent implements OnInit {
   submitInfo() {
     this.serviceWorkspaces.createRequest(this.selectMunicipality, this.listsupplies).subscribe(
       (data: any) => {
-        data.forEach( element => {
+        data.forEach(element => {
           this.tableSolicitudes.push(element);
           // this.toastr.success('Solicitud enviada correctamente',
           // 'Número de solicitud: ' + element.id, { disableTimeOut: true,
@@ -273,4 +285,13 @@ export class SolicitudComponent implements OnInit {
       this.modalService.dismissAll();
     }
   }
+  tab1() {
+    this.tab = 1;
+    this.router.navigate(['/insumos/solicitud', { tab: 1 }]);
+  }
+  tab2() {
+    this.tab = 2;
+    this.router.navigate(['/insumos/solicitud', { tab: 2 }]);
+  }
+
 }

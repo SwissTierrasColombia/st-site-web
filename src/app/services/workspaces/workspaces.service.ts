@@ -403,28 +403,24 @@ export class WorkspacesService {
    * createPetition
    */
   public createPetition(data: any) {
-    //   {
-    //     "providerId" : 1,
-    //     "description" : "Se solicita ..."
-    // }
     return this.httpClient.post(this.url + '/workspaces/v1/petitions', data);
   }
   /**
    * getPetitionsForManager
    */
-  public getPetitionsForManager(providerId: number) {
+  public getPetitionsForManager(providerId: string) {
     return this.httpClient.get(this.url + '/workspaces/v1/petitions/manager/' + providerId);
   }
   /**
    * getPetitionsForProviderOpen
    */
   public getPetitionsForProviderOpen() {
-    this.httpClient.get(this.url + 'i/workspaces/v1/petitions/provider/open');
+    this.httpClient.get(this.url + '/workspaces/v1/petitions/provider/open');
   }
   /**
    * getPetitionsForProviderClose
    */
   public getPetitionsForProviderClose() {
-    this.httpClient.get(this.url + 'i/workspaces/v1/petitions/provider/close');
+    this.httpClient.get(this.url + '/workspaces/v1/petitions/provider/close');
   }
 }
