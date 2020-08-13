@@ -91,17 +91,23 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of allSupplies |filter:searchText">
-                                    <td scope="row">{{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}}</td>
-                                    <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'Datos en modelo de insumos para el Municipio'}}</td>
+                                    <td scope="row">{{item.typeSupply.provider.name}}</td>
+                                    <td scope="row">
+                                        {{item.typeSupply.name}}
+                                    </td>
                                     <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
                                     <!-- <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
-                                    <td scope="row"><textarea maxlength="255" readonly style="border: none; background: #dedede;">{{item.observations}}</textarea></td>
+                                    <td scope="row"><textarea maxlength="255" readonly
+                                            style="border: none; background: #dedede;">{{item.observations}}</textarea>
+                                    </td>
                                     <td scope="row">
                                         <i alt="Descargar" title="Descargar insumo" class="material-icons cursor"
-                                        style="float: left;"
+                                            style="float: left;"
                                             (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
                                             cloud_download </i>
-                                        <app-preview *ngIf="item&&item.attachments?item.attachments:false" [icon]="true" [url]="item&&item.attachments.length>0?item.attachments[0].urlDocumentaryRepository:''"></app-preview>
+                                        <app-preview *ngIf="item&&item.attachments?item.attachments:false" [icon]="true"
+                                            [url]="item&&item.attachments.length>0?item.attachments[0].urlDocumentaryRepository:''">
+                                        </app-preview>
                                     </td>
                                     <td scope="row" *ngIf="usermanager">
                                         <i class="material-icons cursor" (click)="openModal(item.id, customModal2)">
