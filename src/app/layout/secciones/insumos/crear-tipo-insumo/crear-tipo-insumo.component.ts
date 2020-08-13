@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Select2OptionData } from 'ng-select2';
 import { Options } from 'select2';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-crear-tipo-insumo',
   templateUrl: './crear-tipo-insumo.component.html',
@@ -36,10 +37,13 @@ export class CrearTipoInsumoComponent implements OnInit {
   pageSize: number;
   searchText: string;
   viewOtherFormat: boolean;
+  tab: number;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private modalService: NgbModal,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private router: Router,
+    private activedRoute: ActivatedRoute
   ) {
     this.id = 0;
     this.providerProfile = 0;
@@ -135,9 +139,17 @@ export class CrearTipoInsumoComponent implements OnInit {
     this.page = 1;
     this.pageSize = 10;
     this.viewOtherFormat = true;
+    this.tab = 1;
   }
 
   ngOnInit(): void {
+    this.activedRoute.params.subscribe(
+      response => {
+        if (response.tab) {
+          this.tab = Number(response.tab);
+        }
+      }
+    );
     this.serviceWorkspaces.GetProviderProfiles()
       .subscribe((response: any[]) => {
         this.providerProfiles = response;
@@ -298,5 +310,13 @@ export class CrearTipoInsumoComponent implements OnInit {
       this.typeSupplyName == '' ||
       this.extensions == '' ||
       this.typeSupplyDescription == '' ? this.formOk = false : this.formOk = true;
+  }
+  tab1() {
+    this.tab = 1;
+    this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 1 }]);
+  }
+  tab2() {
+    this.tab = 2;
+    this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 2 }]);
   }
 }
