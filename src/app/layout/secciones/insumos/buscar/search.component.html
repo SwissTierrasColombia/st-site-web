@@ -91,8 +91,8 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of allSupplies |filter:searchText">
-                                    <td scope="row">{{item.typeSupply ? item.typeSupply.provider.name: 'N/A'}}</td>
-                                    <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'N/A'}}</td>
+                                    <td scope="row">{{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}}</td>
+                                    <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'Datos en modelo de insumos para el Municipio'}}</td>
                                     <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
                                     <!-- <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
                                     <td scope="row"><textarea maxlength="255" readonly style="border: none; background: #dedede;">{{item.observations}}</textarea></td>
