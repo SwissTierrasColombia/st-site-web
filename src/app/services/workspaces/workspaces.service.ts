@@ -399,4 +399,32 @@ export class WorkspacesService {
   public skipRevision(supplyRequestedId: number) {
     return this.httpClient.post(this.url + '/workspaces/v1/providers/supplies-review/' + supplyRequestedId + '/skip', {});
   }
+  /**
+   * createPetition
+   */
+  public createPetition(data: any) {
+    //   {
+    //     "providerId" : 1,
+    //     "description" : "Se solicita ..."
+    // }
+    return this.httpClient.post(this.url + '/workspaces/v1/petitions', data);
+  }
+  /**
+   * getPetitionsForManager
+   */
+  public getPetitionsForManager(providerId: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/petitions/manager/' + providerId);
+  }
+  /**
+   * getPetitionsForProviderOpen
+   */
+  public getPetitionsForProviderOpen() {
+    this.httpClient.get(this.url + 'i/workspaces/v1/petitions/provider/open');
+  }
+  /**
+   * getPetitionsForProviderClose
+   */
+  public getPetitionsForProviderClose() {
+    this.httpClient.get(this.url + 'i/workspaces/v1/petitions/provider/close');
+  }
 }
