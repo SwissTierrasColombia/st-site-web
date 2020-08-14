@@ -58,12 +58,12 @@ export class PeticionesProveedorComponent implements OnInit {
   closeModalAceptar(option: boolean, itemId?: number) {
     if (option) {
       this.serviceWorkspaces.acceptPetition(itemId, this.data).subscribe(_ => {
-        this.toast.success('Por favor diligencie el formulario y cree el insumo en el Sistema', 'Solicitud aceptada');
+        this.toast.success('Por favor diligencie el formulario y cree el insumo en el Sistema', 'Petición aceptada');
         this.isJustification = false;
         this.data = {
           justification: ''
         }
-        this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 2 }]);
+        this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 2, isValidTab: false }]);
 
         this.serviceWorkspaces.getPetitionsForProviderOpen().subscribe(response => {
           this.petitionsForManagerOpen = response;
@@ -81,7 +81,7 @@ export class PeticionesProveedorComponent implements OnInit {
   closeModalRechazar(option: boolean, itemId?: number) {
     if (option) {
       this.serviceWorkspaces.rejectPetition(itemId, this.data).subscribe(_ => {
-        this.toast.success('Solicitud rechazada');
+        this.toast.success('Petición rechazada');
         this.isJustification = false;
         this.data = {
           justification: ''

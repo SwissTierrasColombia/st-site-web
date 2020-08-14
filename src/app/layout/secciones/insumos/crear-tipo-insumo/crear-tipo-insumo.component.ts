@@ -38,6 +38,7 @@ export class CrearTipoInsumoComponent implements OnInit {
   searchText: string;
   viewOtherFormat: boolean;
   tab: number;
+  isValidTab: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private modalService: NgbModal,
@@ -140,6 +141,7 @@ export class CrearTipoInsumoComponent implements OnInit {
     this.pageSize = 10;
     this.viewOtherFormat = true;
     this.tab = 1;
+    this.isValidTab = true;
   }
 
   ngOnInit(): void {
@@ -147,6 +149,10 @@ export class CrearTipoInsumoComponent implements OnInit {
       response => {
         if (response.tab) {
           this.tab = Number(response.tab);
+          var isTrueSet = (response.isValidTab == 'false');
+          if (!isTrueSet == false) {
+            this.isValidTab = !response.isValidTab;
+          }
         }
       }
     );
@@ -249,6 +255,7 @@ export class CrearTipoInsumoComponent implements OnInit {
   createTypeSupply() {
     this.serviceWorkspaces.CreateTypeSupplies(this.getObjectTypeSupply()).subscribe(response => {
       this.toast.success("Ha creado correctamente el tipo de insumo.");
+      this.isValidTab = true;
       this.loadProviderTypeSupplies();
       this.cancel();
     });
@@ -257,6 +264,7 @@ export class CrearTipoInsumoComponent implements OnInit {
   saveTypeSupply() {
     this.serviceWorkspaces.SaveTypeSupplies(this.id, this.getObjectTypeSupply()).subscribe(() => {
       this.toast.success("Ha actualizado correctamente el tipo de insumo.");
+      this.isValidTab = true;
       this.cancel();
       this.loadProviderTypeSupplies();
     });
