@@ -2,14 +2,22 @@
     <div class="card-body">
         <form action="" method="post">
             <div class="row">
+                <div class="col-12">
+                    <small id="perfil" class="form-text text-muted mb-3">
+                        <h6>
+                            Por favor seleccione el proveedor y describa el insumo a solicitar,
+                            incluyendo formato, escala y metadatos si aplica.
+                        </h6>
+                    </small>
+                </div>
                 <div class="col-12 col-md-6">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <label class="input-group-text" aria-required="true">* Entidad</label>
+                            <label class="input-group-text" aria-required="true">* Proveedor</label>
                         </div>
                         <select (change)="changeStatePetition()" class="custom-select" name="providerId" id="providerId"
                             [(ngModel)]="data.providerId">
-                            <option value='0' selected>Seleccione la entidad</option>
+                            <option value='0' selected>Seleccione el proveedor</option>
                             <option [ngValue]="item.id" *ngFor="let item of providers">{{item.name}}</option>
                         </select>
                     </div>
@@ -38,7 +46,7 @@
     </div>
     <div class="card mt-2">
         <div class="card-header text-center">
-            <h2>Lista de peticiones por gestor</h2>
+            <h2>Peticiones realizadas a proveedores de insumos</h2>
         </div>
         <div class="card-body">
             <div class="input-group">
@@ -47,26 +55,31 @@
                 </div>
                 <select (change)="changeStateGetPetition()" class="custom-select" name="providerIdPetitions"
                     id="providerIdPetitions" [(ngModel)]="providerIdPetition">
-                    <option value='0' selected>Seleccione la entidad</option>
+                    <option value='0' selected>Seleccione el proveedor</option>
                     <option [ngValue]="item.id" *ngFor="let item of providers">{{item.name}}</option>
                 </select>
             </div>
             <div class="table-inverse table-responsive" *ngIf="petitionsForManager.length > 0">
-                <table class="table table-striped">
+                <table class="table table-striped text-center">
                     <thead class="thead-inverse">
                         <tr>
                             <th>ID</th>
                             <th>Proveedor</th>
                             <th>Descripción</th>
-                            <th>Estado</th>
                             <th>Fecha de petición</th>
+                            <th>Estado</th>
+                            <th>Respuesta</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of petitionsForManager">
                             <td scope="row">{{item.id}}</td>
                             <td scope="row">{{item.provider.name}}</td>
-                            <td scope="row">{{item.observations}}</td>
+                            <td scope="row">
+                                <textarea class="form-control" id="description" rows="3" name="description"
+                                    disabled="true">{{item.observations}}</textarea>
+                            </td>
+                            <td scope="row">{{formatDate(item.createdAt)}}</td>
                             <td scope="row">
                                 <div *ngIf="item.petitionState.id === 1">
                                     <span class="badge badge-info">
@@ -85,7 +98,10 @@
                                     </span>
                                 </div>
                             </td>
-                            <td scope="row">{{formatDate(item.createdAt)}}</td>
+                            <td scope="row">
+                                <textarea class="form-control" id="justification" rows="3" name="justification"
+                                    disabled="true">{{item.justification?item.justification:''}}</textarea>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

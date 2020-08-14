@@ -71,6 +71,8 @@ export class PeticionComponent implements OnInit {
     if (this.petitionsForManager !== "0") {
       this.serviceWorkspaces.getPetitionsForManager(this.providerIdPetition).subscribe(response => {
         this.petitionsForManager = response;
+        console.log(this.petitionsForManager);
+        
       });
     }
   }

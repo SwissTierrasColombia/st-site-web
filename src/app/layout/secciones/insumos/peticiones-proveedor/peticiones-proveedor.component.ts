@@ -3,6 +3,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import * as _moment from 'moment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 const moment = _moment;
 
@@ -21,8 +22,8 @@ export class PeticionesProveedorComponent implements OnInit {
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private modalService: NgbModal,
-    private toast: ToastrService
-
+    private toast: ToastrService,
+    private router: Router
   ) {
     this.petitionsForManagerOpen = [];
     this.petitionsForManagerClose = [];
@@ -57,11 +58,13 @@ export class PeticionesProveedorComponent implements OnInit {
   closeModalAceptar(option: boolean, itemId?: number) {
     if (option) {
       this.serviceWorkspaces.acceptPetition(itemId, this.data).subscribe(_ => {
-        this.toast.success('Solicitud aceptada');
+        this.toast.success('Por favor diligencie el formulario y cree el insumo en el Sistema', 'Solicitud aceptada');
         this.isJustification = false;
         this.data = {
           justification: ''
         }
+        this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 2 }]);
+
         this.serviceWorkspaces.getPetitionsForProviderOpen().subscribe(response => {
           this.petitionsForManagerOpen = response;
         });
@@ -69,6 +72,9 @@ export class PeticionesProveedorComponent implements OnInit {
           this.petitionsForManagerClose = response;
         });
       });
+    }
+    this.data = {
+      justification: ''
     }
     this.modalService.dismissAll();
   }
@@ -87,6 +93,9 @@ export class PeticionesProveedorComponent implements OnInit {
           this.petitionsForManagerClose = response;
         });
       });
+    }
+    this.data = {
+      justification: ''
     }
     this.modalService.dismissAll();
   }
