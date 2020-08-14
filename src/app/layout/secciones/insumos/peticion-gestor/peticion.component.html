@@ -68,9 +68,22 @@
                             <td scope="row">{{item.provider.name}}</td>
                             <td scope="row">{{item.observations}}</td>
                             <td scope="row">
-                                <span class="badge badge-info">
-                                    {{item.petitionState.name}}
-                                </span>
+                                <div *ngIf="item.petitionState.id === 1">
+                                    <span class="badge badge-info">
+                                        {{item.petitionState.name}}
+                                    </span>
+                                </div>
+
+                                <div *ngIf="item.petitionState.id === 2">
+                                    <span class="badge badge-success">
+                                        {{item.petitionState.name}}
+                                    </span>
+                                </div>
+                                <div *ngIf="item.petitionState.id === 3">
+                                    <span class="badge badge-warning">
+                                        {{item.petitionState.name}}
+                                    </span>
+                                </div>
                             </td>
                             <td scope="row">{{formatDate(item.createdAt)}}</td>
                         </tr>

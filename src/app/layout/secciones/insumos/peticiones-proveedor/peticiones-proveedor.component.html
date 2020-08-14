@@ -1,1 +1,180 @@
-<p>peticiones-proveedor works!</p>
+<div>
+    <div class="card-header">
+        <div class="container">
+            <div class="row justify-content-center justify-content-md-center">
+                <div class="col-12 col-sm-6">
+                    <button class="btn btn-dark btn-block" (click)="open=true">Peticiones abiertas</button>
+
+                </div>
+                <div class="col-12 col-sm-6">
+                    <button class="btn btn-dark btn-block" (click)="open=false">Peticiones cerradas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" *ngIf="open">
+        <div class="table-inverse table-responsive" *ngIf="petitionsForManagerOpen.length > 0">
+            <table class="table table-striped text-center">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>ID</th>
+                        <th>Proveedor</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th>Fecha de petición</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of petitionsForManagerOpen">
+                        <td scope="row">{{item.id}}</td>
+                        <td scope="row">{{item.provider.name}}</td>
+                        <td scope="row">{{item.observations}}</td>
+                        <td scope="row">
+
+                            <span class="badge badge-info">
+                                {{item.petitionState.name}}
+                            </span>
+                        </td>
+                        <td scope="row">{{formatDate(item.createdAt)}}</td>
+                        <td scope="row">
+                            <div>
+                                <span ngbTooltip="Aceptar petición" placement="left" show-delay="500">
+                                    <span class="material-icons" (click)="openModal(modalAceptar)">
+                                        playlist_add_check
+                                    </span>
+                                </span>
+                            </div>
+                            <div>
+                                <span ngbTooltip="rechazar petición" placement="left" show-delay="500">
+                                    <span class="material-icons" style="color: red;" (click)="openModal(modalRechazar)">
+                                        cancel_presentation
+                                    </span>
+                                </span>
+                            </div>
+                        </td>
+                        <ng-template #modalAceptar let-modal>
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    ¿Está seguro de aceptar esta petición?
+                                </h4>
+                                <button type="button" class="close" aria-label="Close"
+                                    (click)="modal.dismiss('Cross click')">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h5 class="alert alert-warning text-center">
+                                    Advertencia: Va a aceptar la petición, por favor justifique.
+                                </h5>
+                                <div class="input-group mb-4">
+                                    <div class="input-group-prepend input-group-text">
+                                        <div class="">* Justificación</div>
+                                    </div>
+                                    <textarea (change)="changeStatePetition()" maxlength="255" class="form-control"
+                                        id="description" rows="3" name="description"
+                                        [(ngModel)]="data.justification"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="col-6">
+                                    <button type="button" ngbAutofocus class="btn btn-dark btn-block"
+                                        (click)="closeModalAceptar(false)">No</button>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-success btn-block"
+                                        (click)="closeModalAceptar(true, item.id)"
+                                        [disabled]="!isJustification">Si</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template #modalRechazar let-modal>
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    ¿Está seguro de rechazar esta petición?
+                                </h4>
+                                <button type="button" class="close" aria-label="Close"
+                                    (click)="modal.dismiss('Cross click')">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h5 class="alert alert-warning text-center">
+                                    Advertencia: Va a rechazar la petición, por favor justifique.
+                                </h5>
+                                <div class="input-group mb-4">
+                                    <div class="input-group-prepend input-group-text">
+                                        <div class="">* Justificación</div>
+                                    </div>
+                                    <textarea (change)="changeStatePetition()" maxlength="255" class="form-control"
+                                        id="description" rows="3" name="description"
+                                        [(ngModel)]="data.justification"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="col-6">
+                                    <button type="button" ngbAutofocus class="btn btn-dark btn-block"
+                                        (click)="closeModalRechazar(false)">No</button>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-success btn-block"
+                                        (click)="closeModalRechazar(true, item.id)"
+                                        [disabled]="!isJustification">Si</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="petitionsForManagerOpen.length === 0">
+            <div class="col-12">
+                <div class="alert alert-primary text-center" role="alert">
+                    No tienes peticiones pendientes.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" *ngIf="!open">
+        <div class="table-inverse table-responsive" *ngIf="petitionsForManagerClose.length > 0">
+            <table class="table table-striped">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>ID</th>
+                        <th>Proveedor</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th>Fecha de petición</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of petitionsForManagerClose">
+                        <td scope="row">{{item.id}}</td>
+                        <td scope="row">{{item.provider.name}}</td>
+                        <td scope="row">{{item.observations}}</td>
+                        <td scope="row">
+                            <div *ngIf="item.petitionState.id === 2">
+                                <span class="badge badge-success">
+                                    {{item.petitionState.name}}
+                                </span>
+                            </div>
+                            <div *ngIf="item.petitionState.id === 3">
+                                <span class="badge badge-warning">
+                                    {{item.petitionState.name}}
+                                </span>
+                            </div>
+                        </td>
+                        <td scope="row">{{formatDate(item.createdAt)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="petitionsForManagerClose.length === 0">
+            <div class="col-12">
+                <div class="alert alert-primary text-center" role="alert">
+                    No tienes peticiones cerradas.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

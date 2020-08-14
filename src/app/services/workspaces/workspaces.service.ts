@@ -415,12 +415,24 @@ export class WorkspacesService {
    * getPetitionsForProviderOpen
    */
   public getPetitionsForProviderOpen() {
-    this.httpClient.get(this.url + '/workspaces/v1/petitions/provider/open');
+    return this.httpClient.get(this.url + '/workspaces/v1/petitions/provider/open');
   }
   /**
    * getPetitionsForProviderClose
    */
   public getPetitionsForProviderClose() {
-    this.httpClient.get(this.url + '/workspaces/v1/petitions/provider/close');
+    return this.httpClient.get(this.url + '/workspaces/v1/petitions/provider/close');
+  }
+  /**
+   * acceptPetition
+   */
+  public acceptPetition(petitionId: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/petitions/' + petitionId + '/accept', data);
+  }
+  /**
+  * rejectPetition
+  */
+  public rejectPetition(petitionId: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/petitions/' + petitionId + '/reject', data);
   }
 }
