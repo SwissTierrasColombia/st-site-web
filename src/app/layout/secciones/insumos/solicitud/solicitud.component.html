@@ -248,14 +248,16 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body text-center">
-              Número de orden: <span name="NumOrderPackageLabel" type="text"
-                id="OrderPackageLabel">{{dataOrder[0].packageLabel}}</span>
-              <span ngbTooltip="Copiar número de orden" placement="top" show-delay="500">
-                <span class="material-icons" (click)="myFunctionCopyOrder(dataOrder[0].packageLabel)">
-                  content_copy
+            <div class="alert alert-success text-center">
+              <div class="modal-body text-center">
+                Número de orden: <span name="NumOrderPackageLabel" type="text"
+                  id="OrderPackageLabel">{{dataOrder[0].packageLabel}}</span>
+                <span ngbTooltip="Copiar número de orden" placement="top" show-delay="500">
+                  <span class="material-icons ml-2" (click)="myFunctionCopyOrder(dataOrder[0].packageLabel)">
+                    content_copy
+                  </span>
                 </span>
-              </span>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
