@@ -36,6 +36,7 @@ export class SolicitudComponent implements OnInit {
   tableSolicitudes: any;
   currentDate: any;
   tab: number;
+  dataOrder: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
@@ -77,6 +78,7 @@ export class SolicitudComponent implements OnInit {
     this.enviarsolicitud = true;
     this.tableSolicitudes = [];
     this.tab = 1;
+    this.dataOrder = [];
   }
   ngOnInit() {
     this.activedRoute.params.subscribe(
@@ -231,16 +233,15 @@ export class SolicitudComponent implements OnInit {
       this.enviarsolicitud = false;
     }
   }
-  submitInfo() {
+  submitInfo(modalconfirmacion: any) {
     this.serviceWorkspaces.createRequest(this.selectMunicipality, this.listsupplies).subscribe(
       (data: any) => {
+        this.dataOrder = data;
+        this.modalService.open(modalconfirmacion, { centered: true });
         data.forEach(element => {
           this.tableSolicitudes.push(element);
-          // this.toastr.success('Solicitud enviada correctamente',
-          // 'Número de solicitud: ' + element.id, { disableTimeOut: true,
-          // closeButton: true, positionClass: "toast-center-center" });
         });
-        this.toastr.success('Solicitud enviada correctamente');
+        // this.toastr.success('Solicitud enviada correctamente');
         this.count = 1;
         this.observations = '';
         this.splitZones = false;
@@ -275,11 +276,11 @@ export class SolicitudComponent implements OnInit {
     return moment(date).format('ll');
   }
   openModal(modal: any) {
-    this.modalService.open(modal, { centered: true, scrollable: true });
+    this.modalService.open(modal, { centered: true });
   }
-  closeModal(option: boolean) {
+  closeModal(option: boolean, modalconfirmacion?: any) {
     if (option) {
-      this.submitInfo();
+      this.submitInfo(modalconfirmacion);
       this.modalService.dismissAll();
     } else {
       this.modalService.dismissAll();
@@ -293,5 +294,17 @@ export class SolicitudComponent implements OnInit {
     this.tab = 2;
     this.router.navigate(['/insumos/solicitud', { tab: 2 }]);
   }
-
+  myFunctionCopyOrder(copyText: string) {
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = copyText;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
 }
