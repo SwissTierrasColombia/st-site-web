@@ -56,7 +56,7 @@ export class BuscarSolicitudComponent implements OnInit {
     this.providers = [];
     this.selectProvider = '0';
     this.infoTabProvider = [];
-    this.selectPackage = '0';
+    this.selectPackage = '';
     this.infoTabOrder = [];
     this.numbersuppliesManagerRequest = [];
     this.infoTabOrder = 0;

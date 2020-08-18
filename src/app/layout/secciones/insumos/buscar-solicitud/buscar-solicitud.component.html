@@ -220,18 +220,11 @@
                 <div class='col-12'>
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <label class="input-group-text" aria-required="true">* Solicitudes
+                      <label class="input-group-text" aria-required="true">* Ordenes
                         Gestor</label>
                     </div>
-                    <select (change)="activebuttontab3()" class="custom-select" name="numberPackage" id="numberPackage"
-                      [(ngModel)]="selectPackage">
-                      <option value='0' selected>Seleccione el número de orden</option>
-                      <option [ngValue]="item.packageLabel"
-                        *ngFor="let item of numbersuppliesManagerRequest; let index = index;">
-                        Orden de Solicitud # {{item.id}}
-                        ({{item.provider ? item.provider.name: ''}})
-                      </option>
-                    </select>
+                    <input [(ngModel)]="selectPackage" (change)="activebuttontab3()" class="form-control" type="text"
+                      name="numberPackage" id="numberPackage" placeholder="Escriba el número de orden...">
                   </div>
                 </div>
               </div>
