@@ -224,7 +224,7 @@
                         Gestor</label>
                     </div>
                     <input [(ngModel)]="selectPackage" (change)="activebuttontab3()" class="form-control" type="text"
-                      name="numberPackage" id="numberPackage" placeholder="Escriba el número de orden...">
+                      name="numberPackage" id="numberPackage" placeholder="Digite el número de Orden">
                   </div>
                 </div>
               </div>
@@ -262,15 +262,17 @@
                         <tr>
                           <th>Departamento</th>
                           <th>Municipio</th>
+                          <th>Proveedor</th>
                           <th>Insumo</th>
+                          <th>Tipo de insumo</th>
                           <th>Fecha de solicitud</th>
                           <th>Fecha límite</th>
                           <th>Fecha de cargue</th>
                           <th>Estado</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr *ngFor="let item of infoTabOrder |filter:searchText">
+                      <tbody *ngFor="let element of infoTabOrder">
+                        <tr *ngFor="let item of element.requests |filter:searchText">
                           <td scope="row">
                             {{item.municipality.department.name}}
                           </td>
@@ -278,9 +280,15 @@
                             {{item.municipality.name}}
                           </td>
                           <td scope="row">
+                            {{item.provider.name}}
+                          </td>
+                          <td scope="row">
                             <div *ngFor="let supp of item.suppliesRequested">
                               {{supp.typeSupply.name}}.<br> <b>{{supp.state.name}}</b>
                             </div>
+                          </td>
+                          <td scope="row">
+                            {{item.suppliesRequested[0].typeSupply.providerProfile.name}}
                           </td>
                           <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
                           <td scope="row">{{globalFuntionDate(item.deadline)}}</td>
@@ -295,6 +303,8 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div *ngIf="infoTabOrder.length === 0" class="row mt-3">
           </div>
         </div>
       </div>
