@@ -157,7 +157,7 @@
                   name="modelSupplies{{item.idCount}}" id="modelSupplies{{item.idCount}}"
                   [(ngModel)]="item.modelVersion">
                   <option value='0' selected>Seleccione la versión del modelo de insumos LADM-COL</option>
-                  <option [ngValue]="item.name" *ngFor="let item of item.versions">Modelo {{item.name}}</option>
+                  <option [ngValue]="item.name" *ngFor="let item of item.versions">Submodelo Insumos V1.0</option>
                 </select>
               </div>
               <div *ngIf="!item.modelRequired">N/A</div>
@@ -228,7 +228,7 @@
     </div> -->
 
   </div>
-
+<!-- <pre>{{poc | json}}</pre> -->
   <ng-template #modalRegistrar let-modal>
     <div class="modal-header">
       <h4 class="modal-title">

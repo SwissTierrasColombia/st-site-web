@@ -84,7 +84,7 @@
                   <th>Insumo</th>
                   <th>Fecha de Cargue</th>
                   <th>Observación del Insumo</th>
-                  <th>Modelo</th>
+                  <!-- <th>Modelo</th> -->
                   <th>Selección</th>
                   <th>Observación /<br />Fecha de Entrega</th>
                 </tr>
@@ -95,7 +95,7 @@
                     {{i + 1}}
                   </td>
                   <td scope="row">
-                    {{item.typeSupply ? item.typeSupply.name: 'Modelo de insumos para el Municipio'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}})
+                    {{item.typeSupply ? item.typeSupply.name: 'Datos en modelo de insumos para el Municipio'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}})
                   </td>
                   <td scope="row">
                     {{globalFuntionDate(item.createdAt)}}
@@ -104,7 +104,7 @@
                     <textarea class="form-control" rows="3" maxlength="255"
                       disabled="true">{{item.observations}}</textarea>
                   </td>
-                  <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
+                  <!-- <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
                   <td>
                     <div class="form-check" *ngIf="item.delivered === null || item.delivered === false">
                       <input class="form-check-input" type="checkbox" [(ngModel)]="item.delivery" value=""

@@ -222,11 +222,14 @@ export class SolicitudComponent implements OnInit {
   submitInfo() {
     this.serviceWorkspaces.createRequest(this.selectMunicipality, this.listsupplies).subscribe(
       (data: any) => {
-        data.forEach( element => {
+        console.log(data);
+        data.forEach(element => {
           this.tableSolicitudes.push(element);
           // this.toastr.success('Solicitud enviada correctamente',
-          // 'Número de solicitud: ' + element.id, { disableTimeOut: true,
-          // closeButton: true, positionClass: "toast-center-center" });
+          //   'Número de solicitud: ' + element.id, {
+          //     disableTimeOut: true,
+          //   closeButton: true, positionClass: "toast-center-center"
+          // });
         });
         this.toastr.success('Solicitud enviada correctamente');
         this.count = 1;
@@ -254,7 +257,7 @@ export class SolicitudComponent implements OnInit {
         item.modelVersion = itemModelVersion;
       }
     });
-    this.toastr.info('Ha seleccionado la versión del modelo de insumos: ' + itemModelVersion);
+    // this.toastr.info('Ha seleccionado la versión del modelo de insumos: ' + itemModelVersion);
     this.comprobarEnviarSolicitud();
   }
 

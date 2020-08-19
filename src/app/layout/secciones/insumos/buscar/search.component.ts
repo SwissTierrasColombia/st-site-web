@@ -85,9 +85,9 @@ export class SearchComponent implements OnInit {
           if (this.allSupplies[index].typeSupply === null) {
             this.allSupplies[index].typeSupply = {
               "provider": {
-                "name": "N/A"
+                "name": "GESTOR"
               },
-              "name": "N/A"
+              "name": "Datos en modelo de insumos para el Municipio"
             }
           }
         }
