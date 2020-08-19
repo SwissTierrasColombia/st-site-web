@@ -27,6 +27,8 @@ import { IntegrationsRunningComponent } from './integrations-running/integration
 import { IntegrationsPossiblesComponent } from './integrations-possibles/integrations-possibles.component';
 import { RevisionesPendientesComponent } from './revisiones-pendientes/revisiones-pendientes.component';
 import { RevisionPendienteComponent } from './revision-pendiente/revision-pendiente.component';
+import { PeticionComponent } from './peticion-gestor/peticion.component';
+import { PeticionesProveedorComponent } from './peticiones-proveedor/peticiones-proveedor.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { RevisionPendienteComponent } from './revision-pendiente/revision-pendie
     IntegrationsRunningComponent,
     IntegrationsPossiblesComponent,
     RevisionesPendientesComponent,
-    RevisionPendienteComponent
+    RevisionPendienteComponent,
+    PeticionComponent,
+    PeticionesProveedorComponent
   ],
   imports: [
     CommonModule,

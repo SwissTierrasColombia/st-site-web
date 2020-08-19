@@ -1,0 +1,142 @@
+<div id="actionForm">
+    <div class="card-body">
+        <form action="" method="post">
+            <div class="row">
+                <div class="col-12">
+                    <small id="perfil" class="form-text text-muted mb-3">
+                        <h6>
+                            Por favor seleccione el proveedor y describa el insumo a solicitar,
+                            incluyendo formato, escala y metadatos si aplica.
+                        </h6>
+                    </small>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" aria-required="true">* Proveedor</label>
+                        </div>
+                        <select (change)="changeStatePetition()" class="custom-select" name="providerId" id="providerId"
+                            [(ngModel)]="data.providerId">
+                            <option value='0' selected>Seleccione el proveedor</option>
+                            <option [ngValue]="item.id" *ngFor="let item of providers">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="input-group mb-4">
+                        <div class="input-group-prepend input-group-text">
+                            <div class="">* Descripción</div>
+                        </div>
+                        <textarea (change)="changeStatePetition()" maxlength="255" class="form-control" id="description"
+                            rows="3" name="description" [(ngModel)]="data.description"></textarea>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="alert alert-primary text-center" role="alert">
+                        Recuerde que los campos marcados con * son obligatorios.
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer text-muted text-center">
+        <button type="button" [disabled]="!enviarPeticion" class="btn btn-dark"
+            (click)="openModalPeticion(modalPeticion)">Enviar
+            petición</button>
+    </div>
+    <div class="card mt-2">
+        <div class="card-header text-center">
+            <h2>Peticiones realizadas a proveedores de insumos</h2>
+        </div>
+        <div class="card-body">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" aria-required="true">* Proveedor</label>
+                </div>
+                <select (change)="changeStateGetPetition()" class="custom-select" name="providerIdPetitions"
+                    id="providerIdPetitions" [(ngModel)]="providerIdPetition">
+                    <option value='0' selected>Seleccione el proveedor</option>
+                    <option [ngValue]="item.id" *ngFor="let item of providers">{{item.name}}</option>
+                </select>
+            </div>
+            <div class="table-inverse table-responsive" *ngIf="petitionsForManager.length > 0">
+                <table class="table table-striped text-center">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>ID</th>
+                            <th>Proveedor</th>
+                            <th>Descripción</th>
+                            <th>Fecha de petición</th>
+                            <th>Estado</th>
+                            <th>Respuesta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of petitionsForManager">
+                            <td scope="row">{{item.id}}</td>
+                            <td scope="row">{{item.provider.name}}</td>
+                            <td scope="row">
+                                <textarea class="form-control" id="description" rows="3" name="description"
+                                    disabled="true">{{item.observations}}</textarea>
+                            </td>
+                            <td scope="row">{{formatDate(item.createdAt)}}</td>
+                            <td scope="row">
+                                <div *ngIf="item.petitionState.id === 1">
+                                    <span class="badge badge-info">
+                                        {{item.petitionState.name}}
+                                    </span>
+                                </div>
+
+                                <div *ngIf="item.petitionState.id === 2">
+                                    <span class="badge badge-success">
+                                        {{item.petitionState.name}}
+                                    </span>
+                                </div>
+                                <div *ngIf="item.petitionState.id === 3">
+                                    <span class="badge badge-warning">
+                                        {{item.petitionState.name}}
+                                    </span>
+                                </div>
+                            </td>
+                            <td scope="row">
+                                <textarea class="form-control" id="justification" rows="3" name="justification"
+                                    disabled="true">{{item.justification?item.justification:''}}</textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="petitionsForManager.length === 0 && providerIdPetition !== '0'" class="row mt-3">
+                <div class="col-12">
+                    <div class="alert alert-primary text-center" role="alert">
+                        No tienes peticiones para este proveedor.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #modalPeticion let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de solicitar esta petición?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Va a realizar una petición de insumo.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModalPeticion(false)">No</button>
+            </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                    (click)="closeModalPeticion(true)">Si</button>
+            </div>
+        </div>
+    </ng-template>
+</div>
