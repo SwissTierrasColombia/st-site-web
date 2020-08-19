@@ -91,13 +91,26 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of allSupplies |filter:searchText">
+                <tr *ngFor="let item of allSupplies |filter:searchText; let index = index">
                   <td scope="row">{{item.typeSupply ? item.typeSupply.provider.name: 'N/A'}}</td>
                   <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'N/A'}}</td>
                   <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
                   <!-- <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
                   <td scope="row"><textarea maxlength="255" readonly
-                      style="border: none; background: #dedede;">{{item.observations}}</textarea></td>
+                      style="border: none; background: #dedede;">{{item.observations}}</textarea>
+                  </td>
+                  <td scope="row">
+                    <div *ngIf="item.state.id === 1">
+                      <span class="badge badge-success">
+                        {{item.state.name}}
+                      </span>
+                    </div>
+                    <div *ngIf="item.state.id === 2">
+                      <span class="badge badge-warning">
+                        {{item.state.name}}
+                      </span>
+                    </div>
+                  </td>
                   <td scope="row">
                     <i alt="Descargar" title="Descargar insumo" class="material-icons cursor" style="float: left;"
                       (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
@@ -107,9 +120,87 @@
                     </app-preview>
                   </td>
                   <td scope="row" *ngIf="usermanager">
+                    <label class="switch" [title]="item.state.state ? 'Desactivar insumo':'Activar insumo'"
+                      (click)="item.state.state ? openModalDisabled(modalDisabled, item.id):openModalEnabled(modalEnabled, item.id)">
+                      <input (click)="clickCheckBox($event)" [(ngModel)]="item.state.state" type="checkbox">
+                      <span class="slider round"></span>
+                    </label>
+                    <ng-template #modalDisabled let-modal>
+                      <div class="modal-header">
+                        <h4 class="modal-title">¿Está seguro de desactivar el insumo?</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <h5 class="alert alert-warning text-center">Advertencia: Esta acción deshabilita el insumo y no
+                          lo dejara
+                          visualizar en el sistema.</h5>
+                      </div>
+                      <div class="modal-footer">
+                        <div class="col-6">
+                          <button type="button" class="btn btn-dark btn-block"
+                            (click)="closeModalDisabled(false)">No</button>
+                        </div>
+                        <div class="col-6 text-right">
+                          <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                            (click)="closeModalDisabled(true, index)">Si</button>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <ng-template #modalEnabled let-modal>
+                      <div class="modal-header">
+                        <h4 class="modal-title">¿Está seguro de activar el insumo?</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <h5 class="alert alert-warning text-center">Advertencia: Esta acción habilita el insumo y le
+                          permitirá la
+                          visualización en el sistema.</h5>
+                      </div>
+                      <div class="modal-footer">
+                        <div class="col-6">
+                          <button type="button" class="btn btn-dark btn-block"
+                            (click)="closeModalEnabled(false)">No</button>
+                        </div>
+                        <div class="col-6 text-right">
+                          <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                            (click)="closeModalEnabled(true, index)">Si</button>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </td>
+                  <td scope="row" *ngIf="usermanager">
                     <i class="material-icons cursor" (click)="openModal(item.id, customModal2)">
                       delete_forever
-                    </i></td>
+                    </i>
+                    <ng-template #customModal2 let-modal>
+                      <div class="modal-header">
+                        <h4 class="modal-title">
+                          ¿Está seguro de eliminar el insumo?
+                        </h4>
+                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <h5 class="alert alert-warning text-center">
+                          Advertencia: El insumo se borrará permanentemente del Sistema.
+                        </h5>
+                      </div>
+                      <div class="modal-footer">
+                        <div class="col-6">
+                          <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
+                        </div>
+                        <div class="col-6 text-right">
+                          <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                            (click)="closeModal(true, index)">Si</button>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -118,27 +209,4 @@
       </div>
     </div>
   </div>
-  <ng-template #customModal2 let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title">
-        ¿Está seguro de eliminar el insumo?
-      </h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <h5 class="alert alert-warning text-center">
-        Advertencia: El insumo se borrará permanentemente del Sistema.
-      </h5>
-    </div>
-    <div class="modal-footer">
-      <div class="col-6">
-        <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
-      </div>
-      <div class="col-6 text-right">
-        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true)">Si</button>
-      </div>
-    </div>
-  </ng-template>
 </div>

@@ -426,9 +426,21 @@ export class WorkspacesService {
     return this.httpClient.put(this.url + '/workspaces/v1/petitions/' + petitionId + '/accept', data);
   }
   /**
-  * rejectPetition
-  */
+   * rejectPetition
+   */
   public rejectPetition(petitionId: number, data: any) {
     return this.httpClient.put(this.url + '/workspaces/v1/petitions/' + petitionId + '/reject', data);
+  }
+  /**
+   * activeSupplies
+   */
+  public activeSupplies(supplyId: number) {
+    return this.httpClient.put(this.url + '/workspaces/v1/supplies/' + supplyId + '/active', {});
+  }
+  /**
+   * inactiveSupplies
+   */
+  public inactiveSupplies(supplyId: number) {
+    return this.httpClient.put(this.url + '/workspaces/v1/supplies/' + supplyId + '/inactive', {});
   }
 }
