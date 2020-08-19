@@ -103,7 +103,7 @@ export class WorkspacesService {
    * GetSuppliesByMunicipality
    */
   public GetSuppliesByMunicipalityXTF(idMunicipality: number) {
-    return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?extensions=xtf');
+    return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?extensions=xtf&active=true');
   }
   /**
    * GetIntegrationCadastreRegistration
@@ -156,12 +156,8 @@ export class WorkspacesService {
   /**
    * GetSuppliesByMunicipalityFilter
    */
-  public GetSuppliesByMunicipalityFilter(idMunicipality: number, page: string, requests?: string) {
-    let url = this.url + '/workspaces/v1/supplies/' + idMunicipality + '?page=' + page;
-    if (requests) {
-      url = url + '&requests=' + requests;
-    }
-    return this.httpClient.get(url);
+  public GetSuppliesByMunicipalityFilter(idMunicipality: number, page: string, active: boolean) {
+    return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?page=' + page + '&active=' + active);
   }
   /**
    * downloadSupplie
