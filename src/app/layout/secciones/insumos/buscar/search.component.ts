@@ -135,10 +135,10 @@ export class SearchComponent implements OnInit {
       }
     );
   }
-  closeModal(option: boolean) {
+  closeModal(option: boolean, index?: number) {
     this.modalService.dismissAll();
     if (option) {
-      this.deleteSupplies(this.idSupplieDelete);
+      this.deleteSupplies(this.idSupplieDelete, index);
     }
   }
   openModal(idSupplieDelete: number, modal: any) {
