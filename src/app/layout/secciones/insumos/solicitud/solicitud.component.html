@@ -93,18 +93,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class='col-12 col-sm-6  mb-1'>
-            <div class="form-group form-check">
-              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1"
-                [(ngModel)]="splitZones" disabled="true">
-              <label class="form-check-label" for="exampleCheck1">Selección de Zonas</label>
-            </div>
-          </div>
-          <div class='col-12 col-sm-6 mb-1'>
-            <div class="input-group">
-              <input class="form-control" type="text" disabled="true" placeholder="1" disabled="true">
-            </div>
-          </div> -->
             </div>
             <div class="row mb-1" *ngIf="dataWorkSpaceMunicipality.id">
               <div class='col-12 col-sm-3 mb-1'>
@@ -145,7 +133,7 @@
               </div>
             </div>
           </form>
-          <div class="table-responsive table-inverse" *ngIf="this.tablesupplies.length > 0">
+          <div class="table-responsive table-inverse" *ngIf="tablesupplies.length > 0">
             <div class="text-center mt-2 mb-2">
               <h3>Selección de Insumos</h3>
             </div>
@@ -191,9 +179,9 @@
               </tbody>
             </table>
           </div>
-          <div class="card-footer text-muted text-center mb-2">
+          <div class="card-footer text-muted text-center mb-2" *ngIf="tablesupplies.length > 0">
             <div class="row">
-              <div class="col-12 col-sm-6 offset-sm-6 mt-2" *ngIf="tablesupplies.length > 0">
+              <div class="col-12 col-sm-6 offset-sm-6 mt-2">
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <label class="input-group-text">* Fecha Límite</label>
@@ -201,35 +189,19 @@
                   <input class="form-control" type="date" name="deadline" [min]="currentDate"
                     [(ngModel)]="listsupplies.deadline">
                 </div>
-                <select (change)="changeModelSupplies(item.idCount, item.modelVersion)" class="custom-select"
-                  name="modelSupplies{{item.idCount}}" id="modelSupplies{{item.idCount}}"
-                  [(ngModel)]="item.modelVersion">
-                  <option value='0' selected>Seleccione la versión del modelo de insumos LADM-COL</option>
-                  <option [ngValue]="item.name" *ngFor="let item of item.versions">Submodelo Insumos V1.0</option>
-                </select>
               </div>
-              <div *ngIf="!item.modelRequired">N/A</div>
-            </td>
-            <td scope="row">
-              <textarea class="form-control" rows="3" maxlength="255" disabled="true">{{ item.observacion }}</textarea>
-            </td>
-            <td scope="row">
-              <i class="material-icons cursor" (click)="delete(item)">
-                delete_forever
-              </i></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card-footer text-muted text-center mb-2">
-      <div class="row">
-        <div class="col-12 col-sm-6 offset-sm-6 mt-2" *ngIf="tablesupplies.length > 0">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <label class="input-group-text">* Fecha Límite</label>
+              <div class="col-12 mt-3">
+                <div class="alert alert-primary text-center" role="alert">
+                  Recuerde que los campos marcados con * son obligatorios.
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="button" [disabled]="enviarsolicitud" class="btn btn-dark"
+                  (click)="openModal(modalRegistrar)">Enviar
+                  Solicitud</button>
+              </div>
             </div>
           </div>
-
           <ng-template #modalRegistrar let-modal>
             <div class="modal-header">
               <h4 class="modal-title">
@@ -285,28 +257,4 @@
       </div>
     </div>
   </div>
-<!-- <pre>{{poc | json}}</pre> -->
-  <ng-template #modalRegistrar let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title">
-        ¿Está seguro de enviar la solicitud?
-      </h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <h5 class="alert alert-warning text-center">
-        Advertencia: Va a realizar una solicitud.
-      </h5>
-    </div>
-    <div class="modal-footer">
-      <div class="col-6">
-        <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
-      </div>
-      <div class="col-6 text-right">
-        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true)">Si</button>
-      </div>
-    </div>
-  </ng-template>
 </div>
