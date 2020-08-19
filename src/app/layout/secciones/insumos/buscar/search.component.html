@@ -82,7 +82,7 @@
                   <th>Proveedor</th>
                   <th>Insumo</th>
                   <th>Fecha de Cargue</th>
-                  <th>Modelo</th>
+                  <!-- <th>Modelo</th> -->
                   <th>Observación</th>
                   <th>Estado</th>
                   <th>Opciones</th>
@@ -95,7 +95,7 @@
                   <td scope="row">{{item.typeSupply ? item.typeSupply.provider.name: 'N/A'}}</td>
                   <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'N/A'}}</td>
                   <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                  <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
+                  <!-- <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
                   <td scope="row"><textarea maxlength="255" readonly
                       style="border: none; background: #dedede;">{{item.observations}}</textarea></td>
                   <td scope="row">
