@@ -75,7 +75,7 @@ export class SearchComponent implements OnInit {
     );
   }
   getPage(page: string) {
-    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page).subscribe(
+    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page, false).subscribe(
       (response: any) => {
         this.number = response.number + 1;
         this.size = response.size;

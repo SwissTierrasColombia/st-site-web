@@ -56,10 +56,9 @@ export class BuscarSolicitudComponent implements OnInit {
     this.providers = [];
     this.selectProvider = '0';
     this.infoTabProvider = [];
-    this.selectPackage = '0';
+    this.selectPackage = '';
     this.infoTabOrder = [];
     this.numbersuppliesManagerRequest = [];
-    this.infoTabOrder = 0;
     this.buttonTab1 = true;
     this.buttonTab2 = true;
     this.buttonTab3 = true;
@@ -123,7 +122,7 @@ export class BuscarSolicitudComponent implements OnInit {
   }
   getPageOrder(page: string) {
     this.serviceWorkspaces.searchSuppliesOrder(this.selectPackage).subscribe((response: any) => {
-      this.infoTabOrder = response[0].requests;
+      this.infoTabOrder = response;
       this.totalElements = this.infoTabOrder.length;
     });
   }
