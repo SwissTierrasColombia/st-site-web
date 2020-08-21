@@ -28,60 +28,60 @@ export class DashboardComponent implements OnInit {
         imagePath: 'assets/images/slider1.jpg',
         label: 'Sistema de Transición',
         text:
-          'Sistema de Transición para el Barrido Predial en Colombia'
+          'Sistema de Transición para el Levantamiento Catastral en Colombia'
       },
       {
         imagePath: 'assets/images/slider2.jpg',
         label: 'Sistema de Transición',
-        text: 'Sistema de Transición para el Barrido Predial en Colombia'
+        text: 'Sistema de Transición para el Levantamiento Catastral en Colombia'
       },
       {
         imagePath: 'assets/images/slider3.jpg',
         label: 'Sistema de Transición',
         text:
-          'Sistema de Transición para el Barrido Predial en Colombia'
+          'Sistema de Transición para el Levantamiento Catastral en Colombia'
       },
       {
         imagePath: 'assets/images/slider4.jpg',
         label: 'Sistema de Transición',
         text:
-          'Sistema de Transición para el Barrido Predial en Colombia'
+          'Sistema de Transición para el Levantamiento Catastral en Colombia'
       },
       {
         imagePath: 'assets/images/slider5.jpg',
         label: 'Sistema de Transición',
         text:
-          'Sistema de Transición para el Barrido Predial en Colombia'
+          'Sistema de Transición para el Levantamiento Catastral en Colombia'
       },
       {
         imagePath: 'assets/images/slider6.jpg',
         label: 'Sistema de Transición',
         text:
-          'Sistema de Transición para el Barrido Predial en Colombia'
+          'Sistema de Transición para el Levantamiento Catastral en Colombia'
       },
       {
         imagePath: 'assets/images/slider7.jpg',
         label: 'Sistema de Transición',
         text:
-          'Sistema de Transición para el Barrido Predial en Colombia'
+          'Sistema de Transición para el Levantamiento Catastral en Colombia'
       },
       {
         imagePath: 'assets/images/slider8.jpg',
         label: 'Sistema de Transición',
         text:
-          'Sistema de Transición para el Barrido Predial en Colombia'
+          'Sistema de Transición para el Levantamiento Catastral en Colombia'
       },
       {
         imagePath: 'assets/images/slider9.jpg',
         label: 'Sistema de Transición',
         text:
-          'Sistema de Transición para el Barrido Predial en Colombia'
+          'Sistema de Transición para el Levantamiento Catastral en Colombia'
       },
       {
         imagePath: 'assets/images/slider10.jpg',
         label: 'Sistema de Transición',
         text:
-          'Sistema de Transición para el Barrido Predial en Colombia'
+          'Sistema de Transición para el Levantamiento Catastral en Colombia'
       }
     );
     this.taskProvider = 0;
