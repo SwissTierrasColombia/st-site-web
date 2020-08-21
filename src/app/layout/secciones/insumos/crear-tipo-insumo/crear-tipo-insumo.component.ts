@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Select2OptionData } from 'ng-select2';
 import { Options } from 'select2';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-crear-tipo-insumo',
   templateUrl: './crear-tipo-insumo.component.html',
@@ -36,10 +37,14 @@ export class CrearTipoInsumoComponent implements OnInit {
   pageSize: number;
   searchText: string;
   viewOtherFormat: boolean;
+  tab: number;
+  isValidTab: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private modalService: NgbModal,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private router: Router,
+    private activedRoute: ActivatedRoute
   ) {
     this.id = 0;
     this.providerProfile = 0;
@@ -135,9 +140,22 @@ export class CrearTipoInsumoComponent implements OnInit {
     this.page = 1;
     this.pageSize = 10;
     this.viewOtherFormat = true;
+    this.tab = 1;
+    this.isValidTab = true;
   }
 
   ngOnInit(): void {
+    this.activedRoute.params.subscribe(
+      response => {
+        if (response.tab) {
+          this.tab = Number(response.tab);
+          var isTrueSet = (response.isValidTab == 'false');
+          if (!isTrueSet == false) {
+            this.isValidTab = !response.isValidTab;
+          }
+        }
+      }
+    );
     this.serviceWorkspaces.GetProviderProfiles()
       .subscribe((response: any[]) => {
         this.providerProfiles = response;
@@ -237,6 +255,7 @@ export class CrearTipoInsumoComponent implements OnInit {
   createTypeSupply() {
     this.serviceWorkspaces.CreateTypeSupplies(this.getObjectTypeSupply()).subscribe(response => {
       this.toast.success("Ha creado correctamente el tipo de insumo.");
+      this.isValidTab = true;
       this.loadProviderTypeSupplies();
       this.cancel();
     });
@@ -245,6 +264,7 @@ export class CrearTipoInsumoComponent implements OnInit {
   saveTypeSupply() {
     this.serviceWorkspaces.SaveTypeSupplies(this.id, this.getObjectTypeSupply()).subscribe(() => {
       this.toast.success("Ha actualizado correctamente el tipo de insumo.");
+      this.isValidTab = true;
       this.cancel();
       this.loadProviderTypeSupplies();
     });
@@ -298,5 +318,13 @@ export class CrearTipoInsumoComponent implements OnInit {
       this.typeSupplyName == '' ||
       this.extensions == '' ||
       this.typeSupplyDescription == '' ? this.formOk = false : this.formOk = true;
+  }
+  tab1() {
+    this.tab = 1;
+    this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 1 }]);
+  }
+  tab2() {
+    this.tab = 2;
+    this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 2 }]);
   }
 }

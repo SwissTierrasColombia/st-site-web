@@ -1,38 +1,38 @@
 <div>
-    <app-page-header [heading]="'Entrega de Insumos'" [icon]="'fa-star'"></app-page-header>
+  <app-page-header [heading]="'Entrega de Insumos'" [icon]="'fa-star'"></app-page-header>
 
-    <div class="card">
-        <div class="card-header text-center">
-            <h3>Entrega de Insumos</h3>
-        </div>
-        <div class="card-body">
-            <form action="" method="post">
-                <div class="row mb-2">
-                    <div class='col-12 col-sm-6 mb-1'>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" aria-required="true">* Departamento</label>
-                            </div>
-                            <select (change)="changeDepartament()" class="custom-select" name="departments"
-                                id="departments" [(ngModel)]="selectDepartment">
-                                <option value='0' selected>Seleccione el Departamento</option>
-                                <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class='col-12 col-sm-6  mb-1'>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text">* Municipio</label>
-                            </div>
-                            <select (change)="changeMunucipality()" class="custom-select" name="munucipalities"
-                                id="munucipalities" [(ngModel)]="selectMunicipality">
-                                <option value='0' selected>Seleccione el Municipio</option>
-                                <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- <div *ngIf="usermanager" class='col-12 mb-1'>
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Entrega de Insumos</h3>
+    </div>
+    <div class="card-body">
+      <form action="" method="post">
+        <div class="row mb-2">
+          <div class='col-12 col-sm-6 mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Departamento</label>
+              </div>
+              <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
+                [(ngModel)]="selectDepartment">
+                <option value='0' selected>Seleccione el Departamento</option>
+                <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6  mb-1'>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Municipio</label>
+              </div>
+              <select (change)="changeMunucipality()" class="custom-select" name="munucipalities" id="munucipalities"
+                [(ngModel)]="selectMunicipality">
+                <option value='0' selected>Seleccione el Municipio</option>
+                <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+          <!-- <div *ngIf="usermanager" class='col-12 mb-1'>
                         <div class="input-group mt-2">
                             <div class="input-group-prepend">
                                 <label class="input-group-text" aria-required="true">Solicitudes Gestor</label>
@@ -47,172 +47,168 @@
                         </div>
                         <small id="entities" class="form-text text-muted">Seleccione las solicitudes a buscar</small>
                     </div> -->
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <div class="alert alert-primary text-center" role="alert">
-                            Recuerde que los campos marcados con * son obligatorios.
-                        </div>
-                    </div>
-                </div>
-            </form>
         </div>
-        <div class="card-footer text-muted text-center">
-            <button type="button" class="btn btn-dark" (click)="getPage('1')"
-                [disabled]="sendSuppliesFilter">Buscar</button>
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="alert alert-primary text-center" role="alert">
+              Recuerde que los campos marcados con * son obligatorios.
+            </div>
+          </div>
         </div>
+      </form>
     </div>
-    <div *ngIf="allSupplies.length > 0">
-        <div class="row justify-content-md-center">
-            <div class="card text-center">
-                <div class="card-header text-center">
-                    <h5>Resultados de Búsqueda</h5>
-                </div>
-                <div class="card-body">
-                    <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number"
-                        [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [ellipses]="false"
-                        [boundaryLinks]="true" (pageChange)="getPage($event)">
-                    </ngb-pagination>
-                    <div class="search-hero">
-                        <input class="form-control" type="text" name="search" [(ngModel)]="searchText"
-                            autocomplete="off" placeholder="&#61442;  Buscar">
-                    </div>
-                    <div class="table-inverse table-responsive">
-                        <table class="table table-striped" *ngIf="usermanager">
-                            <thead class="thead-inverse">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Insumo</th>
-                                    <th>Fecha de Cargue</th>
-                                    <th>Observación del Insumo</th>
-                                    <th>Modelo</th>
-                                    <th>Estado</th>
-                                    <th>Observación /<br />Fecha de Entrega</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of allSupplies |filter:searchText; let i = index">
-                                    <td scope="row">
-                                        {{i + 1}}
-                                    </td>
-                                    <td scope="row">
-                                        {{item.typeSupply ? item.typeSupply.name: 'Modelo de insumos para el Municipio'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}})
-                                    </td>
-                                    <td scope="row">
-                                        {{globalFuntionDate(item.createdAt)}}
-                                    </td>
-                                    <td scope="row">
-                                        <textarea class="form-control" rows="3" maxlength="255"
-                                            disabled="true">{{item.observations}}</textarea>
-                                    </td>
-                                    <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
-                                    <td>
-                                        <div class="form-check"
-                                            *ngIf="item.delivered === null || item.delivered === false">
-                                            <input class="form-check-input" type="checkbox" [(ngModel)]="item.delivery"
-                                                value="" id="defaultCheck{{item.id}}"
-                                                (change)="builddelivery(item, item.delivery)">
-                                        </div>
-                                        <div *ngIf="item.delivered === true" class="form-check">
-                                            <input class="form-check-input" type="checkbox" [checked]="item.delivered"
-                                                [value]="item.delivered" id="defaultCheck{{item.id}}" disabled>
-                                        </div>
-                                    </td>
-                                    <td *ngIf="item.delivered === null || item.delivered === false">
-                                        <div class="input-group">
-                                            <textarea maxlength="255" class="form-control" id="observations{{item.id}}"
-                                                rows="3" name="observaciones{{item.id}}"
-                                                [(ngModel)]="item.observationsTosupplie"
-                                                (change)="builddelivery(item, item.delivery)"
-                                                [disabled]="item.delivery ? false:true"></textarea>
-                                        </div>
-                                    </td>
-                                    <td *ngIf="item.delivered === true">
-                                        {{globalFuntionDate(item.delivery.createdAt)}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table class="table table-striped" *ngIf="!usermanager">
-                            <thead class="thead-inverse">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Insumo</th>
-                                    <th>Fecha de Cargue</th>
-                                    <th>Observación del Insumo</th>
-                                    <th>Modelo</th>
-                                    <th>Estado</th>
-                                    <th>Fecha de Entrega</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of allSupplies |filter:searchText; let i = index">
-                                    <td scope="row" *ngIf="item.delivered === true">
-                                        {{i + 1}}
-                                    </td>
-                                    <td scope="row" *ngIf="item.delivered === true">
-                                        {{item.typeSupply ? item.typeSupply.name: 'Modelo de insumos para el Municipio'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}})
-                                    </td>
-                                    <td scope="row" *ngIf="item.delivered === true">
-                                        {{globalFuntionDate(item.createdAt)}}
-                                    </td>
-                                    <td scope="row" *ngIf="item.delivered === true">{{item.observations}}</td>
-                                    <td scope="row" *ngIf="item.delivered === true">
-                                        {{item.modelVersion ? item.modelVersion: 'N/A'}}</td>
-                                    <td *ngIf="item.delivered === true">
-                                        <div *ngIf="item.delivered === true" class="form-check">
-                                            <input class="form-check-input" type="checkbox" [checked]="item.delivered"
-                                                [value]="item.delivered" id="defaultCheck{{item.id}}" disabled>
-                                        </div>
-                                    </td>
-                                    <td *ngIf="item.delivered === true">
-                                        {{globalFuntionDate(item.delivery.createdAt)}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class='col-12 mt-2 mb-2' *ngIf="usermanager">
-                            <div class="input-group">
-                                <div class="input-group-prepend input-group-text">
-                                    <div class="">* Observaciones Generales</div>
-                                </div>
-                                <textarea maxlength="255" class="form-control" id="observationsGeneral" rows="3"
-                                    name="observaciones Generales" [(ngModel)]="deliverySupplies.observations"
-                                    (change)="clickCheckBox()"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="usermanager" class="card-footer text-muted text-center">
-            <button [disabled]="enabledButton" type="button" class="btn btn-dark"
-                (click)="openModal(modalRegistrar)">Entregar Insumos</button>
-        </div>
-        <!-- <pre>{{deliverySupplies | json}}</pre> -->
+    <div class="card-footer text-muted text-center">
+      <button type="button" class="btn btn-dark" (click)="getPage('1')" [disabled]="sendSuppliesFilter">Buscar</button>
     </div>
-    <ng-template #modalRegistrar let-modal>
-        <div class="modal-header">
-            <h4 class="modal-title">
-                ¿Está seguro de entregar los insumos?
-            </h4>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
+  </div>
+  <div *ngIf="allSupplies.length > 0">
+    <div class="row justify-content-md-center">
+      <div class="card text-center">
+        <div class="card-header text-center">
+          <h5>Resultados de Búsqueda</h5>
         </div>
-        <div class="modal-body">
-            <h5 class="alert alert-warning text-center">
-                Advertencia: Va a realizar una entrega de insumos.
-            </h5>
-        </div>
-        <div class="modal-footer">
-            <div class="col-6">
-                <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
+        <div class="card-body">
+          <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number" [pageSize]="size"
+            [collectionSize]="totalElements" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+            (pageChange)="getPage($event)">
+          </ngb-pagination>
+          <div class="search-hero">
+            <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
+              placeholder="&#61442;  Buscar">
+          </div>
+          <div class="table-inverse table-responsive">
+            <table class="table table-striped text-center" *ngIf="usermanager">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>ID</th>
+                  <th>Insumo</th>
+                  <th>Fecha de Cargue</th>
+                  <th>Observación del Insumo</th>
+                  <!-- <th>Modelo</th> -->
+                  <th>Selección</th>
+                  <th>Observación /<br />Fecha de Entrega</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of allSupplies |filter:searchText; let i = index">
+                  <td scope="row">
+                    {{i + 1}}
+                  </td>
+                  <td scope="row">
+                    {{item.typeSupply ? item.typeSupply.name: 'Datos en modelo de insumos para el Municipio'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}})
+                  </td>
+                  <td scope="row">
+                    {{globalFuntionDate(item.createdAt)}}
+                  </td>
+                  <td scope="row">
+                    <textarea class="form-control" rows="3" maxlength="255"
+                      disabled="true">{{item.observations}}</textarea>
+                  </td>
+                  <!-- <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
+                  <td>
+                    <div class="form-check" *ngIf="item.delivered === null || item.delivered === false">
+                      <input class="form-check-input" type="checkbox" [(ngModel)]="item.delivery" value=""
+                        id="defaultCheck{{item.id}}" (change)="builddelivery(item, item.delivery)">
+                    </div>
+                    <div *ngIf="item.delivered === true" class="form-check">
+                      <input class="form-check-input" type="checkbox" [checked]="item.delivered"
+                        [value]="item.delivered" id="defaultCheck{{item.id}}" disabled>
+                    </div>
+                  </td>
+                  <td *ngIf="item.delivered === null || item.delivered === false">
+                    <div class="input-group">
+                      <textarea maxlength="255" class="form-control" id="observations{{item.id}}" rows="3"
+                        name="observaciones{{item.id}}" [(ngModel)]="item.observationsTosupplie"
+                        (change)="builddelivery(item, item.delivery)"
+                        [disabled]="item.delivery ? false:true"></textarea>
+                    </div>
+                  </td>
+                  <td *ngIf="item.delivered === true">
+                    {{globalFuntionDate(item.delivery.createdAt)}} <br>
+                    <strong>Insumo entregado</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table table-striped text-center" *ngIf="!usermanager">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>ID</th>
+                  <th>Insumo</th>
+                  <th>Fecha de Cargue</th>
+                  <th>Observación del Insumo</th>
+                  <!-- <th>Modelo</th> -->
+                  <th>Estado</th>
+                  <th>Fecha de Entrega</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of allSupplies |filter:searchText; let i = index">
+                  <td scope="row" *ngIf="item.delivered === true">
+                    {{i + 1}}
+                  </td>
+                  <td scope="row" *ngIf="item.delivered === true">
+                    {{item.typeSupply ? item.typeSupply.name: 'Modelo de insumos para el Municipio'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}})
+                  </td>
+                  <td scope="row" *ngIf="item.delivered === true">
+                    {{globalFuntionDate(item.createdAt)}}
+                  </td>
+                  <td scope="row" *ngIf="item.delivered === true">{{item.observations}}</td>
+                  <!-- <td scope="row" *ngIf="item.delivered === true">
+                    {{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
+                  <td *ngIf="item.delivered === true">
+                    <div *ngIf="item.delivered === true" class="form-check">
+                      <input class="form-check-input" type="checkbox" [checked]="item.delivered"
+                        [value]="item.delivered" id="defaultCheck{{item.id}}" disabled>
+                    </div>
+                  </td>
+                  <td *ngIf="item.delivered === true">
+                    {{globalFuntionDate(item.delivery.createdAt)}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class='col-12 mt-2 mb-2' *ngIf="usermanager">
+              <div class="input-group">
+                <div class="input-group-prepend input-group-text">
+                  <div class="">* Observaciones Generales</div>
+                </div>
+                <textarea maxlength="255" class="form-control" id="observationsGeneral" rows="3"
+                  name="observaciones Generales" [(ngModel)]="deliverySupplies.observations"
+                  (change)="clickCheckBox()"></textarea>
+              </div>
             </div>
-            <div class="col-6 text-right">
-                <button type="button" ngbAutofocus class="btn btn-success btn-block"
-                    (click)="closeModal(true)">Si</button>
-            </div>
+          </div>
         </div>
-    </ng-template>
+      </div>
+    </div>
+    <div *ngIf="usermanager" class="card-footer text-muted text-center">
+      <button [disabled]="enabledButton" type="button" class="btn btn-dark" (click)="openModal(modalRegistrar)">Entregar
+        Insumos</button>
+    </div>
+    <!-- <pre>{{deliverySupplies | json}}</pre> -->
+  </div>
+  <ng-template #modalRegistrar let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de entregar los insumos?
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Va a realizar una entrega de insumos.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
+      </div>
+      <div class="col-6 text-right">
+        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true)">Si</button>
+      </div>
+    </div>
+  </ng-template>
 </div>

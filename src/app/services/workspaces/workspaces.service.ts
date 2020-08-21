@@ -103,7 +103,7 @@ export class WorkspacesService {
    * GetSuppliesByMunicipality
    */
   public GetSuppliesByMunicipalityXTF(idMunicipality: number) {
-    return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?extensions=xtf');
+    return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?extensions=xtf&active=true');
   }
   /**
    * GetIntegrationCadastreRegistration
@@ -156,12 +156,8 @@ export class WorkspacesService {
   /**
    * GetSuppliesByMunicipalityFilter
    */
-  public GetSuppliesByMunicipalityFilter(idMunicipality: number, page: string, requests?: string) {
-    let url = this.url + '/workspaces/v1/supplies/' + idMunicipality + '?page=' + page;
-    if (requests) {
-      url = url + '&requests=' + requests;
-    }
-    return this.httpClient.get(url);
+  public GetSuppliesByMunicipalityFilter(idMunicipality: number, page: string, active: boolean) {
+    return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?page=' + page + '&active=' + active);
   }
   /**
    * downloadSupplie
@@ -398,5 +394,53 @@ export class WorkspacesService {
    */
   public skipRevision(supplyRequestedId: number) {
     return this.httpClient.post(this.url + '/workspaces/v1/providers/supplies-review/' + supplyRequestedId + '/skip', {});
+  }
+  /**
+   * createPetition
+   */
+  public createPetition(data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/petitions', data);
+  }
+  /**
+   * getPetitionsForManager
+   */
+  public getPetitionsForManager(providerId: string) {
+    return this.httpClient.get(this.url + '/workspaces/v1/petitions/manager/' + providerId);
+  }
+  /**
+   * getPetitionsForProviderOpen
+   */
+  public getPetitionsForProviderOpen() {
+    return this.httpClient.get(this.url + '/workspaces/v1/petitions/provider/open');
+  }
+  /**
+   * getPetitionsForProviderClose
+   */
+  public getPetitionsForProviderClose() {
+    return this.httpClient.get(this.url + '/workspaces/v1/petitions/provider/close');
+  }
+  /**
+   * acceptPetition
+   */
+  public acceptPetition(petitionId: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/petitions/' + petitionId + '/accept', data);
+  }
+  /**
+   * rejectPetition
+   */
+  public rejectPetition(petitionId: number, data: any) {
+    return this.httpClient.put(this.url + '/workspaces/v1/petitions/' + petitionId + '/reject', data);
+  }
+  /**
+   * activeSupplies
+   */
+  public activeSupplies(supplyId: number) {
+    return this.httpClient.put(this.url + '/workspaces/v1/supplies/' + supplyId + '/active', {});
+  }
+  /**
+   * inactiveSupplies
+   */
+  public inactiveSupplies(supplyId: number) {
+    return this.httpClient.put(this.url + '/workspaces/v1/supplies/' + supplyId + '/inactive', {});
   }
 }

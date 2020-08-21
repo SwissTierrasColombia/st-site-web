@@ -26,6 +26,7 @@ export class SearchComponent implements OnInit {
   totalElements: any;
   idSupplieDelete: number;
   searchText: string;
+  idSuppliesState: number;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
@@ -43,6 +44,7 @@ export class SearchComponent implements OnInit {
     this.number = 0;
     this.totalElements = 0;
     this.idSupplieDelete = 0;
+    this.idSuppliesState = 0;
   }
 
   ngOnInit() {
@@ -75,20 +77,27 @@ export class SearchComponent implements OnInit {
     );
   }
   getPage(page: string) {
-    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page).subscribe(
+    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page, false).subscribe(
       (response: any) => {
         this.number = response.number + 1;
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
+        console.log(this.allSupplies);
         for (let index = 0; index < this.allSupplies.length; index++) {
           if (this.allSupplies[index].typeSupply === null) {
             this.allSupplies[index].typeSupply = {
               "provider": {
-                "name": "N/A"
+                "name": "GESTOR"
               },
-              "name": "N/A"
+              "name": "Datos en modelo de insumos para el Municipio"
             }
+          }
+          if (this.allSupplies[index].state.id === 1) {
+            this.allSupplies[index].state.state = true;
+          }
+          if (this.allSupplies[index].state.id === 2) {
+            this.allSupplies[index].state.state = false;
           }
         }
         this.allSupplies.sort(function (a: any, b: any) {
@@ -110,7 +119,6 @@ export class SearchComponent implements OnInit {
       (data: any) => {
         const contentType = data.headers.get('content-type');
         const type = contentType.split(',')[0];
-        //const ext = data.headers.get('Content-Disposition');
         const dataFile = data.body;
         const blob = new Blob([dataFile], { type });
         const url = window.URL.createObjectURL(blob);
@@ -118,21 +126,59 @@ export class SearchComponent implements OnInit {
       }
     );
   }
-  deleteSupplies(idSupplie: number) {
+  deleteSupplies(idSupplie: number, index?: number) {
     this.serviceWorkspaces.deleteSupplies(this.selectMunicipality, idSupplie).subscribe(
-      data => {
-        this.toastr.success("Se ha eliminado el insumo");
+      _ => {
+        this.allSupplies.splice(index, 1);
+        this.toastr.success('Se ha eliminado el insumo');
+
       }
     );
   }
-  closeModal(option: boolean) {
+  closeModal(option: boolean, index?: number) {
     this.modalService.dismissAll();
     if (option) {
-      this.deleteSupplies(this.idSupplieDelete);
+      this.deleteSupplies(this.idSupplieDelete, index);
     }
   }
   openModal(idSupplieDelete: number, modal: any) {
     this.idSupplieDelete = idSupplieDelete;
     this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  clickCheckBox(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  openModalEnabled(modal: any, supplyId: number) {
+    this.idSuppliesState = supplyId;
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  closeModalEnabled(option: boolean, index?: number) {
+    if (option) {
+      this.serviceWorkspaces.activeSupplies(this.idSuppliesState).subscribe(
+        (data: any) => {
+          console.log('data active', data);
+          data.state.state = true;
+          this.allSupplies[index].state = data.state;
+        }
+      );
+    }
+    this.modalService.dismissAll();
+
+  }
+  openModalDisabled(modal: any, supplyId: number) {
+    this.idSuppliesState = supplyId;
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  closeModalDisabled(option: boolean, index?: number) {
+    if (option) {
+      this.serviceWorkspaces.inactiveSupplies(this.idSuppliesState).subscribe(
+        (data: any) => {
+          data.state.state = false;
+          this.allSupplies[index].state = data.state;
+        }
+      );
+    }
+    this.modalService.dismissAll();
   }
 }

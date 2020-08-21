@@ -109,7 +109,8 @@ export class CargueComponent implements OnInit {
                 function (elem: any) {
                   return '.' + elem.name;
                 }).join(',');
-            this.dataRequestPending[index].suppliesRequested[index2].format = this.dataRequestPending[index].suppliesRequested[index2].format + ',.zip'
+            this.dataRequestPending[index].suppliesRequested[index2].format =
+              this.dataRequestPending[index].suppliesRequested[index2].format + ',.zip';
 
             if (this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions[index3].name === 'xtf') {
               this.dataRequestPending[index].suppliesRequested[index2].xtf = this.clone(this.xtf);
@@ -131,8 +132,8 @@ export class CargueComponent implements OnInit {
         }
       }
       this.dataRequestPending[0].suppliesRequested =
-        this.dataRequestPending[0].suppliesRequested.sort((a, b) => a.id - b.id)
-
+        this.dataRequestPending[0].suppliesRequested.sort((a, b) => a.id - b.id);
+      console.log(this.dataRequestPending);
     });
   }
   formatDate(date: string) {
@@ -145,7 +146,7 @@ export class CargueComponent implements OnInit {
   docSoport(files: FileList, idOut: number, idInt: number) {
     this.previewData = files;
     if (files[0].size / 1024 / 1024 <= 190) {
-      var re = /zip*/;
+      let re = /zip*/;
       if (files[0].type.match(re)) {
         const formato = files[0].name.split('.').pop();
         let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
@@ -163,11 +164,12 @@ export class CargueComponent implements OnInit {
           this.validsendFile(idOut, idInt);
         } else {
           this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
-          this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
+          this.toastr.error('El formato no es valido, por favor subir en: ' +
+            this.dataRequestPending[idOut].suppliesRequested[idInt].format);
         }
       } else {
         if (files[0].size / 1024 / 1024 > 10) {
-          this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
+          this.toastr.error('Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.')
           this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
           this.myInputVariable.nativeElement.value = "";
         } else {
@@ -186,14 +188,15 @@ export class CargueComponent implements OnInit {
             this.validsendFile(idOut, idInt);
           } else {
             this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
-            this.toastr.error('El formato no es valido, por favor subir en: ' + this.dataRequestPending[idOut].suppliesRequested[idInt].format);
+            this.toastr.error('El formato no es valido, por favor subir en: ' +
+              this.dataRequestPending[idOut].suppliesRequested[idInt].format);
           }
         }
       }
     } else {
       this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
-      this.myInputVariable.nativeElement.value = "";
-      this.toastr.error("No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.")
+      this.myInputVariable.nativeElement.value = '';
+      this.toastr.error('No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.')
     }
   }
   validsendFile(idOut: number, idInt: number) {
@@ -253,7 +256,7 @@ export class CargueComponent implements OnInit {
     }
     this.serviceWorkspaces.loadSupplyFromRequest(idSolicitud, form).subscribe(
       (data: any) => {
-        let response = data.suppliesRequested.find(item => {
+        let response = data.suppliesRequested.find((item: any) => {
           return item.id == this.dataRequestPending[idOut].suppliesRequested[idInt].id;
         });
         response.canUpload = true;
@@ -279,10 +282,8 @@ export class CargueComponent implements OnInit {
         }
         this.dataRequestPending[idOut].suppliesRequested[idInt] = this.clone(response);
         for (let sr of this.dataRequestPending[idOut].suppliesRequested) {
-          //if (this.dataRequestPending[0].suppliesRequested[idInt].state.id === 1) {
           this.dataRequestPending[0].suppliesRequested[idInt].preview = true;
           this.fileUrl = this.dataRequestPending[0].suppliesRequested[idInt].url;
-          //}
         }
         this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
           if (item.state.id === 1 || item.state.id === 5) {
@@ -292,11 +293,6 @@ export class CargueComponent implements OnInit {
         if (this.dataRequestPending[0].suppliesRequested.length === this.closeRequestButtonArray.length) {
           this.closeRequestButton = false;
         }
-        // this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
-        //   data => {
-        //     this.dataRequestPending = data;
-        //   }
-        // );
       }
     );
   }
@@ -324,9 +320,9 @@ export class CargueComponent implements OnInit {
   }
   getEntity(item: any) {
     let data = item.emitters.find((elem: any) => {
-      return elem.emitterType === "ENTITY"
+      return elem.emitterType === 'ENTITY';
     });
-    return data.user.name
+    return data.user.name;
   }
   volver() {
     this.router.navigate(['/insumos/solicitudes/pendientes']);
