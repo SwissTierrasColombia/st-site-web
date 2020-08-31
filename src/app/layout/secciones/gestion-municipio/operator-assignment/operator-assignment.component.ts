@@ -8,6 +8,8 @@ import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { saveAs } from 'file-saver';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
+
 
 const moment = _moment;
 @Component({
@@ -123,12 +125,12 @@ export class OperatorAssignmentComponent implements OnInit {
   }
 
   docSoport(files: FileList) {
-    if (files[0].size / 1024 / 1024 <= 190) {
+    if (files[0].size / 1024 / 1024 <= environment.sizeFile) {
       var re = /zip*/;
       if (files[0].type.match(re)) {
         this.supportFileOperator = files[0];
       } else {
-        if (files[0].size / 1024 / 1024 > 10) {
+        if (files[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
           this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
           this.supportFileOperator = undefined;
           this.myInputVariable.nativeElement.value = "";

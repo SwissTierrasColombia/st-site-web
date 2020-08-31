@@ -83,7 +83,6 @@ export class SearchComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
-        console.log(this.allSupplies);
         for (let index = 0; index < this.allSupplies.length; index++) {
           if (this.allSupplies[index].typeSupply === null) {
             this.allSupplies[index].typeSupply = {
@@ -157,7 +156,6 @@ export class SearchComponent implements OnInit {
     if (option) {
       this.serviceWorkspaces.activeSupplies(this.idSuppliesState).subscribe(
         (data: any) => {
-          console.log('data active', data);
           data.state.state = true;
           this.allSupplies[index].state = data.state;
         }

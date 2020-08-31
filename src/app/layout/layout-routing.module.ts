@@ -25,7 +25,6 @@ const routes: Routes = [
           import('./secciones/gestion-municipio/gestion-municipio.module').then(m => m.GestionMunicipioModule),
         canActivate: [RoleAdminManagerGuard]
       },
-      { path: 'poc', loadChildren: () => import('./poc/poc.module').then(m => m.PocModule) },
       {
         path: 'administrador', loadChildren: () =>
           import('./secciones/administrador/administrador.module').then(m => m.AdministradorModule),

@@ -5,4 +5,6 @@ export const environment = {
   apiBaseUrlPrefix: apiBaseUrl + 'PREFIJO-SERVER',
   nameTokenSession: 'NAME-TOKEN',
   clientUsername: 'CLIENT-SERVER',
-  clientPassword: 'PASSWORD-SERVER'
+  clientPassword: 'PASSWORD-SERVER',
+  sizeFile: NUMBER,
+  sizeFileUnZip: NUMBER

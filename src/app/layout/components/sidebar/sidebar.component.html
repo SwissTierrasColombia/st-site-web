@@ -1,15 +1,9 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
   <div class="list-group">
-
     <a routerLink="" class="list-group-item">
       <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
       <span>Página Principal</span>
     </a>
-    <!-- <a href="http://sat.proadmintierra.info/autenticacion/login" target="_blank" class="list-group-item">
-      <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-      <span>Consulta</span><br>
-      <span class="ml-3">(Punto único de verdad)</span>
-    </a> -->
     <div class="nested-menu"
       *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador || rolegestor ? rolegestor.id: 0 === allroles.gestor">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].gestion)">
@@ -25,24 +19,6 @@
               <span>Asignación</span>
             </a>
           </li>
-          <!-- <li>
-            <a href="javascript:void(0)">
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Tareas</span>
-            </a>
-          </li> -->
-          <!-- <li>
-            <a href="javascript:void(0)">
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Reportes</span>
-            </a>
-          </li> -->
-          <!-- <li>
-            <a href="javascript:void(0)">
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Indicadores</span>
-            </a>
-          </li> -->
         </ul>
       </li>
     </div>
@@ -134,79 +110,6 @@
         </ul>
       </li>
     </div>
-    <!-- <div class="nested-menu" *ngIf="roleoperador ? roleoperador.id: 0 === allroles.operador">
-      <a class="list-group-item" (click)="addExpandClass(listMenu[0].operacion)">
-        <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
-        <span>Operación</span>
-      </a>
-      <li class="nested" [class.expand]="showMenu === listMenu[0].operacion">
-        <ul class="submenu">
-           <li>
-            <a [routerLink]="['/operador/entregas']">
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Descargas</span><br>
-              <span class="mt-4">pendientes</span>
-            </a>
-            <a [routerLink]="['/operador/entregas-atendidas']">
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Descargas</span><br>
-              <span class="mt-4">realizadas</span>
-            </a>
-          </li>
-           <li>
-            <a>
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Cargue BPM</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-    </div> -->
-    <!-- <div class="nested-menu">
-      <a class="list-group-item" (click)="addExpandClass(listMenu[0].calidad)">
-        <i class="fa fa-plus"></i>&nbsp;
-        <span>Control calidad</span>
-      </a>
-      <li class="nested" [class.expand]="showMenu === listMenu[0].calidad">
-        <ul class="submenu">
-          <li>
-            <a>
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Control de calidad</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-    </div> -->
-    <!-- <div class="nested-menu">
-      <a class="list-group-item" (click)="addExpandClass(listMenu[0].tramites)">
-        <i class="fa fa-plus"></i>&nbsp;
-        <span>Trámites</span>
-      </a>
-      <li class="nested" [class.expand]="showMenu === listMenu[0].tramites">
-        <ul class="submenu">
-          <li>
-            <a>
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Novedades</span>
-            </a>
-          </li>
-          <li>
-            <a>
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Trámites</span>
-            </a>
-          </li>
-          <li>
-            <a>
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Radicación</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-    </div> -->
-    <!-- *ngIf="roleAdmin ? roleAdmin.id: 0 === allroles.administrador" -->
     <div class="nested-menu" *ngIf="administration">
       <a class="list-group-item" (click)="addExpandClass(listMenu[0].administrador)">
         <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;

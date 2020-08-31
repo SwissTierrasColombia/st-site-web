@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { timeout } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-revision-pendiente',
@@ -48,7 +49,6 @@ export class RevisionPendienteComponent implements OnInit {
     this.serviceWorkspace.GetRecordsFromXTF(this.supplyRequestedId, this.currentPage).subscribe((response: any) => {
       this.totalPages = response.totalPages;
       this.dataRecordsXTF = response.records;
-      console.log(this.dataRecordsXTF);
       let cont = 0;
       this.dataRecordsXTF.forEach(element => {
         if (element.fileId) {
@@ -87,7 +87,7 @@ export class RevisionPendienteComponent implements OnInit {
   }
   docSoport(file: any) {
     if (file.length === 1) {
-      if (file[0].size / 1024 / 1024 <= 190) {
+      if (file[0].size / 1024 / 1024 <= environment.sizeFile) {
         this.document = file[0];
         this.buttonActive = true;
       } else {

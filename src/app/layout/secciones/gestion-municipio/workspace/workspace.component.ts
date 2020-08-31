@@ -6,6 +6,7 @@ import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-workspace',
@@ -74,12 +75,12 @@ export class WorkspaceComponent implements OnInit {
       });
   }
   docSoport(file: File) {
-    if (file[0].size / 1024 / 1024 <= 190) {
+    if (file[0].size / 1024 / 1024 <= environment.sizeFile) {
       var re = /zip*/;
       if (file[0].type.match(re)) {
         this.dataCreateWorkSpace.supportFile = file[0];
       } else {
-        if (file[0].size / 1024 / 1024 > 10) {
+        if (file[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
           this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
           this.dataCreateWorkSpace.supportFile = '';
           this.myInputVariable.nativeElement.value = "";
