@@ -9,27 +9,31 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown" ngbDropdown>
         <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
-          <i class="fa fa-user"></i>
-          {{user.first_name}} {{user.last_name}}
-          <span *ngIf="!user.is_provider_director">
-            <span *ngFor="let item of user.roles">
-              {{toUpperCasetoLowerCase(item.name)}}
-            </span>
+          <span class="fontSize">
+            <h6 class="titleEntity d-flex " *ngIf="user.entity">
+              {{user.entity.name}}
+            </h6>
+            <i class="fa fa-user"></i>
+            {{user.first_name}} {{user.last_name}}
+            <p class="titleRol">
+              <span *ngIf="!user.is_provider_director">
+                <small *ngFor="let item of user.roles">
+                  {{toUpperCasetoLowerCase(item.name)}}
+                </small>
+              </span>
+              <span *ngIf="user.manager_sub_roles">
+                <small *ngFor="let item of user.manager_sub_roles">
+                  {{toUpperCasetoLowerCase(item.name)}}
+                </small>
+              </span>
+              <span *ngIf="user.provider_sub_roles">
+                <small *ngFor="let item of user.provider_sub_roles">
+                  {{toUpperCasetoLowerCase(item.name)}}
+                </small>
+              </span>
+            </p>
           </span>
-          <span *ngIf="user.manager_sub_roles">
-            <span *ngFor="let item of user.manager_sub_roles">
-              {{toUpperCasetoLowerCase(item.name)}}
-            </span>
-          </span>
-          <span *ngIf="user.provider_sub_roles">
-            <span *ngFor="let item of user.provider_sub_roles">
-              {{toUpperCasetoLowerCase(item.name)}}
-            </span>
-          </span>
-          <span *ngIf="user.entity">
-            {{user.entity.name}}
-          </span>
-          <b class="caret"></b>
+          <!-- <b class="caret"></b> -->
         </a>
         <div class="dropdown-menu-right" ngbDropdownMenu>
           <a class="dropdown-item" [routerLink]="['/cuenta/perfil']">
