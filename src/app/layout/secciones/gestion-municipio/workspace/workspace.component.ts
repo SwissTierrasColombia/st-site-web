@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { ToastrService } from 'ngx-toastr';
@@ -33,7 +33,8 @@ export class WorkspaceComponent implements OnInit {
     private router: Router,
     private roles: RoleModel,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private activedRoute: ActivatedRoute
   ) {
     this.activeManagers = [];
     this.departments = [];
@@ -56,7 +57,17 @@ export class WorkspaceComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.activedRoute.params.subscribe(
+      response => {
+        console.log(response);
+        if (response.selectDepartment) {
+          this.selectDepartment = Number(response.selectDepartment);
+          this.changeDepartament();
+          this.selectMunicipality = Number(response.selectMunicipality);
+          this.searchWorkSpace();
+        }
+      }
+    );
     const rol = JwtHelper.getUserPublicInformation();
     const role = rol.roles.find(elem => {
       return elem.id === this.roles.administrador;
@@ -106,6 +117,9 @@ export class WorkspaceComponent implements OnInit {
     this.dataCreateWorkSpace.municipalityId = this.selectMunicipality;
     this.serviceWorkspaces.getWorkSpaceByMunicipality(this.selectMunicipality.toString()).subscribe(
       response => {
+        this.router.navigate(['/gestion/workspace',
+          { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }
+        ]);
         this.resultWorkSpace = response;
         if (this.resultWorkSpace.length === 0) {
           this.viewCreateWorkSpace = true;
