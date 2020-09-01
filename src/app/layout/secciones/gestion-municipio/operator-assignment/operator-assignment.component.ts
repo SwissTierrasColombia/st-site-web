@@ -95,6 +95,9 @@ export class OperatorAssignmentComponent implements OnInit {
     this.activedRoute.params.subscribe(
       response => {
         this.selectMunicipality = response.idWorkspace;
+        if (response.tab) {
+          this.tab = Number(response.tab);
+        }
       }
     );
 
@@ -118,10 +121,74 @@ export class OperatorAssignmentComponent implements OnInit {
           }
         }
       );
+      if (this.tab === 2) {
+        this.serviceWorkspaces.getSupportsByWorkSpace(this.idWorkspace).subscribe(response => {
+          this.dataSoports = response;
+        });
+      }
+      if (this.tab === 3) {
+        this.serviceOperators.getOperatorsByFilters().subscribe(
+          response => {
+            this.operators = response;
+          }
+        );
+      }
     });
   }
-  spaceActive() {
+  init() {
+    const rol = JwtHelper.getUserPublicInformation();
+    const roleManager = rol.roles.find((elem: any) => {
+      return elem.id === this.roles.gestor;
+    });
+    if (roleManager) {
+      this.assingOperator = true;
+    }
+    this.serviceWorkspaces.getDepartments()
+      .subscribe(response => {
+        this.departaments = response;
+      });
+    this.activedRoute.params.subscribe(
+      response => {
+        this.selectMunicipality = response.idWorkspace;
+        if (response.tab) {
+          this.tab = Number(response.tab);
+        }
+      }
+    );
 
+    const promise1 = new Promise((resolve) => {
+      this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
+        (response: any) => {
+          this.idWorkspace = response.id;
+          resolve(response)
+        }
+      );
+    });
+    Promise.all([promise1]).then((values: any) => {
+      this.serviceWorkspaces.getWorkSpace(this.idWorkspace).subscribe(
+        (response: any) => {
+          this.dataWorkSpace = response;
+          if (this.dataWorkSpace.operators.length > 0) {
+            this.replaceOperator = true;
+            this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
+            this.dataOperatorsWorkSpace.startDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.startDate);
+            this.dataOperatorsWorkSpace.endDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.endDate);
+          }
+        }
+      );
+      if (this.tab === 2) {
+        this.serviceWorkspaces.getSupportsByWorkSpace(this.idWorkspace).subscribe(response => {
+          this.dataSoports = response;
+        });
+      }
+      if (this.tab === 3) {
+        this.serviceOperators.getOperatorsByFilters().subscribe(
+          response => {
+            this.operators = response;
+          }
+        );
+      }
+    });
   }
 
   docSoport(files: FileList) {
@@ -180,20 +247,19 @@ export class OperatorAssignmentComponent implements OnInit {
       this.toastr.success('Información Actualizada');
     });
   }
+  tab1() {
+    this.tab = 1;
+    this.router.navigate(['gestion/workspace/' + this.selectMunicipality + '/operador', { tab: 1 }]);
+  }
   getSopports() {
     this.tab = 2;
-    this.serviceWorkspaces.getSupportsByWorkSpace(this.idWorkspace).subscribe(response => {
-      this.dataSoports = response;
-
-    });
+    this.router.navigate(['gestion/workspace/' + this.selectMunicipality + '/operador', { tab: 2 }]);
+    this.init();
   }
   getOperator() {
     this.tab = 3;
-    this.serviceOperators.getOperatorsByFilters().subscribe(
-      response => {
-        this.operators = response;
-      }
-    );
+    this.router.navigate(['gestion/workspace/' + this.selectMunicipality + '/operador', { tab: 3 }]);
+    this.init();
   }
   assingOperatorInWorkSpace() {
     const dataOperator = new FormData();

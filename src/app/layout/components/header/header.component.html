@@ -15,6 +15,7 @@
             </h6>
             <i class="fa fa-user"></i>
             {{user.first_name}} {{user.last_name}}
+            <!-- Usuario -->
             <p class="titleRol">
               <span *ngIf="!user.is_provider_director">
                 <small *ngFor="let item of user.roles">
