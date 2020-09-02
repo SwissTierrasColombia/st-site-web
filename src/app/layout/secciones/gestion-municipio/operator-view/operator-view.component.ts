@@ -68,6 +68,9 @@ export class OperatorViewComponent implements OnInit {
       this.activedRoute.params.subscribe(
         response => {
           resolve(response.idWorkspace);
+          if (response.tab) {
+            this.tab = Number(response.tab);
+          }
         }
       );
     });
@@ -86,7 +89,41 @@ export class OperatorViewComponent implements OnInit {
       );
     });
   }
-
+  init() {
+    this.serviceWorkspaces.getDepartments()
+      .subscribe(response => {
+        this.departaments = response;
+      });
+    const promise1 = new Promise((resolve) => {
+      this.activedRoute.params.subscribe(
+        (response: any) => {
+          resolve(response.idWorkspace);
+          if (response.tab) {
+            this.tab = Number(response.tab);
+          }
+        }
+      );
+    });
+    Promise.all([promise1]).then((values: any) => {
+      this.idWorkspace = values[0];
+      this.serviceWorkspaces.getWorkSpace(values[0]).subscribe(
+        (response: any) => {
+          this.dataWorkSpace = response;
+          if (this.dataWorkSpace.operators.length > 0) {
+            this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
+            this.dataOperatorsWorkSpace.operatorName = this.dataWorkSpace.operators[0].operator.name;
+            this.dataOperatorsWorkSpace.startDate = this.formatDate(this.dataOperatorsWorkSpace.startDate);
+            this.dataOperatorsWorkSpace.endDate = this.formatDate(this.dataOperatorsWorkSpace.endDate);
+          }
+          if (this.tab == 2) {
+            this.serviceWorkspaces.getSupportsByWorkSpace(this.idWorkspace).subscribe(response => {
+              this.dataSoports = response;
+            });
+          }
+        }
+      );
+    });
+  }
   formatDate(date: string) {
     moment.locale('es');
     return moment(date).format('ll, h:mm a');
@@ -94,11 +131,15 @@ export class OperatorViewComponent implements OnInit {
   volver() {
     this.router.navigate(['/gestion/workspace']);
   }
+  tab1() {
+    this.router.navigate(['gestion/workspace/' + this.idWorkspace + '/ver/operador', { tab: 1 }]);
+  }
   getSopports() {
     this.tab = 2;
-    this.serviceWorkspaces.getSupportsByWorkSpace(this.idWorkspace).subscribe(response => {
-      this.dataSoports = response;
-
-    });
+    this.router.navigate(['gestion/workspace/' + this.idWorkspace + '/ver/operador', { tab: 2 }]);
+    this.init();
+  }
+  tab3() {
+    this.router.navigate(['gestion/workspace/' + this.idWorkspace + '/ver/operador', { tab: 3 }]);
   }
 }

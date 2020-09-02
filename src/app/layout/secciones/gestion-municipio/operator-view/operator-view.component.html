@@ -25,7 +25,7 @@
     <div class="card-body">
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab" (click)="tab = 1"
+          <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab" (click)="tab1()"
             aria-controls="home">
             <i class="material-icons">
               home
@@ -39,7 +39,7 @@
             </i>Soportes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [ngClass]="{'active':tab === 3}" data-toggle="tab" role="tab" (click)="tab = 3"
+          <a class="nav-link" [ngClass]="{'active':tab === 3}" data-toggle="tab" role="tab" (click)="tab3()"
             aria-controls="messages">
             <i class="material-icons">
               people
@@ -162,8 +162,8 @@
                 <div class="input-group-prepend input-group-text">
                   <div class="">* Alcance / Observaciones</div>
                 </div>
-                <textarea maxlength="255" disabled="true" class="form-control" id="observations" rows="3" name="observaciones"
-                  [(ngModel)]="dataOperatorsWorkSpace.observations"></textarea>
+                <textarea maxlength="255" disabled="true" class="form-control" id="observations" rows="3"
+                  name="observaciones" [(ngModel)]="dataOperatorsWorkSpace.observations"></textarea>
               </div>
             </div>
           </div>

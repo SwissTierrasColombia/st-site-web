@@ -5,6 +5,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { saveAs } from 'file-saver';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { VirtualTimeScheduler } from 'rxjs';
 @Component({
   selector: 'app-buscar-solicitud',
   templateUrl: './buscar-solicitud.component.html',
@@ -35,11 +37,12 @@ export class BuscarSolicitudComponent implements OnInit {
   buttonTab1: boolean;
   buttonTab2: boolean;
   buttonTab3: boolean;
+  search3: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
-    private modalService: NgbModal,
-    private toastr: ToastrService,
-    private serviceProvider: ProvidersService
+    private serviceProvider: ProvidersService,
+    private router: Router,
+    private activedRoute: ActivatedRoute
   ) {
     this.usermanager = false;
     this.departments = [];
@@ -62,9 +65,22 @@ export class BuscarSolicitudComponent implements OnInit {
     this.buttonTab1 = true;
     this.buttonTab2 = true;
     this.buttonTab3 = true;
+    this.search3 = false;
   }
 
   ngOnInit() {
+    this.activedRoute.params.subscribe(
+      (response: any) => {
+        if (response.tab) {
+          this.tab = Number(response.tab);
+        }
+        if (this.tab === 2) {
+          this.serviceProvider.getProviders().subscribe(response => {
+            this.providers = response;
+          });
+        }
+      }
+    );
     this.usermanager = true;
     this.serviceWorkspaces.GetRequestByManager().subscribe(
       response => {
@@ -76,14 +92,20 @@ export class BuscarSolicitudComponent implements OnInit {
         this.departments = response;
       });
   }
+  tab1() {
+    this.tab = 1;
+    this.router.navigate(['/insumos/buscar-solicitud', { tab: 1 }]);
+  }
   tab2() {
     this.tab = 2;
+    this.router.navigate(['/insumos/buscar-solicitud', { tab: 2 }]);
     this.serviceProvider.getProviders().subscribe(response => {
       this.providers = response;
     });
   }
   tab3() {
     this.tab = 3;
+    this.router.navigate(['/insumos/buscar-solicitud', { tab: 3 }]);
     this.serviceWorkspaces.GetRequestByManager().subscribe(
       response => {
         this.numbersuppliesManagerRequest = response;
@@ -123,6 +145,8 @@ export class BuscarSolicitudComponent implements OnInit {
   getPageOrder(page: string) {
     this.serviceWorkspaces.searchSuppliesOrder(this.selectPackage).subscribe((response: any) => {
       this.infoTabOrder = response;
+      console.log(response);
+      this.search3 = true;
       this.totalElements = this.infoTabOrder.length;
     });
   }
@@ -145,6 +169,7 @@ export class BuscarSolicitudComponent implements OnInit {
       this.buttonTab3 = true;
     } else {
       this.buttonTab3 = false;
+      this.search3 = false;
     }
   }
 }
