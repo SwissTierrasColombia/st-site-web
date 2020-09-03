@@ -59,7 +59,6 @@ export class WorkspaceComponent implements OnInit {
   ngOnInit() {
     this.activedRoute.params.subscribe(
       response => {
-        console.log(response);
         if (response.selectDepartment) {
           this.selectDepartment = Number(response.selectDepartment);
           this.changeDepartament();
