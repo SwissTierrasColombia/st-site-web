@@ -30,9 +30,11 @@
         [url]="'/operador/descargas'">
       </app-stat>
     </div>
-    <!-- <div class="mt-1 mb-1 col-8 col-md-4">
-      <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="0" [label]="'INTEGRACIONES'"></app-stat>
-    </div> -->
+    <div *ngIf="delegate" class="mt-1 mb-1 col-8 col-md-4">
+      <app-stat [bgClass]="'info'" [icon]="'fa-tasks'" [count]="numRevision" [label]="'REVISIONES'"
+        [url]="'/insumos/revisiones-pendientes'">
+      </app-stat>
+    </div>
   </div>
   <hr />
 </div>

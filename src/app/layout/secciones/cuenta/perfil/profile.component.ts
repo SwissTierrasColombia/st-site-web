@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
       password: this.password
     }
     this.serviceWorkSpace.changePassword(data).subscribe(
-      resp => {
+      _ => {
         this.toast.success("Ha actualizado su contraseña.")
       }
     );

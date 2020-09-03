@@ -86,6 +86,12 @@ export class SolicitudComponent implements OnInit {
         if (response.tab) {
           this.tab = Number(response.tab);
         }
+        if (response.selectDepartment) {
+          this.selectDepartment = Number(response.selectDepartment);
+          this.changeDepartament();
+          this.selectMunicipality = Number(response.selectMunicipality);
+          this.changeMunucipality();
+        }
       }
     );
     this.currentDate = new Date();
@@ -107,7 +113,7 @@ export class SolicitudComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   changeDepartament() {
-    this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment.toString()).subscribe(
+    this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment).subscribe(
       data => {
         this.municipalities = data;
       }
@@ -120,6 +126,8 @@ export class SolicitudComponent implements OnInit {
         this.serviceProviders.getProviders().subscribe(
           data => {
             this.providers = data;
+            this.router.navigate(['/insumos/solicitud', { tab: 1, selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }]);
+
           }
         );
       }

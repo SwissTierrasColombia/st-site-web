@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
   roleoperator: any;
   taskOperator: number;
   delegate: any;
-
+  numRevision: Number;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private roles: RoleModel
@@ -94,6 +94,7 @@ export class DashboardComponent implements OnInit {
     this.roleoperator = {
       id: 0
     };
+    this.numRevision = 0;
   }
 
   ngOnInit() {
@@ -122,6 +123,11 @@ export class DashboardComponent implements OnInit {
           this.taskOperator = response.length;
         }
       );
+    }
+    if (this.delegate) {
+      this.serviceWorkspaces.GetSuppliesRequestedToReview().subscribe((data: any) => {
+        this.numRevision = data.length;
+      });
     }
   }
 

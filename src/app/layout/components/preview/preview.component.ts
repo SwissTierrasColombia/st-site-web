@@ -187,7 +187,6 @@ export class PreviewComponent implements OnInit, OnChanges {
   getPreviewUrl(file: string) {
     this.showmap = true;
     this.previewService.getLayersSupply(file, this.version).subscribe((data: any) => {
-      console.log(data);
       if (data.crs) {
         this.crs = data.crs.properties.name;
       }

@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-workspace',
@@ -32,7 +33,8 @@ export class WorkspaceComponent implements OnInit {
     private router: Router,
     private roles: RoleModel,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private activedRoute: ActivatedRoute
   ) {
     this.activeManagers = [];
     this.departments = [];
@@ -55,7 +57,16 @@ export class WorkspaceComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.activedRoute.params.subscribe(
+      response => {
+        if (response.selectDepartment) {
+          this.selectDepartment = Number(response.selectDepartment);
+          this.changeDepartament();
+          this.selectMunicipality = Number(response.selectMunicipality);
+          this.searchWorkSpace();
+        }
+      }
+    );
     const rol = JwtHelper.getUserPublicInformation();
     const role = rol.roles.find(elem => {
       return elem.id === this.roles.administrador;
@@ -74,12 +85,12 @@ export class WorkspaceComponent implements OnInit {
       });
   }
   docSoport(file: File) {
-    if (file[0].size / 1024 / 1024 <= 190) {
+    if (file[0].size / 1024 / 1024 <= environment.sizeFile) {
       var re = /zip*/;
       if (file[0].type.match(re)) {
         this.dataCreateWorkSpace.supportFile = file[0];
       } else {
-        if (file[0].size / 1024 / 1024 > 10) {
+        if (file[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
           this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
           this.dataCreateWorkSpace.supportFile = '';
           this.myInputVariable.nativeElement.value = "";
@@ -95,7 +106,7 @@ export class WorkspaceComponent implements OnInit {
   }
   changeDepartament() {
     this.dataCreateWorkSpace.selectDepartment = this.selectDepartment;
-    this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.dataCreateWorkSpace.selectDepartment).subscribe(
+    this.serviceWorkspaces.GetMunicipalitiesByDeparment(Number(this.dataCreateWorkSpace.selectDepartment)).subscribe(
       data => {
         this.munucipalities = data;
       }
@@ -105,6 +116,9 @@ export class WorkspaceComponent implements OnInit {
     this.dataCreateWorkSpace.municipalityId = this.selectMunicipality;
     this.serviceWorkspaces.getWorkSpaceByMunicipality(this.selectMunicipality.toString()).subscribe(
       response => {
+        this.router.navigate(['/gestion/workspace',
+          { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }
+        ]);
         this.resultWorkSpace = response;
         if (this.resultWorkSpace.length === 0) {
           this.viewCreateWorkSpace = true;

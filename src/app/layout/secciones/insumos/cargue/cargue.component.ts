@@ -5,6 +5,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import * as _moment from 'moment';
 import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
 
 const moment = _moment;
 
@@ -133,7 +134,6 @@ export class CargueComponent implements OnInit {
       }
       this.dataRequestPending[0].suppliesRequested =
         this.dataRequestPending[0].suppliesRequested.sort((a, b) => a.id - b.id);
-      console.log(this.dataRequestPending);
     });
   }
   formatDate(date: string) {
@@ -145,7 +145,7 @@ export class CargueComponent implements OnInit {
   }
   docSoport(files: FileList, idOut: number, idInt: number) {
     this.previewData = files;
-    if (files[0].size / 1024 / 1024 <= 190) {
+    if (files[0].size / 1024 / 1024 <= environment.sizeFile) {
       let re = /zip*/;
       if (files[0].type.match(re)) {
         const formato = files[0].name.split('.').pop();
@@ -168,7 +168,7 @@ export class CargueComponent implements OnInit {
             this.dataRequestPending[idOut].suppliesRequested[idInt].format);
         }
       } else {
-        if (files[0].size / 1024 / 1024 > 10) {
+        if (files[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
           this.toastr.error('Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.')
           this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
           this.myInputVariable.nativeElement.value = "";

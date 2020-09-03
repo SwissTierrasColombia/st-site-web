@@ -151,7 +151,7 @@ export class IntegracionComponent implements OnInit {
     });
   }
   changeDepartament() {
-    this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment).subscribe(
+    this.serviceWorkspaces.GetMunicipalitiesByDeparment(Number(this.selectDepartment)).subscribe(
       data => {
         this.munucipalities = data;
         if (this.SelectIntegrationPossible.municipio) {

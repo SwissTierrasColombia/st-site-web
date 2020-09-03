@@ -51,7 +51,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.pushRightClass = 'push-right';
     this.user = JwtHelper.getUserPublicInformation();
-
     this.roleproveedor = this.user.roles.find((elem: any) => {
       return elem.id === this.roles.proveedor;
     });

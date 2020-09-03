@@ -25,27 +25,13 @@
               <div class="input-group-prepend">
                 <label class="input-group-text">* Municipio</label>
               </div>
-              <select class="custom-select" name="munucipalities" id="munucipalities" [(ngModel)]="selectMunicipality">
+              <select (change)="changeMunucipality()" class="custom-select" name="munucipalities" id="munucipalities"
+                [(ngModel)]="selectMunicipality">
                 <option value='0' selected>Seleccione el Municipio</option>
                 <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
               </select>
             </div>
           </div>
-          <!-- <div *ngIf="usermanager" class='col-12 mb-1'>
-                        <div class="input-group mt-2">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" aria-required="true">Solicitudes Gestor</label>
-                            </div>
-                            <select class="custom-select" name="managersprfile" id="managersprofile"
-                                [(ngModel)]="selectSuppliesManagerRequest" multiple>
-                                <option [ngValue]="item.id"
-                                    *ngFor="let item of suppliesManagerRequest; let index = index;">
-                                    Solicitud # {{item.id}} ({{item.provider ? item.provider.name: ''}})
-                                </option>
-                            </select>
-                        </div>
-                        <small id="entities" class="form-text text-muted">Seleccione las solicitudes a buscar</small>
-                    </div> -->
         </div>
         <div class="row mt-3">
           <div class="col-12">
@@ -57,7 +43,7 @@
       </form>
     </div>
     <div class="card-footer text-muted text-center">
-      <button type="button" class="btn btn-dark" (click)="getPage('1')">Buscar</button>
+      <button type="button" class="btn btn-dark" (click)="getPage(1)">Buscar</button>
     </div>
   </div>
   <div *ngIf="allSupplies.length > 0">
@@ -206,6 +192,13 @@
             </table>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="allSupplies.length === 0 && isSearch">
+    <div class="col-12">
+      <div class="alert alert-primary text-center" role="alert">
+        No hay insumos cargados en este Municipio.
       </div>
     </div>
   </div>
