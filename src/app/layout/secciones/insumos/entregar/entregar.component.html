@@ -69,7 +69,6 @@
                   <th>Insumo</th>
                   <th>Fecha de Cargue</th>
                   <th>Observación del Insumo</th>
-                  <!-- <th>Modelo</th> -->
                   <th>Selección</th>
                   <th>Observación /<br />Fecha de Entrega</th>
                 </tr>
@@ -89,7 +88,6 @@
                     <textarea class="form-control" rows="3" maxlength="255"
                       disabled="true">{{item.observations}}</textarea>
                   </td>
-                  <!-- <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
                   <td>
                     <div class="form-check" *ngIf="item.delivered === null || item.delivered === false">
                       <input class="form-check-input" type="checkbox" [(ngModel)]="item.delivery" value=""
@@ -122,7 +120,6 @@
                   <th>Insumo</th>
                   <th>Fecha de Cargue</th>
                   <th>Observación del Insumo</th>
-                  <!-- <th>Modelo</th> -->
                   <th>Estado</th>
                   <th>Fecha de Entrega</th>
                 </tr>
@@ -139,8 +136,6 @@
                     {{globalFuntionDate(item.createdAt)}}
                   </td>
                   <td scope="row" *ngIf="item.delivered === true">{{item.observations}}</td>
-                  <!-- <td scope="row" *ngIf="item.delivered === true">
-                    {{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
                   <td *ngIf="item.delivered === true">
                     <div *ngIf="item.delivered === true" class="form-check">
                       <input class="form-check-input" type="checkbox" [checked]="item.delivered"
