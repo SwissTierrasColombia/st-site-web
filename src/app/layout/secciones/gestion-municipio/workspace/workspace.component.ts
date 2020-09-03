@@ -107,7 +107,7 @@ export class WorkspaceComponent implements OnInit {
   }
   changeDepartament() {
     this.dataCreateWorkSpace.selectDepartment = this.selectDepartment;
-    this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.dataCreateWorkSpace.selectDepartment).subscribe(
+    this.serviceWorkspaces.GetMunicipalitiesByDeparment(Number(this.dataCreateWorkSpace.selectDepartment)).subscribe(
       data => {
         this.munucipalities = data;
       }

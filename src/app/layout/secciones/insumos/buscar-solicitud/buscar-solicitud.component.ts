@@ -116,7 +116,7 @@ export class BuscarSolicitudComponent implements OnInit {
     return FuntionsGlobalsHelper.formatDate(date);
   }
   changeDepartament() {
-    this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment).subscribe(
+    this.serviceWorkspaces.GetMunicipalitiesByDeparment(Number(this.selectDepartment)).subscribe(
       data => {
         this.munucipalities = data;
       }

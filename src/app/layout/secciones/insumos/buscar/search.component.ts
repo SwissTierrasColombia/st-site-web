@@ -6,6 +6,7 @@ import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { saveAs } from 'file-saver';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -15,7 +16,7 @@ export class SearchComponent implements OnInit {
 
   usermanager: boolean;
   departments: any;
-  selectDepartment: string;
+  selectDepartment: Number;
   munucipalities: any;
   selectMunicipality: number;
   suppliesManagerRequest: any;
@@ -27,15 +28,19 @@ export class SearchComponent implements OnInit {
   idSupplieDelete: number;
   searchText: string;
   idSuppliesState: number;
+  page: Number;
+  isSearch: boolean;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
     private modalService: NgbModal,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router,
+    private activedRoute: ActivatedRoute
   ) {
     this.usermanager = false;
     this.departments = [];
-    this.selectDepartment = '0';
+    this.selectDepartment = 0;
     this.munucipalities = [];
     this.selectMunicipality = 0;
     this.suppliesManagerRequest = [];
@@ -45,9 +50,20 @@ export class SearchComponent implements OnInit {
     this.totalElements = 0;
     this.idSupplieDelete = 0;
     this.idSuppliesState = 0;
+    this.page = 1;
   }
 
   ngOnInit() {
+    this.activedRoute.params.subscribe(
+      response => {
+        if (response.selectDepartment) {
+          this.selectDepartment = Number(response.selectDepartment);
+          this.changeDepartament();
+          this.selectMunicipality = Number(response.selectMunicipality);
+          this.changeMunucipality();
+        }
+      }
+    );
     const rol = JwtHelper.getUserPublicInformation();
     const role = rol.roles.find(elem => {
       return elem.id === this.roles.gestor;
@@ -76,9 +92,19 @@ export class SearchComponent implements OnInit {
       }
     );
   }
-  getPage(page: string) {
-    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page, false).subscribe(
+  changeMunucipality() {
+    this.router.navigate(['/insumos/buscar',
+      { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }
+    ]);
+  }
+  getPage(page: number) {
+    this.page = page;
+    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, this.page, false).subscribe(
       (response: any) => {
+        this.isSearch = false;
+        if (response.numberOfElements === 0) {
+          this.isSearch = true;
+        }
         this.number = response.number + 1;
         this.size = response.size;
         this.totalElements = response.totalElements;
@@ -109,6 +135,7 @@ export class SearchComponent implements OnInit {
           //a must be equal to b
           return 0;
         });
+
       }
     );
 

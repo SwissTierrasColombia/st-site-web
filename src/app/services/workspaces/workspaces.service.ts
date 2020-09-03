@@ -21,7 +21,7 @@ export class WorkspacesService {
   /**
    * GetMunicipalitiesByDeparment
    */
-  public GetMunicipalitiesByDeparment(idDepartament: string) {
+  public GetMunicipalitiesByDeparment(idDepartament: Number) {
     return this.httpClient.get(this.url + '/workspaces/v1/departments/' + idDepartament + '/municipalities');
   }
   /**
@@ -156,7 +156,7 @@ export class WorkspacesService {
   /**
    * GetSuppliesByMunicipalityFilter
    */
-  public GetSuppliesByMunicipalityFilter(idMunicipality: number, page: string, active: boolean) {
+  public GetSuppliesByMunicipalityFilter(idMunicipality: number, page: Number, active: boolean) {
     return this.httpClient.get(this.url + '/workspaces/v1/supplies/' + idMunicipality + '?page=' + page + '&active=' + active);
   }
   /**

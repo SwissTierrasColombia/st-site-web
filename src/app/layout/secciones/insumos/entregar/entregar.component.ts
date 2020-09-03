@@ -5,6 +5,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-entregar',
   templateUrl: './entregar.component.html',
@@ -14,7 +15,7 @@ export class EntregarComponent implements OnInit {
 
   usermanager: boolean;
   departments: any;
-  selectDepartment: string;
+  selectDepartment: Number;
   munucipalities: any;
   selectMunicipality: number;
   suppliesManagerRequest: any;
@@ -33,11 +34,13 @@ export class EntregarComponent implements OnInit {
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router,
+    private activedRoute: ActivatedRoute
   ) {
     this.usermanager = false;
     this.departments = [];
-    this.selectDepartment = '0';
+    this.selectDepartment = 0;
     this.munucipalities = [];
     this.selectMunicipality = 0;
     this.suppliesManagerRequest = [];
@@ -56,6 +59,16 @@ export class EntregarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.activedRoute.params.subscribe(
+      response => {
+        if (response.selectDepartment) {
+          this.selectDepartment = Number(response.selectDepartment);
+          this.changeDepartament();
+          this.selectMunicipality = Number(response.selectMunicipality);
+          this.changeMunucipality();
+        }
+      }
+    );
     const rol = JwtHelper.getUserPublicInformation();
     const role = rol.roles.find(elem => {
       return elem.id === this.roles.gestor;
@@ -72,7 +85,7 @@ export class EntregarComponent implements OnInit {
     return FuntionsGlobalsHelper.formatDate(date);
   }
   changeDepartament() {
-    this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment).subscribe(
+    this.serviceWorkspaces.GetMunicipalitiesByDeparment(Number(this.selectDepartment)).subscribe(
       data => {
         this.munucipalities = data;
       }
@@ -83,10 +96,13 @@ export class EntregarComponent implements OnInit {
       (response: any) => {
         this.idWorkSpace = response.id;
         this.sendSuppliesFilter = false;
+        this.router.navigate(['/insumos/entrega',
+          { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }
+        ]);
       }
     );
   }
-  getPage(page: string) {
+  getPage(page: Number) {
     this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page, true).subscribe(
       (response: any) => {
         this.number = response.number + 1;
@@ -141,7 +157,7 @@ export class EntregarComponent implements OnInit {
           this.serviceWorkspaces.deliveriesSupplies(this.idWorkSpace, this.deliverySupplies).subscribe(
             _ => {
               this.toastr.success("Se ha realizado la entrega de los insumos al operador");
-              this.getPage('1');
+              this.getPage(1);
               this.deliverySupplies = {
                 observations: "",
                 supplies: []
