@@ -114,7 +114,7 @@
                     <!-- Perfiles Gestor lista multiple -->
                     <div class="input-group mt-2" *ngIf="dataUserLogger.is_manager_director">
                       <div class="input-group-prepend">
-                        <label class="input-group-text" aria-required="true">* Perfil Gestor</label>
+                        <label class="input-group-text" aria-required="true">* Perfil</label>
                       </div>
                       <select (change)="validfield()" class="custom-select" name="managersprfile" id="managersprofile"
                         [(ngModel)]="registerData.roleManager.profiles" multiple>
