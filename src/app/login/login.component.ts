@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit {
   onLoggedin() {
     this.serviceAUTH.login(this.loginData.username.toLowerCase(), this.loginData.password).subscribe(
       data => {
+        console.log(data.access_token);
+        
         localStorage.setItem(environment.nameTokenSession, data.access_token);
         this.router.navigate(['inicio']);
       }

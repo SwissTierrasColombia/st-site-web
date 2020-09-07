@@ -33,10 +33,11 @@ export class OperatorAssignmentComponent implements OnInit {
   selectOperator: number;
   dataOperatorsWorkSpace: any;
   supportFileOperator: any;
-  assingOperator: boolean;
+  updateInfoBasic: boolean;
   replaceOperator: boolean;
   @ViewChild('myInput')
   myInputVariable: ElementRef;
+  assingOperator: boolean;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -76,12 +77,19 @@ export class OperatorAssignmentComponent implements OnInit {
       observations: '',
       operatorCode: 0
     };
+    this.updateInfoBasic = false;
     this.assingOperator = false;
     this.replaceOperator = false;
   }
 
   ngOnInit() {
     const rol = JwtHelper.getUserPublicInformation();
+    const roleAdmin = rol.roles.find((elem: any) => {
+      return elem.id === this.roles.administrador;
+    });
+    if (roleAdmin) {
+      this.updateInfoBasic = true;
+    }
     const roleManager = rol.roles.find((elem: any) => {
       return elem.id === this.roles.gestor;
     });
@@ -113,6 +121,7 @@ export class OperatorAssignmentComponent implements OnInit {
       this.serviceWorkspaces.getWorkSpace(this.idWorkspace).subscribe(
         (response: any) => {
           this.dataWorkSpace = response;
+          this.selectDepartment = this.dataWorkSpace.municipality.department.id;
           if (this.dataWorkSpace.operators.length > 0) {
             this.replaceOperator = true;
             this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
@@ -142,6 +151,12 @@ export class OperatorAssignmentComponent implements OnInit {
     });
     if (roleManager) {
       this.assingOperator = true;
+    }
+    const roleAdmin = rol.roles.find((elem: any) => {
+      return elem.id === this.roles.administrador;
+    });
+    if (roleAdmin) {
+      this.updateInfoBasic = true;
     }
     this.serviceWorkspaces.getDepartments()
       .subscribe(response => {
@@ -221,7 +236,9 @@ export class OperatorAssignmentComponent implements OnInit {
     return moment(date).format('ll');
   }
   volver() {
-    this.router.navigate(['/gestion/workspace']);
+    this.router.navigate(['/gestion/workspace',
+      { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }
+    ]);
   }
   changeUpdate() {
     this.editForm = {
