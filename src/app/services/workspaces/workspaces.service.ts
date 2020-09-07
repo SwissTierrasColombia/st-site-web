@@ -443,4 +443,16 @@ export class WorkspacesService {
   public inactiveSupplies(supplyId: number) {
     return this.httpClient.put(this.url + '/workspaces/v1/supplies/' + supplyId + '/inactive', {});
   }
+  /**
+   * createAttachmentsSupply
+   */
+  public createAttachmentsSupply(municipalityId: number, data: any) {
+    return this.httpClient.post(this.url + '/workspaces/v1/cadastral-authority/supplies/' + municipalityId, data);
+  }
+  /**
+   * getSuppliesAttachments
+   */
+  public getSuppliesAttachments() {
+    return this.httpClient.get(this.url + '/workspaces/v1/supplies/1?active=true');
+  }
 }

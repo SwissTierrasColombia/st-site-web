@@ -90,7 +90,7 @@ export class SolicitudComponent implements OnInit {
           this.selectDepartment = Number(response.selectDepartment);
           this.changeDepartament();
           this.selectMunicipality = Number(response.selectMunicipality);
-          this.changeMunucipality();
+          this.changeMunucipalityReload();
         }
       }
     );
@@ -120,14 +120,26 @@ export class SolicitudComponent implements OnInit {
     );
   }
   changeMunucipality() {
+    this.router.navigate(['/insumos/solicitud',
+      { tab: 1, selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }]);
     this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
       response => {
         this.dataWorkSpaceMunicipality = response;
         this.serviceProviders.getProviders().subscribe(
           data => {
             this.providers = data;
-            this.router.navigate(['/insumos/solicitud', { tab: 1, selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }]);
-
+          }
+        );
+      }
+    );
+  }
+  changeMunucipalityReload() {
+    this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
+      response => {
+        this.dataWorkSpaceMunicipality = response;
+        this.serviceProviders.getProviders().subscribe(
+          data => {
+            this.providers = data;
           }
         );
       }

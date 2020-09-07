@@ -45,6 +45,20 @@
               people
             </i>Operador</a>
         </li>
+        <li class="nav-item" *ngIf="updateInfoBasic">
+          <a class="nav-link" [ngClass]="{'active':tab === 4}" data-toggle="tab" role="tab" (click)="tab4()"
+            aria-controls="messages">
+            <i class="material-icons">
+              vertical_split
+            </i>Entrega Insumos para Gestión Catastral</a>
+        </li>
+        <li class="nav-item" *ngIf="assingOperator">
+          <a class="nav-link" [ngClass]="{'active':tab === 5}" data-toggle="tab" role="tab" (click)="tab5()"
+            aria-controls="messages">
+            <i class="material-icons">
+              view_list
+            </i>Insumos Gestión Catastral</a>
+        </li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel"><br>
@@ -198,18 +212,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class='col-12 col-sm-6  mb-1'>
-            <div class="form-group form-check">
-              <input name="splitZones" type="checkbox" class="form-check-input" id="exampleCheck1"
-                [(ngModel)]="splitZones" disabled="true">
-              <label class="form-check-label" for="exampleCheck1">Selección de Zonas</label>
-            </div>
-          </div>
-          <div class='col-12 col-sm-6 mb-1'>
-            <div class="input-group">
-              <input class="form-control" type="text" disabled="true" placeholder="1" disabled="true">
-            </div>
-          </div> -->
             <div class="row mb-2">
               <div class="col-12">
                 <div class="input-group">
@@ -246,6 +248,140 @@
               (click)="assingOperatorInWorkSpace()">Asignar Operador</button>
             <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark"
               (click)="openModal(modalOperator)">Asignar Operador</button>
+          </div>
+        </div>
+        <div class="tab-pane" [ngClass]="{'active':tab === 4}" role="tabpanel"><br>
+          <div class="row mb-2">
+            <div class="col-12 col-sm-6 mb-2">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" aria-required="true">* Tipo</label>
+                </div>
+                <select class="custom-select" name="attachmentsTypes" id="attachmentsTypes"
+                  [(ngModel)]="selectAttachments" (change)="validAttachmentsTypes()">
+                  <option value='0' selected>Seleccione tipo de insumo</option>
+                  <option [ngValue]="item.id" *ngFor="let item of dataAttachmentsTypes">{{item.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 mb-2" *ngIf="selectAttachments != 0">
+              <div [ngSwitch]="selectAttachments != 0">
+                <div *ngSwitchCase="selectAttachments === 1">
+                  <div class="input-group">
+                    <input #myInput id="fileattachmentsTypes" name="fileattachmentsTypes" class="form-control"
+                      type="file" (change)="docSoportAttachmentsTypes($event.target.files)" multiple=false>
+                  </div>
+                </div>
+                <div *ngSwitchCase="selectAttachments === 2">
+                  <div class="input-group">
+                    <input (change)="validAttachmentsTypes()" class="form-control" id="urlattachmentsTypes" type="url"
+                      name="urlattachmentsTypes" [(ngModel)]="ftpAttachmentsTypes">
+                  </div>
+                </div>
+                <div *ngSwitchCase="selectAttachments === 3">
+                  <div class="input-group">
+                    <input #myInput id="fileattachmentsTypesExtert" name="fileattachmentsTypesExtert"
+                      class="form-control" type="file" (change)="docSoportAttachmentsTypes($event.target.files)"
+                      multiple=false>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend input-group-text">
+                  <div class="">* Observaciones</div>
+                </div>
+                <textarea (change)="validAttachmentsTypes()" maxlength="255" class="form-control"
+                  id="observationsattachmentsTypes" rows="3" name="observacionesattachmentsTypes"
+                  [(ngModel)]="observationsAttachmentsTypes"></textarea>
+              </div>
+            </div>
+            <div class="col-12 mt-2">
+              <div class="alert alert-primary text-center" role="alert">
+                Recuerde que los campos marcados con * son obligatorios.
+              </div>
+            </div>
+            <div class="col-12 col-sm-12">
+              <div class="card-footer text-muted text-center">
+                <button type="button" [disabled]="!validInputAttachmentsTypes" class="btn btn-dark"
+                  (click)="createAttachmentsTypes()">Agregar</button>
+              </div>
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="table-inverse table-responsive">
+              <table class="table table-striped">
+                <thead class="thead-inverse">
+                  <tr>
+                    <th>Proveedor</th>
+                    <th>Fecha de cargue</th>
+                    <th>Observación</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of suppliesAttachmentsData">
+                    <td scope="row">AUTORIDAD CATASTRAL</td>
+                    <td scope="row">{{formatDate(item.createdAt)}}</td>
+                    <td scope="row">
+                      <textarea maxlength="255" readonly
+                        style="border: none; background: #dedede;">{{item.observations}}</textarea>
+                    </td>
+                    <td scope="row">
+                      <div *ngIf="item.state.id === 1">
+                        <span class="badge badge-success">
+                          {{item.state.name}}
+                        </span>
+                      </div>
+                      <div *ngIf="item.state.id === 2">
+                        <span class="badge badge-warning">
+                          {{item.state.name}}
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" [ngClass]="{'active':tab === 5}" role="tabpanel"><br>
+          <div class="row text-center">
+            <div class="table-inverse table-responsive">
+              <table class="table table-striped">
+                <thead class="thead-inverse">
+                  <tr>
+                    <th>Proveedor</th>
+                    <th>Fecha de cargue</th>
+                    <th>Observación</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of suppliesAttachmentsData">
+                    <td scope="row">AUTORIDAD CATASTRAL</td>
+                    <td scope="row">{{formatDate(item.createdAt)}}</td>
+                    <td scope="row">
+                      <textarea maxlength="255" readonly
+                        style="border: none; background: #dedede;">{{item.observations}}</textarea>
+                    </td>
+                    <td scope="row">
+                      <div *ngIf="item.state.id === 1">
+                        <span class="badge badge-success">
+                          {{item.state.name}}
+                        </span>
+                      </div>
+                      <div *ngIf="item.state.id === 2">
+                        <span class="badge badge-warning">
+                          {{item.state.name}}
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

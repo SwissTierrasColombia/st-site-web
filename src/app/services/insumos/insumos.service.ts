@@ -10,4 +10,10 @@ export class InsumosService {
   constructor(private httpClient: HttpClient) {
     this.url = environment.apiBaseUrlPrefix;
   }
+  /**
+   * GetAttachmentsTypes
+   */
+  public GetAttachmentsTypes() {
+    return this.httpClient.get(this.url + '/supplies/v1/attachments-types');
+  }
 }

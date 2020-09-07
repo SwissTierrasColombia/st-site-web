@@ -9,6 +9,8 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { saveAs } from 'file-saver';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
+import { InsumosService } from 'src/app/services/insumos/insumos.service';
+
 
 
 const moment = _moment;
@@ -38,6 +40,13 @@ export class OperatorAssignmentComponent implements OnInit {
   @ViewChild('myInput')
   myInputVariable: ElementRef;
   assingOperator: boolean;
+  dataAttachmentsTypes: any;
+  selectAttachments: number;
+  observationsAttachmentsTypes: string;
+  ftpAttachmentsTypes: string;
+  validInputAttachmentsTypes: boolean;
+  fileAttachmentsTypes: any;
+  suppliesAttachmentsData: any;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -46,6 +55,7 @@ export class OperatorAssignmentComponent implements OnInit {
     private serviceOperators: OperatorsService,
     private roles: RoleModel,
     private modalService: NgbModal,
+    private insumosService: InsumosService
 
   ) {
     this.dataWorkSpace = {
@@ -80,6 +90,12 @@ export class OperatorAssignmentComponent implements OnInit {
     this.updateInfoBasic = false;
     this.assingOperator = false;
     this.replaceOperator = false;
+    this.dataAttachmentsTypes = [];
+    this.selectAttachments = 0;
+    this.observationsAttachmentsTypes = '';
+    this.ftpAttachmentsTypes = '';
+    this.validInputAttachmentsTypes = false;
+    this.suppliesAttachmentsData = [];
   }
 
   ngOnInit() {
@@ -113,7 +129,7 @@ export class OperatorAssignmentComponent implements OnInit {
       this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
         (response: any) => {
           this.idWorkspace = response.id;
-          resolve(response)
+          resolve(response);
         }
       );
     });
@@ -141,6 +157,31 @@ export class OperatorAssignmentComponent implements OnInit {
             this.operators = response;
           }
         );
+      }
+      if (this.tab === 4) {
+        this.insumosService.GetAttachmentsTypes().subscribe(data => {
+          this.dataAttachmentsTypes = data;
+        });
+        this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
+          this.suppliesAttachmentsData = response;
+          this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
+            const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY')
+            if (isCadastral) {
+              return element;
+            }
+          });
+        });
+      }
+      if (this.tab === 5) {
+        this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
+          this.suppliesAttachmentsData = response;
+          this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
+            const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY')
+            if (isCadastral) {
+              return element;
+            }
+          });
+        });
       }
     });
   }
@@ -213,17 +254,17 @@ export class OperatorAssignmentComponent implements OnInit {
         this.supportFileOperator = files[0];
       } else {
         if (files[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
-          this.toastr.error("Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.")
+          this.toastr.error('Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.')
           this.supportFileOperator = undefined;
-          this.myInputVariable.nativeElement.value = "";
+          this.myInputVariable.nativeElement.value = '';
         } else {
           this.supportFileOperator = files[0];
         }
       }
     } else {
       this.supportFileOperator = undefined;
-      this.myInputVariable.nativeElement.value = "";
-      this.toastr.error("No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.");
+      this.myInputVariable.nativeElement.value = '';
+      this.toastr.error('No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.');
     }
   }
 
@@ -290,25 +331,25 @@ export class OperatorAssignmentComponent implements OnInit {
     const numberAlphanumericParcels = Number.isInteger(this.dataOperatorsWorkSpace.numberParcelsExpected);
     const workArea = Number.isInteger(this.dataOperatorsWorkSpace.workArea);
     if (this.supportFileOperator === undefined) {
-      this.toastr.error("No se ha cargado ningún soporte.");
-    } else if (this.dataOperatorsWorkSpace.observations == '') {
-      this.toastr.error("Las observaciones son obligatorias.");
+      this.toastr.error('No se ha cargado ningún soporte.');
+    } else if (this.dataOperatorsWorkSpace.observations === '') {
+      this.toastr.error('Las observaciones son obligatorias.');
     } else if (!numberAlphanumericParcels) {
-      this.toastr.error("El número de predios a intervenir debe ser de tipo numérico.");
+      this.toastr.error('El número de predios a intervenir debe ser de tipo numérico.');
     } else if (this.dataOperatorsWorkSpace.numberParcelsExpected < 0) {
-      this.toastr.error("El número de predios no es correcto.");
+      this.toastr.error('El número de predios no es correcto.');
     } else if (!workArea) {
-      this.toastr.error("El área de trabajo debe ser de tipo numérico.");
+      this.toastr.error('El área de trabajo debe ser de tipo numérico.');
     } else if (this.dataOperatorsWorkSpace.workArea < 0) {
-      this.toastr.error("El área de trabajo no es correcta.");
+      this.toastr.error('El área de trabajo no es correcta.');
     }
     else {
       this.serviceWorkspaces.assingOperatorToWorkSpace(this.idWorkspace, dataOperator).subscribe(
-        response => {
+        _ => {
           this.toastr.success('Operador asignado satisfactoriamente');
           this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
-            (response: any) => {
-              this.idWorkspace = response.id;
+            (data: any) => {
+              this.idWorkspace = data.id;
               this.serviceWorkspaces.getWorkSpace(this.idWorkspace).subscribe(
                 response => {
                   this.dataWorkSpace = response;
@@ -362,5 +403,99 @@ export class OperatorAssignmentComponent implements OnInit {
     } else {
       this.modalService.dismissAll();
     }
+  }
+  tab4() {
+    this.tab = 4;
+    this.router.navigate(['gestion/workspace/' + this.selectMunicipality + '/operador', { tab: 4 }]);
+    this.insumosService.GetAttachmentsTypes().subscribe(data => {
+      this.dataAttachmentsTypes = data;
+    });
+    this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
+      this.suppliesAttachmentsData = response;
+      this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
+        const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY')
+        if (isCadastral) {
+          return element;
+        }
+      });
+    });
+  }
+  tab5() {
+    this.tab = 5;
+    this.router.navigate(['gestion/workspace/' + this.selectMunicipality + '/operador', { tab: 5 }]);
+    this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
+      this.suppliesAttachmentsData = response;
+      this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
+        const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY')
+        if (isCadastral) {
+          return element;
+        }
+      });
+    });
+  }
+  docSoportAttachmentsTypes(files: FileList) {
+    if (this.selectAttachments === 1 || this.selectAttachments === 3) {
+      this.ftpAttachmentsTypes = '';
+    }
+    this.ftpAttachmentsTypes = '';
+    if (files[0].size / 1024 / 1024 <= environment.sizeFile) {
+      var re = /zip*/;
+      if (files[0].type.match(re)) {
+        this.fileAttachmentsTypes = files[0];
+      } else {
+        if (files[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
+          this.fileAttachmentsTypes = undefined;
+          this.toastr.error('Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.')
+        } else {
+          this.fileAttachmentsTypes = files[0];
+          this.validInputAttachmentsTypes = false;
+          if (this.selectAttachments !== 0 && this.observationsAttachmentsTypes !== ''
+            && (this.fileAttachmentsTypes !== undefined || this.ftpAttachmentsTypes !== '')) {
+            this.validInputAttachmentsTypes = true;
+          }
+        }
+      }
+    } else {
+      this.toastr.error('No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.');
+    }
+  }
+  validAttachmentsTypes() {
+    this.validInputAttachmentsTypes = false;
+    if (this.selectAttachments === 2) {
+      this.fileAttachmentsTypes = undefined;
+    }
+    if (this.selectAttachments === 1 || this.selectAttachments === 3) {
+      this.ftpAttachmentsTypes = '';
+    }
+    if (this.selectAttachments !== 0 && this.observationsAttachmentsTypes !== ''
+      && (this.fileAttachmentsTypes !== undefined || this.ftpAttachmentsTypes !== '')) {
+      this.validInputAttachmentsTypes = true;
+    }
+  }
+  createAttachmentsTypes() {
+    const form = new FormData();
+    form.append('attachmentTypeId', this.selectAttachments.toString());
+    if (this.selectAttachments === 2) {
+      form.append('ftp', this.ftpAttachmentsTypes);
+    }
+    if (this.selectAttachments === 1 || this.selectAttachments === 3) {
+      form.append('file', this.fileAttachmentsTypes);
+    }
+    form.append('observations', this.observationsAttachmentsTypes);
+
+    this.serviceWorkspaces.createAttachmentsSupply(this.selectMunicipality, form).subscribe(
+      _ => {
+        this.toastr.success('Ha agregado correctamente el insumo.');
+        this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
+          this.suppliesAttachmentsData = response;
+          this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
+            const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY')
+            if (isCadastral) {
+              return element;
+            }
+          });
+        });
+      }
+    );
   }
 }
