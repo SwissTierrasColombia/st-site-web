@@ -94,7 +94,7 @@
               </td>
               <td scope="row">
                 <label class="switch" [title]="item.active ? 'Desactivar':'Activar'"
-                  (click)="item.active ? openModalDisableProvider(modalDisabledProvider,item):openModalActiveProvider(modalEnabledProvider,item)">
+                  (click)="item.active ? openModalDisableProvider(modalDisabledProvider):openModalActiveProvider(modalEnabledProvider)">
                   <input (click)="clickCheckBox($event)" [(ngModel)]="item.active" type="checkbox">
                   <span class="slider round"></span>
                 </label>
