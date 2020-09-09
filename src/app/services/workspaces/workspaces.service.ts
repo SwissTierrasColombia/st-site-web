@@ -455,4 +455,16 @@ export class WorkspacesService {
   public getSuppliesAttachments() {
     return this.httpClient.get(this.url + '/workspaces/v1/supplies/1?active=true');
   }
+  /**
+   * EnableTypeSupply
+   */
+  public enableTypeSupply(typeSupplyId: number) {
+    return this.httpClient.put(this.url + '/workspaces/v1/providers/types-supplies/' + typeSupplyId + '/enable', {});
+  }
+  /**
+   * DisableTypeSupply
+   */
+  public disableTypeSupply(typeSupplyId: number) {
+    return this.httpClient.put(this.url + '/workspaces/v1/providers/types-supplies/' + typeSupplyId + '/disable', {});
+  }
 }

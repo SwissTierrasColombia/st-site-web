@@ -21,7 +21,7 @@ export class ProvidersService {
    * getTypeSuppliesByProvider
    */
   public getTypeSuppliesByProvider(idProvider: string) {
-    return this.httpClient.get(this.url + '/providers-supplies/v1/providers/' + idProvider + '/types-supplies');
+    return this.httpClient.get(this.url + '/providers-supplies/v1/providers/' + idProvider + '/types-supplies?onlyActive=true');
   }
   /**
    * getProfilesByProvider
