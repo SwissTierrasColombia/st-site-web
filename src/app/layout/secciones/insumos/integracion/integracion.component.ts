@@ -20,7 +20,6 @@ export class IntegracionComponent implements OnInit {
   selectMunicipality: number;
   dataWorkSpaceMunicipality: any;
   splitZones: boolean;
-  providers: any;
   dataSuppliesProvider: any;
   selectSupplies: number;
   listsupplies: { deadline: string; supplies: any; };
@@ -47,7 +46,6 @@ export class IntegracionComponent implements OnInit {
   SelectIntegrationPossible: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
-    private serviceProviders: ProvidersService,
     private toastr: ToastrService,
     private modalService: NgbModal,
     private router: Router,
@@ -72,7 +70,6 @@ export class IntegracionComponent implements OnInit {
       numberAlphanumericParcels: '',
       municipalityArea: ''
     };
-    this.providers = [];
     this.dataSuppliesProvider = [];
     this.selectSupplies = 0;
     this.listsupplies = {
@@ -170,11 +167,6 @@ export class IntegracionComponent implements OnInit {
       response => {
         this.dataWorkSpaceMunicipality = response;
         this.idWorkspace = this.dataWorkSpaceMunicipality.id;
-        this.serviceProviders.getProviders().subscribe(
-          data => {
-            this.providers = data;
-          }
-        );
         this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
           resp => {
             this.integrationByWorkspace = resp;

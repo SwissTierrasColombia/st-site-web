@@ -65,7 +65,7 @@ export class EntregarComponent implements OnInit {
           this.selectDepartment = Number(response.selectDepartment);
           this.changeDepartament();
           this.selectMunicipality = Number(response.selectMunicipality);
-          this.changeMunucipality();
+          this.sendSuppliesFilter = false;
         }
       }
     );
@@ -92,10 +92,10 @@ export class EntregarComponent implements OnInit {
     );
   }
   changeMunucipality() {
+    this.sendSuppliesFilter = false;
     this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
       (response: any) => {
         this.idWorkSpace = response.id;
-        this.sendSuppliesFilter = false;
         this.router.navigate(['/insumos/entrega',
           { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }
         ]);
@@ -109,8 +109,57 @@ export class EntregarComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
+
+        for (let index = 0; index < this.allSupplies.length; index++) {
+          if (this.allSupplies[index].typeSupply === null) {
+            let owner = this.allSupplies[index].owners.find(data => {
+              return data.ownerType === 'CADASTRAL_AUTHORITY';
+            });
+            if (owner) {
+              this.allSupplies[index].typeSupply = {
+                'provider': {
+                  'name': 'AUTORIDAD CATASTRAL'
+                },
+                'name': ''
+              };
+            }
+            if (!owner) {
+              this.allSupplies[index].typeSupply = {
+                "provider": {
+                  "name": "GESTOR"
+                },
+                "name": "Datos en modelo de insumos para el Municipio"
+              }
+            }
+
+          }
+          if (this.allSupplies[index].state.id === 1) {
+            this.allSupplies[index].state.state = true;
+          }
+          if (this.allSupplies[index].state.id === 2) {
+            this.allSupplies[index].state.state = false;
+          }
+        }
+        this.allSupplies.sort(function (a: any, b: any) {
+          if (a.typeSupply.provider.name > b.typeSupply.provider.name) {
+            return 1;
+          }
+          if (a.typeSupply.provider.name < b.typeSupply.provider.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
       }
     );
+  }
+  isAuthority(item: any) {
+    console.log("item: ", item);
+    let owner = item.owners.find(data => {
+      return data.ownerType === 'CADASTRAL_AUTHORITY';
+    });
+    console.log("owner: ", owner);
+    return owner ? true : false;
   }
   builddelivery(item: any, state: boolean) {
     if (this.usermanager) {

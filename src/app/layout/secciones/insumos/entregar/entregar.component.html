@@ -79,7 +79,12 @@
                     {{i + 1}}
                   </td>
                   <td scope="row">
-                    {{item.typeSupply ? item.typeSupply.name: 'Datos en modelo de insumos para el Municipio'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}})
+                    <span *ngIf="isAuthority(item)">
+                      {{item.typeSupply.provider.name}}
+                    </span>
+                    <span *ngIf="isAuthority(item) === false">
+                      {{item.typeSupply.name}}<br />({{item.typeSupply.provider.name}})
+                    </span>
                   </td>
                   <td scope="row">
                     {{globalFuntionDate(item.createdAt)}}
@@ -130,7 +135,12 @@
                     {{i + 1}}
                   </td>
                   <td scope="row" *ngIf="item.delivered === true">
-                    {{item.typeSupply ? item.typeSupply.name: 'Modelo de insumos para el Municipio'}}<br />({{item.typeSupply ? item.typeSupply.provider.name: 'GESTOR'}})
+                    <span *ngIf="isAuthority(item)">
+                      {{item.typeSupply.provider.name}}
+                    </span>
+                    <span *ngIf="isAuthority(item) === false">
+                      {{item.typeSupply.name}}<br />({{item.typeSupply.provider.name}})
+                    </span>
                   </td>
                   <td scope="row" *ngIf="item.delivered === true">
                     {{globalFuntionDate(item.createdAt)}}

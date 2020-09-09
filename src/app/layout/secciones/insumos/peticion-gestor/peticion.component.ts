@@ -18,6 +18,7 @@ export class PeticionComponent implements OnInit {
   petitionsForManager: any;
   enviarPeticion: boolean;
   providerIdPetition: string;
+  providersActive: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
@@ -25,6 +26,7 @@ export class PeticionComponent implements OnInit {
     private modalService: NgbModal,
   ) {
     this.providers = [];
+    this.providersActive = [];
     this.data = {
       providerId: "0",
       description: ""
@@ -38,6 +40,11 @@ export class PeticionComponent implements OnInit {
     this.serviceProviders.getProviders().subscribe(
       element => {
         this.providers = element;
+      }
+    );
+    this.serviceProviders.getProvidersActive().subscribe(
+      element => {
+        this.providersActive = element;
       }
     );
   }

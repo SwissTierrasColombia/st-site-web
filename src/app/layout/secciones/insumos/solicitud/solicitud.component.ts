@@ -125,7 +125,7 @@ export class SolicitudComponent implements OnInit {
     this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
       response => {
         this.dataWorkSpaceMunicipality = response;
-        this.serviceProviders.getProviders().subscribe(
+        this.serviceProviders.getProvidersActive().subscribe(
           data => {
             this.providers = data;
           }
@@ -137,7 +137,7 @@ export class SolicitudComponent implements OnInit {
     this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
       response => {
         this.dataWorkSpaceMunicipality = response;
-        this.serviceProviders.getProviders().subscribe(
+        this.serviceProviders.getProvidersActive().subscribe(
           data => {
             this.providers = data;
           }

@@ -18,7 +18,7 @@
             <select (change)="changeStatePetition()" class="custom-select" name="providerId" id="providerId"
               [(ngModel)]="data.providerId">
               <option value='0' selected>Seleccione el proveedor</option>
-              <option [ngValue]="item.id" *ngFor="let item of providers">{{item.name}}</option>
+              <option [ngValue]="item.id" *ngFor="let item of providersActive">{{item.name}}</option>
             </select>
           </div>
         </div>

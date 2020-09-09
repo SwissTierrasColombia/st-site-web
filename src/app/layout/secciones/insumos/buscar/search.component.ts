@@ -132,8 +132,6 @@ export class SearchComponent implements OnInit {
             let owner = this.allSupplies[index].owners.find(data => {
               return data.ownerType === 'CADASTRAL_AUTHORITY';
             });
-            console.log("owner", owner);
-
             if (owner) {
               this.allSupplies[index].typeSupply = {
                 'provider': {
@@ -150,7 +148,6 @@ export class SearchComponent implements OnInit {
                 "name": "Datos en modelo de insumos para el Municipio"
               }
             }
-
           }
           if (this.allSupplies[index].state.id === 1) {
             this.allSupplies[index].state.state = true;

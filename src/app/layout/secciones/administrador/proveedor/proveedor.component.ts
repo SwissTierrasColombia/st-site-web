@@ -38,6 +38,8 @@ export class ProveedorComponent implements OnInit {
       element => {
         this.dataProfile = element;
         this.dataProfile.sort((a, b) => a.id - b.id);
+        console.log(this.dataProfile);
+
       }
     );
     this.serviceProvider.getCategoriesProviders().subscribe(
@@ -147,5 +149,35 @@ export class ProveedorComponent implements OnInit {
       providerCategoryId: '0'
     }
   }
+  clickCheckBox(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
 
+  openModalActiveProvider(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+
+  closeModalEnabledProvider(option: boolean, providerId?: number, index?: number) {
+    if (option) {
+      this.serviceProvider.enableProvider(providerId).subscribe(response => {
+        this.dataProfile[index] = response;
+        this.toast.success('Ha habilitado correctamente el proveedor.');
+      });
+    }
+    this.modalService.dismissAll();
+  }
+
+  openModalDisableProvider(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  closeModalDisabledProvider(option: boolean, providerId?: number, index?: number) {
+    if (option) {
+      this.serviceProvider.disableProvider(providerId).subscribe(response => {
+        this.dataProfile[index] = response;
+        this.toast.success('Ha desactivado correctamente el proveedor.');
+      });
+    }
+    this.modalService.dismissAll();
+  }
 }
