@@ -38,8 +38,6 @@ export class ProveedorComponent implements OnInit {
       element => {
         this.dataProfile = element;
         this.dataProfile.sort((a, b) => a.id - b.id);
-        console.log(this.dataProfile);
-
       }
     );
     this.serviceProvider.getCategoriesProviders().subscribe(

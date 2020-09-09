@@ -66,7 +66,6 @@ export class SearchComponent implements OnInit {
             this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
               (data: any) => {
                 this.idWorkSpaceMunicipality = data.id;
-                console.log(this.idWorkSpaceMunicipality);
               }
             );
           }
@@ -109,7 +108,6 @@ export class SearchComponent implements OnInit {
     this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
       (response: any) => {
         this.idWorkSpaceMunicipality = response.id;
-        console.log(this.idWorkSpaceMunicipality);
       }
     );
   }
@@ -125,8 +123,6 @@ export class SearchComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
-        console.log(this.allSupplies);
-
         for (let index = 0; index < this.allSupplies.length; index++) {
           if (this.allSupplies[index].typeSupply === null) {
             let owner = this.allSupplies[index].owners.find(data => {

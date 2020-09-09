@@ -166,8 +166,6 @@ export class CrearTipoInsumoComponent implements OnInit {
   loadProviderTypeSupplies() {
     this.serviceWorkspaces.GetProviderTypeSupplies()
       .subscribe((response: any[]) => {
-        console.log(response);
-
         response.sort((a, b) => a.id - b.id);
         this.supplies = response;
       });

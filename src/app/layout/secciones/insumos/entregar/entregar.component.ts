@@ -154,11 +154,9 @@ export class EntregarComponent implements OnInit {
     );
   }
   isAuthority(item: any) {
-    console.log("item: ", item);
     let owner = item.owners.find(data => {
       return data.ownerType === 'CADASTRAL_AUTHORITY';
     });
-    console.log("owner: ", owner);
     return owner ? true : false;
   }
   builddelivery(item: any, state: boolean) {
