@@ -79,6 +79,7 @@ export class OperatorViewComponent implements OnInit {
       this.serviceWorkspaces.getWorkSpace(values[0]).subscribe(
         (response: any) => {
           this.dataWorkSpace = response;
+          this.selectDepartment = this.dataWorkSpace.municipality.department.id;
           if (this.dataWorkSpace.operators.length > 0) {
             this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
             this.dataOperatorsWorkSpace.operatorName = this.dataWorkSpace.operators[0].operator.name;
@@ -129,7 +130,9 @@ export class OperatorViewComponent implements OnInit {
     return moment(date).format('ll, h:mm a');
   }
   volver() {
-    this.router.navigate(['/gestion/workspace']);
+    this.router.navigate(['/gestion/workspace',
+      { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }
+    ]);
   }
   tab1() {
     this.router.navigate(['gestion/workspace/' + this.idWorkspace + '/ver/operador', { tab: 1 }]);

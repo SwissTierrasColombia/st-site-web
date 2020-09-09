@@ -16,7 +16,7 @@ export class SearchComponent implements OnInit {
 
   usermanager: boolean;
   departments: any;
-  selectDepartment: Number;
+  selectDepartment: number;
   munucipalities: any;
   selectMunicipality: number;
   suppliesManagerRequest: any;
@@ -28,8 +28,9 @@ export class SearchComponent implements OnInit {
   idSupplieDelete: number;
   searchText: string;
   idSuppliesState: number;
-  page: Number;
+  page: number;
   isSearch: boolean;
+  idWorkSpaceMunicipality: number;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
@@ -51,16 +52,23 @@ export class SearchComponent implements OnInit {
     this.idSupplieDelete = 0;
     this.idSuppliesState = 0;
     this.page = 1;
+    this.idWorkSpaceMunicipality = 0;
   }
 
   ngOnInit() {
-    this.activedRoute.params.subscribe(
+    this.activedRoute.queryParams.subscribe(
       response => {
         if (response.selectDepartment) {
           this.selectDepartment = Number(response.selectDepartment);
           this.changeDepartament();
           this.selectMunicipality = Number(response.selectMunicipality);
-          this.changeMunucipality();
+          if (this.selectMunicipality !== 0) {
+            this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
+              (data: any) => {
+                this.idWorkSpaceMunicipality = data.id;
+              }
+            );
+          }
         }
       }
     );
@@ -74,7 +82,7 @@ export class SearchComponent implements OnInit {
         response => {
           this.suppliesManagerRequest = response;
         }
-      )
+      );
     }
     this.serviceWorkspaces.getDepartments()
       .subscribe(response => {
@@ -93,9 +101,15 @@ export class SearchComponent implements OnInit {
     );
   }
   changeMunucipality() {
-    this.router.navigate(['/insumos/buscar',
-      { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }
-    ]);
+    this.router.navigate(['/insumos/buscar'],
+      { queryParams: { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality } });
+  }
+  getWorkspace() {
+    this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
+      (response: any) => {
+        this.idWorkSpaceMunicipality = response.id;
+      }
+    );
   }
   getPage(page: number) {
     this.page = page;
@@ -111,11 +125,24 @@ export class SearchComponent implements OnInit {
         this.allSupplies = response.items;
         for (let index = 0; index < this.allSupplies.length; index++) {
           if (this.allSupplies[index].typeSupply === null) {
-            this.allSupplies[index].typeSupply = {
-              "provider": {
-                "name": "GESTOR"
-              },
-              "name": "Datos en modelo de insumos para el Municipio"
+            let owner = this.allSupplies[index].owners.find(data => {
+              return data.ownerType === 'CADASTRAL_AUTHORITY';
+            });
+            if (owner) {
+              this.allSupplies[index].typeSupply = {
+                'provider': {
+                  'name': 'AUTORIDAD CATASTRAL'
+                },
+                'name': ''
+              };
+            }
+            if (!owner) {
+              this.allSupplies[index].typeSupply = {
+                "provider": {
+                  "name": "GESTOR"
+                },
+                "name": "Datos en modelo de insumos para el Municipio"
+              }
             }
           }
           if (this.allSupplies[index].state.id === 1) {
@@ -153,7 +180,7 @@ export class SearchComponent implements OnInit {
     );
   }
   deleteSupplies(idSupplie: number, index?: number) {
-    this.serviceWorkspaces.deleteSupplies(this.selectMunicipality, idSupplie).subscribe(
+    this.serviceWorkspaces.deleteSupplies(this.idWorkSpaceMunicipality, idSupplie).subscribe(
       _ => {
         this.allSupplies.splice(index, 1);
         this.toastr.success('Se ha eliminado el insumo');

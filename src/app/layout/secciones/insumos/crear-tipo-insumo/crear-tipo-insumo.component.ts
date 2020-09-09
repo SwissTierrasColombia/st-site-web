@@ -292,24 +292,21 @@ export class CrearTipoInsumoComponent implements OnInit {
     return names.join(', ');
   }
 
-  deleteTypeSupply(modal: any, id: number) {
-    this.modalService.open(modal)
-    this.id = id;
+  deleteTypeSupply(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
 
-  closeModalDisabled(option: boolean) {
+  closeModalDisabled(option: boolean, id?: number) {
     if (option) {
-      this.serviceWorkspaces.deleteTypeSupplies(this.id).subscribe(
+      this.serviceWorkspaces.deleteTypeSupplies(id).subscribe(
         _ => {
-          this.toast.success("Ha eliminado correctamente el tipo de insumo.");
-          this.cancel();
+          this.toast.success('Ha eliminado correctamente el tipo de insumo.');
           this.loadProviderTypeSupplies();
         }
       );
-      this.modalService.dismissAll();
-    } else {
-      this.modalService.dismissAll();
     }
+    this.modalService.dismissAll();
+
   }
 
   modelChanged() {
@@ -326,5 +323,35 @@ export class CrearTipoInsumoComponent implements OnInit {
   tab2() {
     this.tab = 2;
     this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 2 }]);
+  }
+  clickCheckBox(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  openModalEnabledSupplie(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  closeModalEnabledSupplie(option: boolean, typeSupplyId?: number, index?: number) {
+    if (option) {
+      this.serviceWorkspaces.enableTypeSupply(typeSupplyId).subscribe(response => {
+        this.supplies[index] = response;
+        this.toast.success('Ha habilitado correctamente el tipo de insumo.');
+      });
+    }
+    this.modalService.dismissAll();
+  }
+
+
+  openModalDisabledSupplie(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  closeModalDisabledSupplie(option: boolean, typeSupplyId?: number, index?: number) {
+    if (option) {
+      this.serviceWorkspaces.disableTypeSupply(typeSupplyId).subscribe(response => {
+        this.supplies[index] = response;
+        this.toast.success('Ha desactivado correctamente el tipo de insumo.');
+      });
+    }
+    this.modalService.dismissAll();
   }
 }

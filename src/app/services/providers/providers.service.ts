@@ -15,13 +15,16 @@ export class ProvidersService {
    * getProviders
    */
   public getProviders() {
-    return this.httpClient.get(this.url + '/providers-supplies/v1/providers');
+    return this.httpClient.get(this.url + '/providers-supplies/v1/providers?onlyActive=false');
+  }
+  public getProvidersActive() {
+    return this.httpClient.get(this.url + '/providers-supplies/v1/providers?onlyActive=true');
   }
   /**
    * getTypeSuppliesByProvider
    */
   public getTypeSuppliesByProvider(idProvider: string) {
-    return this.httpClient.get(this.url + '/providers-supplies/v1/providers/' + idProvider + '/types-supplies');
+    return this.httpClient.get(this.url + '/providers-supplies/v1/providers/' + idProvider + '/types-supplies?onlyActive=true');
   }
   /**
    * getProfilesByProvider
@@ -50,5 +53,16 @@ export class ProvidersService {
   public deleteProvider(providerId: number) {
     return this.httpClient.delete(this.url + '/providers-supplies/v1/providers/' + providerId);
   }
-
+  /**
+   * enableProvider
+   */
+  public enableProvider(providerId: number) {
+    return this.httpClient.put(this.url + '/providers-supplies/v1/providers/' + providerId + '/enable', {});
+  }
+  /**
+   * disableProvider
+   */
+  public disableProvider(providerId: number) {
+    return this.httpClient.put(this.url + '/providers-supplies/v1/providers/' + providerId + '/disable', {});
+  }
 }

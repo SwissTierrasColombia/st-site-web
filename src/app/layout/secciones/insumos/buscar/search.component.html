@@ -52,7 +52,7 @@
         <div class="card-header text-center">
           <h5>Resultados de Búsqueda</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body text-center">
           <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number" [pageSize]="size"
             [collectionSize]="totalElements" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
             (pageChange)="getPage($event)">
@@ -78,11 +78,11 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of allSupplies |filter:searchText; let index = index">
-                  <td scope="row">{{item.typeSupply ? item.typeSupply.provider.name: 'N/A'}}</td>
-                  <td scope="row">{{item.typeSupply ? item.typeSupply.name: 'N/A'}}</td>
+                  <td scope="row">{{item.typeSupply.provider.name}}</td>
+                  <td scope="row">{{item.typeSupply.name}}</td>
                   <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                  <!-- <td scope="row">{{item.modelVersion ? item.modelVersion: 'N/A'}}</td> -->
-                  <td scope="row"><textarea maxlength="255" readonly
+                  <td scope="row">
+                    <textarea maxlength="255" readonly
                       style="border: none; background: #dedede;">{{item.observations}}</textarea>
                   </td>
                   <td scope="row">
@@ -98,12 +98,12 @@
                     </div>
                   </td>
                   <td scope="row">
-                    <i alt="Descargar" title="Descargar insumo" class="material-icons cursor" style="float: left;"
+                    <i alt="Descargar" title="Descargar insumo" class="material-icons cursor"
                       (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
                       cloud_download </i>
-                    <app-preview *ngIf="item&&item.attachments?item.attachments:false" [icon]="true"
+                    <!-- <app-preview *ngIf="item&&item.attachments?item.attachments:false" [icon]="true"
                       [url]="item&&item.attachments.length>0?item.attachments[0].urlDocumentaryRepository:''">
-                    </app-preview>
+                    </app-preview> -->
                   </td>
                   <td scope="row" *ngIf="usermanager">
                     <label class="switch" [title]="item.state.state ? 'Desactivar insumo':'Activar insumo'"

@@ -126,7 +126,7 @@ export class CreateUserComponent implements OnInit {
           this.managers = data;
         }
       );
-      this.serviceProviders.getProviders().subscribe(
+      this.serviceProviders.getProvidersActive().subscribe(
         data => {
           this.providers = data;
         }
@@ -342,7 +342,7 @@ export class CreateUserComponent implements OnInit {
                   this.managers = data;
                 }
               );
-              this.serviceProviders.getProviders().subscribe(
+              this.serviceProviders.getProvidersActive().subscribe(
                 data => {
                   this.providers = data;
                 }
