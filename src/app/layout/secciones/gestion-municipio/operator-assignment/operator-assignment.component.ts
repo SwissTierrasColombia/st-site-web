@@ -47,6 +47,8 @@ export class OperatorAssignmentComponent implements OnInit {
   validInputAttachmentsTypes: boolean;
   fileAttachmentsTypes: any;
   suppliesAttachmentsData: any;
+  idSupplieDelete: number;
+  idWorkSpaceMunicipality: number;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -165,7 +167,7 @@ export class OperatorAssignmentComponent implements OnInit {
         this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
           this.suppliesAttachmentsData = response;
           this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
-            const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY')
+            const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY');
             if (isCadastral) {
               return element;
             }
@@ -176,7 +178,7 @@ export class OperatorAssignmentComponent implements OnInit {
         this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
           this.suppliesAttachmentsData = response;
           this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
-            const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY')
+            const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY');
             if (isCadastral) {
               return element;
             }
@@ -216,7 +218,7 @@ export class OperatorAssignmentComponent implements OnInit {
       this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
         (response: any) => {
           this.idWorkspace = response.id;
-          resolve(response)
+          resolve(response);
         }
       );
     });
@@ -413,7 +415,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
       this.suppliesAttachmentsData = response;
       this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
-        const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY')
+        const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY');
         if (isCadastral) {
           return element;
         }
@@ -426,7 +428,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
       this.suppliesAttachmentsData = response;
       this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
-        const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY')
+        const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY');
         if (isCadastral) {
           return element;
         }
@@ -488,8 +490,12 @@ export class OperatorAssignmentComponent implements OnInit {
         this.toastr.success('Ha agregado correctamente el insumo.');
         this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
           this.suppliesAttachmentsData = response;
+          this.selectAttachments = 0;
+          this.ftpAttachmentsTypes = '';
+          this.observationsAttachmentsTypes = '';
+          this.fileAttachmentsTypes = undefined;
           this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
-            const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY')
+            const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY');
             if (isCadastral) {
               return element;
             }
@@ -497,5 +503,23 @@ export class OperatorAssignmentComponent implements OnInit {
         });
       }
     );
+  }
+  deleteSupplies(idSupplie: number, index?: number) {
+    this.serviceWorkspaces.deleteSupplies(this.idWorkspace, idSupplie).subscribe(
+      _ => {
+        this.suppliesAttachmentsData.splice(index, 1);
+        this.toastr.success('Se ha eliminado el insumo');
+      }
+    );
+  }
+  closeModalDelete(option: boolean, index?: number) {
+    this.modalService.dismissAll();
+    if (option) {
+      this.deleteSupplies(this.idSupplieDelete, index);
+    }
+  }
+  openModalDelete(idSupplieDelete: number, modal: any) {
+    this.idSupplieDelete = idSupplieDelete;
+    this.modalService.open(modal, { centered: true, scrollable: true });
   }
 }

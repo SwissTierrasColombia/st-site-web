@@ -318,10 +318,11 @@
                     <th>Fecha de cargue</th>
                     <th>Observación</th>
                     <th>Estado</th>
+                    <th>Eliminar</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of suppliesAttachmentsData">
+                  <tr *ngFor="let item of suppliesAttachmentsData; let index = index;">
                     <td scope="row">AUTORIDAD CATASTRAL</td>
                     <td scope="row">{{formatDate(item.createdAt)}}</td>
                     <td scope="row">
@@ -339,6 +340,35 @@
                           {{item.state.name}}
                         </span>
                       </div>
+                    </td>
+                    <td scope="row">
+                      <i class="material-icons cursor" (click)="openModalDelete(item.id, customModal2)">
+                        delete_forever
+                      </i>
+                      <ng-template #customModal2 let-modal>
+                        <div class="modal-header">
+                          <h4 class="modal-title">
+                            ¿Está seguro de eliminar el insumo?
+                          </h4>
+                          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <h5 class="alert alert-warning text-center">
+                            Advertencia: El insumo se borrará permanentemente del Sistema.
+                          </h5>
+                        </div>
+                        <div class="modal-footer">
+                          <div class="col-6">
+                            <button type="button" class="btn btn-dark btn-block" (click)="closeModalDelete(false)">No</button>
+                          </div>
+                          <div class="col-6 text-right">
+                            <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                              (click)="closeModalDelete(true, index)">Si</button>
+                          </div>
+                        </div>
+                      </ng-template>
                     </td>
                   </tr>
                 </tbody>
