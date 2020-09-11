@@ -453,7 +453,7 @@ export class WorkspacesService {
    * getSuppliesAttachments
    */
   public getSuppliesAttachments() {
-    return this.httpClient.get(this.url + '/workspaces/v1/supplies/1?active=true');
+    return this.httpClient.get(this.url + '/workspaces/v1/supplies/1?active=false');
   }
   /**
    * EnableTypeSupply
