@@ -164,7 +164,7 @@ export class OperatorAssignmentComponent implements OnInit {
         this.insumosService.GetAttachmentsTypes().subscribe(data => {
           this.dataAttachmentsTypes = data;
         });
-        this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
+        this.serviceWorkspaces.getSuppliesAttachments(this.selectMunicipality).subscribe(response => {
           this.suppliesAttachmentsData = response;
           this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
             const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY');
@@ -175,7 +175,7 @@ export class OperatorAssignmentComponent implements OnInit {
         });
       }
       if (this.tab === 5) {
-        this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
+        this.serviceWorkspaces.getSuppliesAttachments(this.selectMunicipality).subscribe(response => {
           this.suppliesAttachmentsData = response;
           this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
             const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY');
@@ -412,7 +412,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.insumosService.GetAttachmentsTypes().subscribe(data => {
       this.dataAttachmentsTypes = data;
     });
-    this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
+    this.serviceWorkspaces.getSuppliesAttachments(this.selectMunicipality).subscribe(response => {
       this.suppliesAttachmentsData = response;
       this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
         const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY');
@@ -420,12 +420,14 @@ export class OperatorAssignmentComponent implements OnInit {
           return element;
         }
       });
+      console.log(this.suppliesAttachmentsData);
+
     });
   }
   tab5() {
     this.tab = 5;
     this.router.navigate(['gestion/workspace/' + this.selectMunicipality + '/operador', { tab: 5 }]);
-    this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
+    this.serviceWorkspaces.getSuppliesAttachments(this.selectMunicipality).subscribe(response => {
       this.suppliesAttachmentsData = response;
       this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(element => {
         const isCadastral = element.owners.find(data => data.ownerType === 'CADASTRAL_AUTHORITY');
@@ -488,7 +490,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.serviceWorkspaces.createAttachmentsSupply(this.selectMunicipality, form).subscribe(
       _ => {
         this.toastr.success('Ha agregado correctamente el insumo.');
-        this.serviceWorkspaces.getSuppliesAttachments().subscribe(response => {
+        this.serviceWorkspaces.getSuppliesAttachments(this.selectMunicipality).subscribe(response => {
           this.suppliesAttachmentsData = response;
           this.selectAttachments = 0;
           this.ftpAttachmentsTypes = '';
