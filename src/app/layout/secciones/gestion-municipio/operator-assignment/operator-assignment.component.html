@@ -310,7 +310,7 @@
             </div>
           </div>
           <div class="row text-center">
-            <div class="table-inverse table-responsive">
+            <div class="table-inverse table-responsive" *ngIf="suppliesAttachmentsData.length > 0">
               <table class="table table-striped">
                 <thead class="thead-inverse">
                   <tr>
@@ -361,7 +361,8 @@
                         </div>
                         <div class="modal-footer">
                           <div class="col-6">
-                            <button type="button" class="btn btn-dark btn-block" (click)="closeModalDelete(false)">No</button>
+                            <button type="button" class="btn btn-dark btn-block"
+                              (click)="closeModalDelete(false)">No</button>
                           </div>
                           <div class="col-6 text-right">
                             <button type="button" ngbAutofocus class="btn btn-success btn-block"
@@ -373,6 +374,13 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+          <div *ngIf="suppliesAttachmentsData.length === 0">
+            <div class="col-12">
+              <div class="alert alert-primary text-center" role="alert">
+                No hay insumos cargados en este Municipio.
+              </div>
             </div>
           </div>
         </div>
