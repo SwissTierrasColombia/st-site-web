@@ -420,8 +420,6 @@ export class OperatorAssignmentComponent implements OnInit {
           return element;
         }
       });
-      console.log(this.suppliesAttachmentsData);
-
     });
   }
   tab5() {

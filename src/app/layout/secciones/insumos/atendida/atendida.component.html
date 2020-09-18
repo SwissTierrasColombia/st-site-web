@@ -46,8 +46,9 @@
                             <tr>
                                 <th><strong>#</strong></th>
                                 <th>Nombre de Insumo</th>
-                                <th>Estado de Entrega</th>
-                                <th>Observación</th>
+                                <th>Estado</th>
+                                <th>Observación Gestor</th>
+                                <th>Observación Proveedor</th>
                                 <th>Fecha de Cargue</th>
                                 <th>Entregado</th>
                             </tr>
@@ -58,8 +59,10 @@
                                 <td scope="row">{{item.typeSupply.name}}</td>
                                 <td scope="row">{{item.state.name}}</td>
                                 <td scope="row">
-                                    <textarea class="form-control" rows="3" maxlength="255"
-                                        disabled="true">{{item.description}}</textarea>
+                                    <textarea class="form-control" rows="3" maxlength="255" disabled="true">{{item.description}}</textarea>
+                                </td>
+                                <td scope="row">
+                                    <textarea class="form-control" rows="3" maxlength="255" disabled="true">{{item.observations}}</textarea>
                                 </td>
                                 <td scope="row">{{item.deliveredAt?formatDate(item.deliveredAt):'N/A'}}</td>
                                 <td scope="row">{{item.userDeliveryBy.firstName}} <br> {{item.userDeliveryBy.lastName }}

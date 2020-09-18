@@ -22,6 +22,8 @@ export class SidebarComponent implements OnInit {
   roleoperador: any;
   roleproveedor: any;
   delegate: any;
+  isSnr: any;
+
 
   @Output() collapsedEvent = new EventEmitter<boolean>();
   administration: any;
@@ -98,6 +100,9 @@ export class SidebarComponent implements OnInit {
       this.delegate = this.user.provider_sub_roles.find((elem: any) => {
         return elem.id === 2;
       });
+      if (this.user.entity.name === 'SNR') {
+        this.isSnr = true;
+      }
     }
   }
 

@@ -35,8 +35,6 @@ export class EntregarComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService,
     private toastr: ToastrService,
     private modalService: NgbModal,
-    private router: Router,
-    private activedRoute: ActivatedRoute
   ) {
     this.usermanager = false;
     this.departments = [];
@@ -59,16 +57,6 @@ export class EntregarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activedRoute.params.subscribe(
-      response => {
-        if (response.selectDepartment) {
-          this.selectDepartment = Number(response.selectDepartment);
-          this.changeDepartament();
-          this.selectMunicipality = Number(response.selectMunicipality);
-          this.sendSuppliesFilter = false;
-        }
-      }
-    );
     const rol = JwtHelper.getUserPublicInformation();
     const role = rol.roles.find(elem => {
       return elem.id === this.roles.gestor;
@@ -96,9 +84,6 @@ export class EntregarComponent implements OnInit {
     this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
       (response: any) => {
         this.idWorkSpace = response.id;
-        this.router.navigate(['/insumos/entrega',
-          { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }
-        ]);
       }
     );
   }
@@ -188,7 +173,7 @@ export class EntregarComponent implements OnInit {
 
 
     } else {
-      this.toastr.error("No tienes los permisos necesarios para entregar el insumo.");
+      this.toastr.error("No tiene los permisos necesarios para entregar el insumo.");
     }
 
   }

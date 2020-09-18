@@ -1,476 +1,434 @@
 <div>
-  <div class="row mb-3">
-    <div class="col-12 col-sm-1">
-      <i class="material-icons cursor m-2" (click)="volver()">backspace</i>
-    </div>
-    <div class="col-12 col-sm-5">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <label class="input-group-text">Departamento</label>
+    <div class="row mb-3">
+        <div class="col-12 col-sm-1">
+            <i class="material-icons cursor m-2" (click)="volver()">backspace</i>
         </div>
-        <div class="form-control">{{dataWorkSpace.municipality.department.name}}</div>
-      </div>
-    </div>
-    <div class="col-12 col-sm-5">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <label class="input-group-text">* Municipio</label>
+        <div class="col-12 col-sm-5">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text">Departamento</label>
+                </div>
+                <div class="form-control">{{dataWorkSpace.municipality.department.name}}</div>
+            </div>
         </div>
-        <div class="form-control">{{dataWorkSpace.municipality.name}}</div>
-      </div>
+        <div class="col-12 col-sm-5">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text">* Municipio</label>
+                </div>
+                <div class="form-control">{{dataWorkSpace.municipality.name}}</div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><b>Espacio de Trabajo</b></div>
-    <div class="card-body">
-      <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab" (click)="tab1()"
-            aria-controls="home">
-            <i class="material-icons">
+    <div class="card">
+        <div class="card-header"><b>Espacio de Trabajo</b></div>
+        <div class="card-body">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab" (click)="tab1()" aria-controls="home">
+                        <i class="material-icons">
               home
             </i>Información Básica</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [ngClass]="{'active':tab === 2}" data-toggle="tab" role="tab" (click)="getSopports()"
-            aria-controls="messages">
-            <i class="material-icons">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active':tab === 2}" data-toggle="tab" role="tab" (click)="getSopports()" aria-controls="messages">
+                        <i class="material-icons">
               archive
             </i>Soportes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [ngClass]="{'active':tab === 3}" data-toggle="tab" role="tab" (click)="getOperator()"
-            aria-controls="messages">
-            <i class="material-icons">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active':tab === 3}" data-toggle="tab" role="tab" (click)="getOperator()" aria-controls="messages">
+                        <i class="material-icons">
               people
             </i>Operador</a>
-        </li>
-        <li class="nav-item" *ngIf="updateInfoBasic">
-          <a class="nav-link" [ngClass]="{'active':tab === 4}" data-toggle="tab" role="tab" (click)="tab4()"
-            aria-controls="messages">
-            <i class="material-icons">
+                </li>
+                <li class="nav-item" *ngIf="updateInfoBasic">
+                    <a class="nav-link" [ngClass]="{'active':tab === 4}" data-toggle="tab" role="tab" (click)="tab4()" aria-controls="messages">
+                        <i class="material-icons">
               vertical_split
-            </i>Entrega Insumos para Gestión Catastral</a>
-        </li>
-        <li class="nav-item" *ngIf="assingOperator">
-          <a class="nav-link" [ngClass]="{'active':tab === 5}" data-toggle="tab" role="tab" (click)="tab5()"
-            aria-controls="messages">
-            <i class="material-icons">
+            </i>Entrega de información para la Gestión Catastral</a>
+                </li>
+                <li class="nav-item" *ngIf="assingOperator">
+                    <a class="nav-link" [ngClass]="{'active':tab === 5}" data-toggle="tab" role="tab" (click)="tab5()" aria-controls="messages">
+                        <i class="material-icons">
               view_list
-            </i>Insumos Gestión Catastral</a>
-        </li>
-      </ul>
-      <div class="tab-content">
-        <div class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel"><br>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Área del municipio (km<sup>2</sup>) :</label>
-            <div class="col-sm-8">
-              <input class="form-control" type="text" name="municipalityArea"
-                [(ngModel)]="dataWorkSpace.municipalityArea" disabled="{{editForm.municipalityArea}}">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Número de Predios:</label>
-            <div class="col-sm-8">
-              <input class="form-control" type="text" name="numberAlphanumericParcels"
-                [(ngModel)]="dataWorkSpace.numberAlphanumericParcels" disabled="{{editForm.numberAlphanumericParcels}}">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Fecha de Creación:</label>
-            <div class="col-sm-8">
-              <div>{{formatDate(dataWorkSpace.createdAt)}}</div>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Fecha de Inicio:</label>
-            <div class="col-sm-8">
-              <input class="form-control" type="date" name="startDate" [(ngModel)]="dataWorkSpace.startDate"
-                disabled="{{editForm.startDate}}">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Observaciones:</label>
-            <div class="col-sm-8">
-              <textarea [(ngModel)]="dataWorkSpace.observations" (keyup.enter)="onKey($event)" class="form-control"
-                rows="3" maxlength="255" disabled="{{editForm.observations}}"></textarea>
-            </div>
-          </div>
-          <div class="mb-2 form-group row" *ngIf="updateInfoBasic">
-            <button *ngIf="editForm.municipalityArea" type="button" class="btn btn-primary btn-sm btn-block"
-              (click)="changeUpdate()">Editar</button>
-            <button *ngIf="editForm.municipalityArea === false" type="button" class="btn btn-primary btn-sm btn-block"
-              (click)="openModalUpdate(modalRegistrar)">Actualizar</button>
-          </div>
-          <h3>Gestor</h3>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Nombre:</label>
-            <div class="col-sm-8">
-              <input disabled="{{!assingOperator}}" class="form-control" type="text" name="managerName"
-                [(ngModel)]="dataWorkSpace.manager.name" disabled="true">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">NIT:</label>
-            <div class="col-sm-8">
-              <input disabled="{{!assingOperator}}" class="form-control" type="text" name="taxIdentificationNumber"
-                [(ngModel)]="dataWorkSpace.manager.taxIdentificationNumber" disabled="true">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Fecha de Asignación:</label>
-            <div class="col-sm-8">
-              <div>{{formatDate(dataWorkSpace.manager.createdAt)}}</div>
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane" [ngClass]="{'active':tab === 2}" role="tabpanel">
-          <br>
-          <div class="row">
-            <div class="col-12">
-              <div class="table-inverse table-responsive">
-                <table class="table table-striped text-center">
-                  <thead class="thead-inverse">
-                    <tr>
-                      <th>ID</th>
-                      <th>Repositorio Documental</th>
-                      <th>Hito</th>
-                      <th>Fecha de Creación</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of dataSoports; let i = index">
-                      <td scope="row">{{i+1}}</td>
-                      <td scope="row">
-                        Descargar soporte
-                        <i class="material-icons mt-2 ml-2 cursor" (click)="downloadSupplies(item.id)">
+            </i>Información para la Gestión Catastral</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel"><br>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Área del municipio (km<sup>2</sup>) :</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="municipalityArea" [(ngModel)]="dataWorkSpace.municipalityArea" disabled="{{editForm.municipalityArea}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Número de Predios:</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="numberAlphanumericParcels" [(ngModel)]="dataWorkSpace.numberAlphanumericParcels" disabled="{{editForm.numberAlphanumericParcels}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Fecha de Creación:</label>
+                        <div class="col-sm-8">
+                            <div>{{formatDate(dataWorkSpace.createdAt)}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Fecha de Inicio:</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="date" name="startDate" [(ngModel)]="dataWorkSpace.startDate" disabled="{{editForm.startDate}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Observaciones:</label>
+                        <div class="col-sm-8">
+                            <textarea [(ngModel)]="dataWorkSpace.observations" (keyup.enter)="onKey($event)" class="form-control" rows="3" maxlength="255" disabled="{{editForm.observations}}"></textarea>
+                        </div>
+                    </div>
+                    <div class="mb-2 form-group row" *ngIf="updateInfoBasic">
+                        <button *ngIf="editForm.municipalityArea" type="button" class="btn btn-primary btn-sm btn-block" (click)="changeUpdate()">Editar</button>
+                        <button *ngIf="editForm.municipalityArea === false" type="button" class="btn btn-primary btn-sm btn-block" (click)="openModalUpdate(modalRegistrar)">Actualizar</button>
+                    </div>
+                    <h3>Gestor</h3>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Nombre:</label>
+                        <div class="col-sm-8">
+                            <input disabled="{{!assingOperator}}" class="form-control" type="text" name="managerName" [(ngModel)]="dataWorkSpace.manager.name" disabled="true">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">NIT:</label>
+                        <div class="col-sm-8">
+                            <input disabled="{{!assingOperator}}" class="form-control" type="text" name="taxIdentificationNumber" [(ngModel)]="dataWorkSpace.manager.taxIdentificationNumber" disabled="true">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Fecha de Asignación:</label>
+                        <div class="col-sm-8">
+                            <div>{{formatDate(dataWorkSpace.manager.createdAt)}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" [ngClass]="{'active':tab === 2}" role="tabpanel">
+                    <br>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-inverse table-responsive">
+                                <table class="table table-striped text-center">
+                                    <thead class="thead-inverse">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Repositorio Documental</th>
+                                            <th>Hito</th>
+                                            <th>Fecha de Creación</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of dataSoports; let i = index">
+                                            <td scope="row">{{i+1}}</td>
+                                            <td scope="row">
+                                                Descargar soporte
+                                                <i class="material-icons mt-2 ml-2 cursor" (click)="downloadSupplies(item.id)">
                           cloud_download
                         </i>
-                      </td>
-                      <td scope="row">{{item.milestone.name}}</td>
-                      <td scope='row'>{{formatDate(item.createdAt)}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane" [ngClass]="{'active':tab === 3}" role="tabpanel"><br>
-          <form action="" method="post">
-            <div class="row mb-2">
-              <div class="col-12">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text" aria-required="true">* Operador</label>
-                  </div>
-                  <select disabled="{{!assingOperator}}" class="custom-select" name="operators" id="operators"
-                    [(ngModel)]="dataOperatorsWorkSpace.operatorCode">
+                                            </td>
+                                            <td scope="row">{{item.milestone.name}}</td>
+                                            <td scope='row'>{{formatDate(item.createdAt)}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" [ngClass]="{'active':tab === 3}" role="tabpanel"><br>
+                    <form action="" method="post">
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" aria-required="true">* Operador</label>
+                                    </div>
+                                    <select disabled="{{!assingOperator}}" class="custom-select" name="operators" id="operators" [(ngModel)]="dataOperatorsWorkSpace.operatorCode">
                     <option value='0' selected>Seleccione el Operador</option>
                     <option [ngValue]="item.id" *ngFor="let item of operators">{{item.name}}</option>
                   </select>
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class='col-12 col-sm-6  mb-1'>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text">* Fecha de Inicio</label>
-                  </div>
-                  <input disabled="{{!assingOperator}}" class="form-control" type="date" name="FechaInicio"
-                    [(ngModel)]="dataOperatorsWorkSpace.startDate">
-                </div>
-              </div>
-              <div class='col-12 col-sm-6  mb-1'>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text">* Fecha Final</label>
-                  </div>
-                  <input disabled="{{!assingOperator}}" class="form-control" type="date" name="FechaFin"
-                    [(ngModel)]="dataOperatorsWorkSpace.endDate">
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class='col-12 col-sm-6 mb-1'>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text">Número de Predios a Intervenir</label>
-                  </div>
-                  <input disabled="{{!assingOperator}}" class="form-control" type="number" name="numberParcelsExpected"
-                    [(ngModel)]="dataOperatorsWorkSpace.numberParcelsExpected">
-                </div>
-              </div>
-              <div class='col-12 col-sm-6 mb-1'>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text">Área de Trabajo (km <sup>2</sup>)</label>
-                  </div>
-                  <input disabled="{{!assingOperator}}" class="form-control" type="number" name="workArea"
-                    [(ngModel)]="dataOperatorsWorkSpace.workArea">
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-12">
-                <div class="input-group">
-                  <div class="input-group-prepend input-group-text">
-                    <div class="">* Alcance / Observaciones</div>
-                  </div>
-                  <textarea maxlength="255" disabled="{{!assingOperator}}" class="form-control" id="observations"
-                    rows="3" name="observaciones" [(ngModel)]="dataOperatorsWorkSpace.observations"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2" *ngIf="assingOperator">
-              <div class="col-12">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text">* Orden de Trabajo / Documento Soporte
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class='col-12 col-sm-6  mb-1'>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">* Fecha de Inicio</label>
+                                    </div>
+                                    <input disabled="{{!assingOperator}}" class="form-control" type="date" name="FechaInicio" [(ngModel)]="dataOperatorsWorkSpace.startDate">
+                                </div>
+                            </div>
+                            <div class='col-12 col-sm-6  mb-1'>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">* Fecha Final</label>
+                                    </div>
+                                    <input disabled="{{!assingOperator}}" class="form-control" type="date" name="FechaFin" [(ngModel)]="dataOperatorsWorkSpace.endDate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class='col-12 col-sm-6 mb-1'>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">Número de Predios a Intervenir</label>
+                                    </div>
+                                    <input disabled="{{!assingOperator}}" class="form-control" type="number" name="numberParcelsExpected" [(ngModel)]="dataOperatorsWorkSpace.numberParcelsExpected">
+                                </div>
+                            </div>
+                            <div class='col-12 col-sm-6 mb-1'>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">Área de Trabajo (km <sup>2</sup>)</label>
+                                    </div>
+                                    <input disabled="{{!assingOperator}}" class="form-control" type="number" name="workArea" [(ngModel)]="dataOperatorsWorkSpace.workArea">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend input-group-text">
+                                        <div class="">* Alcance / Observaciones</div>
+                                    </div>
+                                    <textarea maxlength="255" disabled="{{!assingOperator}}" class="form-control" id="observations" rows="3" name="observaciones" [(ngModel)]="dataOperatorsWorkSpace.observations"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2" *ngIf="assingOperator">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">* Orden de Trabajo / Documento Soporte
                       <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                     </label>
-                  </div>
-                  <input #myInput class="form-control" type="file" (change)="docSoport($event.target.files)" multiple>
+                                    </div>
+                                    <input #myInput class="form-control" type="file" (change)="docSoport($event.target.files)" multiple>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3" *ngIf="assingOperator">
+                            <div class="col-12">
+                                <div class="alert alert-primary text-center" role="alert">
+                                    Recuerde que los campos marcados con * son obligatorios.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="card-footer text-muted text-center" *ngIf="assingOperator">
+                        <button *ngIf="replaceOperator === false" type="button" class="btn btn-dark" (click)="assingOperatorInWorkSpace()">Asignar Operador</button>
+                        <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark" (click)="openModal(modalOperator)">Asignar Operador</button>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div class="row mt-3" *ngIf="assingOperator">
-              <div class="col-12">
-                <div class="alert alert-primary text-center" role="alert">
-                  Recuerde que los campos marcados con * son obligatorios.
-                </div>
-              </div>
-            </div>
-          </form>
-          <div class="card-footer text-muted text-center" *ngIf="assingOperator">
-            <button *ngIf="replaceOperator === false" type="button" class="btn btn-dark"
-              (click)="assingOperatorInWorkSpace()">Asignar Operador</button>
-            <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark"
-              (click)="openModal(modalOperator)">Asignar Operador</button>
-          </div>
-        </div>
-        <div class="tab-pane" [ngClass]="{'active':tab === 4}" role="tabpanel"><br>
-          <div class="row mb-2">
-            <div class="col-12 col-sm-6 mb-2">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" aria-required="true">* Tipo</label>
-                </div>
-                <select class="custom-select" name="attachmentsTypes" id="attachmentsTypes"
-                  [(ngModel)]="selectAttachments" (change)="validAttachmentsTypes()">
-                  <option value='0' selected>Seleccione tipo de insumo</option>
+                <div class="tab-pane" [ngClass]="{'active':tab === 4}" role="tabpanel"><br>
+                    <div class="row mb-2">
+                        <div class="col-12 col-sm-6 mb-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" aria-required="true">* Tipo</label>
+                                </div>
+                                <select class="custom-select" name="attachmentsTypes" id="attachmentsTypes" [(ngModel)]="selectAttachments" (change)="validAttachmentsTypes()">
+                  <option value='0' selected>Seleccione tipo de cargue</option>
                   <option [ngValue]="item.id" *ngFor="let item of dataAttachmentsTypes">{{item.name}}</option>
                 </select>
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 mb-2" *ngIf="selectAttachments != 0">
-              <div [ngSwitch]="selectAttachments != 0">
-                <div *ngSwitchCase="selectAttachments === 1">
-                  <div class="input-group">
-                    <input #myInput id="fileattachmentsTypes" name="fileattachmentsTypes" class="form-control"
-                      type="file" (change)="docSoportAttachmentsTypes($event.target.files)" multiple=false>
-                  </div>
-                </div>
-                <div *ngSwitchCase="selectAttachments === 2">
-                  <div class="input-group">
-                    <input (change)="validAttachmentsTypes()" class="form-control" id="urlattachmentsTypes" type="url"
-                      name="urlattachmentsTypes" [(ngModel)]="ftpAttachmentsTypes">
-                  </div>
-                </div>
-                <div *ngSwitchCase="selectAttachments === 3">
-                  <div class="input-group">
-                    <input #myInput id="fileattachmentsTypesExtert" name="fileattachmentsTypesExtert"
-                      class="form-control" type="file" (change)="docSoportAttachmentsTypes($event.target.files)"
-                      multiple=false>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-sm-12">
-              <div class="input-group">
-                <div class="input-group-prepend input-group-text">
-                  <div class="">* Observaciones</div>
-                </div>
-                <textarea (change)="validAttachmentsTypes()" maxlength="255" class="form-control"
-                  id="observationsattachmentsTypes" rows="3" name="observacionesattachmentsTypes"
-                  [(ngModel)]="observationsAttachmentsTypes"></textarea>
-              </div>
-            </div>
-            <div class="col-12 mt-2">
-              <div class="alert alert-primary text-center" role="alert">
-                Recuerde que los campos marcados con * son obligatorios.
-              </div>
-            </div>
-            <div class="col-12 col-sm-12">
-              <div class="card-footer text-muted text-center">
-                <button type="button" [disabled]="!validInputAttachmentsTypes" class="btn btn-dark"
-                  (click)="createAttachmentsTypes()">Agregar</button>
-              </div>
-            </div>
-          </div>
-          <div class="row text-center">
-            <div class="table-inverse table-responsive" *ngIf="suppliesAttachmentsData.length > 0">
-              <table class="table table-striped">
-                <thead class="thead-inverse">
-                  <tr>
-                    <th>Proveedor</th>
-                    <th>Fecha de cargue</th>
-                    <th>Observación</th>
-                    <th>Estado</th>
-                    <th>Eliminar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of suppliesAttachmentsData; let index = index;">
-                    <td scope="row">AUTORIDAD CATASTRAL</td>
-                    <td scope="row">{{formatDate(item.createdAt)}}</td>
-                    <td scope="row">
-                      <textarea maxlength="255" readonly
-                        style="border: none; background: #dedede;">{{item.observations}}</textarea>
-                    </td>
-                    <td scope="row">
-                      <div *ngIf="item.state.id === 1">
-                        <span class="badge badge-success">
-                          {{item.state.name}}
-                        </span>
-                      </div>
-                      <div *ngIf="item.state.id === 2">
-                        <span class="badge badge-warning">
-                          {{item.state.name}}
-                        </span>
-                      </div>
-                    </td>
-                    <td scope="row">
-                      <i class="material-icons cursor" (click)="openModalDelete(item.id, customModal2)">
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 mb-2" *ngIf="selectAttachments != 0">
+                            <div [ngSwitch]="selectAttachments != 0">
+                                <div *ngSwitchCase="selectAttachments === 1">
+                                    <div class="input-group">
+                                        <input #myInput id="fileattachmentsTypes" name="fileattachmentsTypes" class="form-control" type="file" (change)="docSoportAttachmentsTypes($event.target.files)" multiple=false>
+                                    </div>
+                                </div>
+                                <div *ngSwitchCase="selectAttachments === 2">
+                                    <div class="input-group">
+                                        <input (change)="validAttachmentsTypes()" class="form-control" id="urlattachmentsTypes" type="url" name="urlattachmentsTypes" [(ngModel)]="ftpAttachmentsTypes">
+                                    </div>
+                                </div>
+                                <div *ngSwitchCase="selectAttachments === 3">
+                                    <div class="input-group">
+                                        <input #myInput id="fileattachmentsTypesExtert" name="fileattachmentsTypesExtert" class="form-control" type="file" (change)="docSoportAttachmentsTypes($event.target.files)" multiple=false>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend input-group-text">
+                                    <div class="">* Observaciones</div>
+                                </div>
+                                <textarea (change)="validAttachmentsTypes()" maxlength="255" class="form-control" id="observationsattachmentsTypes" rows="3" name="observacionesattachmentsTypes" [(ngModel)]="observationsAttachmentsTypes"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <div class="alert alert-primary text-center" role="alert">
+                                Recuerde que los campos marcados con * son obligatorios.
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12">
+                            <div class="card-footer text-muted text-center">
+                                <button type="button" [disabled]="!validInputAttachmentsTypes" class="btn btn-dark" (click)="createAttachmentsTypes()">Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="table-inverse table-responsive" *ngIf="suppliesAttachmentsData.length > 0">
+                            <table class="table table-striped">
+                                <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Proveedor</th>
+                                        <th>Fecha de cargue</th>
+                                        <th>Observación</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of suppliesAttachmentsData; let index = index;">
+                                        <td scope="row">AUTORIDAD CATASTRAL</td>
+                                        <td scope="row">{{formatDate(item.createdAt)}}</td>
+                                        <td scope="row">
+                                            <textarea maxlength="255" readonly style="border: none; background: #dedede;">{{item.observations}}</textarea>
+                                        </td>
+                                        <td scope="row">
+                                            <i class="material-icons cursor" (click)="openModalDelete(item.id, customModal2)">
                         delete_forever
                       </i>
-                      <ng-template #customModal2 let-modal>
-                        <div class="modal-header">
-                          <h4 class="modal-title">
-                            ¿Está seguro de eliminar el insumo?
-                          </h4>
-                          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                                            <ng-template #customModal2 let-modal>
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">
+                                                        ¿Está seguro de eliminar el insumo?
+                                                    </h4>
+                                                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                             <span aria-hidden="true">&times;</span>
                           </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h5 class="alert alert-warning text-center">
+                                                        Advertencia: El insumo se borrará permanentemente del Sistema.
+                                                    </h5>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="col-6">
+                                                        <button type="button" class="btn btn-dark btn-block" (click)="closeModalDelete(false)">No</button>
+                                                    </div>
+                                                    <div class="col-6 text-right">
+                                                        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModalDelete(true, index)">Si</button>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="modal-body">
-                          <h5 class="alert alert-warning text-center">
-                            Advertencia: El insumo se borrará permanentemente del Sistema.
-                          </h5>
+                    </div>
+                    <div *ngIf="suppliesAttachmentsData.length === 0">
+                        <div class="col-12">
+                            <div class="alert alert-primary text-center" role="alert">
+                                No hay información cargada para este Municipio.
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                          <div class="col-6">
-                            <button type="button" class="btn btn-dark btn-block"
-                              (click)="closeModalDelete(false)">No</button>
-                          </div>
-                          <div class="col-6 text-right">
-                            <button type="button" ngbAutofocus class="btn btn-success btn-block"
-                              (click)="closeModalDelete(true, index)">Si</button>
-                          </div>
-                        </div>
-                      </ng-template>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div *ngIf="suppliesAttachmentsData.length === 0">
-            <div class="col-12">
-              <div class="alert alert-primary text-center" role="alert">
-                No hay insumos cargados en este Municipio.
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane" [ngClass]="{'active':tab === 5}" role="tabpanel"><br>
-          <div class="row text-center">
-            <div class="table-inverse table-responsive">
-              <table class="table table-striped">
-                <thead class="thead-inverse">
-                  <tr>
-                    <th>Proveedor</th>
-                    <th>Fecha de cargue</th>
-                    <th>Observación</th>
-                    <th>Estado</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of suppliesAttachmentsData">
-                    <td scope="row">AUTORIDAD CATASTRAL</td>
-                    <td scope="row">{{formatDate(item.createdAt)}}</td>
-                    <td scope="row">
-                      <textarea maxlength="255" readonly
-                        style="border: none; background: #dedede;">{{item.observations}}</textarea>
-                    </td>
-                    <td scope="row">
-                      <div *ngIf="item.state.id === 1">
-                        <span class="badge badge-success">
+                    </div>
+                </div>
+                <div class="tab-pane" [ngClass]="{'active':tab === 5}" role="tabpanel"><br>
+                    <div class="row text-center">
+                        <div class="table-inverse table-responsive">
+                            <table class="table table-striped" *ngIf="suppliesAttachmentsData.length > 0">
+                                <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Proveedor</th>
+                                        <th>Fecha de cargue</th>
+                                        <th>Observación</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of suppliesAttachmentsData">
+                                        <td scope="row">AUTORIDAD CATASTRAL</td>
+                                        <td scope="row">{{formatDate(item.createdAt)}}</td>
+                                        <td scope="row">
+                                            <textarea maxlength="255" readonly style="border: none; background: #dedede;">{{item.observations}}</textarea>
+                                        </td>
+                                        <td scope="row">
+                                            <div *ngIf="item.state.id === 1">
+                                                <span class="badge badge-success">
                           {{item.state.name}}
                         </span>
-                      </div>
-                      <div *ngIf="item.state.id === 2">
-                        <span class="badge badge-warning">
+                                            </div>
+                                            <div *ngIf="item.state.id === 2">
+                                                <span class="badge badge-warning">
                           {{item.state.name}}
                         </span>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-12" *ngIf="suppliesAttachmentsData.length === 0">
+                            <div class="alert alert-primary text-center" role="alert">
+                                No hay información disponible para este Municipio.
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <ng-template #modalOperator let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title">
-        ¿Está seguro de modificar los datos del Operador?
-      </h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <ng-template #modalOperator let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de modificar los datos del Operador?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
-    </div>
-    <div class="modal-body">
-      <h5 class="alert alert-warning text-center">
-        Advertencia: Esta acción generará un nuevo espacio de trabajo para el Municipio.
-      </h5>
-    </div>
-    <div class="modal-footer">
-      <div class="col-6">
-        <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
-      </div>
-      <div class="col-6 text-right">
-        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true)">Si</button>
-      </div>
-    </div>
-  </ng-template>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción generará un nuevo espacio de trabajo para el Municipio.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
+            </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true)">Si</button>
+            </div>
+        </div>
+    </ng-template>
 
-  <ng-template #modalRegistrar let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title">
-        ¿Está seguro de actualizar la información?
-      </h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <ng-template #modalRegistrar let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                ¿Está seguro de actualizar la información?
+            </h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
-    </div>
-    <div class="modal-body">
-      <h5 class="alert alert-warning text-center">
-        Advertencia: Esta acción actualizará la información del espacio de trabajo.
-      </h5>
-    </div>
-    <div class="modal-footer">
-      <div class="col-6">
-        <button type="button" class="btn btn-dark btn-block" (click)="closeModalUpdate(false)">No</button>
-      </div>
-      <div class="col-6 text-right">
-        <button type="button" ngbAutofocus class="btn btn-success btn-block"
-          (click)="closeModalUpdate(true)">Si</button>
-      </div>
-    </div>
-  </ng-template>
+        </div>
+        <div class="modal-body">
+            <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción actualizará la información del espacio de trabajo.
+            </h5>
+        </div>
+        <div class="modal-footer">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModalUpdate(false)">No</button>
+            </div>
+            <div class="col-6 text-right">
+                <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModalUpdate(true)">Si</button>
+            </div>
+        </div>
+    </ng-template>
 </div>
