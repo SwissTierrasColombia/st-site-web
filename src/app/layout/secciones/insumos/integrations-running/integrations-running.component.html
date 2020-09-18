@@ -62,7 +62,7 @@
                                         pageview
                                     </i>
                                 </span>
-                                <span ngbTooltip="Generar XTF" placement="top" show-delay="500" *ngIf="item.integrationState.id === 2">
+                                <span ngbTooltip="Generar XTF" placement="top" show-delay="500" *ngIf="item.integrationState.id === 2 || item.integrationState.id === 8">
                                     <i class="material-icons cursor ml-4"
                                         (click)="openModalGenerateXTF(modalXTFtab1,item.id, item)">
                                         assignment_turned_in
@@ -74,7 +74,7 @@
                                         important_devices
                                     </i>
                                 </span>
-                                <span ngbTooltip="Eliminar" placement="top" show-delay="500" *ngIf="item.integrationState.id === 2 || item.integrationState.id === 7">
+                                <span ngbTooltip="Eliminar" placement="top" show-delay="500" *ngIf="item.integrationState.id === 2 || item.integrationState.id === 7 || item.integrationState.id === 8">
                                     <i class="material-icons cursor ml-4"
                                         (click)="openModalcancel(modalCanceltab1,item.id, item)">
                                         delete

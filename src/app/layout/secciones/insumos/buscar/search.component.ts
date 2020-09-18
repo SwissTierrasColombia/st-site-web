@@ -36,8 +36,6 @@ export class SearchComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService,
     private modalService: NgbModal,
     private toastr: ToastrService,
-    private router: Router,
-    private activedRoute: ActivatedRoute
   ) {
     this.usermanager = false;
     this.departments = [];
@@ -56,22 +54,6 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activedRoute.queryParams.subscribe(
-      response => {
-        if (response.selectDepartment) {
-          this.selectDepartment = Number(response.selectDepartment);
-          this.changeDepartament();
-          this.selectMunicipality = Number(response.selectMunicipality);
-          if (this.selectMunicipality !== 0) {
-            this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
-              (data: any) => {
-                this.idWorkSpaceMunicipality = data.id;
-              }
-            );
-          }
-        }
-      }
-    );
     const rol = JwtHelper.getUserPublicInformation();
     const role = rol.roles.find(elem => {
       return elem.id === this.roles.gestor;
@@ -100,9 +82,8 @@ export class SearchComponent implements OnInit {
       }
     );
   }
-  changeMunucipality() {
-    this.router.navigate(['/insumos/buscar'],
-      { queryParams: { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality } });
+  changeMunucipality(){
+    this.getWorkspace();
   }
   getWorkspace() {
     this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(

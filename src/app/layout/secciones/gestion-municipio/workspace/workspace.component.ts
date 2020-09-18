@@ -63,7 +63,9 @@ export class WorkspaceComponent implements OnInit {
           this.selectDepartment = Number(response.selectDepartment);
           this.changeDepartament();
           this.selectMunicipality = Number(response.selectMunicipality);
+          setTimeout(() => {
           this.searchWorkSpace();
+          }, 1000);
         }
       }
     );
@@ -116,9 +118,6 @@ export class WorkspaceComponent implements OnInit {
     this.dataCreateWorkSpace.municipalityId = this.selectMunicipality;
     this.serviceWorkspaces.getWorkSpaceByMunicipality(this.selectMunicipality.toString()).subscribe(
       response => {
-        this.router.navigate(['/gestion/workspace',
-          { selectDepartment: this.selectDepartment, selectMunicipality: this.selectMunicipality }
-        ]);
         this.resultWorkSpace = response;
         if (this.resultWorkSpace.length === 0) {
           this.viewCreateWorkSpace = true;
