@@ -15,7 +15,7 @@ export class EntregarComponent implements OnInit {
 
   usermanager: boolean;
   departments: any;
-  selectDepartment: Number;
+  selectDepartment: number;
   munucipalities: any;
   selectMunicipality: number;
   suppliesManagerRequest: any;
@@ -29,7 +29,7 @@ export class EntregarComponent implements OnInit {
   sendSuppliesFilter: boolean;
   idWorkSpace: number;
   searchText: string;
-  enabledButton: Boolean;
+  enabledButton: boolean;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,

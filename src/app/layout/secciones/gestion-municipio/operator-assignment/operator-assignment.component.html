@@ -226,7 +226,7 @@
                     </form>
                     <div class="card-footer text-muted text-center" *ngIf="assingOperator">
                         <button *ngIf="replaceOperator === false" type="button" class="btn btn-dark" (click)="assingOperatorInWorkSpace()">Asignar Operador</button>
-                        <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark" (click)="openModal(modalOperator)" [disabled]="!isChangeDataOperator">Editar Operador</button>
+                        <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark" (click)="openModal(modalOperator)" [disabled]="!isChangeDataOperator">Actualizar operador</button>
                     </div>
                 </div>
                 <div class="tab-pane" [ngClass]="{'active':tab === 4}" role="tabpanel"><br>
