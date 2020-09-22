@@ -167,9 +167,6 @@ export class WorkspaceComponent implements OnInit {
   updateWorkSpace() {
     this.router.navigate(['gestion/workspace/' + this.selectMunicipality + '/operador']);
   }
-  viewWorkSpace(idItem: number) {
-    this.router.navigate(['gestion/workspace/' + idItem + '/ver/operador']);
-  }
   openModal(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
   }

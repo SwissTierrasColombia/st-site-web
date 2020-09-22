@@ -151,10 +151,10 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" aria-required="true">* Operador</label>
                                     </div>
-                                    <select disabled="{{!assingOperator}}" class="custom-select" name="operators" id="operators" [(ngModel)]="dataOperatorsWorkSpace.operatorCode">
-                    <option value='0' selected>Seleccione el Operador</option>
-                    <option [ngValue]="item.id" *ngFor="let item of operators">{{item.name}}</option>
-                  </select>
+                                    <select (change)="changeDataOperator()" disabled="{{!assingOperator}}" class="custom-select" name="operators" id="operators" [(ngModel)]="dataOperatorsWorkSpace.operatorCode">
+                                      <option value='0' selected>Seleccione el Operador</option>
+                                      <option [ngValue]="item.id" *ngFor="let item of operators">{{item.name}}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -164,7 +164,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text">* Fecha de Inicio</label>
                                     </div>
-                                    <input disabled="{{!assingOperator}}" class="form-control" type="date" name="FechaInicio" [(ngModel)]="dataOperatorsWorkSpace.startDate">
+                                    <input disabled="{{!assingOperator}}" class="form-control" type="date" name="FechaInicio" [(ngModel)]="dataOperatorsWorkSpace.startDate" (change)="changeDataOperator()">
                                 </div>
                             </div>
                             <div class='col-12 col-sm-6  mb-1'>
@@ -172,7 +172,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text">* Fecha Final</label>
                                     </div>
-                                    <input disabled="{{!assingOperator}}" class="form-control" type="date" name="FechaFin" [(ngModel)]="dataOperatorsWorkSpace.endDate">
+                                    <input disabled="{{!assingOperator}}" class="form-control" type="date" name="FechaFin" [(ngModel)]="dataOperatorsWorkSpace.endDate" (change)="changeDataOperator()">
                                 </div>
                             </div>
                         </div>
@@ -182,7 +182,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text">Número de Predios a Intervenir</label>
                                     </div>
-                                    <input disabled="{{!assingOperator}}" class="form-control" type="number" name="numberParcelsExpected" [(ngModel)]="dataOperatorsWorkSpace.numberParcelsExpected">
+                                    <input disabled="{{!assingOperator}}" class="form-control" type="number" name="numberParcelsExpected" [(ngModel)]="dataOperatorsWorkSpace.numberParcelsExpected" (change)="changeDataOperator()">
                                 </div>
                             </div>
                             <div class='col-12 col-sm-6 mb-1'>
@@ -190,7 +190,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text">Área de Trabajo (km <sup>2</sup>)</label>
                                     </div>
-                                    <input disabled="{{!assingOperator}}" class="form-control" type="number" name="workArea" [(ngModel)]="dataOperatorsWorkSpace.workArea">
+                                    <input disabled="{{!assingOperator}}" class="form-control" type="number" name="workArea" [(ngModel)]="dataOperatorsWorkSpace.workArea" (change)="changeDataOperator()">
                                 </div>
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                                     <div class="input-group-prepend input-group-text">
                                         <div class="">* Alcance / Observaciones</div>
                                     </div>
-                                    <textarea maxlength="255" disabled="{{!assingOperator}}" class="form-control" id="observations" rows="3" name="observaciones" [(ngModel)]="dataOperatorsWorkSpace.observations"></textarea>
+                                    <textarea maxlength="255" disabled="{{!assingOperator}}" class="form-control" id="observations" rows="3" name="observaciones" [(ngModel)]="dataOperatorsWorkSpace.observations" (change)="changeDataOperator()"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +226,7 @@
                     </form>
                     <div class="card-footer text-muted text-center" *ngIf="assingOperator">
                         <button *ngIf="replaceOperator === false" type="button" class="btn btn-dark" (click)="assingOperatorInWorkSpace()">Asignar Operador</button>
-                        <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark" (click)="openModal(modalOperator)">Asignar Operador</button>
+                        <button *ngIf="replaceOperator === true" type="button" class="btn btn-dark" (click)="openModal(modalOperator)" [disabled]="!isChangeDataOperator">Editar Operador</button>
                     </div>
                 </div>
                 <div class="tab-pane" [ngClass]="{'active':tab === 4}" role="tabpanel"><br>
@@ -364,7 +364,7 @@
                                             <th>Proveedor</th>
                                             <th>Fecha de cargue</th>
                                             <th>Observación</th>
-                                            <th>Estado</th>
+                                            <th>Descargar</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -372,19 +372,10 @@
                                             <td scope="row">AUTORIDAD CATASTRAL</td>
                                             <td scope="row">{{formatDate(item.createdAt)}}</td>
                                             <td scope="row">
-                                                <textarea maxlength="255" readonly style="border: none; background: #dedede;">{{item.observations}}</textarea>
+                                                <textarea maxlength="255" rows="2" cols="50" readonly style="border: none; background: #dedede;">{{item.observations}}</textarea>
                                             </td>
                                             <td scope="row">
-                                                <div *ngIf="item.state.id === 1">
-                                                    <span class="badge badge-success">
-                            {{item.state.name}}
-                          </span>
-                                                </div>
-                                                <div *ngIf="item.state.id === 2">
-                                                    <span class="badge badge-warning">
-                            {{item.state.name}}
-                          </span>
-                                                </div>
+                                                <i alt="Descargar" title="Descargar insumo" class="material-icons cursor" (click)="downloadSuppliesAutoridad(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">cloud_download</i>
                                             </td>
                                         </tr>
                                     </tbody>

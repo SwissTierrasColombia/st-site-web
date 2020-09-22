@@ -8,14 +8,12 @@ import { GestionMunicipioRoutingModule } from './gestion-municipio-routing.modul
 import { PageHeaderModule } from 'src/app/shared';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { OperatorAssignmentComponent } from './operator-assignment/operator-assignment.component';
-import { OperatorViewComponent } from './operator-view/operator-view.component';
 import { BsComponentModule } from '../../bs-component/bs-component.module';
 
 @NgModule({
   declarations: [
     WorkspaceComponent,
     OperatorAssignmentComponent,
-    OperatorViewComponent
   ],
   imports: [
     CommonModule,

@@ -49,6 +49,7 @@ export class OperatorAssignmentComponent implements OnInit {
   suppliesAttachmentsData: any;
   idSupplieDelete: number;
   idWorkSpaceMunicipality: number;
+  isChangeDataOperator: boolean;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -98,6 +99,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.ftpAttachmentsTypes = '';
     this.validInputAttachmentsTypes = false;
     this.suppliesAttachmentsData = [];
+    this.isChangeDataOperator = false;
   }
 
   ngOnInit() {
@@ -142,9 +144,11 @@ export class OperatorAssignmentComponent implements OnInit {
           this.selectDepartment = this.dataWorkSpace.municipality.department.id;
           if (this.dataWorkSpace.operators.length > 0) {
             this.replaceOperator = true;
-            this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
-            this.dataOperatorsWorkSpace.startDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.startDate);
-            this.dataOperatorsWorkSpace.endDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.endDate);
+            this.dataOperatorsWorkSpace = this.clone(this.dataWorkSpace.operators[0]);
+            const startDate = this.dataWorkSpace.operators[0].startDate.split('T')[0];
+            const endDate = this.dataWorkSpace.operators[0].endDate.split('T')[0];
+            this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(startDate);
+            this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(endDate);
           }
         }
       );
@@ -187,6 +191,9 @@ export class OperatorAssignmentComponent implements OnInit {
       }
     });
   }
+  clone(obj: any) {
+    return JSON.parse(JSON.stringify(obj));
+  }
   init() {
     const rol = JwtHelper.getUserPublicInformation();
     const roleManager = rol.roles.find((elem: any) => {
@@ -228,9 +235,11 @@ export class OperatorAssignmentComponent implements OnInit {
           this.dataWorkSpace = response;
           if (this.dataWorkSpace.operators.length > 0) {
             this.replaceOperator = true;
-            this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
-            this.dataOperatorsWorkSpace.startDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.startDate);
-            this.dataOperatorsWorkSpace.endDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.endDate);
+            this.dataOperatorsWorkSpace = this.clone(this.dataWorkSpace.operators[0]);
+            const startDate = this.dataWorkSpace.operators[0].startDate.split('T')[0];
+            const endDate = this.dataWorkSpace.operators[0].endDate.split('T')[0];
+            this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(startDate);
+            this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(endDate);
           }
         }
       );
@@ -250,6 +259,7 @@ export class OperatorAssignmentComponent implements OnInit {
   }
 
   docSoport(files: FileList) {
+    this.changeDataOperator();
     if (files[0].size / 1024 / 1024 <= environment.sizeFile) {
       var re = /zip*/;
       if (files[0].type.match(re)) {
@@ -277,6 +287,10 @@ export class OperatorAssignmentComponent implements OnInit {
   formatDateCalendar(date: string) {
     moment.locale('es');
     return moment(date).format('ll');
+  }
+  formatDateOperator(date: string) {
+    moment.locale('es');
+    return moment(date).format('YYYY-MM-DD');
   }
   volver() {
     this.router.navigate(['/gestion/workspace',
@@ -357,9 +371,11 @@ export class OperatorAssignmentComponent implements OnInit {
                   this.dataWorkSpace = response;
                   if (this.dataWorkSpace.operators.length > 0) {
                     this.replaceOperator = true;
-                    this.dataOperatorsWorkSpace = this.dataWorkSpace.operators[0];
-                    this.dataOperatorsWorkSpace.startDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.startDate);
-                    this.dataOperatorsWorkSpace.endDate = this.formatDateCalendar(this.dataOperatorsWorkSpace.endDate);
+                    this.dataOperatorsWorkSpace = this.clone(this.dataWorkSpace.operators[0]);
+                    const startDate = this.dataWorkSpace.operators[0].startDate.split('T')[0];
+                    const endDate = this.dataWorkSpace.operators[0].endDate.split('T')[0];
+                    this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(startDate);
+                    this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(endDate);
                   }
                 }
               );
@@ -521,5 +537,20 @@ export class OperatorAssignmentComponent implements OnInit {
   openModalDelete(idSupplieDelete: number, modal: any) {
     this.idSupplieDelete = idSupplieDelete;
     this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  changeDataOperator(){
+    this.isChangeDataOperator = true;
+  }
+  downloadSuppliesAutoridad(idSupplie: number, nameSupplie: string) {
+    this.serviceWorkspaces.downloadSupplie(idSupplie).subscribe(
+      (data: any) => {
+        const contentType = data.headers.get('content-type');
+        const type = contentType.split(',')[0];
+        const dataFile = data.body;
+        const blob = new Blob([dataFile], { type });
+        const url = window.URL.createObjectURL(blob);
+        saveAs(blob, nameSupplie + '.zip');
+      }
+    );
   }
 }
