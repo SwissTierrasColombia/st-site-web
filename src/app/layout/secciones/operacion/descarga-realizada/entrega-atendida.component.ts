@@ -86,5 +86,10 @@ export class EntregaAtendidaComponent implements OnInit {
       }
     );
   }
-
+  isAuthority(item: any) {
+    let owner = item.supply.owners.find(data => {
+      return data.ownerType === 'CADASTRAL_AUTHORITY';
+    });
+    return owner ? true : false;
+  }
 }

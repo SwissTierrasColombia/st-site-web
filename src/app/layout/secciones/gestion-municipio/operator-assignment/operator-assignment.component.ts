@@ -50,6 +50,8 @@ export class OperatorAssignmentComponent implements OnInit {
   idSupplieDelete: number;
   idWorkSpaceMunicipality: number;
   isChangeDataOperator: boolean;
+  nameAttachmentsTypes: string;
+  passftpAttachments: string;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -100,6 +102,8 @@ export class OperatorAssignmentComponent implements OnInit {
     this.validInputAttachmentsTypes = false;
     this.suppliesAttachmentsData = [];
     this.isChangeDataOperator = false;
+    this.nameAttachmentsTypes = '';
+    this.passftpAttachments = '';
   }
 
   ngOnInit() {
@@ -485,7 +489,7 @@ export class OperatorAssignmentComponent implements OnInit {
     if (this.selectAttachments === 1 || this.selectAttachments === 3) {
       this.ftpAttachmentsTypes = '';
     }
-    if (this.selectAttachments !== 0 && this.observationsAttachmentsTypes !== ''
+    if (this.selectAttachments !== 0 && this.observationsAttachmentsTypes !== '' && this.nameAttachmentsTypes !== ''
       && (this.fileAttachmentsTypes !== undefined || this.ftpAttachmentsTypes !== '')) {
       this.validInputAttachmentsTypes = true;
     }
@@ -494,19 +498,22 @@ export class OperatorAssignmentComponent implements OnInit {
     const form = new FormData();
     form.append('attachmentTypeId', this.selectAttachments.toString());
     if (this.selectAttachments === 2) {
-      form.append('ftp', this.ftpAttachmentsTypes);
+      form.append('ftp', this.ftpAttachmentsTypes + ' '+ this.passftpAttachments);
     }
     if (this.selectAttachments === 1 || this.selectAttachments === 3) {
       form.append('file', this.fileAttachmentsTypes);
     }
+    form.append('name', this.nameAttachmentsTypes);
     form.append('observations', this.observationsAttachmentsTypes);
-
+    console.log(form);
     this.serviceWorkspaces.createAttachmentsSupply(this.selectMunicipality, form).subscribe(
       _ => {
-        this.toastr.success('Ha agregado correctamente el insumo.');
+        this.toastr.success('Ha agregado correctamente el registro.');
+        this.validInputAttachmentsTypes = false;
         this.serviceWorkspaces.getSuppliesAttachments(this.selectMunicipality).subscribe(response => {
           this.suppliesAttachmentsData = response;
           this.selectAttachments = 0;
+          this.nameAttachmentsTypes = '';
           this.ftpAttachmentsTypes = '';
           this.observationsAttachmentsTypes = '';
           this.fileAttachmentsTypes = undefined;

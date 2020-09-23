@@ -94,7 +94,7 @@ export class EntregarComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
-
+        console.log(this.allSupplies);
         for (let index = 0; index < this.allSupplies.length; index++) {
           if (this.allSupplies[index].typeSupply === null) {
             let owner = this.allSupplies[index].owners.find(data => {

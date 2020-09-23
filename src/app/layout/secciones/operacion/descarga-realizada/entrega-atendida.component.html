@@ -35,8 +35,7 @@
                                 <td scope="row">{{item.municipality.code}}</td>
                                 <td scope="row">{{formatDate(item.createdAt)}}</td>
                                 <td scope="row">
-                                    <textarea class="form-control" rows="3" maxlength="255"
-                                        disabled="true">{{item.observations}}</textarea>
+                                    <textarea class="form-control" rows="3" maxlength="255" disabled="true">{{item.observations}}</textarea>
                                 </td>
                                 <td scope="row" *ngIf="isAllDownloadReports">
                                     <span ngbTooltip="Descargar reporte general" placement="bottom" show-delay="500">
@@ -72,10 +71,11 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of supplies">
-                                <td scope="row">{{item.supply.typeSupply ? item.supply.typeSupply.name: 'N/A'}}</td>
                                 <td scope="row">
-                                    <textarea class="form-control" rows="3" maxlength="255"
-                                        disabled="true">{{item.observations}}</textarea>
+                                    <span *ngIf="isAuthority(item)">{{item.supply.name}}</span><span *ngIf="isAuthority(item) === false">{{item.supply.typeSupply ?item.supply.typeSupply.name : ''}}<br />({{item.supply.typeSupply ? item.supply.typeSupply.provider.name:''}})</span>
+                                </td>
+                                <td scope="row">
+                                    <textarea class="form-control" rows="3" maxlength="255" disabled="true">{{item.observations}}</textarea>
                                 </td>
                                 <td scope="row">
                                     {{item.downloadedAt ? formatDate(item.downloadedAt) :'No se ha descargado el insumo.'}}

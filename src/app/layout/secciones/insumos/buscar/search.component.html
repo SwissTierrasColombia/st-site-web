@@ -1,205 +1,190 @@
 <div>
-  <app-page-header [heading]="'Búsqueda de Insumos'" [icon]="'fa-star'"></app-page-header>
+    <app-page-header [heading]="'Búsqueda de Insumos'" [icon]="'fa-star'"></app-page-header>
 
-  <div class="card">
-    <div class="card-header text-center">
-      <h3>Búsqueda de Insumos</h3>
-    </div>
-    <div class="card-body">
-      <form action="" method="post">
-        <div class="row mb-2">
-          <div class='col-12 col-sm-6 mb-1'>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label class="input-group-text" aria-required="true">* Departamento</label>
-              </div>
-              <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
-                [(ngModel)]="selectDepartment">
+    <div class="card">
+        <div class="card-header text-center">
+            <h3>Búsqueda de Insumos</h3>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="row mb-2">
+                    <div class='col-12 col-sm-6 mb-1'>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" aria-required="true">* Departamento</label>
+                            </div>
+                            <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments" [(ngModel)]="selectDepartment">
                 <option value='0' selected>Seleccione el Departamento</option>
                 <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}</option>
               </select>
-            </div>
-          </div>
-          <div class='col-12 col-sm-6  mb-1'>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label class="input-group-text">* Municipio</label>
-              </div>
-              <select (change)="changeMunucipality()" class="custom-select" name="munucipalities" id="munucipalities"
-                [(ngModel)]="selectMunicipality">
+                        </div>
+                    </div>
+                    <div class='col-12 col-sm-6  mb-1'>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">* Municipio</label>
+                            </div>
+                            <select (change)="changeMunucipality()" class="custom-select" name="munucipalities" id="munucipalities" [(ngModel)]="selectMunicipality">
                 <option value='0' selected>Seleccione el Municipio</option>
                 <option [ngValue]="item.id" *ngFor="let item of munucipalities">{{item.name}}</option>
               </select>
-            </div>
-          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="alert alert-primary text-center" role="alert">
+                            Recuerde que los campos marcados con * son obligatorios.
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="row mt-3">
-          <div class="col-12">
-            <div class="alert alert-primary text-center" role="alert">
-              Recuerde que los campos marcados con * son obligatorios.
-            </div>
-          </div>
+        <div class="card-footer text-muted text-center">
+            <button type="button" class="btn btn-dark" (click)="getPage(1)">Buscar</button>
         </div>
-      </form>
     </div>
-    <div class="card-footer text-muted text-center">
-      <button type="button" class="btn btn-dark" (click)="getPage(1)">Buscar</button>
-    </div>
-  </div>
-  <div *ngIf="allSupplies.length > 0">
-    <div class="row justify-content-md-center">
-      <div class="card text-center">
-        <div class="card-header text-center">
-          <h5>Resultados de Búsqueda</h5>
-        </div>
-        <div class="card-body text-center">
-          <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number" [pageSize]="size"
-            [collectionSize]="totalElements" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
-            (pageChange)="getPage($event)">
-          </ngb-pagination>
-          <div class="search-hero">
-            <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
-              placeholder="&#61442;  Buscar">
-          </div>
-          <div class="table-inverse table-responsive">
-            <table class="table table-striped text-center">
-              <thead class="thead-inverse">
-                <tr>
-                  <th>Proveedor</th>
-                  <th>Insumo</th>
-                  <th>Fecha de Cargue</th>
-                  <!-- <th>Modelo</th> -->
-                  <th>Observación</th>
-                  <th>Estado</th>
-                  <th>Opciones</th>
-                  <th *ngIf="usermanager">Activar/Desactivar</th>
-                  <th *ngIf="usermanager">Eliminar</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of allSupplies |filter:searchText; let index = index">
-                  <td scope="row">{{item.typeSupply.provider.name}}</td>
-                  <td scope="row">{{item.typeSupply.name}}</td>
-                  <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                  <td scope="row">
-                    <textarea maxlength="255" readonly
-                      style="border: none; background: #dedede;">{{item.observations}}</textarea>
-                  </td>
-                  <td scope="row">
-                    <div *ngIf="item.state.id === 1">
-                      <span class="badge badge-success">
+    <div *ngIf="allSupplies.length > 0">
+        <div class="row justify-content-md-center">
+            <div class="card text-center">
+                <div class="card-header text-center">
+                    <h5>Resultados de Búsqueda</h5>
+                </div>
+                <div class="card-body text-center">
+                    <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number" [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="getPage($event)">
+                    </ngb-pagination>
+                    <div class="search-hero">
+                        <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Buscar">
+                    </div>
+                    <div class="table-inverse table-responsive">
+                        <table class="table table-striped text-center">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>Proveedor</th>
+                                    <th>Insumo</th>
+                                    <th>Fecha de Cargue</th>
+                                    <!-- <th>Modelo</th> -->
+                                    <th>Observación</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
+                                    <th *ngIf="usermanager">Activar/Desactivar</th>
+                                    <th *ngIf="usermanager">Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of allSupplies |filter:searchText; let index = index">
+                                    <td scope="row">{{item.typeSupply.provider.name}}</td>
+                                    <td scope="row">
+                                        <span *ngIf="isAuthority(item)">{{item.name}}</span><span *ngIf="isAuthority(item) === false">{{item.typeSupply.name}}<br />({{item.typeSupply.provider.name}})</span>
+                                    </td>
+                                    <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
+                                    <td scope="row">
+                                        <textarea maxlength="255" readonly style="border: none; background: #dedede;">{{item.observations}}</textarea>
+                                    </td>
+                                    <td scope="row">
+                                        <div *ngIf="item.state.id === 1">
+                                            <span class="badge badge-success">
                         {{item.state.name}}
                       </span>
-                    </div>
-                    <div *ngIf="item.state.id === 2">
-                      <span class="badge badge-warning">
+                                        </div>
+                                        <div *ngIf="item.state.id === 2">
+                                            <span class="badge badge-warning">
                         {{item.state.name}}
                       </span>
-                    </div>
-                  </td>
-                  <td scope="row">
-                    <i alt="Descargar" title="Descargar insumo" class="material-icons cursor"
-                      (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
+                                        </div>
+                                    </td>
+                                    <td scope="row">
+                                        <i alt="Descargar" title="Descargar" class="material-icons cursor" (click)="downloadSupplies(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">
                       cloud_download </i>
-                    <!-- <app-preview *ngIf="item&&item.attachments?item.attachments:false" [icon]="true"
+                                        <!-- <app-preview *ngIf="item&&item.attachments?item.attachments:false" [icon]="true"
                       [url]="item&&item.attachments.length>0?item.attachments[0].urlDocumentaryRepository:''">
                     </app-preview> -->
-                  </td>
-                  <td scope="row" *ngIf="usermanager">
-                    <label class="switch" [title]="item.state.state ? 'Desactivar insumo':'Activar insumo'"
-                      (click)="item.state.state ? openModalDisabled(modalDisabled, item.id):openModalEnabled(modalEnabled, item.id)">
+                                    </td>
+                                    <td scope="row" *ngIf="usermanager">
+                                        <label class="switch" [title]="item.state.state ? 'Desactivar insumo':'Activar insumo'" (click)="item.state.state ? openModalDisabled(modalDisabled, item.id):openModalEnabled(modalEnabled, item.id)">
                       <input (click)="clickCheckBox($event)" [(ngModel)]="item.state.state" type="checkbox">
                       <span class="slider round"></span>
                     </label>
-                    <ng-template #modalDisabled let-modal>
-                      <div class="modal-header">
-                        <h4 class="modal-title">¿Está seguro de desactivar el insumo?</h4>
-                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                                        <ng-template #modalDisabled let-modal>
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">¿Está seguro de desactivar el insumo?</h4>
+                                                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                           <span aria-hidden="true">&times;</span>
                         </button>
-                      </div>
-                      <div class="modal-body">
-                        <h5 class="alert alert-warning text-center">Advertencia: Esta acción deshabilita el insumo y no
-                          lo dejara
-                          visualizar en el sistema.</h5>
-                      </div>
-                      <div class="modal-footer">
-                        <div class="col-6">
-                          <button type="button" class="btn btn-dark btn-block"
-                            (click)="closeModalDisabled(false)">No</button>
-                        </div>
-                        <div class="col-6 text-right">
-                          <button type="button" ngbAutofocus class="btn btn-success btn-block"
-                            (click)="closeModalDisabled(true, index)">Si</button>
-                        </div>
-                      </div>
-                    </ng-template>
-                    <ng-template #modalEnabled let-modal>
-                      <div class="modal-header">
-                        <h4 class="modal-title">¿Está seguro de activar el insumo?</h4>
-                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 class="alert alert-warning text-center">Advertencia: Esta acción deshabilita el insumo y no lo dejara visualizar en el sistema.</h5>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="col-6">
+                                                    <button type="button" class="btn btn-dark btn-block" (click)="closeModalDisabled(false)">No</button>
+                                                </div>
+                                                <div class="col-6 text-right">
+                                                    <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModalDisabled(true, index)">Si</button>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template #modalEnabled let-modal>
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">¿Está seguro de activar el insumo?</h4>
+                                                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                           <span aria-hidden="true">&times;</span>
                         </button>
-                      </div>
-                      <div class="modal-body">
-                        <h5 class="alert alert-warning text-center">Advertencia: Esta acción habilita el insumo y le
-                          permitirá la
-                          visualización en el sistema.</h5>
-                      </div>
-                      <div class="modal-footer">
-                        <div class="col-6">
-                          <button type="button" class="btn btn-dark btn-block"
-                            (click)="closeModalEnabled(false)">No</button>
-                        </div>
-                        <div class="col-6 text-right">
-                          <button type="button" ngbAutofocus class="btn btn-success btn-block"
-                            (click)="closeModalEnabled(true, index)">Si</button>
-                        </div>
-                      </div>
-                    </ng-template>
-                  </td>
-                  <td scope="row" *ngIf="usermanager">
-                    <i class="material-icons cursor" (click)="openModal(item.id, customModal2)">
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 class="alert alert-warning text-center">Advertencia: Esta acción habilita el insumo y le permitirá la visualización en el sistema.</h5>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="col-6">
+                                                    <button type="button" class="btn btn-dark btn-block" (click)="closeModalEnabled(false)">No</button>
+                                                </div>
+                                                <div class="col-6 text-right">
+                                                    <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModalEnabled(true, index)">Si</button>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </td>
+                                    <td scope="row" *ngIf="usermanager">
+                                        <i class="material-icons cursor" (click)="openModal(item.id, customModal2)">
                       delete_forever
                     </i>
-                    <ng-template #customModal2 let-modal>
-                      <div class="modal-header">
-                        <h4 class="modal-title">
-                          ¿Está seguro de eliminar el insumo?
-                        </h4>
-                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                                        <ng-template #customModal2 let-modal>
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">
+                                                    ¿Está seguro de eliminar el insumo?
+                                                </h4>
+                                                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                           <span aria-hidden="true">&times;</span>
                         </button>
-                      </div>
-                      <div class="modal-body">
-                        <h5 class="alert alert-warning text-center">
-                          Advertencia: El insumo se borrará permanentemente del Sistema.
-                        </h5>
-                      </div>
-                      <div class="modal-footer">
-                        <div class="col-6">
-                          <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
-                        </div>
-                        <div class="col-6 text-right">
-                          <button type="button" ngbAutofocus class="btn btn-success btn-block"
-                            (click)="closeModal(true, index)">Si</button>
-                        </div>
-                      </div>
-                    </ng-template>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 class="alert alert-warning text-center">
+                                                    Advertencia: El insumo se borrará permanentemente del Sistema.
+                                                </h5>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="col-6">
+                                                    <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">No</button>
+                                                </div>
+                                                <div class="col-6 text-right">
+                                                    <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true, index)">Si</button>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div *ngIf="allSupplies.length === 0 && isSearch">
-    <div class="col-12">
-      <div class="alert alert-primary text-center" role="alert">
-        No hay insumos cargados en este Municipio.
-      </div>
+    <div *ngIf="allSupplies.length === 0 && isSearch">
+        <div class="col-12">
+            <div class="alert alert-primary text-center" role="alert">
+                No hay insumos cargados en este Municipio.
+            </div>
+        </div>
     </div>
-  </div>
 </div>

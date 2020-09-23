@@ -152,9 +152,9 @@
                                         <label class="input-group-text" aria-required="true">* Operador</label>
                                     </div>
                                     <select (change)="changeDataOperator()" disabled="{{!assingOperator}}" class="custom-select" name="operators" id="operators" [(ngModel)]="dataOperatorsWorkSpace.operatorCode">
-                                      <option value='0' selected>Seleccione el Operador</option>
-                                      <option [ngValue]="item.id" *ngFor="let item of operators">{{item.name}}</option>
-                                    </select>
+                    <option value='0' selected>Seleccione el Operador</option>
+                    <option [ngValue]="item.id" *ngFor="let item of operators">{{item.name}}</option>
+                  </select>
                                 </div>
                             </div>
                         </div>
@@ -234,10 +234,11 @@
                         <div class="row mb-2">
                             <div class="col-12">
                                 <small id="perfil" class="form-text text-muted mb-4 ml-1 text-left">
-                              <h6>
-                                Señor Autoridad Catastral por favor cargue aquí la información que desea entregar al Gestor.
-                              </h6>
-                            </small>
+                  <h6>
+                    Autoridad Catastral, cargue aquí la información que requiere entregar al Gestor para iniciar la
+                    Gestión Catastral del municipio.
+                  </h6>
+                </small>
                             </div>
                             <div class="col-12 col-sm-6 mb-2">
                                 <div class="input-group">
@@ -245,9 +246,9 @@
                                         <label class="input-group-text" aria-required="true">* Tipo</label>
                                     </div>
                                     <select class="custom-select" name="attachmentsTypes" id="attachmentsTypes" [(ngModel)]="selectAttachments" (change)="validAttachmentsTypes()">
-                  <option value='0' selected>Seleccione tipo de cargue</option>
-                  <option [ngValue]="item.id" *ngFor="let item of dataAttachmentsTypes">{{item.name}}</option>
-                </select>
+                    <option value='0' selected>Seleccione tipo de cargue</option>
+                    <option [ngValue]="item.id" *ngFor="let item of dataAttachmentsTypes">{{item.name}}</option>
+                  </select>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6 mb-2" *ngIf="selectAttachments != 0">
@@ -256,20 +257,39 @@
                                         <div class="input-group">
                                             <input #myInput id="fileattachmentsTypes" name="fileattachmentsTypes" class="form-control" type="file" (change)="docSoportAttachmentsTypes($event.target.files)" multiple=false>
                                         </div>
+                                        <small>Cargue el archivo con la información a entregar.</small>
                                     </div>
                                     <div *ngSwitchCase="selectAttachments === 2">
                                         <div class="input-group">
-                                            <input (change)="validAttachmentsTypes()" class="form-control" id="urlattachmentsTypes" type="url" name="urlattachmentsTypes" [(ngModel)]="ftpAttachmentsTypes">
+                                            <input placeholder="Ingrese la  URL ó FTP" (change)="validAttachmentsTypes()" class="form-control" id="urlattachmentsTypes" type="url" name="urlattachmentsTypes" [(ngModel)]="ftpAttachmentsTypes">
+                                        </div>
+                                        <div class="input-group mt-1">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend input-group-text">
+                                                    <div class="">Credenciales</div>
+                                                </div>
+                                                <input (change)="validAttachmentsTypes()" class="form-control" id="passftpAttachments" type="url" name="passftpAttachments" [(ngModel)]="passftpAttachments">
+                                            </div>
                                         </div>
                                     </div>
                                     <div *ngSwitchCase="selectAttachments === 3">
                                         <div class="input-group">
-                                            <input #myInput id="fileattachmentsTypesExtert" name="fileattachmentsTypesExtert" class="form-control" type="file" (change)="docSoportAttachmentsTypes($event.target.files)" multiple=false>
+                                            <input placeholder="Cargue la evidencia de la entrega fisica de la información." #myInput id="fileattachmentsTypesExtert" name="fileattachmentsTypesExtert" class="form-control" type="file" (change)="docSoportAttachmentsTypes($event.target.files)" multiple=false>
                                         </div>
+                                        <small>Cargue la evidencia de la entrega fisica de la información.</small>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-12">
+                            <div class="col-sm-12"></div>
+                            <div class="col-12 col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-prepend input-group-text">
+                                        <div class="">* Nombre</div>
+                                    </div>
+                                    <input (change)="validAttachmentsTypes()" class="form-control" id="nameAttachmentsTypes" type="url" name="nameAttachmentsTypes" [(ngModel)]="nameAttachmentsTypes">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-prepend input-group-text">
                                         <div class="">* Observaciones</div>
@@ -293,7 +313,9 @@
                                 <table class="table table-striped">
                                     <thead class="thead-inverse">
                                         <tr>
+                                            <th>#</th>
                                             <th>Proveedor</th>
+                                            <th>Nombre</th>
                                             <th>Fecha de cargue</th>
                                             <th>Observación</th>
                                             <th>Eliminar</th>
@@ -301,23 +323,25 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let item of suppliesAttachmentsData; let index = index;">
+                                            <td scope="row">{{index + 1}}</td>
                                             <td scope="row">AUTORIDAD CATASTRAL</td>
+                                            <td scope="row">{{item.name}}</td>
                                             <td scope="row">{{formatDate(item.createdAt)}}</td>
                                             <td scope="row">
                                                 <textarea maxlength="255" readonly style="border: none; background: #dedede;">{{item.observations}}</textarea>
                                             </td>
                                             <td scope="row">
                                                 <i class="material-icons cursor" (click)="openModalDelete(item.id, customModal2)">
-                        delete_forever
-                      </i>
+                          delete_forever
+                        </i>
                                                 <ng-template #customModal2 let-modal>
                                                     <div class="modal-header">
                                                         <h4 class="modal-title">
                                                             ¿Está seguro de eliminar el insumo?
                                                         </h4>
                                                         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
+                              <span aria-hidden="true">&times;</span>
+                            </button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <h5 class="alert alert-warning text-center">
@@ -354,28 +378,32 @@
                             <div class="table-inverse table-responsive" *ngIf="suppliesAttachmentsData.length > 0">
                                 <small id="perfil" class="form-text text-muted mb-4 ml-1 text-left">
                   <h6>
-                    Señor Gestor por favor diríjase a la sección búsqueda de insumos, para hacer la descarga de esta
-                    información.
+                    Gestor, descargue o consulte la información suministrada por la Autoridad Catastral para la Gestión
+                    Catastral del municipio asignado.
                   </h6>
                 </small>
                                 <table class="table table-striped">
                                     <thead class="thead-inverse">
                                         <tr>
+                                            <th>#</th>
                                             <th>Proveedor</th>
+                                            <th>Nombre</th>
                                             <th>Fecha de cargue</th>
                                             <th>Observación</th>
                                             <th>Descargar</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let item of suppliesAttachmentsData">
+                                        <tr *ngFor="let item of suppliesAttachmentsData; let index = index;">
+                                            <td scope="row">{{index + 1}}</td>
                                             <td scope="row">AUTORIDAD CATASTRAL</td>
+                                            <td scope="row">{{item.name}}</td>
                                             <td scope="row">{{formatDate(item.createdAt)}}</td>
                                             <td scope="row">
                                                 <textarea maxlength="255" rows="2" cols="50" readonly style="border: none; background: #dedede;">{{item.observations}}</textarea>
                                             </td>
                                             <td scope="row">
-                                                <i alt="Descargar" title="Descargar insumo" class="material-icons cursor" (click)="downloadSuppliesAutoridad(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">cloud_download</i>
+                                                <i alt="Descargar" title="Descargar archivo" class="material-icons cursor" (click)="downloadSuppliesAutoridad(item.id, item.typeSupply ? item.typeSupply.name: 'Insumo')">cloud_download</i>
                                             </td>
                                         </tr>
                                     </tbody>
