@@ -9,11 +9,13 @@ import { PageHeaderModule } from 'src/app/shared';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { OperatorAssignmentComponent } from './operator-assignment/operator-assignment.component';
 import { BsComponentModule } from '../../bs-component/bs-component.module';
+import { WorkspaceActiveComponent } from './workspace-active/workspace-active.component';
 
 @NgModule({
   declarations: [
     WorkspaceComponent,
     OperatorAssignmentComponent,
+    WorkspaceActiveComponent,
   ],
   imports: [
     CommonModule,
