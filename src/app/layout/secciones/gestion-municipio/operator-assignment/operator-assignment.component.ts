@@ -560,4 +560,19 @@ export class OperatorAssignmentComponent implements OnInit {
       }
     );
   }
+  downloadGetReportAuthority() {
+    this.serviceWorkspaces.getReportAuthority(this.selectMunicipality).subscribe(
+      (data: any) => {
+        console.log(data);
+
+        const contentType = data.headers.get('content-type');
+        const type = contentType.split(',')[0];
+        const dataFile = data.body;
+        const blob = new Blob([dataFile], { type });
+        const url = window.URL.createObjectURL(blob);
+        saveAs(blob, 'reporte-autoridad.pdf');
+      }
+    );
+  }
+
 }

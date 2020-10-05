@@ -362,6 +362,9 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="col-12" *ngIf="suppliesAttachmentsData.length > 0">
+                                <button type="button" class="btn btn-dark btn-block" (click)="downloadGetReportAuthority()">Descargar reporte</button>
+                            </div>
                         </div>
                         <div *ngIf="suppliesAttachmentsData.length === 0">
                             <div class="col-12">

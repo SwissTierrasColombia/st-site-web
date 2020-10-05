@@ -467,4 +467,11 @@ export class WorkspacesService {
   public disableTypeSupply(typeSupplyId: number) {
     return this.httpClient.put(this.url + '/workspaces/v1/providers/types-supplies/' + typeSupplyId + '/disable', {});
   }
+  /**
+   * getReportAuthority
+   */
+  public getReportAuthority(municipalityId: number) {
+    return this.httpClient.get(this.url + '/workspaces/v1/cadastral-authority/report/' + municipalityId
+    , { responseType: 'arraybuffer', observe: 'response' });
+  }
 }
