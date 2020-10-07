@@ -9,10 +9,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-entregar',
   templateUrl: './entregar.component.html',
-  styleUrls: ['./entregar.component.scss']
+  styleUrls: ['./entregar.component.scss'],
 })
 export class EntregarComponent implements OnInit {
-
   usermanager: boolean;
   departments: any;
   selectDepartment: number;
@@ -30,11 +29,13 @@ export class EntregarComponent implements OnInit {
   idWorkSpace: number;
   searchText: string;
   enabledButton: boolean;
+  listDelivery: any;
+  firstSearch: boolean;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
     private toastr: ToastrService,
-    private modalService: NgbModal,
+    private modalService: NgbModal
   ) {
     this.usermanager = false;
     this.departments = [];
@@ -48,75 +49,76 @@ export class EntregarComponent implements OnInit {
     this.totalElements = 0;
     this.idSupplieDelete = 0;
     this.deliverySupplies = {
-      observations: "",
-      supplies: []
-    }
+      observations: '',
+      supplies: [],
+    };
     this.sendSuppliesFilter = true;
     this.idWorkSpace = 0;
     this.enabledButton = true;
+    this.listDelivery = [];
+    this.firstSearch = false;
   }
 
   ngOnInit() {
     const rol = JwtHelper.getUserPublicInformation();
-    const role = rol.roles.find(elem => {
+    const role = rol.roles.find((elem) => {
       return elem.id === this.roles.gestor;
     });
     if (role) {
       this.usermanager = true;
     }
-    this.serviceWorkspaces.getDepartments()
-      .subscribe(response => {
-        this.departments = response;
-      });
+    this.serviceWorkspaces.getDepartments().subscribe((response) => {
+      this.departments = response;
+    });
   }
   globalFuntionDate(date: any) {
     return FuntionsGlobalsHelper.formatDate(date);
   }
   changeDepartament() {
-    this.serviceWorkspaces.GetMunicipalitiesByDeparment(Number(this.selectDepartment)).subscribe(
-      data => {
+    this.serviceWorkspaces
+      .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
+      .subscribe((data) => {
         this.munucipalities = data;
-      }
-    );
+      });
   }
   changeMunucipality() {
     this.sendSuppliesFilter = false;
-    this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
-      (response: any) => {
+    this.serviceWorkspaces
+      .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
+      .subscribe((response: any) => {
         this.idWorkSpace = response.id;
-      }
-    );
+      });
   }
   getPage(page: Number) {
-    this.serviceWorkspaces.GetSuppliesByMunicipalityFilter(this.selectMunicipality, page, true).subscribe(
-      (response: any) => {
+    this.firstSearch = true;
+    this.serviceWorkspaces
+      .GetSuppliesByMunicipalityFilter(this.selectMunicipality, page, true)
+      .subscribe((response: any) => {
         this.number = response.number + 1;
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
-        console.log(this.allSupplies);
         for (let index = 0; index < this.allSupplies.length; index++) {
           if (this.allSupplies[index].typeSupply === null) {
-            let owner = this.allSupplies[index].owners.find(data => {
+            let owner = this.allSupplies[index].owners.find((data) => {
               return data.ownerType === 'CADASTRAL_AUTHORITY';
             });
             if (owner) {
               this.allSupplies[index].typeSupply = {
-                'provider': {
-                  'name': 'AUTORIDAD CATASTRAL'
+                provider: {
+                  name: 'AUTORIDAD CATASTRAL',
                 },
-                'name': ''
+                name: '',
               };
             }
             if (!owner) {
               this.allSupplies[index].typeSupply = {
-                "provider": {
-                  "name": "GESTOR"
+                provider: {
+                  name: 'GESTOR',
                 },
-                "name": "Datos en modelo de insumos para el Municipio"
-              }
+                name: 'Datos en modelo de insumos para el Municipio',
+              };
             }
-
           }
           if (this.allSupplies[index].state.id === 1) {
             this.allSupplies[index].state.state = true;
@@ -125,104 +127,29 @@ export class EntregarComponent implements OnInit {
             this.allSupplies[index].state.state = false;
           }
         }
-        this.allSupplies.sort(function (a: any, b: any) {
-          if (a.typeSupply.provider.name > b.typeSupply.provider.name) {
-            return 1;
-          }
-          if (a.typeSupply.provider.name < b.typeSupply.provider.name) {
-            return -1;
-          }
-          //a must be equal to b
-          return 0;
+        this.deliverySupplies.supplies.map((item) => {
+          this.allSupplies.find((element) => {
+            if (item.supplyId === element.id) {
+              element.delivery = true;
+              element.observationsTosupplie = item.observations;
+              // console.log(item);
+              // console.log(element);
+            }
+          });
         });
-      }
-    );
+      });
   }
   isAuthority(item: any) {
-    let owner = item.owners.find(data => {
+    let owner = item.owners.find((data) => {
       return data.ownerType === 'CADASTRAL_AUTHORITY';
     });
     return owner ? true : false;
   }
-  builddelivery(item: any, state: boolean) {
-    if (this.usermanager) {
-      if (state) {
-        let comprobarID = this.deliverySupplies.supplies.find(
-          element => {
-            return element.supplyId == item.id
-          }
-        );
-        if (comprobarID) {
-          this.deliverySupplies.supplies.forEach(element => {
-            if (item.id == element.supplyId) {
-              element.observations = item.observationsTosupplie
-            }
-          });
-          this.clickCheckBox();
-        } else {
-          this.deliverySupplies.supplies.push({
-            supplyId: item.id,
-            observations: item.observationsTosupplie ? item.observationsTosupplie : ""
-          });
-          this.clickCheckBox();
-        }
-      } else {
-        this.deliverySupplies.supplies = this.deliverySupplies.supplies.filter(e => e.supplyId !== item.id);
-        this.clickCheckBox();
-      }
-
-
-    } else {
-      this.toastr.error("No tiene los permisos necesarios para entregar el insumo.");
-    }
-
-  }
-  sendSupplies() {
-    if (this.deliverySupplies.supplies.length > 0) {
-      if (this.deliverySupplies.observations.length > 0) {
-        const data = this.deliverySupplies.supplies.find(element => {
-          return element.observations === '';
-        });
-        if (data) {
-          this.toastr.error("Te faltan algunas observaciones");
-        } else {
-          this.serviceWorkspaces.deliveriesSupplies(this.idWorkSpace, this.deliverySupplies).subscribe(
-            _ => {
-              this.toastr.success("Se ha realizado la entrega de los insumos al operador");
-              this.getPage(1);
-              this.deliverySupplies = {
-                observations: "",
-                supplies: []
-              };
-              this.enabledButton = true;
-            }
-          );
-        }
-      } else {
-        this.toastr.error("Las observaciones generales son obligatorias")
-      }
-    } else {
-      this.toastr.error("No has seleccionado ningún insumo, ó te faltan las observaciones")
-    }
-  }
-  openModal(modal: any) {
-    this.modalService.open(modal, { centered: true, scrollable: true });
-  }
-  closeModal(option: boolean) {
-    if (option) {
-      this.sendSupplies();
-      this.modalService.dismissAll();
-    } else {
-      this.modalService.dismissAll();
-    }
-  }
   clickCheckBox() {
     if (this.deliverySupplies.supplies.length > 0) {
-
-      if (this.deliverySupplies.observations != "") {
-
-        const data = this.deliverySupplies.supplies.find(element => {
-          return element.observations == "";
+      if (this.deliverySupplies.observations != '') {
+        const data = this.deliverySupplies.supplies.find((element) => {
+          return element.observations == '';
         });
         if (data) {
           this.enabledButton = true;
@@ -234,6 +161,92 @@ export class EntregarComponent implements OnInit {
       }
     } else {
       this.enabledButton = true;
+    }
+  }
+  builddelivery(item: any, state: boolean) {
+    if (this.usermanager) {
+      if (state) {
+        let comprobarID = this.deliverySupplies.supplies.find((element) => {
+          return element.supplyId == item.id;
+        });
+        if (comprobarID) {
+          this.deliverySupplies.supplies.forEach((element) => {
+            if (item.id == element.supplyId) {
+              element.observations = item.observationsTosupplie;
+            }
+          });
+          this.clickCheckBox();
+        } else {
+          this.deliverySupplies.supplies.push({
+            supplyId: item.id,
+            observations: item.observationsTosupplie
+              ? item.observationsTosupplie
+              : '',
+          });
+          this.clickCheckBox();
+        }
+      } else {
+        this.deliverySupplies.supplies = this.deliverySupplies.supplies.filter(
+          (e) => e.supplyId !== item.id
+        );
+        this.clickCheckBox();
+      }
+    } else {
+      this.toastr.error(
+        'No tiene los permisos necesarios para entregar el insumo.'
+      );
+    }
+  }
+  sendSupplies() {
+    if (this.deliverySupplies.supplies.length > 0) {
+      if (this.deliverySupplies.observations.length > 0) {
+        const data = this.deliverySupplies.supplies.find((element) => {
+          return element.observations === '';
+        });
+        if (data) {
+          this.toastr.error('Te faltan algunas observaciones');
+        } else {
+          this.serviceWorkspaces
+            .deliveriesSupplies(this.idWorkSpace, this.deliverySupplies)
+            .subscribe((_) => {
+              this.toastr.success(
+                'Se ha realizado la entrega de los insumos al operador'
+              );
+              this.getPage(1);
+              this.deliverySupplies = {
+                observations: '',
+                supplies: [],
+              };
+              this.enabledButton = true;
+            });
+        }
+      } else {
+        this.toastr.error('Las observaciones generales son obligatorias');
+      }
+    } else {
+      this.toastr.error(
+        'No has seleccionado ningún insumo, ó te faltan las observaciones'
+      );
+    }
+  }
+  openModal(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
+    // this.listDelivery = this.deliverySupplies.supplies.map((item) => {
+    //   const data = this.allSupplies.find((element) => {
+    //     if (item.supplyId === element.id) {
+    //       return element;
+    //     }
+    //   });
+    //   return data;
+    // });
+    // console.log(this.listDelivery);
+  }
+  closeModal(option: boolean) {
+    if (option) {
+      this.sendSupplies();
+      this.modalService.dismissAll();
+    } else {
+      this.modalService.dismissAll();
     }
   }
 }
