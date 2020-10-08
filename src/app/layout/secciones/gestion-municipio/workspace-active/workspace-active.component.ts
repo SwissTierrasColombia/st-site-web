@@ -56,7 +56,6 @@ export class WorkspaceActiveComponent implements OnInit {
   searchWorkSpaceActive() {
     this.serviceWorkspaces.getWorkSpaceByMunicipality(this.selectMunicipality.toString()).subscribe(
       (response: any) => {
-        console.log(response);
         if (response.length > 0) {
           this.isActive = true;
           this.router.navigate(['gestion/workspace/' + this.selectMunicipality + '/operador', { tab: this.isAdministrator ? 4 : 5 }]);
