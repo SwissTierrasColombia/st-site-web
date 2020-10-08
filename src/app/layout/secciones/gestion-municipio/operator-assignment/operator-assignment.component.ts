@@ -505,7 +505,6 @@ export class OperatorAssignmentComponent implements OnInit {
     }
     form.append('name', this.nameAttachmentsTypes);
     form.append('observations', this.observationsAttachmentsTypes);
-    console.log(form);
     this.serviceWorkspaces.createAttachmentsSupply(this.selectMunicipality, form).subscribe(
       _ => {
         this.toastr.success('Ha agregado correctamente el registro.');
@@ -563,8 +562,6 @@ export class OperatorAssignmentComponent implements OnInit {
   downloadGetReportAuthority() {
     this.serviceWorkspaces.getReportAuthority(this.selectMunicipality).subscribe(
       (data: any) => {
-        console.log(data);
-
         const contentType = data.headers.get('content-type');
         const type = contentType.split(',')[0];
         const dataFile = data.body;

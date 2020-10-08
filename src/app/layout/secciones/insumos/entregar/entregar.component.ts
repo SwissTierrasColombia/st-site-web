@@ -132,8 +132,6 @@ export class EntregarComponent implements OnInit {
             if (item.supplyId === element.id) {
               element.delivery = true;
               element.observationsTosupplie = item.observations;
-              // console.log(item);
-              // console.log(element);
             }
           });
         });
@@ -231,15 +229,6 @@ export class EntregarComponent implements OnInit {
   }
   openModal(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
-    // this.listDelivery = this.deliverySupplies.supplies.map((item) => {
-    //   const data = this.allSupplies.find((element) => {
-    //     if (item.supplyId === element.id) {
-    //       return element;
-    //     }
-    //   });
-    //   return data;
-    // });
-    // console.log(this.listDelivery);
   }
   closeModal(option: boolean) {
     if (option) {
