@@ -13,6 +13,10 @@ export class FuntionsGlobalsHelper {
     moment.locale('es');
     return moment(date).format('Do MMM YYYY');
   }
+  static formatDateIntegration(date: string) {
+    moment.locale('es');
+    return moment(date).format('ll, h:mm a');
+  }
   static formatDateCalendar(date: string) {
     moment.locale('es');
     return moment(date).format('Do MMM YYYY');

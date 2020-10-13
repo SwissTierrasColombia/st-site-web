@@ -232,7 +232,7 @@ export class IntegracionComponent implements OnInit {
     }
   }
   globalFuntionDate(date: any) {
-    return FuntionsGlobalsHelper.formatDate(date);
+    return FuntionsGlobalsHelper.formatDateIntegration(date);
   }
   closeModal() {
     this.modalService.dismissAll();
