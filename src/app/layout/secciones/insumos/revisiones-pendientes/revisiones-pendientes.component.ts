@@ -35,7 +35,7 @@ export class RevisionesPendientesComponent implements OnInit {
   }
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('ll, h:mm a');
+    return moment(date).format('Do MMM YYYY');
   }
   getEntity(item: any) {
     const data = item.emitters.find((elem: any) => {

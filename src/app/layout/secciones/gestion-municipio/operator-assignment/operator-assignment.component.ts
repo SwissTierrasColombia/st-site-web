@@ -286,11 +286,11 @@ export class OperatorAssignmentComponent implements OnInit {
 
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('ll, h:mm a');
+    return moment(date).format('Do MMM YYYY');
   }
   formatDateCalendar(date: string) {
     moment.locale('es');
-    return moment(date).format('ll');
+    return moment(date).format('Do MMM YYYY');
   }
   formatDateOperator(date: string) {
     moment.locale('es');

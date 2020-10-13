@@ -285,7 +285,7 @@ export class SolicitudComponent implements OnInit {
 
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('ll');
+    return moment(date).format('Do MMM YYYY');
   }
   openModal(modal: any) {
     this.modalService.open(modal, { centered: true });

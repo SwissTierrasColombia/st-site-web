@@ -33,7 +33,7 @@ export class SolicitudesComponent implements OnInit {
   }
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('ll, h:mm a');
+    return moment(date).format('Do MMM YYYY');
   }
   load(idInsumo: number) {
     this.router.navigate(['/insumos/solicitudes/pendientes/cargar/' + idInsumo]);

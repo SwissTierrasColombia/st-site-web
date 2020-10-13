@@ -30,7 +30,7 @@ export class EntregasAtendidasComponent implements OnInit {
   }
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('ll, h:mm a');
+    return moment(date).format('Do MMM YYYY');
   }
   load(IdEntrega: number) {
     this.router.navigate(['/operador/descarga/' + IdEntrega + '/realizada']);

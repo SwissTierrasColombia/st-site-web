@@ -44,7 +44,7 @@ export class PeticionesProveedorComponent implements OnInit {
   }
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('ll');
+    return moment(date).format('Do MMM YYYY');
   }
   changeStatePetition() {
     this.isJustification = false;

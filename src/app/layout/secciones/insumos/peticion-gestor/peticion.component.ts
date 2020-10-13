@@ -83,6 +83,6 @@ export class PeticionComponent implements OnInit {
   }
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('ll');
+    return moment(date).format('Do MMM YYYY');
   }
 }
