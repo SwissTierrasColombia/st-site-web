@@ -26,6 +26,7 @@ export class OperadorComponent implements OnInit {
     this.dataProfile = [];
     this.data = {
       name: '',
+      alias: '',
       taxIdentificationNumber: '',
       providerCategoryId: '0',
       isPublic: '0',
@@ -56,8 +57,9 @@ export class OperadorComponent implements OnInit {
   }
   changeState() {
     if (
-      this.data.name != '' &&
-      this.data.taxIdentificationNumber != '' &&
+      this.data.name !== '' &&
+      this.data.alias !== '' &&
+      this.data.taxIdentificationNumber !== '' &&
       this.data.isPublic !== '0'
     ) {
       this.formOk = true;
@@ -74,6 +76,7 @@ export class OperadorComponent implements OnInit {
     this.data = {
       id: entity.id,
       name: entity.name,
+      alias: entity.alias,
       taxIdentificationNumber: entity.taxIdentificationNumber,
       isPublic: entity.isPublic,
     };
@@ -176,6 +179,7 @@ export class OperadorComponent implements OnInit {
     this.formOk = false;
     this.data = {
       name: '',
+      alias: '',
       taxIdentificationNumber: '',
       providerCategoryId: '0',
       isPublic: '0',

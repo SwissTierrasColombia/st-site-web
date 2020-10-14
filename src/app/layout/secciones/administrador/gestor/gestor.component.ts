@@ -27,6 +27,7 @@ export class GestorComponent implements OnInit {
     this.dataProfile = [];
     this.data = {
       name: '',
+      alias: '',
       taxIdentificationNumber: '',
       providerCategoryId: 0,
     };
@@ -55,7 +56,11 @@ export class GestorComponent implements OnInit {
   }
   changeState() {
     this.formOk = false;
-    if (this.data.name != '' && this.data.taxIdentificationNumber != '') {
+    if (
+      this.data.name !== '' &&
+      this.data.taxIdentificationNumber !== '' &&
+      this.data.alias !== ''
+    ) {
       this.data.taxIdentificationNumber.trim();
       this.formOk = true;
       if (!this.nitIsValid(this.data.taxIdentificationNumber)) {
@@ -69,6 +74,7 @@ export class GestorComponent implements OnInit {
     this.data = {
       id: entity.id,
       name: entity.name,
+      alias: entity.alias,
       taxIdentificationNumber: entity.taxIdentificationNumber,
     };
     this.scroll.scrollToAnchor('actionForm');
@@ -122,6 +128,7 @@ export class GestorComponent implements OnInit {
     this.formOk = false;
     this.data = {
       name: '',
+      alias: '',
       taxIdentificationNumber: '',
       providerCategoryId: 0,
     };
@@ -133,6 +140,7 @@ export class GestorComponent implements OnInit {
         this.dataProfile.push(element);
         this.data = {
           name: '',
+          alias: '',
           taxIdentificationNumber: '',
           providerCategoryId: 0,
         };

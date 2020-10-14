@@ -25,6 +25,7 @@ export class ProveedorComponent implements OnInit {
     this.dataProfile = [];
     this.data = {
       name: '',
+      alias: '',
       taxIdentificationNumber: '',
       providerCategoryId: '0',
     };
@@ -48,8 +49,9 @@ export class ProveedorComponent implements OnInit {
   }
   changeState() {
     if (
-      this.data.name != '' &&
-      this.data.taxIdentificationNumber != '' &&
+      this.data.name !== '' &&
+      this.data.alias !== '' &&
+      this.data.taxIdentificationNumber !== '' &&
       this.data.providerCategoryId !== '0'
     ) {
       this.formOk = true;
@@ -66,6 +68,7 @@ export class ProveedorComponent implements OnInit {
     this.data = {
       id: entity.id,
       name: entity.name,
+      alias: entity.alias,
       taxIdentificationNumber: entity.taxIdentificationNumber,
       providerCategoryId: entity.providerCategory.id,
     };
@@ -148,6 +151,7 @@ export class ProveedorComponent implements OnInit {
     this.formOk = false;
     this.data = {
       name: '',
+      alias: '',
       taxIdentificationNumber: '',
       providerCategoryId: '0',
     };
