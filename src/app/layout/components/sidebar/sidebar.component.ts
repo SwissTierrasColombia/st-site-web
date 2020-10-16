@@ -76,8 +76,6 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.allroles = this.roles;
     this.user = JwtHelper.getUserPublicInformation();
-    console.log(this.user);
-
     this.roleAdmin = this.user.roles.find((elem) => {
       return elem.id === this.roles.administrador;
     });

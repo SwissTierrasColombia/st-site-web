@@ -152,7 +152,6 @@ export class SearchComponent implements OnInit {
       const type = contentType.split(',')[0];
       const dataFile = data.body;
       const name = data.headers.get('filename');
-      console.log(name);
       const blob = new Blob([dataFile], { type });
       const url = window.URL.createObjectURL(blob);
       saveAs(blob, name);
