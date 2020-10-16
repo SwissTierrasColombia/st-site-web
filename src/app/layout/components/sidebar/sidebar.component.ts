@@ -7,7 +7,7 @@ import { RoleModel } from 'src/app/helpers/role.model';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit {
   isActive: boolean;
@@ -23,20 +23,15 @@ export class SidebarComponent implements OnInit {
   roleproveedor: any;
   delegate: any;
   isSnr: any;
-
-
   @Output() collapsedEvent = new EventEmitter<boolean>();
   administration: any;
 
-  constructor(
-    public router: Router,
-    private roles: RoleModel
-  ) {
+  constructor(public router: Router, private roles: RoleModel) {
     this.user = {
       first_name: 'Usuario',
-      last_name: ''
+      last_name: '',
     };
-    this.router.events.subscribe(val => {
+    this.router.events.subscribe((val) => {
       if (
         val instanceof NavigationEnd &&
         window.innerWidth <= 992 &&
@@ -56,21 +51,21 @@ export class SidebarComponent implements OnInit {
         insumosSolicitudes: 'insumosSolicitudes',
         caracterizacion: 'caracterizacion',
         registrar: 'registrar',
-        busqueda: 'busqueda'
-      }
+        busqueda: 'busqueda',
+      },
     ];
     this.allroles = {};
     this.roleAdmin = {
-      id: 0
+      id: 0,
     };
     this.rolegestor = {
-      id: 0
+      id: 0,
     };
     this.roleoperador = {
-      id: 0
+      id: 0,
     };
     this.roleproveedor = {
-      id: 0
+      id: 0,
     };
     this.isActive = false;
     this.collapsed = false;
@@ -81,26 +76,35 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.allroles = this.roles;
     this.user = JwtHelper.getUserPublicInformation();
-    this.roleAdmin = this.user.roles.find(elem => {
+    console.log(this.user);
+
+    this.roleAdmin = this.user.roles.find((elem) => {
       return elem.id === this.roles.administrador;
     });
-    this.rolegestor = this.user.roles.find(elem => {
+    this.rolegestor = this.user.roles.find((elem) => {
       return elem.id === this.roles.gestor;
     });
-    this.roleproveedor = this.user.roles.find(elem => {
+    this.roleproveedor = this.user.roles.find((elem) => {
       return elem.id === this.roles.proveedor;
     });
-    this.roleoperador = this.user.roles.find(elem => {
+    this.roleoperador = this.user.roles.find((elem) => {
       return elem.id === this.roles.operador;
     });
-    this.administration = this.user.roles.find(elem => {
-      return elem.id == this.roles.superAdministrador || elem.id == this.roles.administrador || (this.user.is_manager_director == this.roles.gestorDirector && elem.id == this.roles.gestor) || (this.user.is_provider_director == this.roles.proveedorDirector && elem.id == this.roles.proveedor);
+    this.administration = this.user.roles.find((elem) => {
+      return (
+        elem.id === this.roles.superAdministrador ||
+        elem.id === this.roles.administrador ||
+        (this.user.is_manager_director === this.roles.gestorDirector &&
+          elem.id === this.roles.gestor) ||
+        (this.user.is_provider_director === this.roles.proveedorDirector &&
+          elem.id === this.roles.proveedor)
+      );
     });
     if (this.user.provider_sub_roles) {
       this.delegate = this.user.provider_sub_roles.find((elem: any) => {
         return elem.id === 2;
       });
-      if (this.user.entity.name === 'SNR') {
+      if (this.user.entity.alias === 'SNR') {
         this.isSnr = true;
       }
     }
@@ -142,7 +146,7 @@ export class SidebarComponent implements OnInit {
     localStorage.removeItem(environment.nameTokenSession);
     window.location.reload();
   }
-  toUpperCasetoLowerCase(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  toUpperCasetoLowerCase(text: string) {
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
   }
 }
