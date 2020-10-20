@@ -8,10 +8,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-crear-tipo-insumo',
   templateUrl: './crear-tipo-insumo.component.html',
-  styleUrls: ['./crear-tipo-insumo.component.scss']
+  styleUrls: ['./crear-tipo-insumo.component.scss'],
 })
 export class CrearTipoInsumoComponent implements OnInit {
-
   @ViewChild('actionForm', { static: false }) actionForm: ElementRef;
 
   id: number;
@@ -22,7 +21,7 @@ export class CrearTipoInsumoComponent implements OnInit {
   modelRequired: boolean;
   providerProfiles: any[];
   supplies: any[];
-  booleanOptions: { id: boolean; name: string; }[];
+  booleanOptions: { id: boolean; name: string }[];
   editMode: boolean;
   formOk: boolean;
   activeOtherFormat: boolean;
@@ -56,7 +55,7 @@ export class CrearTipoInsumoComponent implements OnInit {
     this.supplies = [];
     this.booleanOptions = [
       { id: true, name: 'REQUERIDO' },
-      { id: false, name: 'NO REQUERIDO' }
+      { id: false, name: 'NO REQUERIDO' },
     ];
     this.editMode = false;
     this.formOk = false;
@@ -65,69 +64,69 @@ export class CrearTipoInsumoComponent implements OnInit {
     this.exampleData = [
       {
         id: 'txt',
-        text: 'txt'
+        text: 'txt',
       },
       {
         id: 'png',
-        text: 'png'
+        text: 'png',
       },
       {
         id: 'jpg',
-        text: 'jpg'
+        text: 'jpg',
       },
       {
         id: 'xtf',
-        text: 'xtf'
+        text: 'xtf',
       },
       {
         id: 'img',
-        text: 'img'
+        text: 'img',
       },
       {
         id: 'tif',
-        text: 'tif'
+        text: 'tif',
       },
       {
         id: 'ecw',
-        text: 'ecw'
+        text: 'ecw',
       },
       {
         id: 'sid',
-        text: 'sid'
+        text: 'sid',
       },
       {
         id: 'shp',
-        text: 'shp (Incluye dbf, shx, prj, otros)'
+        text: 'shp (Incluye dbf, shx, prj, otros)',
       },
       {
         id: 'gpkg',
-        text: 'gpg'
+        text: 'gpg',
       },
       {
         id: 'gbd',
-        text: 'gdb'
+        text: 'gdb',
       },
       {
         id: 'pdf',
-        text: 'pdf'
+        text: 'pdf',
       },
       {
         id: 'GeoPDF',
-        text: 'GeoPDF'
+        text: 'GeoPDF',
       },
       {
         id: 'geojson',
-        text: 'geojson'
+        text: 'geojson',
       },
       {
         id: 'KML',
-        text: 'KML'
-      }
+        text: 'KML',
+      },
     ];
     this.options = {
       width: '350',
       multiple: true,
-      tags: false
+      tags: false,
     };
     this.exampleData2 = [];
     this.extensions2 = [];
@@ -135,7 +134,7 @@ export class CrearTipoInsumoComponent implements OnInit {
       width: '350',
       multiple: true,
       tags: true,
-      placeholder: "Escriba la extesión que desea y de enter"
+      placeholder: 'Escriba la extesión que desea y de enter',
     };
     this.page = 1;
     this.pageSize = 10;
@@ -145,18 +144,17 @@ export class CrearTipoInsumoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activedRoute.params.subscribe(
-      response => {
-        if (response.tab) {
-          this.tab = Number(response.tab);
-          var isTrueSet = (response.isValidTab == 'false');
-          if (!isTrueSet == false) {
-            this.isValidTab = !response.isValidTab;
-          }
+    this.activedRoute.params.subscribe((response) => {
+      if (response.tab) {
+        this.tab = Number(response.tab);
+        var isTrueSet = response.isValidTab == 'false';
+        if (!isTrueSet == false) {
+          this.isValidTab = !response.isValidTab;
         }
       }
-    );
-    this.serviceWorkspaces.GetProviderProfiles()
+    });
+    this.serviceWorkspaces
+      .GetProviderProfiles()
       .subscribe((response: any[]) => {
         this.providerProfiles = response;
       });
@@ -164,7 +162,8 @@ export class CrearTipoInsumoComponent implements OnInit {
   }
 
   loadProviderTypeSupplies() {
-    this.serviceWorkspaces.GetProviderTypeSupplies()
+    this.serviceWorkspaces
+      .GetProviderTypeSupplies()
       .subscribe((response: any[]) => {
         response.sort((a, b) => a.id - b.id);
         this.supplies = response;
@@ -174,7 +173,7 @@ export class CrearTipoInsumoComponent implements OnInit {
   autoScroll() {
     this.actionForm.nativeElement.scrollIntoView({
       behavior: 'smooth',
-      block: 'start'
+      block: 'start',
     });
   }
   selectTypeSupply(data) {
@@ -192,19 +191,20 @@ export class CrearTipoInsumoComponent implements OnInit {
     }
     let extdata = [];
     let extdata2 = [];
-    exts.forEach(elem => {
-      this.exampleData.forEach(element => {
+    exts.forEach((elem) => {
+      this.exampleData.forEach((element) => {
         return elem == element.id ? extdata.push(element.id) : NaN;
       });
     });
-    extdata2 = exts.filter(function (obj) { return extdata.indexOf(obj) == -1; });
+    extdata2 = exts.filter(function (obj) {
+      return extdata.indexOf(obj) == -1;
+    });
     if (extdata2.length > 0) {
       this.activeOtherFormat = true;
-      extdata2.forEach(element => {
-
+      extdata2.forEach((element) => {
         this.exampleData2.push({
           id: element,
-          text: element
+          text: element,
         });
         //        this.extensions.push(element);
       });
@@ -222,9 +222,10 @@ export class CrearTipoInsumoComponent implements OnInit {
     function onlyUnique(value, index, self) {
       return self.indexOf(value) === index;
     }
-    this.activeOtherFormat && this.extensions2 != '' ? this.extensions = this.extensions + ',' + this.extensions2 : this.extensions + '';
+    this.activeOtherFormat && this.extensions2 != ''
+      ? (this.extensions = this.extensions + ',' + this.extensions2)
+      : this.extensions + '';
     if (this.activeOtherFormat && this.extensions2 != '') {
-
       let exts = this.extensions.split(',');
       exts = exts.filter(onlyUnique);
       for (const e in exts) {
@@ -237,7 +238,7 @@ export class CrearTipoInsumoComponent implements OnInit {
         metadataRequired: this.metadataRequired,
         modelRequired: this.modelRequired,
         name: this.typeSupplyName,
-        providerProfileId: this.providerProfile
+        providerProfileId: this.providerProfile,
       };
     } else {
       return {
@@ -247,27 +248,31 @@ export class CrearTipoInsumoComponent implements OnInit {
         metadataRequired: this.metadataRequired,
         modelRequired: this.modelRequired,
         name: this.typeSupplyName,
-        providerProfileId: this.providerProfile
+        providerProfileId: this.providerProfile,
       };
     }
   }
 
   createTypeSupply() {
-    this.serviceWorkspaces.CreateTypeSupplies(this.getObjectTypeSupply()).subscribe(response => {
-      this.toast.success("Ha creado correctamente el tipo de insumo.");
-      this.isValidTab = true;
-      this.loadProviderTypeSupplies();
-      this.cancel();
-    });
+    this.serviceWorkspaces
+      .CreateTypeSupplies(this.getObjectTypeSupply())
+      .subscribe((response) => {
+        this.toast.success('Ha creado correctamente el tipo de insumo.');
+        this.isValidTab = true;
+        this.loadProviderTypeSupplies();
+        this.cancel();
+      });
   }
 
   saveTypeSupply() {
-    this.serviceWorkspaces.SaveTypeSupplies(this.id, this.getObjectTypeSupply()).subscribe(() => {
-      this.toast.success("Ha actualizado correctamente el tipo de insumo.");
-      this.isValidTab = true;
-      this.cancel();
-      this.loadProviderTypeSupplies();
-    });
+    this.serviceWorkspaces
+      .SaveTypeSupplies(this.id, this.getObjectTypeSupply())
+      .subscribe(() => {
+        this.toast.success('Ha actualizado correctamente el tipo de insumo.');
+        this.isValidTab = true;
+        this.cancel();
+        this.loadProviderTypeSupplies();
+      });
   }
 
   cancel() {
@@ -298,23 +303,22 @@ export class CrearTipoInsumoComponent implements OnInit {
 
   closeModalDisabled(option: boolean, id?: number) {
     if (option) {
-      this.serviceWorkspaces.deleteTypeSupplies(id).subscribe(
-        _ => {
-          this.toast.success('Ha eliminado correctamente el tipo de insumo.');
-          this.loadProviderTypeSupplies();
-        }
-      );
+      this.serviceWorkspaces.deleteTypeSupplies(id).subscribe((_) => {
+        this.toast.success('Ha eliminado correctamente el tipo de insumo.');
+        this.loadProviderTypeSupplies();
+      });
     }
     this.modalService.dismissAll();
-
   }
 
   modelChanged() {
     (this.editMode && this.id <= 0) ||
-      this.providerProfile <= 0 ||
-      this.typeSupplyName == '' ||
-      this.extensions == '' ||
-      this.typeSupplyDescription == '' ? this.formOk = false : this.formOk = true;
+    this.providerProfile <= 0 ||
+    this.typeSupplyName == '' ||
+    this.extensions == '' ||
+    this.typeSupplyDescription == ''
+      ? (this.formOk = false)
+      : (this.formOk = true);
   }
   tab1() {
     this.tab = 1;
@@ -331,26 +335,37 @@ export class CrearTipoInsumoComponent implements OnInit {
   openModalEnabledSupplie(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModalEnabledSupplie(option: boolean, typeSupplyId?: number, index?: number) {
+  closeModalEnabledSupplie(
+    option: boolean,
+    typeSupplyId?: number,
+    index?: number
+  ) {
     if (option) {
-      this.serviceWorkspaces.enableTypeSupply(typeSupplyId).subscribe(response => {
-        this.supplies[index] = response;
-        this.toast.success('Ha habilitado correctamente el tipo de insumo.');
-      });
+      this.serviceWorkspaces
+        .enableTypeSupply(typeSupplyId)
+        .subscribe((response) => {
+          this.supplies[index] = response;
+          this.toast.success('Ha habilitado correctamente el tipo de insumo.');
+        });
     }
     this.modalService.dismissAll();
   }
 
-
   openModalDisabledSupplie(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModalDisabledSupplie(option: boolean, typeSupplyId?: number, index?: number) {
+  closeModalDisabledSupplie(
+    option: boolean,
+    typeSupplyId?: number,
+    index?: number
+  ) {
     if (option) {
-      this.serviceWorkspaces.disableTypeSupply(typeSupplyId).subscribe(response => {
-        this.supplies[index] = response;
-        this.toast.success('Ha desactivado correctamente el tipo de insumo.');
-      });
+      this.serviceWorkspaces
+        .disableTypeSupply(typeSupplyId)
+        .subscribe((response) => {
+          this.supplies[index] = response;
+          this.toast.success('Ha desactivado correctamente el tipo de insumo.');
+        });
     }
     this.modalService.dismissAll();
   }
