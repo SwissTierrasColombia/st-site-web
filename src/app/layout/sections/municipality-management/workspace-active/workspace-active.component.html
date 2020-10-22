@@ -15,18 +15,18 @@
             <div class="input-group">
               <div class="input-group-prepend">
                 <label class="input-group-text" aria-required="true"
-                  >* Departamento</label
+                  >* Gestor</label
                 >
               </div>
               <select
                 (change)="changeDepartament()"
                 class="custom-select"
-                name="departments"
-                id="departments"
-                [(ngModel)]="selectDepartment"
+                name="activeManagers"
+                id="activeManagers"
+                [(ngModel)]="selectManager"
               >
-                <option value="0" selected>Seleccione el Departamento</option>
-                <option [ngValue]="item.id" *ngFor="let item of departments">
+                <option value="0" selected>Seleccione el Gestor</option>
+                <option [ngValue]="item.id" *ngFor="let item of activeManagers">
                   {{ item.name }}
                 </option>
               </select>
@@ -42,6 +42,7 @@
                 name="munucipalities"
                 id="munucipalities"
                 [(ngModel)]="selectMunicipality"
+                (change)="changeMunicipalitie()"
               >
                 <option value="0" selected>Seleccione el Municipio</option>
                 <option [ngValue]="item.id" *ngFor="let item of munucipalities">
@@ -65,6 +66,7 @@
         type="button"
         class="btn btn-dark"
         (click)="searchWorkSpaceActive()"
+        [disabled]="!isActiveSearch"
       >
         Buscar
       </button>

@@ -20,7 +20,7 @@ export class WorkspacesService {
   /**
    * GetMunicipalitiesByDeparment
    */
-  public GetMunicipalitiesByDeparment(idDepartament: Number) {
+  public GetMunicipalitiesByDeparment(idDepartament: number) {
     return this.httpClient.get(
       this.url +
         '/workspaces/v1/departments/' +
@@ -231,7 +231,7 @@ export class WorkspacesService {
    */
   public GetSuppliesByMunicipalityFilter(
     idMunicipality: number,
-    page: Number,
+    page: number,
     active: boolean
   ) {
     return this.httpClient.get(
@@ -732,6 +732,47 @@ export class WorkspacesService {
     return this.httpClient.get(
       this.url + '/workspaces/v1/cadastral-authority/report/' + municipalityId,
       { responseType: 'arraybuffer', observe: 'response' }
+    );
+  }
+  /**
+   * GetWorkspacesByLocation
+   */
+  public GetWorkspacesByLocation(
+    departamentId: number,
+    municipalityId?: number
+  ) {
+    if (municipalityId) {
+      return this.httpClient.get(
+        this.url +
+          '/workspaces/v1/workspaces/location?department=' +
+          departamentId +
+          '&municipality=' +
+          municipalityId
+      );
+    } else {
+      return this.httpClient.get(
+        this.url +
+          '/workspaces/v1/workspaces/location?department=' +
+          departamentId
+      );
+    }
+  }
+  /**
+   * getMunicipalitiesThatNotHasWorkspaces
+   */
+  public getMunicipalitiesThatNotHasWorkspaces(departmentId: number) {
+    return this.httpClient.get(
+      this.url +
+        '/workspaces/v1/municipalities/not-workspace/departments/' +
+        departmentId
+    );
+  }
+  /**
+   * getMunicipalitiesByManager
+   */
+  public getMunicipalitiesByManager(managerId: number) {
+    return this.httpClient.get(
+      this.url + '/workspaces/v1/municipalities/by-manager/' + managerId
     );
   }
 }

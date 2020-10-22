@@ -18,6 +18,7 @@ export class SearchWorkspaceComponent implements OnInit {
   isAdministrator: boolean;
   isActive: boolean;
   listWorkSpace: any;
+  searchActive: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private roles: RoleModel,
@@ -30,6 +31,7 @@ export class SearchWorkspaceComponent implements OnInit {
     this.isAdministrator = false;
     this.selectMunicipality = 0;
     this.listWorkSpace = [];
+    this.searchActive = false;
   }
 
   ngOnInit(): void {
@@ -47,17 +49,23 @@ export class SearchWorkspaceComponent implements OnInit {
   }
 
   changeDepartament() {
+    this.searchActive = false;
     this.serviceWorkspaces
       .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
       .subscribe((data) => {
         this.munucipalities = data;
+        this.searchActive = true;
       });
   }
   searchWorkSpaceActive() {
     this.serviceWorkspaces
-      .getWorkSpaceByMunicipality(this.selectMunicipality.toString())
+      .GetWorkspacesByLocation(
+        this.selectDepartment,
+        this.selectMunicipality === 0 ? null : this.selectMunicipality
+      )
       .subscribe((response: any) => {
         if (response.length > 0) {
+          console.log(response);
           this.listWorkSpace = response;
           this.isActive = true;
         } else {
@@ -68,7 +76,8 @@ export class SearchWorkspaceComponent implements OnInit {
         }
       });
   }
-  updateWorkSpace() {
+  updateWorkSpace(item: any) {
+    this.selectMunicipality = item.municipality.id;
     this.router.navigate([
       'gestion/workspace/' + this.selectMunicipality + '/operador',
     ]);

@@ -35,7 +35,7 @@
           <div class="col-12 col-sm-6 mb-1">
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text">* Municipio</label>
+                <label class="input-group-text">Municipio</label>
               </div>
               <select
                 class="custom-select"
@@ -65,6 +65,7 @@
         type="button"
         class="btn btn-dark"
         (click)="searchWorkSpaceActive()"
+        [disabled]="!searchActive"
       >
         Buscar
       </button>
@@ -89,16 +90,19 @@
                   <tr>
                     <th>ID</th>
                     <th>Gestor</th>
+                    <th>Departamento</th>
+                    <th>Municipio</th>
                     <th>Fecha de Inicio</th>
                     <th>Observaciones</th>
-                    <th>Estado</th>
-                    <th>Opciones</th>
+                    <th>Ver</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of listWorkSpace; let i = index">
                     <td scope="row">{{ i + 1 }}</td>
-                    <td scope="row">{{ item.manager.name }}</td>
+                    <td scope="row">{{ item.manager.alias }}</td>
+                    <td scope="row">{{ item.municipality.department.name }}</td>
+                    <td scope="row">{{ item.municipality.name }}</td>
                     <td scope="row">{{ item.startDate }}</td>
                     <td scope="row">
                       <textarea
@@ -109,13 +113,10 @@
                         >{{ item.observations }}</textarea
                       >
                     </td>
-                    <td scope="row">
-                      {{ item.isActive ? "Activo" : "Inactivo" }}
-                    </td>
                     <td>
                       <i
                         class="material-icons cursor"
-                        (click)="updateWorkSpace()"
+                        (click)="updateWorkSpace(item)"
                         >double_arrow</i
                       >
                     </td>

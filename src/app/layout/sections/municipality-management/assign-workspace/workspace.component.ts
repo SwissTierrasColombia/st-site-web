@@ -104,7 +104,7 @@ export class WorkspaceComponent implements OnInit {
     this.selectAllMunicipalities = false;
     this.dataCreateWorkSpace.municipalityId = ['0'];
     this.serviceWorkspaces
-      .GetMunicipalitiesByDeparment(
+      .getMunicipalitiesThatNotHasWorkspaces(
         Number(this.dataCreateWorkSpace.selectDepartment)
       )
       .subscribe((data: any) => {

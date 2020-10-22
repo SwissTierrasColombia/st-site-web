@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
+import { ManagersService } from 'src/app/services/managers/managers.service';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 
 @Component({
@@ -11,28 +12,31 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
   styleUrls: ['./workspace-active.component.scss'],
 })
 export class WorkspaceActiveComponent implements OnInit {
-  departments: any;
-  selectDepartment: number;
+  activeManagers: any;
+  selectManager: number;
   munucipalities: any;
   selectMunicipality: number;
   isAdministrator: boolean;
   isActive: boolean;
+  isActiveSearch: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private roles: RoleModel,
     private router: Router,
-    public toastrService: ToastrService
+    public toastrService: ToastrService,
+    private serviceManagers: ManagersService
   ) {
-    this.departments = [];
-    this.selectDepartment = 0;
+    this.activeManagers = [];
+    this.selectManager = 0;
     this.munucipalities = 0;
     this.isAdministrator = false;
     this.selectMunicipality = 0;
+    this.isActiveSearch = false;
   }
 
   ngOnInit(): void {
-    this.serviceWorkspaces.getDepartments().subscribe((response) => {
-      this.departments = response;
+    this.serviceManagers.getManagers().subscribe((data: any) => {
+      this.activeManagers = data;
     });
     const rol = JwtHelper.getUserPublicInformation();
     const role = rol.roles.find((elem) => {
@@ -46,7 +50,7 @@ export class WorkspaceActiveComponent implements OnInit {
 
   changeDepartament() {
     this.serviceWorkspaces
-      .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
+      .getMunicipalitiesByManager(this.selectManager)
       .subscribe((data) => {
         this.munucipalities = data;
       });
@@ -68,5 +72,11 @@ export class WorkspaceActiveComponent implements OnInit {
           );
         }
       });
+  }
+  changeMunicipalitie() {
+    this.isActiveSearch = false;
+    if (this.selectMunicipality !== 0) {
+      this.isActiveSearch = true;
+    }
   }
 }
