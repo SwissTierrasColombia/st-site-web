@@ -323,7 +323,7 @@ export class OperatorAssignmentComponent implements OnInit {
   }
   volver() {
     this.router.navigate([
-      '/gestion/workspace',
+      '/gestion/workspace/asignado',
       {
         selectDepartment: this.selectDepartment,
         selectMunicipality: this.selectMunicipality,

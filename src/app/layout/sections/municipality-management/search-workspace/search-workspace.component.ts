@@ -60,10 +60,6 @@ export class SearchWorkspaceComponent implements OnInit {
         if (response.length > 0) {
           this.listWorkSpace = response;
           this.isActive = true;
-          this.router.navigate([
-            'gestion/workspace/' + this.selectMunicipality + '/operador',
-            { tab: this.isAdministrator ? 4 : 5 },
-          ]);
         } else {
           this.isActive = false;
           this.toastrService.error(
