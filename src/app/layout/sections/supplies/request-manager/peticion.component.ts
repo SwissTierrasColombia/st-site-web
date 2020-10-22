@@ -5,12 +5,11 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import * as _moment from 'moment';
 
-
 const moment = _moment;
 @Component({
   selector: 'app-peticion',
   templateUrl: './peticion.component.html',
-  styleUrls: ['./peticion.component.scss']
+  styleUrls: ['./peticion.component.scss'],
 })
 export class PeticionComponent implements OnInit {
   providers: any;
@@ -23,37 +22,32 @@ export class PeticionComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
     private toast: ToastrService,
-    private modalService: NgbModal,
+    private modalService: NgbModal
   ) {
     this.providers = [];
     this.providersActive = [];
     this.data = {
-      providerId: "0",
-      description: ""
-    }
+      providerId: '0',
+      description: '',
+    };
     this.petitionsForManager = [];
     this.enviarPeticion = false;
-    this.providerIdPetition = "0";
-
+    this.providerIdPetition = '0';
   }
   ngOnInit(): void {
-    this.serviceProviders.getProviders().subscribe(
-      element => {
-        this.providers = element;
-      }
-    );
-    this.serviceProviders.getProvidersActive().subscribe(
-      element => {
-        this.providersActive = element;
-      }
-    );
+    this.serviceProviders.getProviders().subscribe((element) => {
+      this.providers = element;
+    });
+    this.serviceProviders.getProvidersActive().subscribe((element) => {
+      this.providersActive = element;
+    });
   }
   clone(obj: any) {
     return JSON.parse(JSON.stringify(obj));
   }
   changeStatePetition() {
     this.enviarPeticion = false;
-    if (this.data.providerId !== "0" && this.data.description.length > 0) {
+    if (this.data.providerId !== '0' && this.data.description.length > 0) {
       this.enviarPeticion = true;
     }
   }
@@ -62,12 +56,12 @@ export class PeticionComponent implements OnInit {
   }
   closeModalPeticion(option: boolean) {
     if (option) {
-      this.serviceWorkspaces.createPetition(this.data).subscribe(_ => {
-        this.toast.success("Petición enviada correctamente.");
+      this.serviceWorkspaces.createPetition(this.data).subscribe((_) => {
+        this.toast.success('Petición enviada correctamente.');
         this.data = {
-          providerId: "0",
-          description: ""
-        }
+          providerId: '0',
+          description: '',
+        };
         this.enviarPeticion = false;
       });
     }
@@ -75,10 +69,12 @@ export class PeticionComponent implements OnInit {
   }
   changeStateGetPetition() {
     this.petitionsForManager = [];
-    if (this.petitionsForManager !== "0") {
-      this.serviceWorkspaces.getPetitionsForManager(this.providerIdPetition).subscribe(response => {
-        this.petitionsForManager = response;
-      });
+    if (this.petitionsForManager !== '0') {
+      this.serviceWorkspaces
+        .getPetitionsForManager(this.providerIdPetition)
+        .subscribe((response) => {
+          this.petitionsForManager = response;
+        });
     }
   }
   formatDate(date: string) {
