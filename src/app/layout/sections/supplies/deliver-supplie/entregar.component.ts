@@ -5,7 +5,6 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-entregar',
   templateUrl: './entregar.component.html',
@@ -89,7 +88,7 @@ export class EntregarComponent implements OnInit {
         this.idWorkSpace = response.id;
       });
   }
-  getPage(page: Number) {
+  getPage(page: number) {
     this.firstSearch = true;
     this.serviceWorkspaces
       .GetSuppliesByMunicipalityFilter(this.selectMunicipality, page, true)
@@ -98,9 +97,10 @@ export class EntregarComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
+        // tslint:disable-next-line: prefer-for-of
         for (let index = 0; index < this.allSupplies.length; index++) {
           if (this.allSupplies[index].typeSupply === null) {
-            let owner = this.allSupplies[index].owners.find((data) => {
+            const owner = this.allSupplies[index].owners.find((data) => {
               return data.ownerType === 'CADASTRAL_AUTHORITY';
             });
             if (owner) {
@@ -138,16 +138,16 @@ export class EntregarComponent implements OnInit {
       });
   }
   isAuthority(item: any) {
-    let owner = item.owners.find((data) => {
+    const owner = item.owners.find((data) => {
       return data.ownerType === 'CADASTRAL_AUTHORITY';
     });
     return owner ? true : false;
   }
   clickCheckBox() {
     if (this.deliverySupplies.supplies.length > 0) {
-      if (this.deliverySupplies.observations != '') {
+      if (this.deliverySupplies.observations !== '') {
         const data = this.deliverySupplies.supplies.find((element) => {
-          return element.observations == '';
+          return element.observations === '';
         });
         if (data) {
           this.enabledButton = true;
@@ -164,12 +164,12 @@ export class EntregarComponent implements OnInit {
   builddelivery(item: any, state: boolean) {
     if (this.usermanager) {
       if (state) {
-        let comprobarID = this.deliverySupplies.supplies.find((element) => {
-          return element.supplyId == item.id;
+        const comprobarID = this.deliverySupplies.supplies.find((element) => {
+          return element.supplyId === item.id;
         });
         if (comprobarID) {
           this.deliverySupplies.supplies.forEach((element) => {
-            if (item.id == element.supplyId) {
+            if (item.id === element.supplyId) {
               element.observations = item.observationsTosupplie;
             }
           });
