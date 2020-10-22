@@ -76,5 +76,56 @@
         </div>
       </div>
     </div>
+    <div class="card mt-2" *ngIf="isActive === true">
+      <div class="card-header text-center">
+        <h3>Espacios de Trabajo</h3>
+      </div>
+      <div class="card-body container">
+        <div class="row justify-content-md-center">
+          <div class="col-12">
+            <div class="table-inverse table-responsive">
+              <table class="table table-striped text-center">
+                <thead class="thead-inverse">
+                  <tr>
+                    <th>ID</th>
+                    <th>Gestor</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Observaciones</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listWorkSpace; let i = index">
+                    <td scope="row">{{ i + 1 }}</td>
+                    <td scope="row">{{ item.manager.name }}</td>
+                    <td scope="row">{{ item.startDate }}</td>
+                    <td scope="row">
+                      <textarea
+                        class="form-control"
+                        rows="3"
+                        maxlength="255"
+                        disabled="true"
+                        >{{ item.observations }}</textarea
+                      >
+                    </td>
+                    <td scope="row">
+                      {{ item.isActive ? "Activo" : "Inactivo" }}
+                    </td>
+                    <td>
+                      <i
+                        class="material-icons cursor"
+                        (click)="updateWorkSpace()"
+                        >double_arrow</i
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

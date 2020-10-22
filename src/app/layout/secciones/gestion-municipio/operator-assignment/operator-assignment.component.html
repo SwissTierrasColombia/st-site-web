@@ -212,6 +212,7 @@
                       <th>ID</th>
                       <th>Repositorio Documental</th>
                       <th>Hito</th>
+                      <th>Entregado por</th>
                       <th>Fecha de Creación</th>
                     </tr>
                   </thead>
@@ -228,6 +229,14 @@
                         </i>
                       </td>
                       <td scope="row">{{ item.milestone.name }}</td>
+                      <td scope="row">
+                        <div *ngIf="item.milestone.id === 1">
+                          AUTORIDAD CATASTRAL
+                        </div>
+                        <div *ngIf="item.milestone.id === 3">
+                          {{ dataWorkSpace.manager.alias }}
+                        </div>
+                      </td>
                       <td scope="row">{{ formatDate(item.createdAt) }}</td>
                     </tr>
                   </tbody>

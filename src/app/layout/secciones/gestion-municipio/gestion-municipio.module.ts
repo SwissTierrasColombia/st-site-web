@@ -9,12 +9,14 @@ import { OperatorAssignmentComponent } from './operator-assignment/operator-assi
 import { BsComponentModule } from '../../bs-component/bs-component.module';
 import { WorkspaceActiveComponent } from './workspace-active/workspace-active.component';
 import { NgSelect2Module } from 'ng-select2';
+import { SearchWorkspaceComponent } from './search-workspace/search-workspace.component';
 
 @NgModule({
   declarations: [
     WorkspaceComponent,
     OperatorAssignmentComponent,
     WorkspaceActiveComponent,
+    SearchWorkspaceComponent,
   ],
   imports: [
     CommonModule,

@@ -22,6 +22,7 @@
                 name="managers"
                 id="managers"
                 [(ngModel)]="dataCreateWorkSpace.managerCode"
+                (change)="changeData()"
               >
                 <option value="0" selected>Seleccione el Gestor</option>
                 <option [ngValue]="item.id" *ngFor="let item of activeManagers">
@@ -40,6 +41,7 @@
                 type="date"
                 name="FechaInicio"
                 [(ngModel)]="dataCreateWorkSpace.startDate"
+                (change)="changeData()"
               />
             </div>
           </div>
@@ -55,7 +57,7 @@
                 class="custom-select"
                 name="departments"
                 id="departments"
-                [(ngModel)]="selectDepartment"
+                [(ngModel)]="dataCreateWorkSpace.selectDepartment"
               >
                 <option value="0" selected>Seleccione el Departamento</option>
                 <option [ngValue]="item.id" *ngFor="let item of departments">
@@ -75,8 +77,8 @@
                 name="select2Munucipalities"
                 [data]="munucipalities"
                 [options]="options"
-                [width]="500"
-                [(ngModel)]="selectMunicipality"
+                [(ngModel)]="dataCreateWorkSpace.municipalityId"
+                (change)="changeData()"
               >
               </ng-select2>
             </div>
@@ -98,6 +100,7 @@
                 rows="3"
                 name="observaciones"
                 [(ngModel)]="dataCreateWorkSpace.observations"
+                (change)="changeData()"
               ></textarea>
             </div>
           </div>
@@ -133,69 +136,10 @@
         type="button"
         class="btn btn-dark"
         (click)="openModal(modalRegistrar)"
+        [disabled]="!createActive"
       >
-        Crear espacio de trabajo
+        Asignar Gestor Catastral
       </button>
-    </div>
-    <!-- <div class="card-footer text-muted text-center">
-      <button type="button" class="btn btn-dark" (click)="searchWorkSpace()">
-        Buscar
-      </button>
-    </div> -->
-  </div>
-  <div class="card mt-2" *ngIf="resultWorkSpace.length != 0">
-    <div class="card-header text-center">
-      <h3>Espacios de Trabajo</h3>
-    </div>
-    <div class="card-body container">
-      <div class="row justify-content-md-center">
-        <div class="col-12">
-          <div class="table-inverse table-responsive">
-            <table class="table table-striped text-center">
-              <thead class="thead-inverse">
-                <tr>
-                  <th>ID</th>
-                  <th>Gestor</th>
-                  <th>Número de Predios</th>
-                  <th>Área Municipio</th>
-                  <th>Fecha de Inicio</th>
-                  <th>Observaciones</th>
-                  <th>Estado</th>
-                  <th>Opciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of listWorkSpace; let i = index">
-                  <td scope="row">{{ i + 1 }}</td>
-                  <td scope="row">{{ item.manager.name }}</td>
-                  <td scope="row">{{ item.numberAlphanumericParcels }}</td>
-                  <td scope="row">
-                    {{ item.municipalityArea }} km <sup>2</sup>
-                  </td>
-                  <td scope="row">{{ item.startDate }}</td>
-                  <td scope="row">
-                    <textarea
-                      class="form-control"
-                      rows="3"
-                      maxlength="255"
-                      disabled="true"
-                      >{{ item.observations }}</textarea
-                    >
-                  </td>
-                  <td scope="row">
-                    {{ item.isActive ? "Activo" : "Inactivo" }}
-                  </td>
-                  <td>
-                    <i class="material-icons cursor" (click)="updateWorkSpace()"
-                      >double_arrow</i
-                    >
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
   <ng-template #modalRegistrar let-modal>

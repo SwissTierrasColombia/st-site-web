@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
-import { Router, ActivatedRoute } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { ToastrService } from 'ngx-toastr';
@@ -23,22 +22,18 @@ export class WorkspaceComponent implements OnInit {
   docsSoport: File;
   departments: any;
   dataCreateWorkSpace: any;
-  selectDepartment: number;
-  selectMunicipality: string;
   viewCreateWorkSpace: boolean;
   resultWorkSpace: any;
   listWorkSpace: any;
   @ViewChild('myInput')
   myInputVariable: ElementRef;
-
+  createActive: boolean;
   constructor(
     private serviceManagers: ManagersService,
     private serviceWorkspaces: WorkspacesService,
-    private router: Router,
     private roles: RoleModel,
     private toastr: ToastrService,
-    private modalService: NgbModal,
-    private activedRoute: ActivatedRoute
+    private modalService: NgbModal
   ) {
     this.activeManagers = [];
     this.departments = [];
@@ -50,35 +45,24 @@ export class WorkspaceComponent implements OnInit {
     ];
     this.resultWorkSpace = [];
     this.listWorkSpace = [];
-    this.selectDepartment = 0;
-    this.selectMunicipality = '0';
     this.viewCreateWorkSpace = false;
     this.dataCreateWorkSpace = {
-      selectDepartment: '',
+      selectDepartment: '0',
       supportFile: '',
       managerCode: '0',
-      municipalityId: '',
+      municipalityId: ['0'],
       observations: '',
       startDate: '',
     };
     this.options = {
-      width: '350',
       multiple: true,
       tags: false,
+      width: '450',
     };
+    this.createActive = false;
   }
 
   ngOnInit() {
-    this.activedRoute.params.subscribe((response) => {
-      if (response.selectDepartment) {
-        this.selectDepartment = Number(response.selectDepartment);
-        this.changeDepartament();
-        this.selectMunicipality = response.selectMunicipality;
-        setTimeout(() => {
-          this.searchWorkSpace();
-        }, 1000);
-      }
-    });
     const rol = JwtHelper.getUserPublicInformation();
     const role = rol.roles.find((elem) => {
       return elem.id === this.roles.administrador;
@@ -98,6 +82,7 @@ export class WorkspaceComponent implements OnInit {
       const re = /pdf*/;
       if (file[0].type.match(re)) {
         this.dataCreateWorkSpace.supportFile = file[0];
+        this.changeData();
       } else {
         this.dataCreateWorkSpace.supportFile = '';
         this.myInputVariable.nativeElement.value = '';
@@ -112,35 +97,19 @@ export class WorkspaceComponent implements OnInit {
     }
   }
   changeDepartament() {
-    this.dataCreateWorkSpace.selectDepartment = this.selectDepartment;
     this.serviceWorkspaces
       .GetMunicipalitiesByDeparment(
         Number(this.dataCreateWorkSpace.selectDepartment)
       )
       .subscribe((data: any) => {
-        console.log(this.munucipalities);
+        this.changeData();
+        this.munucipalities = [];
         data.forEach((element) => {
           this.munucipalities.push({
             id: element.id + '',
             text: element.name,
           });
         });
-        // this.munucipalities = data;
-      });
-  }
-  searchWorkSpace() {
-    this.dataCreateWorkSpace.municipalityId = this.selectMunicipality;
-    this.serviceWorkspaces
-      .getWorkSpaceByMunicipality(this.selectMunicipality.toString())
-      .subscribe((response) => {
-        this.resultWorkSpace = response;
-        if (this.resultWorkSpace.length === 0) {
-          this.viewCreateWorkSpace = true;
-        } else {
-          this.viewCreateWorkSpace = false;
-          this.listWorkSpace = response;
-          this.listWorkSpace.reverse();
-        }
       });
   }
   createWorkSpace() {
@@ -153,24 +122,18 @@ export class WorkspaceComponent implements OnInit {
         .createWorkspace(this.dataCreateWorkSpace)
         .subscribe((_) => {
           this.toastr.success(
-            'Se ha asignado el espacio de trabajo para el municipio seleccionado.'
+            'Se ha asignado el espacio de trabajo para el(los) municipio(s) seleccionado(s).'
           );
           this.dataCreateWorkSpace = {
-            selectDepartment: '',
+            selectDepartment: '0',
             supportFile: '',
             managerCode: '0',
-            municipalityId: '',
+            municipalityId: ['0'],
             observations: '',
             startDate: '',
           };
-          this.searchWorkSpace();
         });
     }
-  }
-  updateWorkSpace() {
-    this.router.navigate([
-      'gestion/workspace/' + this.selectMunicipality + '/operador',
-    ]);
   }
   openModal(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
@@ -181,6 +144,19 @@ export class WorkspaceComponent implements OnInit {
       this.modalService.dismissAll();
     } else {
       this.modalService.dismissAll();
+    }
+  }
+  changeData() {
+    this.createActive = false;
+    if (
+      this.dataCreateWorkSpace.managerCode !== '0' &&
+      this.dataCreateWorkSpace.startDate !== '' &&
+      this.dataCreateWorkSpace.supportFile !== '' &&
+      this.dataCreateWorkSpace.selectDepartment !== '0' &&
+      this.dataCreateWorkSpace.municipalityId !== ['0'] &&
+      this.dataCreateWorkSpace.observations !== ''
+    ) {
+      this.createActive = true;
     }
   }
 }

@@ -6,17 +6,18 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 
 @Component({
-  selector: 'app-workspace-active',
-  templateUrl: './workspace-active.component.html',
-  styleUrls: ['./workspace-active.component.scss'],
+  selector: 'app-search-workspace',
+  templateUrl: './search-workspace.component.html',
+  styleUrls: ['./search-workspace.component.scss'],
 })
-export class WorkspaceActiveComponent implements OnInit {
+export class SearchWorkspaceComponent implements OnInit {
   departments: any;
   selectDepartment: number;
   munucipalities: any;
   selectMunicipality: number;
   isAdministrator: boolean;
   isActive: boolean;
+  listWorkSpace: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private roles: RoleModel,
@@ -28,6 +29,7 @@ export class WorkspaceActiveComponent implements OnInit {
     this.munucipalities = 0;
     this.isAdministrator = false;
     this.selectMunicipality = 0;
+    this.listWorkSpace = [];
   }
 
   ngOnInit(): void {
@@ -56,10 +58,11 @@ export class WorkspaceActiveComponent implements OnInit {
       .getWorkSpaceByMunicipality(this.selectMunicipality.toString())
       .subscribe((response: any) => {
         if (response.length > 0) {
+          this.listWorkSpace = response;
           this.isActive = true;
           this.router.navigate([
             'gestion/workspace/' + this.selectMunicipality + '/operador',
-            { tab: 4 },
+            { tab: this.isAdministrator ? 4 : 5 },
           ]);
         } else {
           this.isActive = false;
@@ -68,5 +71,10 @@ export class WorkspaceActiveComponent implements OnInit {
           );
         }
       });
+  }
+  updateWorkSpace() {
+    this.router.navigate([
+      'gestion/workspace/' + this.selectMunicipality + '/operador',
+    ]);
   }
 }
