@@ -28,6 +28,8 @@ export class WorkspaceComponent implements OnInit {
   @ViewChild('myInput')
   myInputVariable: ElementRef;
   createActive: boolean;
+  selectAllMunicipalities: boolean;
+  viewSelectAllMunicipalities: boolean;
   constructor(
     private serviceManagers: ManagersService,
     private serviceWorkspaces: WorkspacesService,
@@ -60,6 +62,8 @@ export class WorkspaceComponent implements OnInit {
       width: '450',
     };
     this.createActive = false;
+    this.selectAllMunicipalities = false;
+    this.viewSelectAllMunicipalities = false;
   }
 
   ngOnInit() {
@@ -97,11 +101,14 @@ export class WorkspaceComponent implements OnInit {
     }
   }
   changeDepartament() {
+    this.selectAllMunicipalities = false;
+    this.dataCreateWorkSpace.municipalityId = ['0'];
     this.serviceWorkspaces
       .GetMunicipalitiesByDeparment(
         Number(this.dataCreateWorkSpace.selectDepartment)
       )
       .subscribe((data: any) => {
+        this.viewSelectAllMunicipalities = true;
         this.changeData();
         this.munucipalities = [];
         data.forEach((element) => {
@@ -132,6 +139,9 @@ export class WorkspaceComponent implements OnInit {
             observations: '',
             startDate: '',
           };
+          this.createActive = false;
+          this.viewSelectAllMunicipalities = false;
+          this.selectAllMunicipalities = false;
         });
     }
   }
@@ -157,6 +167,17 @@ export class WorkspaceComponent implements OnInit {
       this.dataCreateWorkSpace.observations !== ''
     ) {
       this.createActive = true;
+    }
+  }
+  clickCheckBox() {
+    this.selectAllMunicipalities = !this.selectAllMunicipalities;
+    if (this.selectAllMunicipalities) {
+      this.dataCreateWorkSpace.municipalityId = [];
+      this.munucipalities.forEach((element) => {
+        this.dataCreateWorkSpace.municipalityId.push(element.id);
+      });
+    } else {
+      this.dataCreateWorkSpace.municipalityId = ['0'];
     }
   }
 }

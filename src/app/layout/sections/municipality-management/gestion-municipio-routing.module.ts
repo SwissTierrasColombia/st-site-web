@@ -1,3 +1,4 @@
+import { SearchWorkspaceComponent } from './search-workspace/search-workspace.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WorkspaceComponent } from './workspace/workspace.component';
@@ -7,21 +8,24 @@ import { WorkspaceActiveComponent } from './workspace-active/workspace-active.co
 const routes: Routes = [
   {
     path: 'workspace',
-    component: WorkspaceComponent
+    component: WorkspaceComponent,
   },
   {
     path: 'workspace/active',
-    component: WorkspaceActiveComponent
+    component: WorkspaceActiveComponent,
   },
   {
     path: 'workspace/:idWorkspace/operador',
-    component: OperatorAssignmentComponent
-  }
-
+    component: OperatorAssignmentComponent,
+  },
+  {
+    path: 'workspace/asignado',
+    component: SearchWorkspaceComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class GestionMunicipioRoutingModule { }
+export class GestionMunicipioRoutingModule {}

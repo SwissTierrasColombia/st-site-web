@@ -4,7 +4,7 @@ import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
 import { PageHeaderModule } from 'src/app/shared';
-import { ProfileComponent } from './perfil/profile.component';
+import { ProfileComponent } from './profile/profile.component';
 import { AccountRoutingModule } from './account-routing.module';
 
 

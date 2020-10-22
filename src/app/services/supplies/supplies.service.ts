@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class InsumosService {
+export class SuppliesService {
   url: string;
   constructor(private httpClient: HttpClient) {
     this.url = environment.apiBaseUrlPrefix;

@@ -9,8 +9,7 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { saveAs } from 'file-saver';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
-import { InsumosService } from 'src/app/services/insumos/insumos.service';
-import { Title } from '@angular/platform-browser';
+import { SuppliesService } from 'src/app/services/supplies/supplies.service';
 
 const moment = _moment;
 @Component({
@@ -57,7 +56,7 @@ export class OperatorAssignmentComponent implements OnInit {
     private serviceOperators: OperatorsService,
     private roles: RoleModel,
     private modalService: NgbModal,
-    private insumosService: InsumosService
+    private insumosService: SuppliesService
   ) {
     this.dataWorkSpace = {
       manager: {},

@@ -66,7 +66,7 @@
               </select>
             </div>
           </div>
-          <div class="col-12 col-md-6 mb-1">
+          <div class="col-12 col-md-5 mb-1">
             <div class="input-group">
               <div class="input-group-prepend">
                 <label class="input-group-text" aria-required="true"
@@ -88,7 +88,32 @@
               Gestor.
             </small>
           </div>
-          <div class="col-12">
+          <div class="col-12 col-md-1 mb-1" *ngIf="viewSelectAllMunicipalities">
+            <label
+              class="switch"
+              [title]="
+                selectAllMunicipalities
+                  ? 'Cancelar selección de municipios'
+                  : 'Seleccione todos los municipios'
+              "
+            >
+              <input
+                [(ngModel)]="selectAllMunicipalities"
+                type="checkbox"
+                name="checkboxSelectAllMunicipalities"
+                (click)="clickCheckBox()"
+              />
+              <span class="slider round"></span>
+            </label>
+            <small class="form-text text-muted">
+              {{
+                selectAllMunicipalities
+                  ? "Cancelar selección de municipios"
+                  : "Seleccione todos los municipios"
+              }}
+            </small>
+          </div>
+          <div class="col-12 col-md-12 mb-1">
             <div class="input-group">
               <div class="input-group-prepend input-group-text">
                 <div class="">* Alcance / Observaciones</div>

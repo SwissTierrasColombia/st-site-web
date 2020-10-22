@@ -1,0 +1,302 @@
+<div>
+  <app-page-header [heading]="'Usuarios registrados'" [icon]="'fa-star'">
+  </app-page-header>
+  <div class="d-flex justify-content-around">
+    <div class="card">
+      <div class="card-body" *ngIf="dataListUser.length > 0">
+        <ngb-pagination
+          class="d-flex justify-content-center"
+          [(page)]="page"
+          [pageSize]="pageSize"
+          [collectionSize]="dataListUser.length"
+          [rotate]="true"
+          [ellipses]="false"
+          [boundaryLinks]="true"
+        >
+        </ngb-pagination>
+        <div class="search-hero">
+          <input
+            class="form-control"
+            type="text"
+            name="search"
+            [(ngModel)]="searchText"
+            autocomplete="off"
+            placeholder="&#61442;  Buscar"
+          />
+        </div>
+        <div class="table-inverse table-responsive">
+          <table class="table table-striped text-center">
+            <thead class="thead-inverse">
+              <tr>
+                <th *ngIf="roleConnectAdmin">Entidad</th>
+                <th *ngIf="!roleConnectManager && !roleConnectProvider">Rol</th>
+                <th *ngIf="!roleConnectSuperAdmin">
+                  {{
+                    roleConnectAdmin || roleConnectManager
+                      ? "Perfil"
+                      : "Área de trabajo"
+                  }}
+                </th>
+                <th *ngIf="roleConnectAdmin">Área de trabajo</th>
+                <th *ngIf="roleConnectProvider">Perfil</th>
+                <th>Usuario</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Correo</th>
+                <th>Fecha de Creación</th>
+                <th>Editar</th>
+                <th>Activar/Desactivar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let item of dataListUser
+                    | filter: searchText
+                    | slice
+                      : (page - 1) * pageSize
+                      : (page - 1) * pageSize + pageSize
+                "
+              >
+                <td scope="row" *ngIf="roleConnectAdmin">
+                  {{ item.entity ? item.entity.name : "N/A" }}
+                </td>
+                <td
+                  scope="row"
+                  *ngIf="!roleConnectManager && !roleConnectProvider"
+                >
+                  <div *ngFor="let rol of item.roles">
+                    {{ globalFuntionString(rol.name) }}
+                  </div>
+                </td>
+                <td scope="row" *ngIf="!roleConnectSuperAdmin">
+                  <div *ngIf="item.profilesManager.length > 0">
+                    <div *ngFor="let perfil of item.profilesManager">
+                      {{ perfil.name }}
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      item.profilesProvider.length > 0 && !roleConnectAdmin
+                    "
+                  >
+                    <div *ngFor="let perfil of item.profilesProvider">
+                      {{ perfil.name }}
+                    </div>
+                  </div>
+                  <div *ngIf="roleConnectAdmin">
+                    <div *ngFor="let perfil of item.rolesProvider">
+                      {{ perfil.name }}
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      item.profilesManager.length == 0 &&
+                      item.profilesProvider.length == 0 &&
+                      item.rolesProvider.length == 0
+                    "
+                  >
+                    N/A
+                  </div>
+                  <div
+                    *ngIf="
+                      item.profilesManager.length == 0 &&
+                      item.profilesProvider.length == 0 &&
+                      isDelegado(item) &&
+                      roleConnectProvider
+                    "
+                  >
+                    N/A
+                  </div>
+                  <div
+                    *ngIf="
+                      roleConnectAdmin &&
+                      item.rolesProvider.length == 0 &&
+                      isProvider(item)
+                    "
+                  >
+                    TÉCNICO
+                  </div>
+                </td>
+                <td *ngIf="roleConnectAdmin">
+                  <div *ngIf="item.profilesProvider.length > 0">
+                    <div *ngFor="let perfil of item.profilesProvider">
+                      {{ perfil.name }}
+                    </div>
+                  </div>
+                  <div *ngIf="item.profilesProvider.length === 0">N/A</div>
+                </td>
+                <td scope="row" *ngIf="roleConnectProvider">
+                  <div *ngIf="isDelegado(item)">Revisor</div>
+                  <div *ngIf="!isDelegado(item)">Técnico</div>
+                </td>
+                <td scope="row">{{ item.username }}</td>
+                <td scope="row">{{ item.firstName }}</td>
+                <td scope="row">{{ item.lastName }}</td>
+                <td scope="row">{{ item.email }}</td>
+                <td scope="row">{{ globalFuntionDate(item.createdAt) }}</td>
+                <td scope="row" *ngIf="roleConnectAdmin">
+                  <div *ngIf="isDirector(item)">
+                    <span
+                      ngbTooltip="Modificar Usuario"
+                      placement="bottom"
+                      show-delay="500"
+                    >
+                      <i
+                        class="material-icons mr-2"
+                        (click)="updateUser(item.id)"
+                      >
+                        edit
+                      </i>
+                    </span>
+                  </div>
+                </td>
+                <td scope="row" *ngIf="!roleConnectAdmin">
+                  <span
+                    ngbTooltip="Modificar Usuario"
+                    placement="bottom"
+                    show-delay="500"
+                  >
+                    <i
+                      class="material-icons mr-2"
+                      (click)="updateUser(item.id)"
+                    >
+                      edit
+                    </i>
+                  </span>
+                </td>
+                <td scope="row" *ngIf="roleConnectAdmin">
+                  <div *ngIf="isDirector(item)">
+                    <label
+                      class="switch"
+                      [title]="
+                        item.enabled ? 'Desactivar Usuario' : 'Activar Usuario'
+                      "
+                      (click)="
+                        item.enabled
+                          ? openModalDisabled(modalDisabled, item.id)
+                          : openModalEnabled(modalEnabled, item.id)
+                      "
+                    >
+                      <input
+                        (click)="clickCheckBox($event)"
+                        [(ngModel)]="item.enabled"
+                        type="checkbox"
+                      />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </td>
+                <td scope="row" *ngIf="!roleConnectAdmin">
+                  <label
+                    class="switch"
+                    [title]="
+                      item.enabled ? 'Desactivar Usuario' : 'Activar Usuario'
+                    "
+                    (click)="
+                      item.enabled
+                        ? openModalDisabled(modalDisabled, item.id)
+                        : openModalEnabled(modalEnabled, item.id)
+                    "
+                  >
+                    <input
+                      (click)="clickCheckBox($event)"
+                      [(ngModel)]="item.enabled"
+                      type="checkbox"
+                    />
+                    <span class="slider round"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-body" *ngIf="dataListUser.length === 0">
+        <div class="alert alert-primary text-center" role="alert">
+          No tiene usuarios registrados
+        </div>
+      </div>
+      <ng-template #modalDisabled let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">¿Está seguro de desactivar el usuario?</h4>
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="modal.dismiss('Cross click')"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5 class="alert alert-warning text-center">
+            Advertencia: Esta acción deshabilita el usuario y no lo dejara
+            ingresar al sistema.
+          </h5>
+        </div>
+        <div class="modal-footer">
+          <div class="col-6">
+            <button
+              type="button"
+              class="btn btn-dark btn-block"
+              (click)="closeModalDisabled(false)"
+            >
+              No
+            </button>
+          </div>
+          <div class="col-6 text-right">
+            <button
+              type="button"
+              ngbAutofocus
+              class="btn btn-success btn-block"
+              (click)="closeModalDisabled(true)"
+            >
+              Si
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #modalEnabled let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">¿Está seguro de activar el usuario?</h4>
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="modal.dismiss('Cross click')"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5 class="alert alert-warning text-center">
+            Advertencia: Esta acción habilita el usuario y le permitirá el
+            ingreso al sistema.
+          </h5>
+        </div>
+        <div class="modal-footer">
+          <div class="col-6">
+            <button
+              type="button"
+              class="btn btn-dark btn-block"
+              (click)="closeModalEnabled(false)"
+            >
+              No
+            </button>
+          </div>
+          <div class="col-6 text-right">
+            <button
+              type="button"
+              ngbAutofocus
+              class="btn btn-success btn-block"
+              (click)="closeModalEnabled(true)"
+            >
+              Si
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

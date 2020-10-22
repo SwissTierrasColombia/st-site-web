@@ -5,49 +5,48 @@ import { ListUserComponent } from './list-user/list-user.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { ProfilesComponent } from './profiles/profiles.component';
 import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-guard.service';
-import { GestorComponent } from './gestor/gestor.component';
-import { OperadorComponent } from './operador/operador.component';
-import { ProveedorComponent } from './proveedor/proveedor.component';
+import { GestorComponent } from './manager/gestor.component';
+import { OperadorComponent } from './operator/operador.component';
+import { ProveedorComponent } from './provider/proveedor.component';
 import { RoleAdminGuard } from 'src/app/guards/role-admin-guard.service';
 
 const routes: Routes = [
   {
     path: 'crear-usuario',
-    component: CreateUserComponent
-
+    component: CreateUserComponent,
   },
   {
     path: 'usuarios',
-    component: ListUserComponent
+    component: ListUserComponent,
   },
   {
     path: 'usuario/:idUser/modificar',
-    component: UpdateUserComponent
+    component: UpdateUserComponent,
   },
   {
     path: 'crear/area-trabajo',
     component: ProfilesComponent,
-    canActivate: [RoleProviderDirectorGuard]
+    canActivate: [RoleProviderDirectorGuard],
   },
   {
     path: 'crear/gestor',
     component: GestorComponent,
-    canActivate: [RoleAdminGuard]
+    canActivate: [RoleAdminGuard],
   },
   {
     path: 'crear/operador',
     component: OperadorComponent,
-    canActivate: [RoleAdminGuard]
+    canActivate: [RoleAdminGuard],
   },
   {
     path: 'crear/proveedor',
     component: ProveedorComponent,
-    canActivate: [RoleAdminGuard]
-  }
+    canActivate: [RoleAdminGuard],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AdministradorRoutingModule { }
+export class AdministradorRoutingModule {}
