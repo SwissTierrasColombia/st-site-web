@@ -1,5 +1,8 @@
 <div>
-  <app-page-header [heading]="'Búsqueda de Solicitudes'" [icon]="'fa-star'"></app-page-header>
+  <app-page-header
+    [heading]="'Búsqueda de Solicitudes'"
+    [icon]="'fa-star'"
+  ></app-page-header>
   <div class="card">
     <div class="card-header text-center">
       <h3>Búsqueda de Solicitudes</h3>
@@ -9,55 +12,95 @@
     <div class="card-body">
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab" (click)="tab1()"
-            aria-controls="home">
-            <i class="material-icons">
-              location_city
-            </i>Municipio</a>
+          <a
+            class="nav-link"
+            [ngClass]="{ active: tab === 1 }"
+            data-toggle="tab"
+            role="tab"
+            (click)="tab1()"
+            aria-controls="home"
+          >
+            <i class="material-icons"> location_city </i>Municipio</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" [ngClass]="{'active':tab === 2}" data-toggle="tab" role="tab" (click)="tab2()"
-            aria-controls="messages">
-            <i class="material-icons">
-              people
-            </i>Proveedor</a>
+          <a
+            class="nav-link"
+            [ngClass]="{ active: tab === 2 }"
+            data-toggle="tab"
+            role="tab"
+            (click)="tab2()"
+            aria-controls="messages"
+          >
+            <i class="material-icons"> people </i>Proveedor</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" [ngClass]="{'active':tab === 3}" data-toggle="tab" role="tab" (click)="tab3()"
-            aria-controls="messages">
-            <i class="material-icons">
-              view_list
-            </i>Orden</a>
+          <a
+            class="nav-link"
+            [ngClass]="{ active: tab === 3 }"
+            data-toggle="tab"
+            role="tab"
+            (click)="tab3()"
+            aria-controls="messages"
+          >
+            <i class="material-icons"> view_list </i>Orden</a
+          >
         </li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel"><br>
+        <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel">
+          <br />
           <div class="card">
             <div class="card-body">
               <div class="row mb-2">
-                <div class='col-12 col-sm-6 mb-1'>
+                <div class="col-12 col-sm-6 mb-1">
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <label class="input-group-text" aria-required="true">* Departamento</label>
+                      <label class="input-group-text" aria-required="true"
+                        >* Departamento</label
+                      >
                     </div>
-                    <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
-                      [(ngModel)]="selectDepartment">
-                      <option value='0' selected>Seleccione el Departamento</option>
-                      <option [ngValue]="item.id" *ngFor="let item of departments">{{item.name}}
+                    <select
+                      (change)="changeDepartament()"
+                      class="custom-select"
+                      name="departments"
+                      id="departments"
+                      [(ngModel)]="selectDepartment"
+                    >
+                      <option value="0" selected>
+                        Seleccione el Departamento
+                      </option>
+                      <option
+                        [ngValue]="item.id"
+                        *ngFor="let item of departments"
+                      >
+                        {{ item.name }}
                       </option>
                     </select>
                   </div>
                 </div>
-                <div class='col-12 col-sm-6  mb-1'>
+                <div class="col-12 col-sm-6 mb-1">
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <label class="input-group-text">* Municipio</label>
                     </div>
-                    <select (change)="activebuttontab1()" class="custom-select" name="munucipalities"
-                      id="munucipalities" [(ngModel)]="selectMunicipality">
-                      <option value='0' selected>Seleccione el Municipio</option>
-                      <option [ngValue]="item.code" *ngFor="let item of munucipalities">
-                        {{item.name}}</option>
+                    <select
+                      (change)="activebuttontab1()"
+                      class="custom-select"
+                      name="munucipalities"
+                      id="munucipalities"
+                      [(ngModel)]="selectMunicipality"
+                    >
+                      <option value="0" selected>
+                        Seleccione el Municipio
+                      </option>
+                      <option
+                        [ngValue]="item.code"
+                        *ngFor="let item of munucipalities"
+                      >
+                        {{ item.name }}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -71,7 +114,14 @@
               </div>
             </div>
             <div class="card-footer text-muted text-center">
-              <button [disabled]="buttonTab1" type="button" class="btn btn-dark" (click)="getPage('1')">Buscar</button>
+              <button
+                [disabled]="buttonTab1"
+                type="button"
+                class="btn btn-dark"
+                (click)="getPage('1')"
+              >
+                Buscar
+              </button>
             </div>
           </div>
           <div *ngIf="allSupplies.length > 0">
@@ -81,13 +131,27 @@
                   <h5>Resultados de Búsqueda</h5>
                 </div>
                 <div class="card-body">
-                  <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number"
-                    [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [ellipses]="false"
-                    [boundaryLinks]="true" (pageChange)="getPage($event)">
+                  <ngb-pagination
+                    class="d-flex justify-content-center"
+                    id="serverSupplies"
+                    [(page)]="number"
+                    [pageSize]="size"
+                    [collectionSize]="totalElements"
+                    [rotate]="true"
+                    [ellipses]="false"
+                    [boundaryLinks]="true"
+                    (pageChange)="getPage($event)"
+                  >
                   </ngb-pagination>
                   <div class="search-hero">
-                    <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
-                      placeholder="&#61442;  Buscar insumo">
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="search"
+                      [(ngModel)]="searchText"
+                      autocomplete="off"
+                      placeholder="&#61442;  Buscar insumo"
+                    />
                   </div>
                   <div class="table-inverse table-responsive">
                     <table class="table table-striped text-center">
@@ -102,21 +166,38 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let item of allSupplies |filter:searchText">
+                        <tr
+                          *ngFor="let item of allSupplies | filter: searchText"
+                        >
                           <td scope="row">
-                            {{item.provider ? item.provider.name: 'N/A'}}
+                            {{ item.provider ? item.provider.name : "N/A" }}
                           </td>
                           <td scope="row">
                             <div *ngFor="let supp of item.suppliesRequested">
-                              {{supp.typeSupply.name}}.<br> <b>{{supp.state.name}}</b>
+                              {{ supp.typeSupply.name }}.<br />
+                              <b>{{ supp.state.name }}</b>
                             </div>
                           </td>
-                          <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                          <td scope="row">{{globalFuntionDate(item.deadline)}}</td>
                           <td scope="row">
-                            {{item.closedAt?globalFuntionDate(item.closedAt):'N/A'}}</td>
+                            {{ globalFuntionDate(item.createdAt) }}
+                          </td>
                           <td scope="row">
-                            {{item.closedAt?'Solicitud Cerrada':'Solicitud Abierta'}}</td>
+                            {{ globalFuntionDate(item.deadline) }}
+                          </td>
+                          <td scope="row">
+                            {{
+                              item.closedAt
+                                ? globalFuntionDate(item.closedAt)
+                                : "N/A"
+                            }}
+                          </td>
+                          <td scope="row">
+                            {{
+                              item.closedAt
+                                ? "Solicitud Cerrada"
+                                : "Solicitud Abierta"
+                            }}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -126,19 +207,33 @@
             </div>
           </div>
         </div>
-        <div class="tab-pane" [ngClass]="{'active':tab === 2}" role="tabpanel"><br>
+        <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel">
+          <br />
           <div class="card">
             <div class="card-body">
               <div class="row mb-2">
-                <div class='col-12'>
+                <div class="col-12">
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <label class="input-group-text" aria-required="true">* Proveedor</label>
+                      <label class="input-group-text" aria-required="true"
+                        >* Proveedor</label
+                      >
                     </div>
-                    <select (change)="activebuttontab2()" class="custom-select" name="providers" id="providers"
-                      [(ngModel)]="selectProvider">
-                      <option value='0' selected>Seleccione el Proveedor</option>
-                      <option [ngValue]="item.id" *ngFor="let item of providers">{{item.name}}
+                    <select
+                      (change)="activebuttontab2()"
+                      class="custom-select"
+                      name="providers"
+                      id="providers"
+                      [(ngModel)]="selectProvider"
+                    >
+                      <option value="0" selected>
+                        Seleccione el Proveedor
+                      </option>
+                      <option
+                        [ngValue]="item.id"
+                        *ngFor="let item of providers"
+                      >
+                        {{ item.name }}
                       </option>
                     </select>
                   </div>
@@ -153,8 +248,14 @@
               </div>
             </div>
             <div class="card-footer text-muted text-center">
-              <button [disabled]="buttonTab2" type="button" class="btn btn-dark"
-                (click)="getPageProvider('1')">Buscar</button>
+              <button
+                [disabled]="buttonTab2"
+                type="button"
+                class="btn btn-dark"
+                (click)="getPageProvider('1')"
+              >
+                Buscar
+              </button>
             </div>
           </div>
           <div *ngIf="infoTabProvider.length > 0">
@@ -164,13 +265,27 @@
                   <h5>Resultados de Búsqueda</h5>
                 </div>
                 <div class="card-body">
-                  <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number"
-                    [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [ellipses]="false"
-                    [boundaryLinks]="true" (pageChange)="getPageProvider($event)">
+                  <ngb-pagination
+                    class="d-flex justify-content-center"
+                    id="serverSupplies"
+                    [(page)]="number"
+                    [pageSize]="size"
+                    [collectionSize]="totalElements"
+                    [rotate]="true"
+                    [ellipses]="false"
+                    [boundaryLinks]="true"
+                    (pageChange)="getPageProvider($event)"
+                  >
                   </ngb-pagination>
                   <div class="search-hero">
-                    <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
-                      placeholder="&#61442;  Buscar insumo">
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="search"
+                      [(ngModel)]="searchText"
+                      autocomplete="off"
+                      placeholder="&#61442;  Buscar insumo"
+                    />
                   </div>
                   <div class="table-inverse table-responsive">
                     <table class="table table-striped text-center">
@@ -186,24 +301,43 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let item of infoTabProvider |filter:searchText">
+                        <tr
+                          *ngFor="
+                            let item of infoTabProvider | filter: searchText
+                          "
+                        >
                           <td scope="row">
-                            {{item.municipality.department.name}}
+                            {{ item.municipality.department.name }}
                           </td>
                           <td scope="row">
-                            {{item.municipality.name}}
+                            {{ item.municipality.name }}
                           </td>
                           <td scope="row">
                             <div *ngFor="let supp of item.suppliesRequested">
-                              {{supp.typeSupply.name}}. <br> <b>{{supp.state.name}}</b>
+                              {{ supp.typeSupply.name }}. <br />
+                              <b>{{ supp.state.name }}</b>
                             </div>
                           </td>
-                          <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                          <td scope="row">{{globalFuntionDate(item.deadline)}}</td>
                           <td scope="row">
-                            {{item.closedAt?globalFuntionDate(item.closedAt):'N/A'}}</td>
+                            {{ globalFuntionDate(item.createdAt) }}
+                          </td>
                           <td scope="row">
-                            {{item.closedAt?'Solicitud Cerrada':'Solicitud Abierta'}}</td>
+                            {{ globalFuntionDate(item.deadline) }}
+                          </td>
+                          <td scope="row">
+                            {{
+                              item.closedAt
+                                ? globalFuntionDate(item.closedAt)
+                                : "N/A"
+                            }}
+                          </td>
+                          <td scope="row">
+                            {{
+                              item.closedAt
+                                ? "Solicitud Cerrada"
+                                : "Solicitud Abierta"
+                            }}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -213,18 +347,27 @@
             </div>
           </div>
         </div>
-        <div class="tab-pane" [ngClass]="{'active':tab === 3}" role="tabpanel"><br>
+        <div class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel">
+          <br />
           <div class="card">
             <div class="card-body">
               <div class="row mb-2">
-                <div class='col-12'>
+                <div class="col-12">
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <label class="input-group-text" aria-required="true">* Ordenes
-                        Gestor</label>
+                      <label class="input-group-text" aria-required="true"
+                        >* Ordenes Gestor</label
+                      >
                     </div>
-                    <input [(ngModel)]="selectPackage" (change)="activebuttontab3()" class="form-control" type="text"
-                      name="numberPackage" id="numberPackage" placeholder="Digite el número de Orden">
+                    <input
+                      [(ngModel)]="selectPackage"
+                      (change)="activebuttontab3()"
+                      class="form-control"
+                      type="text"
+                      name="numberPackage"
+                      id="numberPackage"
+                      placeholder="Digite el número de Orden"
+                    />
                   </div>
                 </div>
               </div>
@@ -237,8 +380,14 @@
               </div>
             </div>
             <div class="card-footer text-muted text-center">
-              <button [disabled]="buttonTab3" type="button" class="btn btn-dark"
-                (click)="getPageOrder('1')">Buscar</button>
+              <button
+                [disabled]="buttonTab3"
+                type="button"
+                class="btn btn-dark"
+                (click)="getPageOrder('1')"
+              >
+                Buscar
+              </button>
             </div>
           </div>
           <div *ngIf="infoTabOrder.length > 0">
@@ -248,54 +397,95 @@
                   <h5>Resultados de Búsqueda</h5>
                 </div>
                 <div class="card-body">
-                  <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="number"
-                    [pageSize]="size" [collectionSize]="totalElements" [rotate]="true" [ellipses]="false"
-                    [boundaryLinks]="true" (pageChange)="getPageOrder($event)">
+                  <ngb-pagination
+                    class="d-flex justify-content-center"
+                    id="serverSupplies"
+                    [(page)]="number"
+                    [pageSize]="size"
+                    [collectionSize]="totalElements"
+                    [rotate]="true"
+                    [ellipses]="false"
+                    [boundaryLinks]="true"
+                    (pageChange)="getPageOrder($event)"
+                  >
                   </ngb-pagination>
                   <div class="search-hero">
-                    <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
-                      placeholder="&#61442;  Buscar insumo">
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="search"
+                      [(ngModel)]="searchText"
+                      autocomplete="off"
+                      placeholder="&#61442;  Buscar insumo"
+                    />
                   </div>
+                  <!-- <pre>{{infoTabOrder | json}}</pre> -->
                   <div class="table-inverse table-responsive">
                     <table class="table table-striped text-center">
                       <thead class="thead-inverse">
                         <tr>
+                          <th>Número de orden</th>
                           <th>Departamento</th>
                           <th>Municipio</th>
                           <th>Proveedor</th>
                           <th>Insumo</th>
-                          <th>Tipo de insumo</th>
+                          <!-- <th>Àrea de trabajo</th> -->
                           <th>Fecha de solicitud</th>
-                          <th>Fecha límite</th>
-                          <th>Fecha de cargue</th>
+                          <!-- <th>Fecha límite</th> -->
+                          <!-- <th>Fecha de cargue</th> -->
                           <th>Estado</th>
                         </tr>
                       </thead>
                       <tbody *ngFor="let element of infoTabOrder">
-                        <tr *ngFor="let item of element.requests |filter:searchText">
-                          <td scope="row">
-                            {{item.municipality.department.name}}
+                        <tr
+                          *ngFor="
+                            let item of element.requests | filter: searchText
+                          "
+                        >
+                        <td scope="row">
+                            {{ item.packageLabel }}
                           </td>
                           <td scope="row">
-                            {{item.municipality.name}}
+                            {{ item.municipality.department.name }}
                           </td>
                           <td scope="row">
-                            {{item.provider.name}}
+                            {{ item.municipality.name }}
+                          </td>
+                          <td scope="row">
+                            {{ item.provider.name }}
                           </td>
                           <td scope="row">
                             <div *ngFor="let supp of item.suppliesRequested">
-                              {{supp.typeSupply.name}}.<br> <b>{{supp.state.name}}</b>
+                              {{ supp.typeSupply.name }}.<br />
+                              <b>{{ supp.state.name }}</b>
                             </div>
                           </td>
+                          <!-- <td scope="row">
+                            {{
+                              item.suppliesRequested[0].typeSupply
+                                .providerProfile.name
+                            }}
+                          </td> -->
                           <td scope="row">
-                            {{item.suppliesRequested[0].typeSupply.providerProfile.name}}
+                            {{ globalFuntionDate(item.createdAt) }}
                           </td>
-                          <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                          <td scope="row">{{globalFuntionDate(item.deadline)}}</td>
+                          <!-- <td scope="row">
+                            {{ globalFuntionDate(item.deadline) }}
+                          </td> -->
+                          <!-- <td scope="row">
+                            {{
+                              item.closedAt
+                                ? globalFuntionDate(item.closedAt)
+                                : "N/A"
+                            }}
+                          </td> -->
                           <td scope="row">
-                            {{item.closedAt?globalFuntionDate(item.closedAt):'N/A'}}</td>
-                          <td scope="row">
-                            {{item.closedAt?'Solicitud Cerrada':'Solicitud Abierta'}}</td>
+                            {{
+                              item.closedAt
+                                ? "Solicitud Cerrada"
+                                : "Solicitud Abierta"
+                            }}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -304,7 +494,10 @@
               </div>
             </div>
           </div>
-          <div *ngIf="infoTabOrder.length === 0 && totalElements === 0 && search3" class="row mt-3">
+          <div
+            *ngIf="infoTabOrder.length === 0 && totalElements === 0 && search3"
+            class="row mt-3"
+          >
             <div class="col-12">
               <div class="alert alert-primary text-center" role="alert">
                 No existe el número de orden.

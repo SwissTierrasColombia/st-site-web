@@ -121,11 +121,9 @@
                   <td scope="row">{{ item.typeSupply.provider.name }}</td>
                   <td scope="row">
                     <span *ngIf="isAuthority(item)">{{ item.name }}</span
-                    ><span *ngIf="isAuthority(item) === false"
-                      >{{ item.typeSupply.name }}<br />({{
-                        item.typeSupply.provider.name
-                      }})</span
-                    >
+                    ><span *ngIf="isAuthority(item) === false">{{
+                      item.typeSupply.name
+                    }}</span>
                   </td>
                   <td scope="row">{{ globalFuntionDate(item.createdAt) }}</td>
                   <td scope="row">

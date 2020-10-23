@@ -62,8 +62,6 @@ export class SolicitudComponent implements OnInit {
           name: ''
         }
       }],
-      numberAlphanumericParcels: '',
-      municipalityArea: ''
     };
     this.providers = [];
     this.dataSuppliesProvider = [];

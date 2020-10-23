@@ -168,7 +168,9 @@
   </div>
   <ng-template #modalRegistrar let-modal>
     <div class="modal-header">
-      <h4 class="modal-title">¿Está seguro de crear el espacio de trabajo?</h4>
+      <h4 class="modal-title">
+        ¿Está seguro de crear el espacio de trabajo para el(los) Municipio(s)?
+      </h4>
       <button
         type="button"
         class="close"
@@ -180,8 +182,9 @@
     </div>
     <div class="modal-body">
       <h5 class="alert alert-warning text-center">
-        Advertencia: Esta acción asignará un espacio de trabajo al municipio
-        seleccionado.
+        Advertencia: Esta acción asignará espacio(s) de trabajo ha
+        <strong>{{ dataCreateWorkSpace.municipalityId.length }}</strong>
+        municipio(s) seleccionado(s).
       </h5>
     </div>
     <div class="modal-footer">

@@ -6,10 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-
   profile: any;
   password: string;
   confirmationPassword: string;
@@ -39,13 +38,13 @@ export class ProfileComponent implements OnInit {
   }
   submitChangePass() {
     const data = {
-      password: this.password
-    }
-    this.serviceWorkSpace.changePassword(data).subscribe(
-      _ => {
-        this.toast.success("Ha actualizado su contraseña.")
-      }
-    );
+      password: this.password,
+    };
+    this.serviceWorkSpace.changePassword(data).subscribe((_) => {
+      this.password = '';
+      this.confirmationPassword = '';
+      this.toast.success('Ha actualizado su contraseña.');
+      this.changepass = true;
+    });
   }
-
 }

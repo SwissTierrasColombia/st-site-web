@@ -1,207 +1,341 @@
 <div>
-    <div class="card text-center">
-        <div class="card-header">
-            <div class="col-12">
-                <h3>Integraciones en ejecución</h3>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="search-hero" *ngIf="dataIntegration.length > 0">
-                <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Buscar insumo">
-            </div>
-            <div class="table-responsive table-inverse" *ngIf="dataIntegration.length > 0">
-                <table class="table table-striped text-center">
-                    <thead class="thead-inverse">
-                        <tr>
-                            <th>ID</th>
-                            <th>Departamento</th>
-                            <th>Municipio</th>
-                            <th>Estado</th>
-                            <th>Descripción</th>
-                            <th>Insumos</th>
-                            <th>Número de Registros Catastrales</th>
-                            <th>Número de Registros SNR</th>
-                            <th>Registros Integrados</th>
-                            <th>Porcentaje</th>
-                            <th>Fecha de integración</th>
-                            <th>Opciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of dataIntegration |filter:searchText; let index = index">
-                            <td scope="row">{{index + 1}}</td>
-                            <td scope="row">{{item.municipalityDto.department.name}}</td>
-                            <td scope="row">{{item.municipalityDto.name}}</td>
-                            <td scope="row">{{item.integrationState.name}}</td>
-                            <td scope="row">
-                                {{item.integrationState ? item.integrationState.description: ''}}</td>
-                            <td scope="row">
-                                {{item.supplyCadastre ? item.supplyCadastre.typeSupply.name: ''}}<br>{{item.supplySnr ? item.supplySnr.typeSupply.name: ''}}
-                            </td>
-                            <td scope="row">
-                                {{item.stats.length > 0 ? parcelNumber(item.stats[0].cadastreRecordsNumber): 'N/D'}}
-                            </td>
-                            <td scope="row">
-                                {{item.stats.length > 0 ? parcelNumber(item.stats[0].snrRecordsNumber): 'N/D'}}</td>
-                            <td scope="row">
-                                {{item.stats.length > 0 ? parcelNumber(item.stats[0].matchNumber): 'N/D'}}</td>
-                            <td scope="row">
-                                <b *ngIf="item.stats.length > 0">
-                                    {{roundDecimal(item.stats[0].percentage)}}%
-                                </b>
-                                <b *ngIf="item.stats.length == 0">
-                                    N/D
-                                </b>
-                            </td>
-                            <td scope="row">
-                                {{globalFuntionDate(item.startedAt)}}
-                            </td>
-                            <td scope="row">
-                                <span ngbTooltip="Ver detalle" placement="top" show-delay="500">
-                                    <i class="material-icons cursor ml-4" (click)="openModal(item, modaltab1)">
-                                        pageview
-                                    </i>
-                                </span>
-                                <span ngbTooltip="Generar XTF" placement="top" show-delay="500" *ngIf="item.integrationState.id === 2 || item.integrationState.id === 8">
-                                    <i class="material-icons cursor ml-4"
-                                        (click)="openModalGenerateXTF(modalXTFtab1,item.id, item)">
-                                        assignment_turned_in
-                                    </i>
-                                </span>
-                                <span ngbTooltip="Iniciar integración asistida" placement="top" show-delay="500" *ngIf="item.integrationState.id === 2">
-                                    <i class="material-icons cursor ml-4"
-                                        (click)="openModalIntegrationAssited(modalIntegrationtab1,item.id, item)">
-                                        important_devices
-                                    </i>
-                                </span>
-                                <span ngbTooltip="Eliminar" placement="top" show-delay="500" *ngIf="item.integrationState.id === 2 || item.integrationState.id === 7 || item.integrationState.id === 8">
-                                    <i class="material-icons cursor ml-4"
-                                        (click)="openModalcancel(modalCanceltab1,item.id, item)">
-                                        delete
-                                    </i>
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div *ngIf="dataIntegration.length === 0" class="row mt-3">
-                <div class="col-12">
-                    <div class="alert alert-primary text-center" role="alert">
-                        No tiene integraciones en curso.
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-footer text-muted">
-        </div>
+  <div class="card text-center">
+    <div class="card-header">
+      <div class="col-12">
+        <h3>Integraciones en ejecución</h3>
+      </div>
     </div>
-    <ng-template #modaltab1 let-modal>
-        <div class="modal-header">
-            <h4 class="modal-title">
-                Histórico de la Integración
-            </h4>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    <div class="card-body">
+      <div class="search-hero" *ngIf="dataIntegration.length > 0">
+        <input
+          class="form-control"
+          type="text"
+          name="search"
+          [(ngModel)]="searchText"
+          autocomplete="off"
+          placeholder="&#61442;  Buscar insumo"
+        />
+      </div>
+      <div
+        class="table-responsive table-inverse"
+        *ngIf="dataIntegration.length > 0"
+      >
+        <table class="table table-striped text-center">
+          <thead class="thead-inverse">
+            <tr>
+              <th>ID</th>
+              <th>Departamento</th>
+              <th>Municipio</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+              <th>Insumos</th>
+              <th>Número de Registros Catastrales</th>
+              <th>Número de Registros SNR</th>
+              <th>Registros Integrados</th>
+              <th>Porcentaje</th>
+              <th>Fecha de integración</th>
+              <th>Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let item of dataIntegration | filter: searchText;
+                let index = index
+              "
+            >
+              <td scope="row">{{ index + 1 }}</td>
+              <td scope="row">{{ item.municipalityDto.department.name }}</td>
+              <td scope="row">{{ item.municipalityDto.name }}</td>
+              <td scope="row">{{ item.integrationState.name }}</td>
+              <td scope="row">
+                {{
+                  item.integrationState ? item.integrationState.description : ""
+                }}
+              </td>
+              <td scope="row">
+                {{
+                  item.supplyCadastre
+                    ? item.supplyCadastre.typeSupply.name
+                    : ""
+                }}<br />{{
+                  item.supplySnr ? item.supplySnr.typeSupply.name : ""
+                }}
+              </td>
+              <td scope="row">
+                {{
+                  item.stats.length > 0
+                    ? parcelNumber(item.stats[0].cadastreRecordsNumber)
+                    : "N/D"
+                }}
+              </td>
+              <td scope="row">
+                {{
+                  item.stats.length > 0
+                    ? parcelNumber(item.stats[0].snrRecordsNumber)
+                    : "N/D"
+                }}
+              </td>
+              <td scope="row">
+                {{
+                  item.stats.length > 0
+                    ? parcelNumber(item.stats[0].matchNumber)
+                    : "N/D"
+                }}
+              </td>
+              <td scope="row">
+                <b *ngIf="item.stats.length > 0">
+                  {{ roundDecimal(item.stats[0].percentage) }}%
+                </b>
+                <b *ngIf="item.stats.length == 0"> N/D </b>
+              </td>
+              <td scope="row">
+                {{ globalFuntionDate(item.startedAt) }}
+              </td>
+              <td scope="row">
+                <span ngbTooltip="Ver detalle" placement="top" show-delay="500">
+                  <i
+                    class="material-icons cursor ml-4"
+                    (click)="openModal(item, modaltab1)"
+                  >
+                    pageview
+                  </i>
+                </span>
+                <span
+                  ngbTooltip="Generar XTF"
+                  placement="top"
+                  show-delay="500"
+                  *ngIf="
+                    item.integrationState.id === 2 ||
+                    item.integrationState.id === 8
+                  "
+                >
+                  <i
+                    class="material-icons cursor ml-4"
+                    (click)="openModalGenerateXTF(modalXTFtab1, item.id, item)"
+                  >
+                    assignment_turned_in
+                  </i>
+                </span>
+                <span
+                  ngbTooltip="Iniciar integración asistida"
+                  placement="top"
+                  show-delay="500"
+                  *ngIf="item.integrationState.id === 2"
+                >
+                  <i
+                    class="material-icons cursor ml-4"
+                    (click)="
+                      openModalIntegrationAssited(
+                        modalIntegrationtab1,
+                        item.id,
+                        item
+                      )
+                    "
+                  >
+                    important_devices
+                  </i>
+                </span>
+                <span
+                  ngbTooltip="Eliminar"
+                  placement="top"
+                  show-delay="500"
+                  *ngIf="
+                    item.integrationState.id === 2 ||
+                    item.integrationState.id === 7 ||
+                    item.integrationState.id === 8
+                  "
+                >
+                  <i
+                    class="material-icons cursor ml-4"
+                    (click)="openModalcancel(modalCanceltab1, item.id, item)"
+                  >
+                    delete
+                  </i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="dataIntegration.length === 0" class="row mt-3">
+        <div class="col-12">
+          <div class="alert alert-primary text-center" role="alert">
+            No tiene integraciones en curso.
+          </div>
         </div>
-        <div class="modal-body">
-            <div class="table-inverse table-responsive">
-                <table class="table table-striped text-center">
-                    <thead class="thead-inverse">
-                        <tr>
-                            <th>ID</th>
-                            <th>Tipo</th>
-                            <th>Descripción</th>
-                            <th>Responsable</th>
-                            <th>Fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of selectIntegration.histories; let index = index;">
-                            <td scope="row">{{index + 1}}</td>
-                            <td scope="row">{{item.state.name}}</td>
-                            <td scope="row">{{item.state.description}}</td>
-                            <td scope="row">{{item.userName}}</td>
-                            <td scope="row">{{globalFuntionDate(item.createdAt)}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="modal-footer">
-        </div>
-    </ng-template>
-    <ng-template #modalXTFtab1 let-modal>
-        <div class="modal-header">
-            <h4 class="modal-title">
-                ¿Está seguro que desea generar el producto a partir de la integración automática?
-            </h4>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <h5 class="alert alert-warning text-center">
-                Advertencia: Esta acción generará un nuevo XTF para el Municipio.
-            </h5>
-        </div>
-        <div class="modal-footer">
-            <div class="col-6">
-                <button type="button" class="btn btn-dark btn-block" (click)="closeModalGenerateXTF(false)">No</button>
-            </div>
-            <div class="col-6 text-right">
-                <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModalGenerateXTF(true)">Si</button>
-            </div>
-        </div>
-    </ng-template>
+      </div>
+    </div>
+    <div class="card-footer text-muted"></div>
+  </div>
+  <ng-template #modaltab1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Histórico de la Integración</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="table-inverse table-responsive">
+        <table class="table table-striped text-center">
+          <thead class="thead-inverse">
+            <tr>
+              <th>ID</th>
+              <th>Tipo</th>
+              <th>Descripción</th>
+              <th>Responsable</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let item of selectIntegration.histories;
+                let index = index
+              "
+            >
+              <td scope="row">{{ index + 1 }}</td>
+              <td scope="row">{{ item.state.name }}</td>
+              <td scope="row">{{ item.state.description }}</td>
+              <td scope="row">{{ item.userName }}</td>
+              <td scope="row">{{ globalFuntionDate(item.createdAt) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer"></div>
+  </ng-template>
+  <ng-template #modalXTFtab1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro que desea generar el producto a partir de la integración
+        automática?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción generará un nuevo XTF para el Municipio.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalGenerateXTF(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalGenerateXTF(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
 
-    <ng-template #modalIntegrationtab1 let-modal>
-        <div class="modal-header">
-            <h4 class="modal-title">
-                ¿Está seguro de iniciar la integración asistida?
-            </h4>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <h5 class="alert alert-warning text-center">
-                Advertencia: Esta acción genera una tarea a los integradores, para que con ayuda del asistente puedan mejorar el porcentaje de integración.
-            </h5>
-        </div>
-        <div class="modal-footer">
-            <div class="col-6">
-                <button type="button" class="btn btn-dark btn-block" (click)="closeModalIntegrationAssited(false)">No</button>
-            </div>
-            <div class="col-6 text-right">
-                <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModalIntegrationAssited(true)">Si</button>
-            </div>
-        </div>
-    </ng-template>
+  <ng-template #modalIntegrationtab1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de iniciar la integración asistida?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción genera una tarea a los integradores, para que
+        con ayuda del asistente puedan mejorar el porcentaje de integración.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalIntegrationAssited(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalIntegrationAssited(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
 
-
-    <ng-template #modalCanceltab1 let-modal>
-        <div class="modal-header">
-            <h4 class="modal-title">
-                ¿Está seguro de eliminar la integración automática?
-            </h4>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <h5 class="alert alert-warning text-center">
-                Advertencia: Esta acción eliminara la integración.
-            </h5>
-        </div>
-        <div class="modal-footer">
-            <div class="col-6">
-                <button type="button" class="btn btn-dark btn-block" (click)="closeModalcancel(false)">No</button>
-            </div>
-            <div class="col-6 text-right">
-                <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModalcancel(true)">Si</button>
-            </div>
-        </div>
-    </ng-template>
+  <ng-template #modalCanceltab1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de eliminar la integración automática?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción eliminara la integración.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalcancel(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalcancel(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
 </div>

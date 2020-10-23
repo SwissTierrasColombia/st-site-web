@@ -145,6 +145,8 @@ export class BuscarSolicitudComponent implements OnInit {
   getPageOrder(page: string) {
     this.serviceWorkspaces.searchSuppliesOrder(this.selectPackage).subscribe((response: any) => {
       this.infoTabOrder = response;
+      console.log(this.infoTabOrder);
+
       this.search3 = true;
       this.totalElements = this.infoTabOrder.length;
     });

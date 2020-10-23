@@ -10,10 +10,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-integracion',
   templateUrl: './integracion.component.html',
-  styleUrls: ['./integracion.component.scss']
+  styleUrls: ['./integracion.component.scss'],
 })
 export class IntegracionComponent implements OnInit {
-
   departments: any;
   munucipalities: any;
   selectDepartment: string;
@@ -22,7 +21,7 @@ export class IntegracionComponent implements OnInit {
   splitZones: boolean;
   dataSuppliesProvider: any;
   selectSupplies: number;
-  listsupplies: { deadline: string; supplies: any; };
+  listsupplies: { deadline: string; supplies: any };
   catastro: any;
   registro: any;
   ant: any;
@@ -60,21 +59,23 @@ export class IntegracionComponent implements OnInit {
     this.dataWorkSpaceMunicipality = {
       id: 0,
       manager: {
-        name: ''
+        name: '',
       },
-      operators: [{
-        operator: {
-          name: ''
-        }
-      }],
+      operators: [
+        {
+          operator: {
+            name: '',
+          },
+        },
+      ],
       numberAlphanumericParcels: '',
-      municipalityArea: ''
+      municipalityArea: '',
     };
     this.dataSuppliesProvider = [];
     this.selectSupplies = 0;
     this.listsupplies = {
       deadline: '',
-      supplies: []
+      supplies: [],
     };
     this.catastro = [];
     this.registro = [];
@@ -84,31 +85,36 @@ export class IntegracionComponent implements OnInit {
     this.selectsupplyRegistration = 0;
     this.selectsupplyANT = 0;
     this.mensajeIntegrationResponse = {
-      message: ''
+      message: '',
     };
-    this.msgAlert = '<strong>Recomendación: </strong>Por favor revisar los archivos antes de solicitar la integración.';
+    this.msgAlert =
+      '<strong>Recomendación: </strong>Por favor revisar los archivos antes de solicitar la integración.';
     this.activateButtonIntegration = true;
     this.idWorkspace = 0;
     this.integrationByWorkspace = [];
-    this.selectIntegration = [{
-      id: '',
-      integrationState: {
-        name: '',
-        description: ''
+    this.selectIntegration = [
+      {
+        id: '',
+        integrationState: {
+          name: '',
+          description: '',
+        },
+        supplyCadastre: {
+          typeSupply: {
+            name: '',
+          },
+        },
+        supplySnr: { typeSupply: { name: '' } },
+        stats: [
+          {
+            cadastreRecordsNumber: '',
+            snrRecordsNumber: '',
+            percentage: '',
+            createdAt: '',
+          },
+        ],
       },
-      supplyCadastre: {
-        typeSupply: {
-          name: ''
-        }
-      },
-      supplySnr: { typeSupply: { name: '' } },
-      stats: [{
-        cadastreRecordsNumber: '',
-        snrRecordsNumber: '',
-        percentage: '',
-        createdAt: ''
-      }]
-    }];
+    ];
     this.page = 1;
     this.pageSize = 3;
     this.msgIntegrationAssited = [];
@@ -121,25 +127,23 @@ export class IntegracionComponent implements OnInit {
 
   ngOnInit() {
     const promise1 = new Promise((resolve) => {
-      this.activedRoute.params.subscribe(
-        response => {
-          this.SelectIntegrationPossible = response;
-          if (this.SelectIntegrationPossible.tab) {
-            this.tab = Number(this.SelectIntegrationPossible.tab);
-          }
-          resolve(response);
+      this.activedRoute.params.subscribe((response) => {
+        this.SelectIntegrationPossible = response;
+        if (this.SelectIntegrationPossible.tab) {
+          this.tab = Number(this.SelectIntegrationPossible.tab);
         }
-      );
+        resolve(response);
+      });
     });
     const promise2 = new Promise((resolve) => {
-      this.serviceWorkspaces.getDepartments().subscribe(response => {
+      this.serviceWorkspaces.getDepartments().subscribe((response) => {
         this.departments = response;
         resolve(response);
       });
     });
     Promise.all([promise1, promise2]).then((values: any) => {
       if (this.SelectIntegrationPossible.municipio) {
-        let idDepartamento = this.departments.find(item => {
+        let idDepartamento = this.departments.find((item) => {
           return item.code === this.SelectIntegrationPossible.departamento;
         });
         this.selectDepartment = idDepartamento.id;
@@ -148,86 +152,88 @@ export class IntegracionComponent implements OnInit {
     });
   }
   changeDepartament() {
-    this.serviceWorkspaces.GetMunicipalitiesByDeparment(Number(this.selectDepartment)).subscribe(
-      data => {
+    this.serviceWorkspaces
+      .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
+      .subscribe((data) => {
         this.munucipalities = data;
         if (this.SelectIntegrationPossible.municipio) {
-          let idMunicipio = this.munucipalities.find(item => {
+          let idMunicipio = this.munucipalities.find((item) => {
             return item.code === this.SelectIntegrationPossible.municipio;
           });
           this.selectMunicipality = idMunicipio.id;
           this.changeMunucipality();
           this.tab = 3;
         }
-      }
-    );
+      });
   }
   changeMunucipality() {
-    this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
-      response => {
+    this.serviceWorkspaces
+      .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
+      .subscribe((response) => {
         this.dataWorkSpaceMunicipality = response;
         this.idWorkspace = this.dataWorkSpaceMunicipality.id;
-        this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
-          resp => {
+        this.serviceWorkspaces
+          .GetIntegrationsByWorkspace(this.idWorkspace)
+          .subscribe((resp) => {
             this.integrationByWorkspace = resp;
             let self = this;
             setTimeout(function () {
-              self.scroll.scrollToAnchor("actionForm");
+              self.scroll.scrollToAnchor('actionForm');
             }, 1000);
-          }
-        );
-      }
-    );
-    this.serviceWorkspaces.GetSuppliesByMunicipalityXTF(this.selectMunicipality).subscribe(
-      response => {
+          });
+      });
+    this.serviceWorkspaces
+      .GetSuppliesByMunicipalityXTF(this.selectMunicipality)
+      .subscribe((response) => {
         this.municipalityXTF = response;
-        this.catastro = this.municipalityXTF.filter(item => {
-          if (item.typeSupply.providerProfile.name === 'CATASTRAL') {
+        this.catastro = this.municipalityXTF.filter((item) => {
+          if (item.typeSupply.providerProfile.id === 1) {
             return item;
           }
         });
-        this.registro = this.municipalityXTF.filter(item => {
-          if (item.typeSupply.providerProfile.name === 'REGISTRO') {
+        this.registro = this.municipalityXTF.filter((item) => {
+          if (item.typeSupply.providerProfile.id === 4) {
             return item;
           }
         });
-        this.ant = this.municipalityXTF.filter(item => {
-          if (item.typeSupply.providerProfile.name === 'ANT') {
-            return item;
-          }
-        });
-      }
-    );
+      });
   }
   integrationSupplies() {
     // tslint:disable-next-line:prefer-const
     let data = {
       supplyCadastre: this.selectsupplyCadastre,
-      supplyRegistration: this.selectsupplyRegistration
+      supplyRegistration: this.selectsupplyRegistration,
     };
-    this.serviceWorkspaces.GetIntegrationCadastreRegistration(this.selectMunicipality, data).subscribe(
-      response => {
-        // tslint:disable-next-line:max-line-length
-        this.msgAlert = '<strong>¡Se ha iniciado la integración!</strong><br>El sistema le enviará una notificación al correo una vez la finalice y podrá ver los resultados de integración en esta sección.';
-        this.selectsupplyCadastre = 0;
-        this.selectsupplyRegistration = 0;
-        this.activateButtonIntegration = true;
-        this.toastr.success('¡Se ha iniciado la integración!');
-        setTimeout(() => {
-          this.changeMunucipality();
-        }, 2000);
-      },
-      error => {
-        this.msgAlert = error.error.message +
-          '<br>El sistema le enviará una notificación al correo una vez la finalice y podrá ver los resultados de integración en esta sección.';
-        this.selectsupplyCadastre = 0;
-        this.selectsupplyRegistration = 0;
-        this.activateButtonIntegration = true;
-      }
-    );
+    this.serviceWorkspaces
+      .GetIntegrationCadastreRegistration(this.selectMunicipality, data)
+      .subscribe(
+        (response) => {
+          // tslint:disable-next-line:max-line-length
+          this.msgAlert =
+            '<strong>¡Se ha iniciado la integración!</strong><br>El sistema le enviará una notificación al correo una vez la finalice y podrá ver los resultados de integración en esta sección.';
+          this.selectsupplyCadastre = 0;
+          this.selectsupplyRegistration = 0;
+          this.activateButtonIntegration = true;
+          this.toastr.success('¡Se ha iniciado la integración!');
+          setTimeout(() => {
+            this.changeMunucipality();
+          }, 2000);
+        },
+        (error) => {
+          this.msgAlert =
+            error.error.message +
+            '<br>El sistema le enviará una notificación al correo una vez la finalice y podrá ver los resultados de integración en esta sección.';
+          this.selectsupplyCadastre = 0;
+          this.selectsupplyRegistration = 0;
+          this.activateButtonIntegration = true;
+        }
+      );
   }
   comprobar() {
-    if (this.selectsupplyCadastre !== 0 && this.selectsupplyRegistration !== 0) {
+    if (
+      this.selectsupplyCadastre !== 0 &&
+      this.selectsupplyRegistration !== 0
+    ) {
       this.activateButtonIntegration = false;
     }
   }
@@ -238,10 +244,14 @@ export class IntegracionComponent implements OnInit {
     this.modalService.dismissAll();
   }
   openModal(id: number, modal: any) {
-    this.selectIntegration = this.integrationByWorkspace.filter(item => {
+    this.selectIntegration = this.integrationByWorkspace.filter((item) => {
       return item.id === id;
     });
-    this.modalService.open(modal, { centered: true, scrollable: true, size: 'lg' });
+    this.modalService.open(modal, {
+      centered: true,
+      scrollable: true,
+      size: 'lg',
+    });
   }
   openModalGenerateXTF(modal: any, idIntegration: number) {
     this.idGenerateXTF = idIntegration;
@@ -274,37 +284,43 @@ export class IntegracionComponent implements OnInit {
     this.modalService.dismissAll();
   }
   generateXTF(idIntegration: number) {
-    this.serviceWorkspaces.GenerateProductFromIntegration(this.idWorkspace, idIntegration).subscribe(
-      response => {
+    this.serviceWorkspaces
+      .GenerateProductFromIntegration(this.idWorkspace, idIntegration)
+      .subscribe((response) => {
         this.msgIntegrationAssited = response;
-        this.toastr.success(this.msgIntegrationAssited.integrationState.description);
+        this.toastr.success(
+          this.msgIntegrationAssited.integrationState.description
+        );
         setTimeout(() => {
           this.changeMunucipality();
         }, 2000);
       });
   }
   startIntegrationAssited(idIntegration: number) {
-    this.serviceWorkspaces.StartIntegrationAssited(this.idWorkspace, idIntegration).subscribe(
-      response => {
+    this.serviceWorkspaces
+      .StartIntegrationAssited(this.idWorkspace, idIntegration)
+      .subscribe((response) => {
         this.msgIntegrationAssited = response;
-        this.toastr.success(this.msgIntegrationAssited.integrationState.description);
+        this.toastr.success(
+          this.msgIntegrationAssited.integrationState.description
+        );
         setTimeout(() => {
           this.changeMunucipality();
         }, 2000);
       });
   }
   cancel(idIntegration: number) {
-    this.serviceWorkspaces.deleteIntegration(this.idWorkspace, idIntegration).subscribe(
-      _ => {
+    this.serviceWorkspaces
+      .deleteIntegration(this.idWorkspace, idIntegration)
+      .subscribe((_) => {
         this.toastr.success('Ha eliminado la integración');
-        this.serviceWorkspaces.GetIntegrationsByWorkspace(this.idWorkspace).subscribe(
-          resp => {
+        this.serviceWorkspaces
+          .GetIntegrationsByWorkspace(this.idWorkspace)
+          .subscribe((resp) => {
             this.integrationByWorkspace = resp;
             this.integrationByWorkspace.reverse();
-          }
-        );
-      }
-    );
+          });
+      });
   }
   roundDecimal(num: any) {
     return Math.round(num * 100) / 100;

@@ -129,7 +129,7 @@ export class WorkspaceComponent implements OnInit {
         .createWorkspace(this.dataCreateWorkSpace)
         .subscribe((_) => {
           this.toastr.success(
-            'Se ha asignado el espacio de trabajo para el(los) municipio(s) seleccionado(s).'
+            'Se ha asignado el(los) espacio(s) de trabajo para el(los) municipio(s) seleccionado(s).'
           );
           this.dataCreateWorkSpace = {
             selectDepartment: '0',

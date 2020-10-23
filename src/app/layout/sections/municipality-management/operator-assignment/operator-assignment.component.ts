@@ -48,6 +48,7 @@ export class OperatorAssignmentComponent implements OnInit {
   isChangeDataOperator: boolean;
   nameAttachmentsTypes: string;
   passftpAttachments: string;
+  isActiveAssignOperator: boolean;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -99,6 +100,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.isChangeDataOperator = false;
     this.nameAttachmentsTypes = '';
     this.passftpAttachments = '';
+    this.isActiveAssignOperator = false;
   }
 
   ngOnInit() {
@@ -289,6 +291,7 @@ export class OperatorAssignmentComponent implements OnInit {
       var re = /zip*/;
       if (files[0].type.match(re)) {
         this.supportFileOperator = files[0];
+        this.changeDataOperator();
       } else {
         if (files[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
           this.toastr.error(
@@ -298,6 +301,7 @@ export class OperatorAssignmentComponent implements OnInit {
           this.myInputVariable.nativeElement.value = '';
         } else {
           this.supportFileOperator = files[0];
+          this.changeDataOperator();
         }
       }
     } else {
@@ -423,6 +427,7 @@ export class OperatorAssignmentComponent implements OnInit {
         .assingOperatorToWorkSpace(this.idWorkspace, dataOperator)
         .subscribe((_) => {
           this.toastr.success('Operador asignado satisfactoriamente');
+          this.isChangeDataOperator = false;
           this.serviceWorkspaces
             .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
             .subscribe((data: any) => {
@@ -661,7 +666,19 @@ export class OperatorAssignmentComponent implements OnInit {
     this.modalService.open(modal, { centered: true, scrollable: true });
   }
   changeDataOperator() {
-    this.isChangeDataOperator = true;
+    this.isChangeDataOperator = false;
+    this.isActiveAssignOperator = false;
+    if (
+      this.dataOperatorsWorkSpace.startDate !== '' &&
+      this.dataOperatorsWorkSpace.endDate !== '' &&
+      this.dataOperatorsWorkSpace.numberParcelsExpected !== 0 &&
+      this.dataOperatorsWorkSpace.workArea !== 0 &&
+      this.dataOperatorsWorkSpace.observations !== '' &&
+      this.dataOperatorsWorkSpace.operatorCode !== 0
+    ) {
+      this.isActiveAssignOperator = true;
+      this.isChangeDataOperator = true;
+    }
   }
   downloadSuppliesAutoridad(idSupplie: number, nameSupplie: string) {
     this.serviceWorkspaces.downloadSupplie(idSupplie).subscribe((data: any) => {
@@ -684,5 +701,14 @@ export class OperatorAssignmentComponent implements OnInit {
         const url = window.URL.createObjectURL(blob);
         saveAs(blob, 'reporte-autoridad.pdf');
       });
+  }
+  openModalDeliveryInfo(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  closeModalDeliveryInfo(option: boolean) {
+    this.modalService.dismissAll();
+    if (option) {
+      this.createAttachmentsTypes();
+    }
   }
 }
