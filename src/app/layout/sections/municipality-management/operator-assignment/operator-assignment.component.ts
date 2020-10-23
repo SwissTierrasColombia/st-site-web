@@ -477,7 +477,6 @@ export class OperatorAssignmentComponent implements OnInit {
         const dataFile = data.body;
         const blob = new Blob([dataFile], { type });
         const url = window.URL.createObjectURL(blob);
-        console.log('url: ', url);
         const preview = window.open(url, 'soporte');
         if (item.milestone.id === 1) {
           setTimeout(() => {

@@ -65,7 +65,6 @@ export class SearchWorkspaceComponent implements OnInit {
       )
       .subscribe((response: any) => {
         if (response.length > 0) {
-          console.log(response);
           this.listWorkSpace = response;
           this.isActive = true;
         } else {

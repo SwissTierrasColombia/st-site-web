@@ -1,12 +1,12 @@
 <div>
   <app-page-header
-    [heading]="'Gestión de Municipios activos'"
+    [heading]="'Gestión de Municipios'"
     [icon]="'fa-star'"
   ></app-page-header>
 
   <div class="card">
     <div class="card-header text-center">
-      <h3>Gestión de Municipios</h3>
+      <h3>Búsqueda de Municipios</h3>
     </div>
     <div class="card-body">
       <form action="" method="post">
@@ -43,7 +43,7 @@
                 id="munucipalities"
                 [(ngModel)]="selectMunicipality"
               >
-                <option value="0" selected>Seleccione el Municipio</option>
+                <option [ngValue]="0" selected>Seleccione el Municipio</option>
                 <option [ngValue]="item.id" *ngFor="let item of munucipalities">
                   {{ item.name }}
                 </option>
