@@ -46,7 +46,7 @@
               >
                 <option value="0" selected>Seleccione el Municipio</option>
                 <option [ngValue]="item.id" *ngFor="let item of munucipalities">
-                  {{ item.name }}
+                  {{ item.name }} - ({{ item.department.name }})
                 </option>
               </select>
             </div>
