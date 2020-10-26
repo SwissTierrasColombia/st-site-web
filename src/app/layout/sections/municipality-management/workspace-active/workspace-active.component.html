@@ -1,0 +1,82 @@
+<div>
+  <app-page-header
+    [heading]="'Gestión de Municipios'"
+    [icon]="'fa-star'"
+  ></app-page-header>
+
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Entrega de información</h3>
+    </div>
+    <div class="card-body">
+      <form action="" method="post">
+        <div class="row mb-2">
+          <div class="col-12 col-sm-6 mb-1">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true"
+                  >* Gestor</label
+                >
+              </div>
+              <select
+                (change)="changeDepartament()"
+                class="custom-select"
+                name="activeManagers"
+                id="activeManagers"
+                [(ngModel)]="selectManager"
+              >
+                <option value="0" selected>Seleccione el Gestor</option>
+                <option [ngValue]="item.id" *ngFor="let item of activeManagers">
+                  {{ item.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 mb-1">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Municipio</label>
+              </div>
+              <select
+                class="custom-select"
+                name="munucipalities"
+                id="munucipalities"
+                [(ngModel)]="selectMunicipality"
+                (change)="changeMunicipalitie()"
+              >
+                <option value="0" selected>Seleccione el Municipio</option>
+                <option [ngValue]="item.id" *ngFor="let item of munucipalities">
+                  {{ item.name }} - ({{ item.department.name }})
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="alert alert-primary text-center" role="alert">
+              Recuerde que los campos marcados con * son obligatorios.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button
+        type="button"
+        class="btn btn-dark"
+        (click)="searchWorkSpaceActive()"
+        [disabled]="!isActiveSearch"
+      >
+        Buscar
+      </button>
+    </div>
+    <div *ngIf="isActive === false">
+      <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          No existe un espacio de trabajo para el municipio.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
