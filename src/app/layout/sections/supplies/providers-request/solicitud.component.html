@@ -82,7 +82,7 @@
                   <select (change)="changeProvider()" class="custom-select" name="entidades" id="entidades"
                     [(ngModel)]="selectProvider">
                     <option value='0' selected>Seleccione la entidad</option>
-                    <option [ngValue]="item" *ngFor="let item of providers">{{item.name}}</option>
+                    <option [ngValue]="item" *ngFor="let item of providers">{{item.alias}}</option>
                   </select>
                 </div>
               </div>
