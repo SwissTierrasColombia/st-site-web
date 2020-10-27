@@ -3,6 +3,8 @@ import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { JwtHelper } from 'src/app/helpers/jwt';
+
 @Component({
   selector: 'app-buscar-solicitud',
   templateUrl: './buscar-solicitud.component.html',
@@ -33,6 +35,7 @@ export class BuscarSolicitudComponent implements OnInit {
   buttonTab2: boolean;
   buttonTab3: boolean;
   search3: boolean;
+  dataUser: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProvider: ProvidersService,
@@ -61,17 +64,22 @@ export class BuscarSolicitudComponent implements OnInit {
     this.buttonTab2 = true;
     this.buttonTab3 = true;
     this.search3 = false;
+    this.dataUser = [];
   }
 
   ngOnInit() {
+    this.dataUser = JwtHelper.getUserPublicInformation();
+    console.log(this.dataUser);
     this.activedRoute.params.subscribe((response: any) => {
       if (response.tab) {
         this.tab = Number(response.tab);
       }
       if (this.tab === 2) {
-        this.serviceProvider.getProviders().subscribe((data: any) => {
-          this.providers = data;
-        });
+        this.serviceProvider
+          .getProvidersFromManager(this.dataUser.entity.id)
+          .subscribe((data: any) => {
+            this.providers = data;
+          });
       }
     });
     this.usermanager = true;
@@ -89,9 +97,11 @@ export class BuscarSolicitudComponent implements OnInit {
   tab2() {
     this.tab = 2;
     this.router.navigate(['/insumos/buscar-solicitud', { tab: 2 }]);
-    this.serviceProvider.getProviders().subscribe((response) => {
-      this.providers = response;
-    });
+    this.serviceProvider
+      .getProvidersFromManager(this.dataUser.entity.id)
+      .subscribe((response) => {
+        this.providers = response;
+      });
   }
   tab3() {
     this.tab = 3;

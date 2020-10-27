@@ -8,30 +8,26 @@ const moment = _moment;
 @Component({
   selector: 'app-solicitudes-atendidas',
   templateUrl: './solicitudes-atendidas.component.html',
-  styleUrls: ['./solicitudes-atendidas.component.scss']
+  styleUrls: ['./solicitudes-atendidas.component.scss'],
 })
 export class SolicitudesAtendidasComponent implements OnInit {
-
   dataRequestPending: any;
   numSolicitudes: number;
   searchText: string;
 
   constructor(
     private serviceWorkspaces: WorkspacesService,
-    private router: Router,
-
+    private router: Router
   ) {
     this.dataRequestPending = [];
     this.numSolicitudes = 0;
   }
 
   ngOnInit() {
-    this.serviceWorkspaces.getAttendedRequestByProvider().subscribe(
-      data => {
-        this.dataRequestPending = data;
-        this.numSolicitudes = this.dataRequestPending.length
-      }
-    );
+    this.serviceWorkspaces.getAttendedRequestByProvider().subscribe((data) => {
+      this.dataRequestPending = data;
+      this.numSolicitudes = this.dataRequestPending.length;
+    });
   }
   formatDate(date: string) {
     moment.locale('es');
@@ -42,9 +38,8 @@ export class SolicitudesAtendidasComponent implements OnInit {
   }
   getEntity(item: any) {
     let data = item.emitters.find((elem: any) => {
-      return elem.emitterType === "ENTITY"
+      return elem.emitterType === 'ENTITY';
     });
-    return data.user.name
+    return data.user.name;
   }
 }
-
