@@ -67,16 +67,6 @@ export class PeticionComponent implements OnInit {
     }
     this.modalService.dismissAll();
   }
-  changeStateGetPetition() {
-    this.petitionsForManager = [];
-    if (this.petitionsForManager !== '0') {
-      this.serviceWorkspaces
-        .getPetitionsForManager(this.providerIdPetition)
-        .subscribe((response) => {
-          this.petitionsForManager = response;
-        });
-    }
-  }
   formatDate(date: string) {
     moment.locale('es');
     return moment(date).format('Do MMM YYYY');

@@ -11,10 +11,9 @@ const moment = _moment;
 @Component({
   selector: 'app-solicitud',
   templateUrl: './solicitud.component.html',
-  styleUrls: ['./solicitud.component.scss']
+  styleUrls: ['./solicitud.component.scss'],
 })
 export class SolicitudComponent implements OnInit {
-
   docsSoport: File;
   departments: any;
   selectDepartment: number;
@@ -37,6 +36,8 @@ export class SolicitudComponent implements OnInit {
   currentDate: any;
   tab: number;
   dataOrder: any;
+  petitionsForManager: any;
+  providerIdPetition: string;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
@@ -55,20 +56,22 @@ export class SolicitudComponent implements OnInit {
     this.splitZones = false;
     this.dataWorkSpaceMunicipality = {
       manager: {
-        name: ''
+        name: '',
       },
-      operators: [{
-        operator: {
-          name: ''
-        }
-      }],
+      operators: [
+        {
+          operator: {
+            name: '',
+          },
+        },
+      ],
     };
     this.providers = [];
     this.dataSuppliesProvider = [];
     this.selectSupplies = 0;
     this.listsupplies = {
       deadline: '',
-      supplies: []
+      supplies: [],
     };
     this.tablesupplies = [];
     this.selectModelSupplies = '0';
@@ -77,75 +80,76 @@ export class SolicitudComponent implements OnInit {
     this.tableSolicitudes = [];
     this.tab = 1;
     this.dataOrder = [];
+    this.petitionsForManager = [];
+    this.providerIdPetition = '0';
   }
   ngOnInit() {
-    this.activedRoute.params.subscribe(
-      response => {
-        if (response.tab) {
-          this.tab = Number(response.tab);
+    this.activedRoute.params.subscribe((response) => {
+      if (response.tab) {
+        this.tab = Number(response.tab);
+        if (this.tab === 3) {
+          this.serviceProviders.getProviders().subscribe((element) => {
+            this.providers = element;
+          });
+          this.changeStateGetPetition();
         }
       }
-    );
+    });
     this.currentDate = new Date();
     this.currentDate.setDate(this.currentDate.getDate() + 16);
-    this.listsupplies.deadline = this.currentDate.toISOString().substring(0, 10);
+    this.listsupplies.deadline = this.currentDate
+      .toISOString()
+      .substring(0, 10);
     this.currentDate = this.clone(this.listsupplies.deadline);
-    this.serviceWorkspaces.getDepartments()
-      .subscribe(response => {
-        this.departments = response;
-      });
+    this.serviceWorkspaces.getDepartments().subscribe((response) => {
+      this.departments = response;
+    });
 
-    this.serviceWorkspaces.GetTypesModels().subscribe(
-      response => {
-        this.listModels = response;
-      }
-    );
+    this.serviceWorkspaces.GetTypesModels().subscribe((response) => {
+      this.listModels = response;
+    });
   }
   clone(obj: any) {
     return JSON.parse(JSON.stringify(obj));
   }
   changeDepartament() {
-    this.serviceWorkspaces.GetMunicipalitiesByDeparment(this.selectDepartment).subscribe(
-      data => {
+    this.serviceWorkspaces
+      .GetMunicipalitiesByDeparment(this.selectDepartment)
+      .subscribe((data) => {
         this.municipalities = data;
-      }
-    );
+      });
   }
   changeMunucipality() {
-    this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
-      response => {
+    this.serviceWorkspaces
+      .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
+      .subscribe((response) => {
         this.dataWorkSpaceMunicipality = response;
-        this.serviceProviders.getProvidersActive().subscribe(
-          data => {
-            this.providers = data;
-          }
-        );
-      }
-    );
+        this.serviceProviders.getProvidersActive().subscribe((data) => {
+          this.providers = data;
+        });
+      });
   }
   changeMunucipalityReload() {
-    this.serviceWorkspaces.getWorkSpaceActiveByMunicipality(this.selectMunicipality).subscribe(
-      response => {
+    this.serviceWorkspaces
+      .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
+      .subscribe((response) => {
         this.dataWorkSpaceMunicipality = response;
-        this.serviceProviders.getProvidersActive().subscribe(
-          data => {
-            this.providers = data;
-          }
-        );
-      }
-    );
+        this.serviceProviders.getProvidersActive().subscribe((data) => {
+          this.providers = data;
+        });
+      });
   }
   changeProvider() {
-    this.serviceProviders.getTypeSuppliesByProvider(this.selectProvider.id.toString()).subscribe(
-      response => {
+    this.serviceProviders
+      .getTypeSuppliesByProvider(this.selectProvider.id.toString())
+      .subscribe((response) => {
         this.dataSuppliesProvider = response;
-      }
-    );
+      });
   }
   agregar() {
     if (this.selectSupplies.id) {
       if (this.observations) {
-        const exist = this.tablesupplies.find(item => {
+        const exist = this.tablesupplies.find((item) => {
           return item.idInsumo === this.selectSupplies.id;
         });
         if (exist === undefined) {
@@ -156,7 +160,7 @@ export class SolicitudComponent implements OnInit {
               observation: this.observations,
               providerId: this.selectProvider.id,
               typeSupplyId: this.selectSupplies.id,
-              modelVersion: this.selectModelSupplies
+              modelVersion: this.selectModelSupplies,
             });
             this.tablesupplies.push({
               idCount: this.count,
@@ -168,7 +172,7 @@ export class SolicitudComponent implements OnInit {
               modelRequired: true,
               modelVersion: this.selectModelSupplies,
               versions: this.listModels,
-              perfil: this.selectSupplies.providerProfile.name
+              perfil: this.selectSupplies.providerProfile.name,
             });
             this.count += 1;
             this.selectSupplies = 0;
@@ -188,14 +192,17 @@ export class SolicitudComponent implements OnInit {
               idInsumo: this.selectSupplies.id,
               insumo: this.selectSupplies.name,
               observacion: this.observations,
-              perfil: this.selectSupplies.providerProfile.name
+              perfil: this.selectSupplies.providerProfile.name,
             });
             this.count += 1;
             this.selectSupplies = 0;
             this.observations = '';
           }
         } else {
-          this.toastr.show('Ya ha solicitado el insumo.', this.selectSupplies.name);
+          this.toastr.show(
+            'Ya ha solicitado el insumo.',
+            this.selectSupplies.name
+          );
         }
         this.comprobarEnviarSolicitud();
       } else {
@@ -211,11 +218,13 @@ export class SolicitudComponent implements OnInit {
         return element;
       }
     });
-    this.listsupplies.supplies = this.listsupplies.supplies.filter((element: any) => {
-      if (element.idInsumo !== item.idInsumo) {
-        return element;
+    this.listsupplies.supplies = this.listsupplies.supplies.filter(
+      (element: any) => {
+        if (element.idInsumo !== item.idInsumo) {
+          return element;
+        }
       }
-    });
+    );
     this.comprobarEnviarSolicitud();
     if (this.tablesupplies.length === 0) {
       this.count = 1;
@@ -223,7 +232,7 @@ export class SolicitudComponent implements OnInit {
       this.splitZones = false;
       this.listsupplies = {
         deadline: '',
-        supplies: []
+        supplies: [],
       };
       this.tablesupplies = [];
       this.selectModelSupplies = '0';
@@ -232,11 +241,9 @@ export class SolicitudComponent implements OnInit {
     }
   }
   comprobarEnviarSolicitud() {
-    const send = this.listsupplies.supplies.find(
-      item => {
-        return item.modelVersion === '0';
-      }
-    );
+    const send = this.listsupplies.supplies.find((item) => {
+      return item.modelVersion === '0';
+    });
     if (send) {
       this.enviarsolicitud = true;
     } else {
@@ -244,11 +251,12 @@ export class SolicitudComponent implements OnInit {
     }
   }
   submitInfo(modalconfirmacion: any) {
-    this.serviceWorkspaces.createRequest(this.selectMunicipality, this.listsupplies).subscribe(
-      (data: any) => {
+    this.serviceWorkspaces
+      .createRequest(this.selectMunicipality, this.listsupplies)
+      .subscribe((data: any) => {
         this.dataOrder = data;
         this.modalService.open(modalconfirmacion, { centered: true });
-        data.forEach(element => {
+        data.forEach((element) => {
           this.tableSolicitudes.push(element);
         });
         // this.toastr.success('Solicitud enviada correctamente');
@@ -257,7 +265,7 @@ export class SolicitudComponent implements OnInit {
         this.splitZones = false;
         this.listsupplies = {
           deadline: '',
-          supplies: []
+          supplies: [],
         };
         this.tablesupplies = [];
         this.selectModelSupplies = '0';
@@ -266,10 +274,11 @@ export class SolicitudComponent implements OnInit {
         this.selectProvider = 0;
         this.currentDate = new Date();
         this.currentDate.setDate(this.currentDate.getDate() + 16);
-        this.listsupplies.deadline = this.currentDate.toISOString().substring(0, 10);
+        this.listsupplies.deadline = this.currentDate
+          .toISOString()
+          .substring(0, 10);
         this.currentDate = this.clone(this.listsupplies.deadline);
-      }
-    );
+      });
   }
   changeModelSupplies(id, itemModelVersion) {
     this.listsupplies.supplies.find((item: any) => {
@@ -304,8 +313,16 @@ export class SolicitudComponent implements OnInit {
     this.tab = 2;
     this.router.navigate(['/insumos/solicitud', { tab: 2 }]);
   }
+  tab3() {
+    this.tab = 3;
+    this.router.navigate(['/insumos/solicitud', { tab: 3 }]);
+    this.serviceProviders.getProviders().subscribe((element) => {
+      this.providers = element;
+    });
+    this.changeStateGetPetition();
+  }
   myFunctionCopyOrder(copyText: string) {
-    let selBox = document.createElement('textarea');
+    const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
     selBox.style.top = '0';
@@ -316,5 +333,13 @@ export class SolicitudComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+  changeStateGetPetition() {
+    this.petitionsForManager = [];
+    this.serviceWorkspaces
+      .getPetitionsForManager(this.providerIdPetition)
+      .subscribe((response) => {
+        this.petitionsForManager = response;
+      });
   }
 }

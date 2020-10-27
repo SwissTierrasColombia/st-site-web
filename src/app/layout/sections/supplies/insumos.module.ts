@@ -27,7 +27,6 @@ import { SolicitudesComponent } from './requests-manager/solicitudes.component';
 import { RevisionPendienteComponent } from './review-pending/revision-pendiente.component';
 import { SearchComponent } from './search/search.component';
 import { BuscarSolicitudComponent } from './search-request/buscar-solicitud.component';
-
 @NgModule({
   declarations: [
     CargueComponent,

@@ -630,10 +630,13 @@ export class WorkspacesService {
   /**
    * getPetitionsForManager
    */
-  public getPetitionsForManager(providerId: string) {
-    return this.httpClient.get(
-      this.url + '/workspaces/v1/petitions/manager/' + providerId
-    );
+  public getPetitionsForManager(providerId?: string) {
+    if (providerId !== '0') {
+      return this.httpClient.get(
+        this.url + '/workspaces/v1/petitions/manager?provider=' + providerId
+      );
+    }
+    return this.httpClient.get(this.url + '/workspaces/v1/petitions/manager');
   }
   /**
    * getPetitionsForProviderOpen
