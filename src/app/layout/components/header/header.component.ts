@@ -8,7 +8,7 @@ import { RoleModel } from 'src/app/helpers/role.model';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
   public pushRightClass: string;
@@ -22,22 +22,21 @@ export class HeaderComponent implements OnInit {
     public router: Router,
     private serviceWorkspaces: WorkspacesService,
     private roles: RoleModel
-
   ) {
     this.taskProvider = 0;
     this.taskOperator = 0;
     this.allroles = {};
     this.roleproveedor = {
-      id: 0
+      id: 0,
     };
     this.roleoperator = {
-      id: 0
+      id: 0,
     };
     this.user = {
       first_name: 'user',
-      last_name: ''
+      last_name: '',
     };
-    this.router.events.subscribe(val => {
+    this.router.events.subscribe((val) => {
       if (
         val instanceof NavigationEnd &&
         window.innerWidth <= 992 &&
@@ -51,6 +50,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.pushRightClass = 'push-right';
     this.user = JwtHelper.getUserPublicInformation();
+    console.log(this.user);
+
     this.roleproveedor = this.user.roles.find((elem: any) => {
       return elem.id === this.roles.proveedor;
     });
