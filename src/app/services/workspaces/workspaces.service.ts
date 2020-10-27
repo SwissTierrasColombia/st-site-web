@@ -485,11 +485,16 @@ export class WorkspacesService {
   /**
    * searchSuppliesOrder
    */
-  public searchSuppliesOrder(idPackage: string) {
+  public searchSuppliesOrder(idPackage?: string) {
+    if (idPackage !== '') {
+      return this.httpClient.get(
+        this.url +
+          '/workspaces/v1/providers/requests/package?package=' +
+          idPackage
+      );
+    }
     return this.httpClient.get(
-      this.url +
-        '/workspaces/v1/providers/requests/package?package=' +
-        idPackage
+      this.url + '/workspaces/v1/providers/requests/package'
     );
   }
   /**
