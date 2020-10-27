@@ -13,7 +13,7 @@ import { NgSelect2Module } from 'ng-select2';
 import { PreviewComponent } from '../../components/preview/preview.component';
 import { AtendidaComponent } from './attended/atendida.component';
 import { CrearTipoInsumoComponent } from './create-supplie-type/crear-tipo-insumo.component';
-import { EntregarComponent } from './deliver-supplie/entregar.component';
+import { EntregarComponent } from './make-delivery-manager/entregar.component';
 import { IntegracionComponent } from './integration/integracion.component';
 import { IntegrationsPossiblesComponent } from './integrations-possibles/integrations-possibles.component';
 import { IntegrationsRunningComponent } from './integrations-running/integrations-running.component';
@@ -27,6 +27,8 @@ import { SolicitudesComponent } from './requests-manager/solicitudes.component';
 import { RevisionPendienteComponent } from './review-pending/revision-pendiente.component';
 import { SearchComponent } from './search/search.component';
 import { BuscarSolicitudComponent } from './search-request/buscar-solicitud.component';
+import { DeliveriesManagerComponent } from './deliveries-manager/deliveries-manager.component';
+import { DeliveryManagerComponent } from './delivery-manager/delivery-manager.component';
 @NgModule({
   declarations: [
     CargueComponent,
@@ -46,6 +48,8 @@ import { BuscarSolicitudComponent } from './search-request/buscar-solicitud.comp
     RevisionPendienteComponent,
     PeticionComponent,
     PeticionesProveedorComponent,
+    DeliveriesManagerComponent,
+    DeliveryManagerComponent,
   ],
   imports: [
     CommonModule,

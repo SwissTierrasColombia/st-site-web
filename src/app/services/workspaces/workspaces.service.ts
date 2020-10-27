@@ -783,4 +783,18 @@ export class WorkspacesService {
       this.url + '/workspaces/v1/municipalities/by-manager/' + managerId
     );
   }
+  /**
+   * getDeliveriesByManager
+   */
+  public getDeliveriesByManager() {
+    return this.httpClient.get(this.url + '/workspaces/v1/managers/deliveries');
+  }
+  /**
+   * getDeliveryByIdFromManager
+   */
+  public getDeliveryByIdFromManager(deliveryId: number) {
+    return this.httpClient.get(
+      this.url + '/workspaces/v1/managers/deliveries/' + deliveryId
+    );
+  }
 }
