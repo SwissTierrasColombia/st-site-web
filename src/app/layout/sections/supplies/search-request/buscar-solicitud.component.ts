@@ -69,7 +69,6 @@ export class BuscarSolicitudComponent implements OnInit {
 
   ngOnInit() {
     this.dataUser = JwtHelper.getUserPublicInformation();
-    console.log(this.dataUser);
     this.activedRoute.params.subscribe((response: any) => {
       if (response.tab) {
         this.tab = Number(response.tab);

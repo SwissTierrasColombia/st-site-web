@@ -97,8 +97,6 @@ export class EntregarComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
-        console.log(this.allSupplies);
-
         this.allSupplies = this.allSupplies.filter((item: any) => {
           if (item.delivered === null || item.delivered === false) {
             return item;
