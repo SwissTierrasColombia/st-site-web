@@ -14,6 +14,7 @@ export class DeliveryManagerComponent implements OnInit {
   dataRequestPending: any;
   supplies: any;
   deliveryId: number;
+  isAllDownloadReports: boolean;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -31,6 +32,7 @@ export class DeliveryManagerComponent implements OnInit {
     };
     this.supplies = [];
     this.deliveryId = 0;
+    this.isAllDownloadReports = false;
   }
   ngOnInit(): void {
     this.activedRoute.params.subscribe((response) => {
@@ -40,6 +42,14 @@ export class DeliveryManagerComponent implements OnInit {
         .subscribe((data) => {
           this.dataRequestPending = data;
           this.supplies = this.dataRequestPending.supplies;
+          const isDownloadGeneralReport = this.supplies.filter((item) => {
+            return item.downloaded === true;
+          });
+          if (isDownloadGeneralReport.length === this.supplies.length) {
+            this.isAllDownloadReports = true;
+          } else {
+            this.isAllDownloadReports = false;
+          }
         });
     });
   }

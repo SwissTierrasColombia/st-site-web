@@ -119,12 +119,13 @@
                   }}
                 </td>
                 <td scope="row">
-                  {{ item.userDownloaded.firstName }} <br />{{
-                    item.userDownloaded.lastName
+                  {{ item.userDownloaded ? item.userDownloaded.firstName : "" }}
+                  <br />{{
+                    item.userDownloaded ? item.userDownloaded.lastName : ""
                   }}
                 </td>
                 <td scope="row">
-                  {{ item.userDownloaded.email }}
+                  {{ item.userDownloaded ? item.userDownloaded.email : "" }}
                 </td>
               </tr>
             </tbody>

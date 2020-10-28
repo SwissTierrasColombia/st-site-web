@@ -27,7 +27,7 @@
                 <th>Código Municipio</th>
                 <th>Fecha de entrega</th>
                 <th>Observaciones generales</th>
-                <th>Descargar reporte general</th>
+                <th *ngIf="isAllDownloadReports">Descargar reporte general</th>
               </tr>
             </thead>
             <tbody>
@@ -48,7 +48,7 @@
                     >{{ dataRequestPending.observations }}</textarea
                   >
                 </td>
-                <td scope="row">
+                <td scope="row" *ngIf="isAllDownloadReports">
                   <span
                     ngbTooltip="Descargar reporte general"
                     placement="bottom"
@@ -118,12 +118,13 @@
                   }}
                 </td>
                 <td scope="row">
-                  {{ item.userDownloaded.firstName }} <br />{{
-                    item.userDownloaded.lastName
+                  {{ item.userDownloaded ? item.userDownloaded.firstName : "" }}
+                  <br />{{
+                    item.userDownloaded ? item.userDownloaded.lastName : ""
                   }}
                 </td>
                 <td scope="row">
-                  {{ item.userDownloaded.email }}
+                  {{ item.userDownloaded ? item.userDownloaded.email : "" }}
                 </td>
               </tr>
             </tbody>
