@@ -4,7 +4,9 @@ import { ToastrService } from 'ngx-toastr';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
+import * as _moment from 'moment';
 
+const moment = _moment;
 @Component({
   selector: 'app-search-workspace',
   templateUrl: './search-workspace.component.html',
@@ -56,6 +58,10 @@ export class SearchWorkspaceComponent implements OnInit {
         this.munucipalities = data;
         this.searchActive = true;
       });
+  }
+  formatDate(date: string) {
+    moment.locale('es');
+    return moment(date).format('DD/MM/YYYY');
   }
   searchWorkSpaceActive() {
     this.serviceWorkspaces

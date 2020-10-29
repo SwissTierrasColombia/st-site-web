@@ -11,7 +11,7 @@ export class FuntionsGlobalsHelper {
   }
   static formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('Do MMM YYYY');
+    return moment(date).format('DD/MM/YYYY');
   }
   static formatDateIntegration(date: string) {
     moment.locale('es');
@@ -19,7 +19,7 @@ export class FuntionsGlobalsHelper {
   }
   static formatDateCalendar(date: string) {
     moment.locale('es');
-    return moment(date).format('Do MMM YYYY');
+    return moment(date).format('DD/MM/YYYY');
   }
   static itemToLowerCase(item: string) {
     return item.charAt(0).toUpperCase() + item.slice(1).toLowerCase();

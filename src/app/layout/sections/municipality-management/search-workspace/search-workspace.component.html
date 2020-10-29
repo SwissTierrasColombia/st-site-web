@@ -103,7 +103,7 @@
                     <td scope="row">{{ item.manager.alias }}</td>
                     <td scope="row">{{ item.municipality.department.name }}</td>
                     <td scope="row">{{ item.municipality.name }}</td>
-                    <td scope="row">{{ item.startDate }}</td>
+                    <td scope="row">{{ formatDate(item.startDate) }}</td>
                     <td scope="row">
                       <textarea
                         class="form-control"

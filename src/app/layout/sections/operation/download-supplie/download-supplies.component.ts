@@ -65,7 +65,7 @@ export class DownloadSuppliesComponent implements OnInit {
   }
   formatDate(date: string) {
     moment.locale('es');
-    return moment(date).format('Do MMM YYYY');
+    return moment(date).format('DD/MM/YYYY');
   }
   downloadSupplies(idSupplie: number, nameSupplie: string) {
     this.serviceWorkspaces.downloadSupplie(idSupplie).subscribe((data: any) => {
