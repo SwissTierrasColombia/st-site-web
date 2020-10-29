@@ -797,4 +797,13 @@ export class WorkspacesService {
       this.url + '/workspaces/v1/managers/deliveries/' + deliveryId
     );
   }
+  /**
+   * generateReportDeliveryFromManager
+   */
+  public generateReportDeliveryFromManager(deliveryId: number) {
+    return this.httpClient.get(
+      this.url + '/workspaces/v1/workspaces/report-delivery/' + deliveryId,
+      { responseType: 'arraybuffer', observe: 'response' }
+    );
+  }
 }

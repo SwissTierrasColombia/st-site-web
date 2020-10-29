@@ -60,16 +60,18 @@ export class DeliveryManagerComponent implements OnInit {
   volver() {
     this.router.navigate(['/insumos/entregas-realizadas']);
   }
-  downloadGeneralReport(nameSupplie: string) {
+  downloadGeneralReport() {
     this.serviceWorkspaces
-      .DownloadReportGeneral(this.deliveryId)
+      .generateReportDeliveryFromManager(this.deliveryId)
       .subscribe((data: any) => {
         const contentType = data.headers.get('content-type');
         const type = contentType.split(',')[0];
         const dataFile = data.body;
+        const name = data.headers.get('filename');
+        // const ext = data.headers.get('extension');
         const blob = new Blob([dataFile], { type });
         const url = window.URL.createObjectURL(blob);
-        saveAs(blob, nameSupplie + '.pdf');
+        saveAs(blob, 'reporte_entrega.pdf');
       });
   }
   isAuthority(item: any) {
