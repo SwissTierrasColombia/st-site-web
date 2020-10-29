@@ -3,10 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProvidersService {
-
   url: string;
   constructor(private httpClient: HttpClient) {
     this.url = environment.apiBaseUrlPrefix;
@@ -15,22 +14,33 @@ export class ProvidersService {
    * getProviders
    */
   public getProviders() {
-    return this.httpClient.get(this.url + '/providers-supplies/v1/providers?onlyActive=false');
+    return this.httpClient.get(
+      this.url + '/providers-supplies/v1/providers?onlyActive=false'
+    );
   }
   public getProvidersActive() {
-    return this.httpClient.get(this.url + '/providers-supplies/v1/providers?onlyActive=true');
+    return this.httpClient.get(
+      this.url + '/providers-supplies/v1/providers?onlyActive=true'
+    );
   }
   /**
    * getTypeSuppliesByProvider
    */
   public getTypeSuppliesByProvider(idProvider: string) {
-    return this.httpClient.get(this.url + '/providers-supplies/v1/providers/' + idProvider + '/types-supplies?onlyActive=true');
+    return this.httpClient.get(
+      this.url +
+        '/providers-supplies/v1/providers/' +
+        idProvider +
+        '/types-supplies?onlyActive=true'
+    );
   }
   /**
    * getProfilesByProvider
    */
   public getProfilesByProvider(id: number) {
-    return this.httpClient.get(this.url + '/providers-supplies/v1/providers/' + id + '/profiles');
+    return this.httpClient.get(
+      this.url + '/providers-supplies/v1/providers/' + id + '/profiles'
+    );
   }
   /**
    * getCategoriesProviders
@@ -39,30 +49,54 @@ export class ProvidersService {
     return this.httpClient.get(this.url + '/providers-supplies/v1/categories');
   }
   public createProvider(data: any) {
-    return this.httpClient.post(this.url + '/providers-supplies/v1/providers', data);
+    return this.httpClient.post(
+      this.url + '/providers-supplies/v1/providers',
+      data
+    );
   }
   /**
    * updateProviders
    */
   public updateProvider(data: any) {
-    return this.httpClient.put(this.url + '/providers-supplies/v1/providers', data);
+    return this.httpClient.put(
+      this.url + '/providers-supplies/v1/providers',
+      data
+    );
   }
   /**
    * deleteProvider
    */
   public deleteProvider(providerId: number) {
-    return this.httpClient.delete(this.url + '/providers-supplies/v1/providers/' + providerId);
+    return this.httpClient.delete(
+      this.url + '/providers-supplies/v1/providers/' + providerId
+    );
   }
   /**
    * enableProvider
    */
   public enableProvider(providerId: number) {
-    return this.httpClient.put(this.url + '/providers-supplies/v1/providers/' + providerId + '/enable', {});
+    return this.httpClient.put(
+      this.url + '/providers-supplies/v1/providers/' + providerId + '/enable',
+      {}
+    );
   }
   /**
    * disableProvider
    */
   public disableProvider(providerId: number) {
-    return this.httpClient.put(this.url + '/providers-supplies/v1/providers/' + providerId + '/disable', {});
+    return this.httpClient.put(
+      this.url + '/providers-supplies/v1/providers/' + providerId + '/disable',
+      {}
+    );
+  }
+  /**
+   * getProvidersFromManager
+   */
+  public getProvidersFromManager(managerId: number) {
+    return this.httpClient.get(
+      this.url +
+        '/providers-supplies/v1/providers/from-requested-manager/' +
+        managerId
+    );
   }
 }

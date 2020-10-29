@@ -384,7 +384,7 @@
                 [disabled]="buttonTab3"
                 type="button"
                 class="btn btn-dark"
-                (click)="getPageOrder('1')"
+                (click)="getPageOrder()"
               >
                 Buscar
               </button>
@@ -406,7 +406,7 @@
                     [rotate]="true"
                     [ellipses]="false"
                     [boundaryLinks]="true"
-                    (pageChange)="getPageOrder($event)"
+                    (pageChange)="getPageOrder()"
                   >
                   </ngb-pagination>
                   <div class="search-hero">
@@ -442,7 +442,7 @@
                             let item of element.requests | filter: searchText
                           "
                         >
-                        <td scope="row">
+                          <td scope="row">
                             {{ item.packageLabel }}
                           </td>
                           <td scope="row">

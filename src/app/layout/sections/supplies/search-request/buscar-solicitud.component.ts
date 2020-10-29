@@ -1,19 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
-import { saveAs } from 'file-saver';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { VirtualTimeScheduler } from 'rxjs';
+import { JwtHelper } from 'src/app/helpers/jwt';
+
 @Component({
   selector: 'app-buscar-solicitud',
   templateUrl: './buscar-solicitud.component.html',
-  styleUrls: ['./buscar-solicitud.component.scss']
+  styleUrls: ['./buscar-solicitud.component.scss'],
 })
 export class BuscarSolicitudComponent implements OnInit {
-
   usermanager: boolean;
   departments: any;
   selectDepartment: string;
@@ -38,6 +35,7 @@ export class BuscarSolicitudComponent implements OnInit {
   buttonTab2: boolean;
   buttonTab3: boolean;
   search3: boolean;
+  dataUser: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProvider: ProvidersService,
@@ -66,31 +64,30 @@ export class BuscarSolicitudComponent implements OnInit {
     this.buttonTab2 = true;
     this.buttonTab3 = true;
     this.search3 = false;
+    this.dataUser = [];
   }
 
   ngOnInit() {
-    this.activedRoute.params.subscribe(
-      (response: any) => {
-        if (response.tab) {
-          this.tab = Number(response.tab);
-        }
-        if (this.tab === 2) {
-          this.serviceProvider.getProviders().subscribe(response => {
-            this.providers = response;
+    this.dataUser = JwtHelper.getUserPublicInformation();
+    this.activedRoute.params.subscribe((response: any) => {
+      if (response.tab) {
+        this.tab = Number(response.tab);
+      }
+      if (this.tab === 2) {
+        this.serviceProvider
+          .getProvidersFromManager(this.dataUser.entity.id)
+          .subscribe((data: any) => {
+            this.providers = data;
           });
-        }
       }
-    );
+    });
     this.usermanager = true;
-    this.serviceWorkspaces.GetRequestByManager().subscribe(
-      response => {
-        this.suppliesManagerRequest = response;
-      }
-    )
-    this.serviceWorkspaces.getDepartments()
-      .subscribe(response => {
-        this.departments = response;
-      });
+    this.serviceWorkspaces.GetRequestByManager().subscribe((response) => {
+      this.suppliesManagerRequest = response;
+    });
+    this.serviceWorkspaces.getDepartments().subscribe((response) => {
+      this.departments = response;
+    });
   }
   tab1() {
     this.tab = 1;
@@ -99,74 +96,72 @@ export class BuscarSolicitudComponent implements OnInit {
   tab2() {
     this.tab = 2;
     this.router.navigate(['/insumos/buscar-solicitud', { tab: 2 }]);
-    this.serviceProvider.getProviders().subscribe(response => {
-      this.providers = response;
-    });
+    this.serviceProvider
+      .getProvidersFromManager(this.dataUser.entity.id)
+      .subscribe((response) => {
+        this.providers = response;
+      });
   }
   tab3() {
     this.tab = 3;
     this.router.navigate(['/insumos/buscar-solicitud', { tab: 3 }]);
-    this.serviceWorkspaces.GetRequestByManager().subscribe(
-      response => {
-        this.numbersuppliesManagerRequest = response;
-      }
-    )
+    this.getPageOrder();
   }
   globalFuntionDate(date: any) {
     return FuntionsGlobalsHelper.formatDate(date);
   }
   changeDepartament() {
-    this.serviceWorkspaces.GetMunicipalitiesByDeparment(Number(this.selectDepartment)).subscribe(
-      data => {
+    this.serviceWorkspaces
+      .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
+      .subscribe((data) => {
         this.munucipalities = data;
-      }
-    );
+      });
   }
   getPage(page: string) {
-    this.serviceWorkspaces.searchSuppliesMunicipality(page, this.selectMunicipality).subscribe(
-      (response: any) => {
+    this.serviceWorkspaces
+      .searchSuppliesMunicipality(page, this.selectMunicipality)
+      .subscribe((response: any) => {
         this.number = response.number + 1;
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
-      }
-    );
+      });
   }
   getPageProvider(page: string) {
-    this.serviceWorkspaces.searchSuppliesProviders(page, this.selectProvider).subscribe(
-      (response: any) => {
+    this.serviceWorkspaces
+      .searchSuppliesProviders(page, this.selectProvider)
+      .subscribe((response: any) => {
         this.number = response.number + 1;
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.infoTabProvider = response.items;
-      }
-    );
+      });
   }
-  getPageOrder(page: string) {
-    this.serviceWorkspaces.searchSuppliesOrder(this.selectPackage).subscribe((response: any) => {
-      this.infoTabOrder = response;
-      console.log(this.infoTabOrder);
-
-      this.search3 = true;
-      this.totalElements = this.infoTabOrder.length;
-    });
+  getPageOrder() {
+    this.serviceWorkspaces
+      .searchSuppliesOrder(this.selectPackage)
+      .subscribe((response: any) => {
+        this.infoTabOrder = response;
+        this.search3 = true;
+        this.totalElements = this.infoTabOrder.length;
+      });
   }
   activebuttontab1() {
-    if (this.selectMunicipality == 0) {
+    if (this.selectMunicipality === 0) {
       this.buttonTab1 = true;
     } else {
       this.buttonTab1 = false;
     }
   }
   activebuttontab2() {
-    if (this.selectProvider == '0') {
+    if (this.selectProvider === '0') {
       this.buttonTab2 = true;
     } else {
       this.buttonTab2 = false;
     }
   }
   activebuttontab3() {
-    if (this.selectPackage == '0') {
+    if (this.selectPackage === '0') {
       this.buttonTab3 = true;
     } else {
       this.buttonTab3 = false;

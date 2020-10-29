@@ -6,20 +6,20 @@ import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-
 import { RoleRevisorGuard } from 'src/app/guards/role-revisor-guard.service';
 import { AtendidaComponent } from './attended/atendida.component';
 import { CrearTipoInsumoComponent } from './create-supplie-type/crear-tipo-insumo.component';
-import { EntregarComponent } from './deliver-supplie/entregar.component';
+import { EntregarComponent } from './make-delivery-manager/entregar.component';
 import { IntegracionComponent } from './integration/integracion.component';
 import { IntegrationsPossiblesComponent } from './integrations-possibles/integrations-possibles.component';
 import { IntegrationsRunningComponent } from './integrations-running/integrations-running.component';
 import { CargueComponent } from './load-supplies/cargue.component';
 import { RevisionesPendientesComponent } from './pending-reviews/revisiones-pendientes.component';
 import { SolicitudComponent } from './providers-request/solicitud.component';
-// import { PeticionComponent } from './request-manager/peticion.component'; tab
-// import { PeticionesProveedorComponent } from './request-providers/peticiones-proveedor.component'; tab
 import { SolicitudesAtendidasComponent } from './requests-attended-provider/solicitudes-atendidas.component';
 import { SolicitudesComponent } from './requests-manager/solicitudes.component';
 import { RevisionPendienteComponent } from './review-pending/revision-pendiente.component';
 import { SearchComponent } from './search/search.component';
 import { BuscarSolicitudComponent } from './search-request/buscar-solicitud.component';
+import { DeliveryManagerComponent } from './delivery-manager/delivery-manager.component';
+import { DeliveriesManagerComponent } from './deliveries-manager/deliveries-manager.component';
 
 const routes: Routes = [
   {
@@ -53,7 +53,7 @@ const routes: Routes = [
     canActivate: [RoleManagerGuard],
   },
   {
-    path: 'entrega',
+    path: 'realizar-entrega',
     component: EntregarComponent,
     canActivate: [RoleManagerGuard],
   },
@@ -91,6 +91,16 @@ const routes: Routes = [
     path: 'revisiones-pendientes/registros/:supplyRequestedId',
     component: RevisionPendienteComponent,
     canActivate: [RoleRevisorGuard],
+  },
+  {
+    path: 'entregas-realizadas',
+    component: DeliveriesManagerComponent,
+    canActivate: [RoleManagerGuard],
+  },
+  {
+    path: 'entregas-realizadas/:deliveryId',
+    component: DeliveryManagerComponent,
+    canActivate: [RoleManagerGuard],
   },
 ];
 

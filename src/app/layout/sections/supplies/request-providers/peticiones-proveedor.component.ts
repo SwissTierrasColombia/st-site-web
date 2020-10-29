@@ -10,7 +10,7 @@ const moment = _moment;
 @Component({
   selector: 'app-peticiones-proveedor',
   templateUrl: './peticiones-proveedor.component.html',
-  styleUrls: ['./peticiones-proveedor.component.scss']
+  styleUrls: ['./peticiones-proveedor.component.scss'],
 })
 export class PeticionesProveedorComponent implements OnInit {
   petitionsForManagerOpen: any;
@@ -30,17 +30,21 @@ export class PeticionesProveedorComponent implements OnInit {
     this.open = true;
     this.isJustification = false;
     this.data = {
-      justification: ''
-    }
+      justification: '',
+    };
   }
 
   ngOnInit(): void {
-    this.serviceWorkspaces.getPetitionsForProviderOpen().subscribe(response => {
-      this.petitionsForManagerOpen = response;
-    });
-    this.serviceWorkspaces.getPetitionsForProviderClose().subscribe(response => {
-      this.petitionsForManagerClose = response;
-    });
+    this.serviceWorkspaces
+      .getPetitionsForProviderOpen()
+      .subscribe((response) => {
+        this.petitionsForManagerOpen = response;
+      });
+    this.serviceWorkspaces
+      .getPetitionsForProviderClose()
+      .subscribe((response) => {
+        this.petitionsForManagerClose = response;
+      });
   }
   formatDate(date: string) {
     moment.locale('es');
@@ -57,47 +61,64 @@ export class PeticionesProveedorComponent implements OnInit {
   }
   closeModalAceptar(option: boolean, itemId?: number) {
     if (option) {
-      this.serviceWorkspaces.acceptPetition(itemId, this.data).subscribe(_ => {
-        this.toast.success('Por favor diligencie el formulario y cree el insumo en el Sistema', 'Petición aceptada');
-        this.isJustification = false;
-        this.data = {
-          justification: ''
-        }
-        this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 2, isValidTab: false }]);
+      this.serviceWorkspaces
+        .acceptPetition(itemId, this.data)
+        .subscribe((_) => {
+          this.toast.success(
+            'Por favor diligencie el formulario y cree el insumo en el Sistema',
+            'Petición aceptada'
+          );
+          this.isJustification = false;
+          this.data = {
+            justification: '',
+          };
+          this.router.navigate([
+            '/insumos/caracterizacion/insumo',
+            { tab: 2, isValidTab: false },
+          ]);
 
-        this.serviceWorkspaces.getPetitionsForProviderOpen().subscribe(response => {
-          this.petitionsForManagerOpen = response;
+          this.serviceWorkspaces
+            .getPetitionsForProviderOpen()
+            .subscribe((response) => {
+              this.petitionsForManagerOpen = response;
+            });
+          this.serviceWorkspaces
+            .getPetitionsForProviderClose()
+            .subscribe((response) => {
+              this.petitionsForManagerClose = response;
+            });
         });
-        this.serviceWorkspaces.getPetitionsForProviderClose().subscribe(response => {
-          this.petitionsForManagerClose = response;
-        });
-      });
     }
     this.data = {
-      justification: ''
-    }
+      justification: '',
+    };
     this.modalService.dismissAll();
   }
   closeModalRechazar(option: boolean, itemId?: number) {
     if (option) {
-      this.serviceWorkspaces.rejectPetition(itemId, this.data).subscribe(_ => {
-        this.toast.success('Petición rechazada');
-        this.isJustification = false;
-        this.data = {
-          justification: ''
-        }
-        this.serviceWorkspaces.getPetitionsForProviderOpen().subscribe(response => {
-          this.petitionsForManagerOpen = response;
+      this.serviceWorkspaces
+        .rejectPetition(itemId, this.data)
+        .subscribe((_) => {
+          this.toast.success('Petición rechazada');
+          this.isJustification = false;
+          this.data = {
+            justification: '',
+          };
+          this.serviceWorkspaces
+            .getPetitionsForProviderOpen()
+            .subscribe((response) => {
+              this.petitionsForManagerOpen = response;
+            });
+          this.serviceWorkspaces
+            .getPetitionsForProviderClose()
+            .subscribe((response) => {
+              this.petitionsForManagerClose = response;
+            });
         });
-        this.serviceWorkspaces.getPetitionsForProviderClose().subscribe(response => {
-          this.petitionsForManagerClose = response;
-        });
-      });
     }
     this.data = {
-      justification: ''
-    }
+      justification: '',
+    };
     this.modalService.dismissAll();
   }
-
 }

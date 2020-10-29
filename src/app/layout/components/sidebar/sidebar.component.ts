@@ -102,7 +102,7 @@ export class SidebarComponent implements OnInit {
       this.delegate = this.user.provider_sub_roles.find((elem: any) => {
         return elem.id === 2;
       });
-      if (this.user.entity.alias === 'SNR') {
+      if (this.user.entity.id === 8) {
         this.isSnr = true;
       }
     }

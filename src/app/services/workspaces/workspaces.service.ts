@@ -485,11 +485,16 @@ export class WorkspacesService {
   /**
    * searchSuppliesOrder
    */
-  public searchSuppliesOrder(idPackage: string) {
+  public searchSuppliesOrder(idPackage?: string) {
+    if (idPackage !== '') {
+      return this.httpClient.get(
+        this.url +
+          '/workspaces/v1/providers/requests/package?package=' +
+          idPackage
+      );
+    }
     return this.httpClient.get(
-      this.url +
-        '/workspaces/v1/providers/requests/package?package=' +
-        idPackage
+      this.url + '/workspaces/v1/providers/requests/package'
     );
   }
   /**
@@ -625,10 +630,13 @@ export class WorkspacesService {
   /**
    * getPetitionsForManager
    */
-  public getPetitionsForManager(providerId: string) {
-    return this.httpClient.get(
-      this.url + '/workspaces/v1/petitions/manager/' + providerId
-    );
+  public getPetitionsForManager(providerId?: string) {
+    if (providerId !== '0') {
+      return this.httpClient.get(
+        this.url + '/workspaces/v1/petitions/manager?provider=' + providerId
+      );
+    }
+    return this.httpClient.get(this.url + '/workspaces/v1/petitions/manager');
   }
   /**
    * getPetitionsForProviderOpen
@@ -773,6 +781,29 @@ export class WorkspacesService {
   public getMunicipalitiesByManager(managerId: number) {
     return this.httpClient.get(
       this.url + '/workspaces/v1/municipalities/by-manager/' + managerId
+    );
+  }
+  /**
+   * getDeliveriesByManager
+   */
+  public getDeliveriesByManager() {
+    return this.httpClient.get(this.url + '/workspaces/v1/managers/deliveries');
+  }
+  /**
+   * getDeliveryByIdFromManager
+   */
+  public getDeliveryByIdFromManager(deliveryId: number) {
+    return this.httpClient.get(
+      this.url + '/workspaces/v1/managers/deliveries/' + deliveryId
+    );
+  }
+  /**
+   * generateReportDeliveryFromManager
+   */
+  public generateReportDeliveryFromManager(deliveryId: number) {
+    return this.httpClient.get(
+      this.url + '/workspaces/v1/workspaces/report-delivery/' + deliveryId,
+      { responseType: 'arraybuffer', observe: 'response' }
     );
   }
 }
