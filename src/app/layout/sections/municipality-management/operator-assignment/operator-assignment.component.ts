@@ -343,13 +343,13 @@ export class OperatorAssignmentComponent implements OnInit {
       return elem.id === this.roles.gestor;
     });
     if (roleManager) {
-         this.router.navigate([
-           '/gestion/workspace/asignado',
-           {
-             selectDepartment: this.selectDepartment,
-             selectMunicipality: this.selectMunicipality,
-           },
-         ]);
+      this.router.navigate([
+        '/gestion/workspace/asignado',
+        {
+          selectDepartment: this.selectDepartment,
+          selectMunicipality: this.selectMunicipality,
+        },
+      ]);
     }
   }
   changeUpdate() {
