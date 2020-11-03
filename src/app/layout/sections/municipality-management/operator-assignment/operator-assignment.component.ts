@@ -326,13 +326,31 @@ export class OperatorAssignmentComponent implements OnInit {
     return moment(date).format('YYYY-MM-DD');
   }
   volver() {
-    this.router.navigate([
-      '/gestion/workspace/asignado',
-      {
-        selectDepartment: this.selectDepartment,
-        selectMunicipality: this.selectMunicipality,
-      },
-    ]);
+    const rol = JwtHelper.getUserPublicInformation();
+    const roleAdmin = rol.roles.find((elem: any) => {
+      return elem.id === this.roles.administrador;
+    });
+    if (roleAdmin) {
+      this.router.navigate([
+        '/gestion/workspace/active',
+        {
+          selectDepartment: this.selectDepartment,
+          selectMunicipality: this.selectMunicipality,
+        },
+      ]);
+    }
+    const roleManager = rol.roles.find((elem: any) => {
+      return elem.id === this.roles.gestor;
+    });
+    if (roleManager) {
+         this.router.navigate([
+           '/gestion/workspace/asignado',
+           {
+             selectDepartment: this.selectDepartment,
+             selectMunicipality: this.selectMunicipality,
+           },
+         ]);
+    }
   }
   changeUpdate() {
     this.editForm = {
