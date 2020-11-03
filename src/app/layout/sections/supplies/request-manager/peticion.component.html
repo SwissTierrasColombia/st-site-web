@@ -1,0 +1,107 @@
+<div id="actionForm">
+  <div class="card-body">
+    <form action="" method="post">
+      <div class="row">
+        <div class="col-12">
+          <small id="perfil" class="form-text text-muted mb-3">
+            <h6>
+              Por favor seleccione el proveedor y describa el insumo a
+              solicitar, incluyendo formato, escala y metadatos si aplica.
+            </h6>
+          </small>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" aria-required="true"
+                >* Proveedor</label
+              >
+            </div>
+            <select
+              (change)="changeStatePetition()"
+              class="custom-select"
+              name="providerId"
+              id="providerId"
+              [(ngModel)]="data.providerId"
+            >
+              <option value="0" selected>Seleccione el proveedor</option>
+              <option [ngValue]="item.id" *ngFor="let item of providersActive">
+                {{ item.alias }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="input-group mb-4">
+            <div class="input-group-prepend input-group-text">
+              <div class="">* Descripción</div>
+            </div>
+            <textarea
+              (change)="changeStatePetition()"
+              maxlength="255"
+              class="form-control"
+              id="description"
+              rows="3"
+              name="description"
+              [(ngModel)]="data.description"
+            ></textarea>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="alert alert-primary text-center" role="alert">
+            Recuerde que los campos marcados con * son obligatorios.
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="card-footer text-muted text-center">
+    <button
+      type="button"
+      [disabled]="!enviarPeticion"
+      class="btn btn-dark"
+      (click)="openModalPeticion(modalPeticion)"
+    >
+      Enviar petición
+    </button>
+  </div>
+  <ng-template #modalPeticion let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">¿Está seguro de solicitar esta petición?</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Va a realizar una petición de insumo.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalPeticion(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalPeticion(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,508 @@
+<div>
+  <app-page-header [heading]="'Solicitud de Insumos'" [icon]="'fa-star'">
+  </app-page-header>
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Solicitud de Insumos</h3>
+    </div>
+    <div class="card-body">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [ngClass]="{ active: tab === 1 }"
+            data-toggle="tab"
+            role="tab"
+            (click)="tab1()"
+            aria-controls="home"
+          >
+            <i class="material-icons"> library_add_check </i>Solicitud</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [ngClass]="{ active: tab === 2 }"
+            data-toggle="tab"
+            role="tab"
+            (click)="tab2()"
+            aria-controls="messages"
+          >
+            <i class="material-icons"> library_add </i>Realizar petición</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [ngClass]="{ active: tab === 3 }"
+            data-toggle="tab"
+            role="tab"
+            (click)="tab3()"
+            aria-controls="messages"
+          >
+            <i class="material-icons"> done_all </i>Peticiones Realizadas</a
+          >
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel">
+          <br />
+          <form action="" method="post">
+            <div class="row mb-2">
+              <div class="col-12 col-sm-6 mb-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" aria-required="true"
+                      >* Departamento</label
+                    >
+                  </div>
+                  <select
+                    (change)="changeDepartament()"
+                    class="custom-select"
+                    name="departments"
+                    id="departments"
+                    [(ngModel)]="selectDepartment"
+                  >
+                    <option value="0" selected>
+                      Seleccione el Departamento
+                    </option>
+                    <option
+                      [ngValue]="item.id"
+                      *ngFor="let item of departments"
+                    >
+                      {{ item.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 mb-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text">* Municipio</label>
+                  </div>
+                  <select
+                    (change)="changeMunucipality()"
+                    class="custom-select"
+                    name="municipalities"
+                    id="municipalities"
+                    [(ngModel)]="selectMunicipality"
+                  >
+                    <option value="0" selected>Seleccione el Municipio</option>
+                    <option
+                      [ngValue]="item.id"
+                      *ngFor="let item of municipalities"
+                    >
+                      {{ item.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2" *ngIf="dataWorkSpaceMunicipality">
+              <div class="col-12 col-sm-6 mb-2">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text">Gestor</label>
+                  </div>
+                  <div class="form-control">
+                    {{ dataWorkSpaceMunicipality.manager.name }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 mb-2">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text">Operador</label>
+                  </div>
+                  <div class="form-control">
+                    {{
+                      dataWorkSpaceMunicipality.operators[0]
+                        ? dataWorkSpaceMunicipality.operators[0].operator.name
+                        : " "
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-1" *ngIf="dataWorkSpaceMunicipality.id">
+              <div class="col-12 col-sm-3 mb-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" aria-required="true"
+                      >* Entidad</label
+                    >
+                  </div>
+                  <select
+                    (change)="changeProvider()"
+                    class="custom-select"
+                    name="entidades"
+                    id="entidades"
+                    [(ngModel)]="selectProvider"
+                  >
+                    <option value="0" selected>Seleccione la entidad</option>
+                    <option [ngValue]="item" *ngFor="let item of providers">
+                      {{ item.alias }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-4 mb-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" aria-required="true"
+                      >* Insumos</label
+                    >
+                  </div>
+                  <select
+                    class="custom-select"
+                    name="insumos"
+                    id="insumos"
+                    [(ngModel)]="selectSupplies"
+                  >
+                    <option value="0" selected>Seleccione el insumo</option>
+                    <option
+                      [ngValue]="item"
+                      *ngFor="let item of dataSuppliesProvider"
+                    >
+                      {{ item.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-5 mb-1">
+                <div class="input-group">
+                  <div class="input-group-prepend input-group-text">
+                    <div class="">* Alcance / Observaciones</div>
+                  </div>
+                  <textarea
+                    maxlength="255"
+                    class="form-control"
+                    id="observations"
+                    rows="3"
+                    name="observaciones"
+                    [(ngModel)]="observations"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="col-12 offset-sm-5 col-sm-2 mt-2">
+                <button
+                  type="button"
+                  name="agregar"
+                  id="agregar"
+                  class="btn btn-primary btn-sm btn-block"
+                  (click)="agregar()"
+                >
+                  Agregar
+                </button>
+              </div>
+            </div>
+          </form>
+          <div
+            class="table-responsive table-inverse"
+            *ngIf="tablesupplies.length > 0"
+          >
+            <div class="text-center mt-2 mb-2">
+              <h3>Selección de Insumos</h3>
+            </div>
+            <table class="table table-striped text-center">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Entidad</th>
+                  <th>Insumo</th>
+                  <th>Modelo de Insumo</th>
+                  <th>Observación</th>
+                  <th>Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of tablesupplies">
+                  <td scope="row">
+                    <strong>{{ item.idCount }}</strong>
+                  </td>
+                  <td scope="row">{{ item.entidad }}</td>
+                  <td scope="row">
+                    {{ item.insumo }} <br />
+                    <strong>{{ item.perfil }}</strong>
+                  </td>
+                  <td scope="row">
+                    <div class="input-group" *ngIf="item.modelRequired">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" aria-required="true"
+                          >*</label
+                        >
+                      </div>
+                      <select
+                        (change)="
+                          changeModelSupplies(item.idCount, item.modelVersion)
+                        "
+                        class="custom-select"
+                        name="modelSupplies{{ item.idCount }}"
+                        id="modelSupplies{{ item.idCount }}"
+                        [(ngModel)]="item.modelVersion"
+                      >
+                        <option value="0" selected>
+                          Seleccione la versión del modelo de insumos LADM-COL
+                        </option>
+                        <option
+                          [ngValue]="item.name"
+                          *ngFor="let item of item.versions"
+                        >
+                          Submodelo Insumos V1.0
+                        </option>
+                      </select>
+                    </div>
+                    <div *ngIf="!item.modelRequired">N/A</div>
+                  </td>
+                  <td scope="row">
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      maxlength="255"
+                      disabled="true"
+                      >{{ item.observacion }}</textarea
+                    >
+                  </td>
+                  <td scope="row">
+                    <i class="material-icons cursor" (click)="delete(item)">
+                      delete_forever
+                    </i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            class="card-footer text-muted text-center mb-2"
+            *ngIf="tablesupplies.length > 0"
+          >
+            <div class="row">
+              <div class="col-12 col-sm-6 offset-sm-6 mt-2">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text">* Fecha Límite</label>
+                  </div>
+                  <input
+                    class="form-control"
+                    type="date"
+                    name="deadline"
+                    [min]="currentDate"
+                    [(ngModel)]="listsupplies.deadline"
+                  />
+                </div>
+              </div>
+              <div class="col-12 mt-3">
+                <div class="alert alert-primary text-center" role="alert">
+                  Recuerde que los campos marcados con * son obligatorios.
+                </div>
+              </div>
+              <div class="col-12">
+                <button
+                  type="button"
+                  [disabled]="enviarsolicitud"
+                  class="btn btn-dark"
+                  (click)="openModal(modalRegistrar)"
+                >
+                  Enviar Solicitud
+                </button>
+              </div>
+            </div>
+          </div>
+          <ng-template #modalRegistrar let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title">¿Está seguro de enviar la solicitud?</h4>
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h5 class="alert alert-warning text-center">
+                Advertencia: Va a realizar una solicitud.
+              </h5>
+            </div>
+            <div class="modal-footer">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-dark btn-block"
+                  (click)="closeModal(false)"
+                >
+                  No
+                </button>
+              </div>
+              <div class="col-6 text-right">
+                <button
+                  type="button"
+                  ngbAutofocus
+                  class="btn btn-success btn-block"
+                  (click)="closeModal(true, modalconfirmacion)"
+                >
+                  Si
+                </button>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template #modalconfirmacion let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title">Solicitud enviada correctamente</h4>
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="alert alert-success text-center">
+              <div class="modal-body text-center">
+                Número de orden:
+                <span
+                  name="NumOrderPackageLabel"
+                  type="text"
+                  id="OrderPackageLabel"
+                  ><strong>{{ dataOrder[0].packageLabel }}</strong></span
+                >
+                <span
+                  ngbTooltip="Copiar número de orden"
+                  placement="top"
+                  show-delay="500"
+                >
+                  <span
+                    class="material-icons ml-2"
+                    (click)="myFunctionCopyOrder(dataOrder[0].packageLabel)"
+                  >
+                    content_copy
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-light"
+                (click)="modal.close('Close click')"
+              >
+                Cerrar
+              </button>
+            </div>
+          </ng-template>
+        </div>
+        <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel">
+          <br />
+          <app-peticion></app-peticion>
+        </div>
+        <div class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel">
+          <br />
+          <div id="actionForm">
+            <div class="card-header text-center">
+              <h3>Peticiones realizadas a proveedores de insumos</h3>
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" aria-required="true"
+                    >* Proveedor</label
+                  >
+                </div>
+                <select
+                  (change)="changeStateGetPetition()"
+                  class="custom-select"
+                  name="providerIdPetitions"
+                  id="providerIdPetitions"
+                  [(ngModel)]="providerIdPetition"
+                >
+                  <option value="0" selected>Seleccione el proveedor</option>
+                  <option [ngValue]="item.id" *ngFor="let item of providers">
+                    {{ item.alias }}
+                  </option>
+                </select>
+              </div>
+              <div
+                class="table-inverse table-responsive mt-2"
+                *ngIf="petitionsForManager.length > 0"
+              >
+                <table class="table table-striped text-center">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>ID</th>
+                      <th>Proveedor</th>
+                      <th>Descripción</th>
+                      <th>Fecha de petición</th>
+                      <th>Estado</th>
+                      <th>Respuesta</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of petitionsForManager">
+                      <td scope="row">{{ item.id }}</td>
+                      <td scope="row">{{ item.provider.name }}</td>
+                      <td scope="row">
+                        <textarea
+                          class="form-control"
+                          id="description"
+                          rows="3"
+                          name="description"
+                          disabled="true"
+                          >{{ item.observations }}</textarea
+                        >
+                      </td>
+                      <td scope="row">{{ formatDate(item.createdAt) }}</td>
+                      <td scope="row">
+                        <div *ngIf="item.petitionState.id === 1">
+                          <span class="badge badge-info">
+                            {{ item.petitionState.name }}
+                          </span>
+                        </div>
+
+                        <div *ngIf="item.petitionState.id === 2">
+                          <span class="badge badge-success">
+                            {{ item.petitionState.name }}
+                          </span>
+                        </div>
+                        <div *ngIf="item.petitionState.id === 3">
+                          <span class="badge badge-warning">
+                            {{ item.petitionState.name }}
+                          </span>
+                        </div>
+                      </td>
+                      <td scope="row">
+                        <textarea
+                          class="form-control"
+                          id="justification"
+                          rows="3"
+                          name="justification"
+                          disabled="true"
+                          >{{
+                            item.justification ? item.justification : ""
+                          }}</textarea
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                *ngIf="
+                  petitionsForManager.length === 0 && providerIdPetition !== '0'
+                "
+                class="row mt-3"
+              >
+                <div class="col-12">
+                  <div class="alert alert-primary text-center" role="alert">
+                    No tiene peticiones para este proveedor.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

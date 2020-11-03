@@ -1,0 +1,132 @@
+<div>
+  <app-page-header
+    [heading]="'Gestión de Municipios'"
+    [icon]="'fa-star'"
+  ></app-page-header>
+
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Búsqueda de Municipios</h3>
+    </div>
+    <div class="card-body">
+      <form action="" method="post">
+        <div class="row mb-2">
+          <div class="col-12 col-sm-6 mb-1">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true"
+                  >* Departamento</label
+                >
+              </div>
+              <select
+                (change)="changeDepartament()"
+                class="custom-select"
+                name="departments"
+                id="departments"
+                [(ngModel)]="selectDepartment"
+              >
+                <option value="0" selected>Seleccione el Departamento</option>
+                <option [ngValue]="item.id" *ngFor="let item of departments">
+                  {{ item.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 mb-1">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">Municipio</label>
+              </div>
+              <select
+                class="custom-select"
+                name="munucipalities"
+                id="munucipalities"
+                [(ngModel)]="selectMunicipality"
+              >
+                <option [ngValue]="0" selected>Seleccione el Municipio</option>
+                <option [ngValue]="item.id" *ngFor="let item of munucipalities">
+                  {{ item.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="alert alert-primary text-center" role="alert">
+              Recuerde que los campos marcados con * son obligatorios.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button
+        type="button"
+        class="btn btn-dark"
+        (click)="searchWorkSpaceActive()"
+        [disabled]="!searchActive"
+      >
+        Buscar
+      </button>
+    </div>
+    <div *ngIf="isActive === false">
+      <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          No existe un espacio de trabajo para el municipio.
+        </div>
+      </div>
+    </div>
+    <div class="card mt-2" *ngIf="isActive === true">
+      <div class="card-header text-center">
+        <h3>Espacios de Trabajo</h3>
+      </div>
+      <div class="card-body container">
+        <div class="row justify-content-md-center">
+          <div class="col-12">
+            <div class="table-inverse table-responsive">
+              <table class="table table-striped text-center">
+                <thead class="thead-inverse">
+                  <tr>
+                    <th>ID</th>
+                    <th>Gestor</th>
+                    <th>Departamento</th>
+                    <th>Municipio</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Observaciones</th>
+                    <th>Ver</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listWorkSpace; let i = index">
+                    <td scope="row">{{ i + 1 }}</td>
+                    <td scope="row">{{ item.manager.alias }}</td>
+                    <td scope="row">{{ item.municipality.department.name }}</td>
+                    <td scope="row">{{ item.municipality.name }}</td>
+                    <td scope="row">{{ formatDate(item.startDate) }}</td>
+                    <td scope="row">
+                      <textarea
+                        class="form-control"
+                        rows="3"
+                        maxlength="255"
+                        disabled="true"
+                        >{{ item.observations }}</textarea
+                      >
+                    </td>
+                    <td>
+                      <i
+                        class="material-icons cursor"
+                        (click)="updateWorkSpace(item)"
+                        >double_arrow</i
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
