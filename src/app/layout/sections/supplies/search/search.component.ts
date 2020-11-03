@@ -1,3 +1,4 @@
+import { async } from '@angular/core/testing';
 import { Component, OnInit } from '@angular/core';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
@@ -6,6 +7,7 @@ import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { saveAs } from 'file-saver';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { timeout } from 'rxjs/operators';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -145,15 +147,13 @@ export class SearchComponent implements OnInit {
         });
       });
   }
-  downloadSupplies(idSupplie: number) {
+  downloadSupplies(item: any, idSupplie: number) {
     this.serviceWorkspaces.downloadSupplie(idSupplie).subscribe((data: any) => {
       const contentType = data.headers.get('content-type');
       const type = contentType.split(',')[0];
       const dataFile = data.body;
-      const name = data.headers.get('filename');
       const blob = new Blob([dataFile], { type });
-      const url = window.URL.createObjectURL(blob);
-      saveAs(blob, name);
+      saveAs(blob, item.municipalityCode + '_' + item.name + '.zip');
     });
   }
   deleteSupplies(idSupplie: number, index?: number) {
