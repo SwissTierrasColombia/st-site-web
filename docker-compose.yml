@@ -1,13 +1,9 @@
-version: '3'
+version: '3.7'
 services:
   st-site-web:
     container_name: st-site-web
-    image: st-site-web
     build:
-      context: .    
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8080:80"
-    networks:
-      - st
-networks:
-  st:  
+      - '8080:80'
