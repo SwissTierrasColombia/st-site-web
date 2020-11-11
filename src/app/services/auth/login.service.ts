@@ -35,5 +35,6 @@ export class LoginService {
   }
   logout() {
     localStorage.removeItem(environment.nameTokenSession);
+    localStorage.removeItem('showMenu');
   }
 }

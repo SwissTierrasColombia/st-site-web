@@ -75,9 +75,10 @@ export class HeaderComponent implements OnInit {
 
   onLoggedout() {
     localStorage.removeItem(environment.nameTokenSession);
+    localStorage.removeItem('showMenu');
     window.location.reload();
   }
-  toUpperCasetoLowerCase(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  toUpperCasetoLowerCase(value: string) {
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
   }
 }

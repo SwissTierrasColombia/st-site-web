@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import {
+  CanActivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  Router,
+} from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginService } from '../services/auth/login.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private serviceLogin: LoginService, private route: Router) {
-  }
+  constructor(private serviceLogin: LoginService, private route: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    state: RouterStateSnapshot
+  ): Observable<boolean> | Promise<boolean> | boolean {
     let result = false;
     const token = localStorage.getItem(environment.nameTokenSession);
 
@@ -42,13 +47,16 @@ export class AuthGuard implements CanActivate {
           },
           () => {
             localStorage.removeItem(environment.nameTokenSession);
+            localStorage.removeItem('showMenu');
             result = false;
             this.route.navigate(['/login']);
             reject(result);
-          });
+          }
+        );
       });
     } else {
       localStorage.removeItem(environment.nameTokenSession);
+      localStorage.removeItem('showMenu');
       result = false;
       this.route.navigate(['/login']);
     }
