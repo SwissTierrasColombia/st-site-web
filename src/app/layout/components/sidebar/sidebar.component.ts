@@ -40,20 +40,11 @@ export class SidebarComponent implements OnInit {
         this.toggleSidebar();
       }
     });
-    this.listMenu = [
-      {
-        gestion: 'gestion',
-        insumos: 'insumos',
-        operacion: 'operacion',
-        calidad: 'calidad',
-        tramites: 'tramites',
-        administrador: 'administrador',
-        insumosSolicitudes: 'insumosSolicitudes',
-        caracterizacion: 'caracterizacion',
-        registrar: 'registrar',
-        busqueda: 'busqueda',
-      },
-    ];
+    this.listMenu = {
+      gestion: 'gestion',
+      insumos: 'insumos',
+      administrador: 'administrador',
+    };
     this.allroles = {};
     this.roleAdmin = {
       id: 0,
@@ -74,6 +65,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showMenu = localStorage.getItem('showMenu');
     this.allroles = this.roles;
     this.user = JwtHelper.getUserPublicInformation();
     this.roleAdmin = this.user.roles.find((elem) => {
@@ -113,6 +105,7 @@ export class SidebarComponent implements OnInit {
   }
 
   addExpandClass(element: string) {
+    localStorage.setItem('showMenu', element);
     if (element === this.showMenu) {
       this.showMenu = '';
     } else {
@@ -142,9 +135,13 @@ export class SidebarComponent implements OnInit {
 
   onLoggedout() {
     localStorage.removeItem(environment.nameTokenSession);
+    localStorage.removeItem('showMenu');
     window.location.reload();
   }
   toUpperCasetoLowerCase(text: string) {
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  }
+  isCollapsed(value: string) {
+    localStorage.setItem('showMenu', value);
   }
 }
