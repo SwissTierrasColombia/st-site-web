@@ -36,18 +36,9 @@ export class OperatorAssignmentComponent implements OnInit {
   @ViewChild('myInput')
   myInputVariable: ElementRef;
   assingOperator: boolean;
-  dataAttachmentsTypes: any;
-  selectAttachments: number;
-  observationsAttachmentsTypes: string;
-  ftpAttachmentsTypes: string;
-  validInputAttachmentsTypes: boolean;
-  fileAttachmentsTypes: any;
   suppliesAttachmentsData: any;
-  idSupplieDelete: number;
   idWorkSpaceMunicipality: number;
   isChangeDataOperator: boolean;
-  nameAttachmentsTypes: string;
-  passftpAttachments: string;
   isActiveAssignOperator: boolean;
   constructor(
     private router: Router,
@@ -56,8 +47,7 @@ export class OperatorAssignmentComponent implements OnInit {
     private toastr: ToastrService,
     private serviceOperators: OperatorsService,
     private roles: RoleModel,
-    private modalService: NgbModal,
-    private insumosService: SuppliesService
+    private modalService: NgbModal
   ) {
     this.dataWorkSpace = {
       manager: {},
@@ -91,15 +81,8 @@ export class OperatorAssignmentComponent implements OnInit {
     this.updateInfoBasic = false;
     this.assingOperator = false;
     this.replaceOperator = false;
-    this.dataAttachmentsTypes = [];
-    this.selectAttachments = 0;
-    this.observationsAttachmentsTypes = '';
-    this.ftpAttachmentsTypes = '';
-    this.validInputAttachmentsTypes = false;
     this.suppliesAttachmentsData = [];
     this.isChangeDataOperator = false;
-    this.nameAttachmentsTypes = '';
-    this.passftpAttachments = '';
     this.isActiveAssignOperator = false;
   }
 
@@ -171,26 +154,6 @@ export class OperatorAssignmentComponent implements OnInit {
         this.serviceOperators.getOperatorsByFilters().subscribe((response) => {
           this.operators = response;
         });
-      }
-      if (this.tab === 4) {
-        this.insumosService.GetAttachmentsTypes().subscribe((data) => {
-          this.dataAttachmentsTypes = data;
-        });
-        this.serviceWorkspaces
-          .getSuppliesAttachments(this.selectMunicipality)
-          .subscribe((response) => {
-            this.suppliesAttachmentsData = response;
-            this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(
-              (element) => {
-                const isCadastral = element.owners.find(
-                  (data) => data.ownerType === 'CADASTRAL_AUTHORITY'
-                );
-                if (isCadastral) {
-                  return element;
-                }
-              }
-            );
-          });
       }
       if (this.tab === 5) {
         this.serviceWorkspaces
@@ -525,31 +488,6 @@ export class OperatorAssignmentComponent implements OnInit {
       this.modalService.dismissAll();
     }
   }
-  tab4() {
-    this.tab = 4;
-    this.router.navigate([
-      'gestion/workspace/' + this.selectMunicipality + '/operador',
-      { tab: 4 },
-    ]);
-    this.insumosService.GetAttachmentsTypes().subscribe((data) => {
-      this.dataAttachmentsTypes = data;
-    });
-    this.serviceWorkspaces
-      .getSuppliesAttachments(this.selectMunicipality)
-      .subscribe((response) => {
-        this.suppliesAttachmentsData = response;
-        this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(
-          (element) => {
-            const isCadastral = element.owners.find(
-              (data) => data.ownerType === 'CADASTRAL_AUTHORITY'
-            );
-            if (isCadastral) {
-              return element;
-            }
-          }
-        );
-      });
-  }
   tab5() {
     this.tab = 5;
     this.router.navigate([
@@ -572,99 +510,6 @@ export class OperatorAssignmentComponent implements OnInit {
         );
       });
   }
-  docSoportAttachmentsTypes(files: FileList) {
-    if (this.selectAttachments === 1 || this.selectAttachments === 3) {
-      this.ftpAttachmentsTypes = '';
-    }
-    this.ftpAttachmentsTypes = '';
-    if (files[0].size / 1024 / 1024 <= environment.sizeFile) {
-      var re = /zip*/;
-      if (files[0].type.match(re)) {
-        this.fileAttachmentsTypes = files[0];
-      } else {
-        if (files[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
-          this.fileAttachmentsTypes = undefined;
-          this.toastr.error(
-            'Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.'
-          );
-        } else {
-          this.fileAttachmentsTypes = files[0];
-          this.validInputAttachmentsTypes = false;
-          if (
-            this.selectAttachments !== 0 &&
-            this.observationsAttachmentsTypes !== '' &&
-            (this.fileAttachmentsTypes !== undefined ||
-              this.ftpAttachmentsTypes !== '')
-          ) {
-            this.validInputAttachmentsTypes = true;
-          }
-        }
-      }
-    } else {
-      this.toastr.error(
-        'No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.'
-      );
-    }
-  }
-  validAttachmentsTypes() {
-    this.validInputAttachmentsTypes = false;
-    if (this.selectAttachments === 2) {
-      this.fileAttachmentsTypes = undefined;
-    }
-    if (this.selectAttachments === 1 || this.selectAttachments === 3) {
-      this.ftpAttachmentsTypes = '';
-    }
-    if (
-      this.selectAttachments !== 0 &&
-      this.observationsAttachmentsTypes !== '' &&
-      this.nameAttachmentsTypes !== '' &&
-      (this.fileAttachmentsTypes !== undefined ||
-        this.ftpAttachmentsTypes !== '')
-    ) {
-      this.validInputAttachmentsTypes = true;
-    }
-  }
-  createAttachmentsTypes() {
-    const form = new FormData();
-    form.append('attachmentTypeId', this.selectAttachments.toString());
-    if (this.selectAttachments === 2) {
-      form.append(
-        'ftp',
-        this.ftpAttachmentsTypes + ' ' + this.passftpAttachments
-      );
-    }
-    if (this.selectAttachments === 1 || this.selectAttachments === 3) {
-      form.append('file', this.fileAttachmentsTypes);
-    }
-    form.append('name', this.nameAttachmentsTypes);
-    form.append('observations', this.observationsAttachmentsTypes);
-    this.serviceWorkspaces
-      .createAttachmentsSupply(this.selectMunicipality, form)
-      .subscribe((_) => {
-        this.toastr.success('Ha agregado correctamente el registro.');
-        this.validInputAttachmentsTypes = false;
-        this.serviceWorkspaces
-          .getSuppliesAttachments(this.selectMunicipality)
-          .subscribe((response) => {
-            this.suppliesAttachmentsData = response;
-            this.selectAttachments = 0;
-            this.nameAttachmentsTypes = '';
-            this.ftpAttachmentsTypes = '';
-            this.observationsAttachmentsTypes = '';
-            this.fileAttachmentsTypes = undefined;
-            this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(
-              (element) => {
-                const isCadastral = element.owners.find(
-                  (data) => data.ownerType === 'CADASTRAL_AUTHORITY'
-                );
-                if (isCadastral) {
-                  return element;
-                }
-              }
-            );
-          });
-      });
-  }
   deleteSupplies(idSupplie: number, index?: number) {
     this.serviceWorkspaces
       .deleteSupplies(this.idWorkspace, idSupplie)
@@ -672,16 +517,6 @@ export class OperatorAssignmentComponent implements OnInit {
         this.suppliesAttachmentsData.splice(index, 1);
         this.toastr.success('Se ha eliminado el insumo');
       });
-  }
-  closeModalDelete(option: boolean, index?: number) {
-    this.modalService.dismissAll();
-    if (option) {
-      this.deleteSupplies(this.idSupplieDelete, index);
-    }
-  }
-  openModalDelete(idSupplieDelete: number, modal: any) {
-    this.idSupplieDelete = idSupplieDelete;
-    this.modalService.open(modal, { centered: true, scrollable: true });
   }
   changeDataOperator() {
     this.isChangeDataOperator = false;
@@ -707,26 +542,5 @@ export class OperatorAssignmentComponent implements OnInit {
       const url = window.URL.createObjectURL(blob);
       saveAs(blob, nameSupplie + '.zip');
     });
-  }
-  downloadGetReportAuthority() {
-    this.serviceWorkspaces
-      .getReportAuthority(this.selectMunicipality)
-      .subscribe((data: any) => {
-        const contentType = data.headers.get('content-type');
-        const type = contentType.split(',')[0];
-        const dataFile = data.body;
-        const blob = new Blob([dataFile], { type });
-        const url = window.URL.createObjectURL(blob);
-        saveAs(blob, 'reporte-autoridad.pdf');
-      });
-  }
-  openModalDeliveryInfo(modal: any) {
-    this.modalService.open(modal, { centered: true, scrollable: true });
-  }
-  closeModalDeliveryInfo(option: boolean) {
-    this.modalService.dismissAll();
-    if (option) {
-      this.createAttachmentsTypes();
-    }
   }
 }
