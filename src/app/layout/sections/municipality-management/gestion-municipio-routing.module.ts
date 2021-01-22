@@ -1,3 +1,5 @@
+import { SuppliesDeliveryComponent } from './supplies-delivery/supplies-delivery.component';
+import { WorkspaceRefuseComponent } from './workspace-refuse/workspace-refuse.component';
 import { SearchWorkspaceComponent } from './search-workspace/search-workspace.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -21,6 +23,14 @@ const routes: Routes = [
   {
     path: 'workspace/asignado',
     component: SearchWorkspaceComponent,
+  },
+  {
+    path: 'workspace/delivery',
+    component: SuppliesDeliveryComponent,
+  },
+  {
+    path: 'workspace/refuse',
+    component: WorkspaceRefuseComponent,
   },
 ];
 
