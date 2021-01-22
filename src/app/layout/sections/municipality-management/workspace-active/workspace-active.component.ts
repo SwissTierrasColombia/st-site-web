@@ -63,7 +63,6 @@ export class WorkspaceActiveComponent implements OnInit {
           this.isActive = true;
           this.router.navigate([
             'gestion/workspace/' + this.selectMunicipality + '/operador',
-            { tab: 4 },
           ]);
         } else {
           this.isActive = false;
