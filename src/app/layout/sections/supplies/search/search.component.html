@@ -118,7 +118,15 @@
                     let index = index
                   "
                 >
-                  <td scope="row">{{ item.typeSupply.provider.name }}</td>
+                  <td scope="row">
+                    <span *ngIf="isAuthority(item)"
+                      ><strong>{{
+                        item.typeSupply.provider.name
+                      }}</strong></span
+                    ><span *ngIf="isAuthority(item) === false">{{
+                      item.typeSupply.provider.name
+                    }}</span>
+                  </td>
                   <td scope="row">
                     <span *ngIf="isAuthority(item)">{{ item.name }}</span
                     ><span *ngIf="isAuthority(item) === false">{{
