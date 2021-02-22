@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
+import { CadastralAuthorityService } from 'src/app/services/cadastral-authority/cadastral-authority.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 
@@ -21,8 +22,8 @@ export class WorkspaceRefuseComponent implements OnInit {
   isActiveSearch: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
+    private cadastralAuthorityService: CadastralAuthorityService,
     private roles: RoleModel,
-    private router: Router,
     public toastrService: ToastrService,
     private serviceManagers: ManagersService
   ) {
@@ -56,6 +57,18 @@ export class WorkspaceRefuseComponent implements OnInit {
       });
   }
   refuseWorkSpaceActive() {
+    this.cadastralAuthorityService
+      .unassignManagerFromMunicipality(
+        this.selectMunicipality,
+        this.selectManager
+      )
+      .subscribe((_) => {
+        this.selectManager = 0;
+        this.isAdministrator = false;
+        this.selectMunicipality = 0;
+        this.isActiveSearch = false;
+        this.toastrService.success('Ha desasignado el espacio de trabajo.');
+      });
   }
   changeMunicipalitie() {
     this.isActiveSearch = false;
