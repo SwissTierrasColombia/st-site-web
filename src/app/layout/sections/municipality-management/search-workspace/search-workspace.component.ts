@@ -63,26 +63,7 @@ export class SearchWorkspaceComponent implements OnInit {
     moment.locale('es');
     return moment(date).format('DD/MM/YYYY');
   }
-  searchWorkSpaceActive() {
-    this.serviceWorkspaces
-      .GetWorkspacesByLocation(
-        this.selectDepartment,
-        this.selectMunicipality === 0 ? null : this.selectMunicipality
-      )
-      .subscribe((response: any) => {
-        if (response.length > 0) {
-          this.listWorkSpace = response;
-          this.isActive = true;
-        } else {
-          this.isActive = false;
-          this.toastrService.error(
-            'No existe un espacio de trabajo para el municipio.'
-          );
-        }
-      });
-  }
-  updateWorkSpace(item: any) {
-    this.selectMunicipality = item.municipality.id;
+  updateWorkSpace() {
     this.router.navigate([
       'gestion/workspace/' + this.selectMunicipality + '/operador',
     ]);

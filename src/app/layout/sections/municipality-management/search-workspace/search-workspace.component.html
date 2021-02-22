@@ -64,69 +64,11 @@
       <button
         type="button"
         class="btn btn-dark"
-        (click)="searchWorkSpaceActive()"
+        (click)="updateWorkSpace()"
         [disabled]="!searchActive"
       >
         Buscar
       </button>
-    </div>
-    <div *ngIf="isActive === false">
-      <div class="col-12">
-        <div class="alert alert-primary text-center" role="alert">
-          No existe un espacio de trabajo para el municipio.
-        </div>
-      </div>
-    </div>
-    <div class="card mt-2" *ngIf="isActive === true">
-      <div class="card-header text-center">
-        <h3>Espacios de Trabajo</h3>
-      </div>
-      <div class="card-body container">
-        <div class="row justify-content-md-center">
-          <div class="col-12">
-            <div class="table-inverse table-responsive">
-              <table class="table table-striped text-center">
-                <thead class="thead-inverse">
-                  <tr>
-                    <th>ID</th>
-                    <th>Gestor</th>
-                    <th>Departamento</th>
-                    <th>Municipio</th>
-                    <th>Fecha de Inicio</th>
-                    <th>Observaciones</th>
-                    <th>Ver</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of listWorkSpace; let i = index">
-                    <td scope="row">{{ i + 1 }}</td>
-                    <td scope="row">{{ item.manager.alias }}</td>
-                    <td scope="row">{{ item.municipality.department.name }}</td>
-                    <td scope="row">{{ item.municipality.name }}</td>
-                    <td scope="row">{{ formatDate(item.startDate) }}</td>
-                    <td scope="row">
-                      <textarea
-                        class="form-control"
-                        rows="3"
-                        maxlength="255"
-                        disabled="true"
-                        >{{ item.observations }}</textarea
-                      >
-                    </td>
-                    <td>
-                      <i
-                        class="material-icons cursor"
-                        (click)="updateWorkSpace(item)"
-                        >double_arrow</i
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>

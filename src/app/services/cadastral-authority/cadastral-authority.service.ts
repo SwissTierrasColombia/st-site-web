@@ -67,7 +67,8 @@ export class CadastralAuthorityService {
         '/workspaces/v2/workspaces/' +
         workspaceId +
         '/download-support-manager/' +
-        managerCode
+        managerCode,
+      { responseType: 'arraybuffer', observe: 'response' }
     );
   }
   /**

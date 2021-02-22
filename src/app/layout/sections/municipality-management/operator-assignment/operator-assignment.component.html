@@ -38,7 +38,7 @@
             <i class="material-icons"> home </i>Información Básica</a
           >
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a
             class="nav-link"
             [ngClass]="{ active: tab === 2 }"
@@ -49,7 +49,7 @@
           >
             <i class="material-icons"> archive </i>Soportes</a
           >
-        </li>
+        </li> -->
         <li class="nav-item">
           <a
             class="nav-link"
@@ -85,125 +85,127 @@
               <div>{{ formatDate(dataWorkSpace.createdAt) }}</div>
             </div>
           </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Fecha de Inicio:</label>
-            <div class="col-sm-8">
-              <input
-                class="form-control"
-                type="date"
-                name="startDate"
-                [(ngModel)]="dataWorkSpace.startDate"
-                disabled="{{ editForm.startDate }}"
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Observaciones:</label>
-            <div class="col-sm-8">
-              <textarea
-                [(ngModel)]="dataWorkSpace.observations"
-                (keyup.enter)="onKey($event)"
-                class="form-control"
-                rows="3"
-                maxlength="255"
-                disabled="{{ editForm.observations }}"
-              ></textarea>
-            </div>
-          </div>
-          <div class="mb-2 form-group row" *ngIf="updateInfoBasic">
-            <button
-              *ngIf="editForm.municipalityArea"
-              type="button"
-              class="btn btn-primary btn-sm btn-block"
-              (click)="changeUpdate()"
-            >
-              Editar
-            </button>
-            <button
-              *ngIf="editForm.municipalityArea === false"
-              type="button"
-              class="btn btn-primary btn-sm btn-block"
-              (click)="openModalUpdate(modalRegistrar)"
-            >
-              Actualizar
-            </button>
-          </div>
-          <h3>Gestor</h3>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Nombre:</label>
-            <div class="col-sm-8">
-              <input
-                disabled="{{ !assingOperator }}"
-                class="form-control"
-                type="text"
-                name="managerName"
-                [(ngModel)]="dataWorkSpace.manager.name"
-                disabled="true"
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">NIT:</label>
-            <div class="col-sm-8">
-              <input
-                disabled="{{ !assingOperator }}"
-                class="form-control"
-                type="text"
-                name="taxIdentificationNumber"
-                [(ngModel)]="dataWorkSpace.manager.taxIdentificationNumber"
-                disabled="true"
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Fecha de Asignación:</label>
-            <div class="col-sm-8">
-              <div>{{ formatDate(dataWorkSpace.manager.createdAt) }}</div>
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel">
-          <br />
-          <div class="row">
-            <div class="col-12">
-              <div class="table-inverse table-responsive">
-                <table class="table table-striped text-center">
-                  <thead class="thead-inverse">
-                    <tr>
-                      <th>ID</th>
-                      <th>Repositorio Documental</th>
-                      <th>Hito</th>
-                      <th>Entregado por</th>
-                      <th>Fecha de Creación</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of dataSoports; let i = index">
-                      <td scope="row">{{ i + 1 }}</td>
-                      <td scope="row">
-                        soporte
-                        <i
-                          class="material-icons mt-2 ml-2 cursor"
-                          (click)="previewSupplies(item.id, item)"
+          <div class="table-inverse table-responsive">
+            <table class="table table-striped">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>Gestor</th>
+                  <th>NIT</th>
+                  <th>Fecha de Asignación</th>
+                  <th>Soporte</th>
+                  <th>Fecha de inicio</th>
+                  <th>Observaciones</th>
+                  <th *ngIf="updateInfoBasic">Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let item of dataWorkSpace.managers; let index = index"
+                >
+                  <td scope="row">{{ item.manager.alias }}</td>
+                  <td scope="row">
+                    {{ item.manager.taxIdentificationNumber }}
+                  </td>
+                  <td scope="row">
+                    {{ formatDate(item.manager.createdAt) }}
+                  </td>
+                  <td scope="row">
+                    soporte
+                    <i
+                      class="material-icons mt-2 ml-2 cursor"
+                      (click)="previewSupplies(item.managerCode, index)"
+                    >
+                      preview
+                    </i>
+                  </td>
+                  <td scope="row">
+                    <input
+                      class="form-control"
+                      type="date"
+                      name="startDate"
+                      [(ngModel)]="item.startDate"
+                      disabled="{{ editForm[index].startDate }}"
+                      id="startDate{{ index }}"
+                    />
+                  </td>
+                  <td scope="row">
+                    <textarea
+                      id="observations{{ index }}"
+                      [(ngModel)]="item.observations"
+                      (keyup.enter)="onKey($event, modalRegistrar)"
+                      class="form-control"
+                      rows="3"
+                      maxlength="255"
+                      disabled="{{ editForm[index].observations }}"
+                    ></textarea>
+                  </td>
+                  <td scope="row">
+                    <div class="mb-2 form-group row" *ngIf="updateInfoBasic">
+                      <button
+                        *ngIf="editForm[index].observations"
+                        type="button"
+                        class="btn btn-primary btn-sm btn-block"
+                        (click)="changeUpdate(index)"
+                        id="buttonEditar{{ index }}"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        *ngIf="editForm[index].observations === false"
+                        type="button"
+                        class="btn btn-primary btn-sm btn-block"
+                        (click)="openModalUpdate(modalRegistrar)"
+                        id="buttonActualizar{{ index }}"
+                      >
+                        Actualizar
+                      </button>
+                    </div>
+                  </td>
+                  <ng-template #modalRegistrar let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title">
+                        ¿Está seguro de actualizar la información?
+                      </h4>
+                      <button
+                        type="button"
+                        class="close"
+                        aria-label="Close"
+                        (click)="modal.dismiss('Cross click')"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <h5 class="alert alert-warning text-center">
+                        Advertencia: Esta acción actualizará la información del
+                        espacio de trabajo.
+                      </h5>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-6">
+                        <button
+                          type="button"
+                          class="btn btn-dark btn-block"
+                          (click)="closeModalUpdate(false)"
                         >
-                          preview
-                        </i>
-                      </td>
-                      <td scope="row">{{ item.milestone.name }}</td>
-                      <td scope="row">
-                        <div *ngIf="item.milestone.id === 1">
-                          AUTORIDAD CATASTRAL
-                        </div>
-                        <div *ngIf="item.milestone.id === 3">
-                          {{ dataWorkSpace.manager.alias }}
-                        </div>
-                      </td>
-                      <td scope="row">{{ formatDate(item.createdAt) }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+                          No
+                        </button>
+                      </div>
+                      <div class="col-6 text-right">
+                        <button
+                          type="button"
+                          ngbAutofocus
+                          class="btn btn-success btn-block"
+                          (click)="closeModalUpdate(true, index)"
+                        >
+                          Si
+                        </button>
+                      </div>
+                    </div>
+                  </ng-template>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel">
@@ -486,47 +488,6 @@
           ngbAutofocus
           class="btn btn-success btn-block"
           (click)="closeModal(true)"
-        >
-          Si
-        </button>
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #modalRegistrar let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title">¿Está seguro de actualizar la información?</h4>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <h5 class="alert alert-warning text-center">
-        Advertencia: Esta acción actualizará la información del espacio de
-        trabajo.
-      </h5>
-    </div>
-    <div class="modal-footer">
-      <div class="col-6">
-        <button
-          type="button"
-          class="btn btn-dark btn-block"
-          (click)="closeModalUpdate(false)"
-        >
-          No
-        </button>
-      </div>
-      <div class="col-6 text-right">
-        <button
-          type="button"
-          ngbAutofocus
-          class="btn btn-success btn-block"
-          (click)="closeModalUpdate(true)"
         >
           Si
         </button>

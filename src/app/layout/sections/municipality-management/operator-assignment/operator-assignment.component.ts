@@ -9,7 +9,7 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { saveAs } from 'file-saver';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
-import { SuppliesService } from 'src/app/services/supplies/supplies.service';
+import { CadastralAuthorityService } from 'src/app/services/cadastral-authority/cadastral-authority.service';
 
 const moment = _moment;
 @Component({
@@ -47,7 +47,8 @@ export class OperatorAssignmentComponent implements OnInit {
     private toastr: ToastrService,
     private serviceOperators: OperatorsService,
     private roles: RoleModel,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private cadastralAuthorityService: CadastralAuthorityService
   ) {
     this.dataWorkSpace = {
       manager: {},
@@ -61,12 +62,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.munucipalities = [];
     this.selectDepartment = 0;
     this.selectMunicipality = 0;
-    this.editForm = {
-      municipalityArea: true,
-      numberAlphanumericParcels: true,
-      startDate: true,
-      observations: true,
-    };
+    this.editForm = [];
     this.dataSoports = [];
     this.operators = [];
     this.selectOperator = 0;
@@ -123,6 +119,8 @@ export class OperatorAssignmentComponent implements OnInit {
         .getWorkSpace(this.idWorkspace)
         .subscribe((response: any) => {
           this.dataWorkSpace = response;
+          console.log(this.dataWorkSpace);
+
           this.selectDepartment = this.dataWorkSpace.municipality.department.id;
           if (this.dataWorkSpace.operators.length > 0) {
             this.replaceOperator = true;
@@ -143,13 +141,6 @@ export class OperatorAssignmentComponent implements OnInit {
             );
           }
         });
-      if (this.tab === 2) {
-        this.serviceWorkspaces
-          .getSupportsByWorkSpace(this.idWorkspace)
-          .subscribe((response) => {
-            this.dataSoports = response;
-          });
-      }
       if (this.tab === 3) {
         this.serviceOperators.getOperatorsByFilters().subscribe((response) => {
           this.operators = response;
@@ -214,6 +205,12 @@ export class OperatorAssignmentComponent implements OnInit {
         .getWorkSpace(this.idWorkspace)
         .subscribe((response: any) => {
           this.dataWorkSpace = response;
+          this.dataWorkSpace.managers.forEach((_) => {
+            this.editForm.push({
+              startDate: true,
+              observations: true,
+            });
+          });
           if (this.dataWorkSpace.operators.length > 0) {
             this.replaceOperator = true;
             this.dataOperatorsWorkSpace = this.clone(
@@ -233,13 +230,6 @@ export class OperatorAssignmentComponent implements OnInit {
             );
           }
         });
-      if (this.tab === 2) {
-        this.serviceWorkspaces
-          .getSupportsByWorkSpace(this.idWorkspace)
-          .subscribe((response) => {
-            this.dataSoports = response;
-          });
-      }
       if (this.tab === 3) {
         this.serviceOperators.getOperatorsByFilters().subscribe((response) => {
           this.operators = response;
@@ -315,29 +305,20 @@ export class OperatorAssignmentComponent implements OnInit {
       ]);
     }
   }
-  changeUpdate() {
-    this.editForm = {
-      municipalityArea: false,
-      numberAlphanumericParcels: false,
+  changeUpdate(index: number) {
+    this.editForm[index] = {
       startDate: false,
       observations: false,
     };
   }
-  update() {
+  update(index: number) {
     const dataUpdate = new FormData();
     dataUpdate.append('startDate', this.dataWorkSpace.startDate);
     dataUpdate.append('observations', this.dataWorkSpace.observations);
-    dataUpdate.append(
-      'numberAlphanumericParcels',
-      this.dataWorkSpace.numberAlphanumericParcels
-    );
-    dataUpdate.append('municipalityArea', this.dataWorkSpace.municipalityArea);
     this.serviceWorkspaces
       .updateWorkSpace(this.idWorkspace, dataUpdate)
       .subscribe((_) => {
-        this.editForm = {
-          municipalityArea: true,
-          numberAlphanumericParcels: true,
+        this.editForm[index] = {
           startDate: true,
           observations: true,
         };
@@ -350,14 +331,6 @@ export class OperatorAssignmentComponent implements OnInit {
       'gestion/workspace/' + this.selectMunicipality + '/operador',
       { tab: 1 },
     ]);
-  }
-  getSopports() {
-    this.tab = 2;
-    this.router.navigate([
-      'gestion/workspace/' + this.selectMunicipality + '/operador',
-      { tab: 2 },
-    ]);
-    this.init();
   }
   getOperator() {
     this.tab = 3;
@@ -449,14 +422,14 @@ export class OperatorAssignmentComponent implements OnInit {
   openModal(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  public onKey(event: any) {
+  public onKey(event: any, modal: any) {
     if (event.key === 'Enter') {
-      this.update();
+      this.openModalUpdate(modal);
     }
   }
-  previewSupplies(idSupport: number, item: any) {
-    this.serviceWorkspaces
-      .downloadSupport(this.idWorkspace, idSupport)
+  previewSupplies(managerCode: number, index: number) {
+    this.cadastralAuthorityService
+      .downloadSupportFromManager(this.idWorkspace, managerCode)
       .subscribe((data: any) => {
         const contentType = data.headers.get('content-type');
         const type = contentType.split(',')[0];
@@ -464,25 +437,25 @@ export class OperatorAssignmentComponent implements OnInit {
         const blob = new Blob([dataFile], { type });
         const url = window.URL.createObjectURL(blob);
         const preview = window.open(url, 'soporte');
-        if (item.milestone.id === 1) {
-          setTimeout(() => {
-            preview.document.title = 'Soporte Autoridad Catastral';
-          }, 500);
-        }
-        if (item.milestone.id === 3) {
-          setTimeout(() => {
-            preview.document.title =
-              'Soporte Gestor ' + this.dataWorkSpace.manager.alias;
-          }, 500);
-        }
+        // if (item.milestone.id === 1) {
+        //   setTimeout(() => {
+        //     preview.document.title = 'Soporte Autoridad Catastral';
+        //   }, 500);
+        // }
+        // if (item.milestone.id === 3) {
+        setTimeout(() => {
+          preview.document.title =
+            'Soporte Gestor ' + this.dataWorkSpace.managers[index].alias;
+        }, 500);
+        // }
       });
   }
   openModalUpdate(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModalUpdate(option: boolean) {
+  closeModalUpdate(option: boolean, index?: number) {
     if (option) {
-      this.update();
+      this.update(index);
       this.modalService.dismissAll();
     } else {
       this.modalService.dismissAll();
