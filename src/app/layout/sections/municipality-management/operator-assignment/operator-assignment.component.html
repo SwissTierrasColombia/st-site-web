@@ -38,18 +38,6 @@
             <i class="material-icons"> home </i>Información Básica</a
           >
         </li>
-        <!-- <li class="nav-item">
-          <a
-            class="nav-link"
-            [ngClass]="{ active: tab === 2 }"
-            data-toggle="tab"
-            role="tab"
-            (click)="getSopports()"
-            aria-controls="messages"
-          >
-            <i class="material-icons"> archive </i>Soportes</a
-          >
-        </li> -->
         <li class="nav-item">
           <a
             class="nav-link"
@@ -79,10 +67,14 @@
       <div class="tab-content">
         <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel">
           <br />
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Fecha de Creación:</label>
-            <div class="col-sm-8">
-              <div>{{ formatDate(dataWorkSpace.createdAt) }}</div>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <label class="input-group-text"
+                >Fecha de creación del espacio de trabajo:</label
+              >
+            </div>
+            <div class="form-control">
+              {{ formatDate(dataWorkSpace.createdAt) }}
             </div>
           </div>
           <div class="table-inverse table-responsive">
@@ -124,7 +116,7 @@
                       type="date"
                       name="startDate"
                       [(ngModel)]="item.startDate"
-                      disabled="{{ editForm[index].startDate }}"
+                      disabled="{{ !editForm[index]?.startDate }}"
                       id="startDate{{ index }}"
                     />
                   </td>
@@ -132,17 +124,16 @@
                     <textarea
                       id="observations{{ index }}"
                       [(ngModel)]="item.observations"
-                      (keyup.enter)="onKey($event, modalRegistrar)"
                       class="form-control"
                       rows="3"
                       maxlength="255"
-                      disabled="{{ editForm[index].observations }}"
+                      disabled="{{ !editForm[index]?.observations }}"
                     ></textarea>
                   </td>
                   <td scope="row">
                     <div class="mb-2 form-group row" *ngIf="updateInfoBasic">
                       <button
-                        *ngIf="editForm[index].observations"
+                        *ngIf="!editForm[index]?.observations"
                         type="button"
                         class="btn btn-primary btn-sm btn-block"
                         (click)="changeUpdate(index)"
@@ -151,7 +142,7 @@
                         Editar
                       </button>
                       <button
-                        *ngIf="editForm[index].observations === false"
+                        *ngIf="editForm[index]?.observations"
                         type="button"
                         class="btn btn-primary btn-sm btn-block"
                         (click)="openModalUpdate(modalRegistrar)"
