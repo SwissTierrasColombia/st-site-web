@@ -9,8 +9,10 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { saveAs } from 'file-saver';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
-import { CadastralAuthorityService } from 'src/app/services/cadastral-authority/cadastral-authority.service';
+import { CadastralAuthorityService } from 'src/app/services/v2/cadastral-authority/cadastral-authority.service';
 import { UpdateInformationByWorkspace } from 'src/app/models/updateInformationByWorkspace.interface';
+import { ManagerService } from 'src/app/services/v2/manager/manager.service';
+import { ViewportScroller } from '@angular/common';
 
 const moment = _moment;
 @Component({
@@ -33,14 +35,14 @@ export class OperatorAssignmentComponent implements OnInit {
   dataOperatorsWorkSpace: any;
   supportFileOperator: any;
   updateInfoBasic: boolean;
-  replaceOperator: boolean;
-  @ViewChild('myInput')
+  @ViewChild('myInputdocSoport')
   myInputVariable: ElementRef;
   assingOperator: boolean;
   suppliesAttachmentsData: any;
   idWorkSpaceMunicipality: number;
   isChangeDataOperator: boolean;
   isActiveAssignOperator: boolean;
+  idOperator: number;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -49,7 +51,9 @@ export class OperatorAssignmentComponent implements OnInit {
     private serviceOperators: OperatorsService,
     private roles: RoleModel,
     private modalService: NgbModal,
-    private cadastralAuthorityService: CadastralAuthorityService
+    private cadastralAuthorityService: CadastralAuthorityService,
+    private managerService: ManagerService,
+    private scroll: ViewportScroller
   ) {
     this.dataWorkSpace = {
       manager: {},
@@ -77,10 +81,10 @@ export class OperatorAssignmentComponent implements OnInit {
     };
     this.updateInfoBasic = false;
     this.assingOperator = false;
-    this.replaceOperator = false;
     this.suppliesAttachmentsData = [];
     this.isChangeDataOperator = false;
     this.isActiveAssignOperator = false;
+    this.idOperator = 0;
   }
 
   ngOnInit() {
@@ -120,7 +124,6 @@ export class OperatorAssignmentComponent implements OnInit {
         .getWorkSpace(this.idWorkspace)
         .subscribe((response: any) => {
           this.dataWorkSpace = response;
-          console.log(this.dataWorkSpace);
           this.dataWorkSpace.managers.forEach((_) => {
             this.editForm.push({
               startDate: false,
@@ -128,24 +131,6 @@ export class OperatorAssignmentComponent implements OnInit {
             });
           });
           this.selectDepartment = this.dataWorkSpace.municipality.department.id;
-          if (this.dataWorkSpace.operators.length > 0) {
-            this.replaceOperator = true;
-            this.dataOperatorsWorkSpace = this.clone(
-              this.dataWorkSpace.operators[0]
-            );
-            const startDate = this.dataWorkSpace.operators[0].startDate.split(
-              'T'
-            )[0];
-            const endDate = this.dataWorkSpace.operators[0].endDate.split(
-              'T'
-            )[0];
-            this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(
-              startDate
-            );
-            this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(
-              endDate
-            );
-          }
         });
       if (this.tab === 3) {
         this.serviceOperators.getOperatorsByFilters().subscribe((response) => {
@@ -211,24 +196,6 @@ export class OperatorAssignmentComponent implements OnInit {
         .getWorkSpace(this.idWorkspace)
         .subscribe((response: any) => {
           this.dataWorkSpace = response;
-          if (this.dataWorkSpace.operators.length > 0) {
-            this.replaceOperator = true;
-            this.dataOperatorsWorkSpace = this.clone(
-              this.dataWorkSpace.operators[0]
-            );
-            const startDate = this.dataWorkSpace.operators[0].startDate.split(
-              'T'
-            )[0];
-            const endDate = this.dataWorkSpace.operators[0].endDate.split(
-              'T'
-            )[0];
-            this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(
-              startDate
-            );
-            this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(
-              endDate
-            );
-          }
         });
       if (this.tab === 3) {
         this.serviceOperators.getOperatorsByFilters().subscribe((response) => {
@@ -378,47 +345,92 @@ export class OperatorAssignmentComponent implements OnInit {
     } else if (this.dataOperatorsWorkSpace.workArea < 0) {
       this.toastr.error('El área de trabajo no es correcta.');
     } else {
-      this.serviceWorkspaces
-        .assingOperatorToWorkSpace(this.idWorkspace, dataOperator)
-        .subscribe((_) => {
+      this.managerService
+        .assignOperatorToMunicipality(this.idWorkspace, dataOperator)
+        .subscribe((element) => {
+          this.dataWorkSpace = element;
           this.toastr.success('Operador asignado satisfactoriamente');
+          this.supportFileOperator = undefined;
           this.isChangeDataOperator = false;
-          this.serviceWorkspaces
-            .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
-            .subscribe((data: any) => {
-              this.idWorkspace = data.id;
-              this.serviceWorkspaces
-                .getWorkSpace(this.idWorkspace)
-                .subscribe((response) => {
-                  this.dataWorkSpace = response;
-                  if (this.dataWorkSpace.operators.length > 0) {
-                    this.replaceOperator = true;
-                    this.dataOperatorsWorkSpace = this.clone(
-                      this.dataWorkSpace.operators[0]
-                    );
-                    const startDate = this.dataWorkSpace.operators[0].startDate.split(
-                      'T'
-                    )[0];
-                    const endDate = this.dataWorkSpace.operators[0].endDate.split(
-                      'T'
-                    )[0];
-                    this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(
-                      startDate
-                    );
-                    this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(
-                      endDate
-                    );
-                  }
-                });
-            });
+          this.dataOperatorsWorkSpace = {
+            startDate: '',
+            endDate: '',
+            numberParcelsExpected: 0,
+            workArea: 0,
+            observations: '',
+            operatorCode: 0,
+          };
+          this.myInputVariable.nativeElement.value = '';
+          this.isActiveAssignOperator = false;
         });
     }
   }
-  closeModal(option: boolean) {
-    if (option) {
-      this.assingOperatorInWorkSpace();
+  updateOperatorInWorkSpace() {
+    const dataOperator = new FormData();
+    dataOperator.append('supportFile', this.supportFileOperator);
+    dataOperator.append('startDate', this.dataOperatorsWorkSpace.startDate);
+    dataOperator.append('endDate', this.dataOperatorsWorkSpace.endDate);
+    dataOperator.append(
+      'numberParcelsExpected',
+      this.dataOperatorsWorkSpace.numberParcelsExpected
+    );
+    dataOperator.append(
+      'operatorCode',
+      this.dataOperatorsWorkSpace.operatorCode
+    );
+    dataOperator.append('workArea', this.dataOperatorsWorkSpace.workArea);
+    dataOperator.append(
+      'observations',
+      this.dataOperatorsWorkSpace.observations
+    );
+    const numberAlphanumericParcels = Number.isInteger(
+      this.dataOperatorsWorkSpace.numberParcelsExpected
+    );
+    const workArea = Number.isInteger(this.dataOperatorsWorkSpace.workArea);
+    if (this.supportFileOperator === undefined) {
+      this.toastr.error('No se ha cargado ningún soporte.');
+    } else if (this.dataOperatorsWorkSpace.observations === '') {
+      this.toastr.error('Las observaciones son obligatorias.');
+    } else if (!numberAlphanumericParcels) {
+      this.toastr.error(
+        'El número de predios a intervenir debe ser de tipo numérico.'
+      );
+    } else if (this.dataOperatorsWorkSpace.numberParcelsExpected < 0) {
+      this.toastr.error('El número de predios no es correcto.');
+    } else if (!workArea) {
+      this.toastr.error('El área de trabajo debe ser de tipo numérico.');
+    } else if (this.dataOperatorsWorkSpace.workArea < 0) {
+      this.toastr.error('El área de trabajo no es correcta.');
+    } else {
+      this.managerService
+        .updateOperatorInformationFromWorkspace(
+          this.idWorkspace,
+          this.dataOperatorsWorkSpace.operatorCode,
+          dataOperator
+        )
+        .subscribe((_) => {
+          this.toastr.success('Operador Actualizado satisfactoriamente');
+          this.supportFileOperator = undefined;
+          this.dataOperatorsWorkSpace = {
+            startDate: '',
+            endDate: '',
+            numberParcelsExpected: 0,
+            workArea: 0,
+            observations: '',
+            operatorCode: 0,
+          };
+          this.myInputVariable.nativeElement.value = '';
+          this.idOperator = 0;
+          this.isActiveAssignOperator = false;
+          this.isChangeDataOperator = false;
+        });
     }
+  }
+  closeModalUpdateOperator(option: boolean) {
     this.modalService.dismissAll();
+    if (option) {
+      this.updateOperatorInWorkSpace();
+    }
   }
   openModal(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
@@ -481,7 +493,6 @@ export class OperatorAssignmentComponent implements OnInit {
       });
   }
   changeDataOperator() {
-    this.isChangeDataOperator = false;
     this.isActiveAssignOperator = false;
     if (
       this.dataOperatorsWorkSpace.startDate !== '' &&
@@ -492,7 +503,6 @@ export class OperatorAssignmentComponent implements OnInit {
       this.dataOperatorsWorkSpace.operatorCode !== 0
     ) {
       this.isActiveAssignOperator = true;
-      this.isChangeDataOperator = true;
     }
   }
   downloadSuppliesAutoridad(idSupplie: number, nameSupplie: string) {
@@ -504,5 +514,41 @@ export class OperatorAssignmentComponent implements OnInit {
       const url = window.URL.createObjectURL(blob);
       saveAs(blob, nameSupplie + '.zip');
     });
+  }
+  openModalCreateOperator(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  closeModalCreateOperator(option: boolean) {
+    this.modalService.dismissAll();
+    if (option) {
+      this.assingOperatorInWorkSpace();
+    }
+  }
+  previewSupportOperator(operatorCode: number, index: number) {
+    this.managerService
+      .downloadOperatorSupport(this.idWorkspace, operatorCode)
+      .subscribe((data: any) => {
+        const contentType = data.headers.get('content-type');
+        const type = contentType.split(',')[0];
+        const dataFile = data.body;
+        const blob = new Blob([dataFile], { type });
+        const url = window.URL.createObjectURL(blob);
+        const preview = window.open(url, 'soporte');
+        setTimeout(() => {
+          preview.document.title =
+            'Soporte Operador ' +
+            this.dataWorkSpace.operators[index].operator.alias;
+        }, 500);
+      });
+  }
+  updateOperator(item: any) {
+    this.dataOperatorsWorkSpace = item;
+    const startDate = this.dataWorkSpace.operators[0].startDate.split('T')[0];
+    const endDate = this.dataWorkSpace.operators[0].endDate.split('T')[0];
+    this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(startDate);
+    this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(endDate);
+    this.isChangeDataOperator = true;
+    this.idOperator = item.id;
+    this.scroll.scrollToAnchor('actionFormOperator');
   }
 }

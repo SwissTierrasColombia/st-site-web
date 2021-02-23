@@ -57,7 +57,6 @@ export class LoginComponent implements OnInit {
       this.serviceAUTH
         .recoverPassword(this.emailByRecover)
         .subscribe((response: any) => {
-          console.log(response);
           this.toast.success(response.message);
           this.modalService.dismissAll();
           this.modalService.open(modal, { centered: true, scrollable: true });
@@ -89,7 +88,6 @@ export class LoginComponent implements OnInit {
       this.serviceAUTH
         .ResetPassword(this.emailByRecover, this.codeRecover, this.newPassword)
         .subscribe((response: any) => {
-          console.log(response);
           this.toast.success(response.message);
           this.modalService.dismissAll();
         });

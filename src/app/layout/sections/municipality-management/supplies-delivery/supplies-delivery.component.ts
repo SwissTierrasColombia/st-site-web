@@ -90,8 +90,6 @@ export class SuppliesDeliveryComponent implements OnInit {
         if (response.length > 0) {
           this.isActive = true;
           this.idWorkspace = response[0].id;
-          console.log('getWorkSpaceByMunicipality: ', response);
-
           this.search();
           this.isSearch = true;
         } else {
@@ -238,8 +236,6 @@ export class SuppliesDeliveryComponent implements OnInit {
     this.modalService.open(modal, { centered: true, scrollable: true });
   }
   deleteSupplies(idSupplie: number, index?: number) {
-    console.log('this.idWorkspace: ', this.idWorkspace);
-
     this.serviceWorkspaces
       .deleteSupplies(this.idWorkspace, idSupplie)
       .subscribe((_) => {

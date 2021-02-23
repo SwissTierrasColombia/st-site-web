@@ -1,5 +1,4 @@
 import { ValidateMunicipalitiesInterface } from './../../../../models/validateMunicipalities.interface';
-import { CadastralAuthorityService } from './../../../../services/cadastral-authority/cadastral-authority.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
@@ -10,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
 import { Select2OptionData } from 'ng-select2';
 import { Options } from 'select2';
+import { CadastralAuthorityService } from 'src/app/services/v2/cadastral-authority/cadastral-authority.service';
 
 @Component({
   selector: 'app-workspace',

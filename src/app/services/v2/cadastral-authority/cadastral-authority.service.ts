@@ -1,6 +1,6 @@
-import { UpdateInformationByWorkspace } from './../../models/updateInformationByWorkspace.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UpdateInformationByWorkspace } from 'src/app/models/updateInformationByWorkspace.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
