@@ -806,4 +806,12 @@ export class WorkspacesService {
       { responseType: 'arraybuffer', observe: 'response' }
     );
   }
+  /**
+   * getOnlyOperatorAssignByManager
+   */
+  public getOnlyOperatorAssignByWorkspace(workspaceId: number) {
+    return this.httpClient.get(
+      this.url + '/workspaces/v1/workspaces/' + workspaceId + '/operators'
+    );
+  }
 }

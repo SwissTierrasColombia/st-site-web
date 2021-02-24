@@ -44,6 +44,7 @@ export class OperatorAssignmentComponent implements OnInit {
   isActiveAssignOperator: boolean;
   idOperator: number;
   idManagerUpdate: number;
+  onlyOperatorAssignByWorkspace: any;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -87,6 +88,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.isActiveAssignOperator = false;
     this.idOperator = 0;
     this.idManagerUpdate = 0;
+    this.onlyOperatorAssignByWorkspace = 0;
   }
 
   ngOnInit() {
@@ -156,7 +158,15 @@ export class OperatorAssignmentComponent implements OnInit {
             );
           });
       }
+      this.getOnlyOperatorByWorkspace();
     });
+  }
+  getOnlyOperatorByWorkspace(): void {
+    this.serviceWorkspaces
+      .getOnlyOperatorAssignByWorkspace(this.idWorkspace)
+      .subscribe((element) => {
+        this.onlyOperatorAssignByWorkspace = element;
+      });
   }
   clone(obj: any) {
     return JSON.parse(JSON.stringify(obj));
@@ -354,6 +364,7 @@ export class OperatorAssignmentComponent implements OnInit {
         .assignOperatorToMunicipality(this.idWorkspace, dataOperator)
         .subscribe((element) => {
           this.dataWorkSpace = element;
+          this.getOnlyOperatorByWorkspace();
           this.toastr.success('Operador asignado satisfactoriamente');
           this.supportFileOperator = undefined;
           this.isChangeDataOperator = false;
@@ -414,6 +425,7 @@ export class OperatorAssignmentComponent implements OnInit {
           dataOperator
         )
         .subscribe((_) => {
+          this.getOnlyOperatorByWorkspace();
           this.toastr.success('Operador Actualizado satisfactoriamente');
           this.supportFileOperator = undefined;
           this.dataOperatorsWorkSpace = {

@@ -489,7 +489,7 @@
                       "
                       [style.font-weight]="item.id == idOperator ? 'bold' : ''"
                       *ngFor="
-                        let item of dataWorkSpace.operators;
+                        let item of onlyOperatorAssignByWorkspace;
                         let index = index
                       "
                     >
