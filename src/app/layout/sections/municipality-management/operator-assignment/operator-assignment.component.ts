@@ -43,6 +43,7 @@ export class OperatorAssignmentComponent implements OnInit {
   isChangeDataOperator: boolean;
   isActiveAssignOperator: boolean;
   idOperator: number;
+  idManagerUpdate: number;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -85,6 +86,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.isChangeDataOperator = false;
     this.isActiveAssignOperator = false;
     this.idOperator = 0;
+    this.idManagerUpdate = 0;
   }
 
   ngOnInit() {
@@ -272,9 +274,11 @@ export class OperatorAssignmentComponent implements OnInit {
       ]);
     }
   }
-  changeUpdate(index: number) {
+  changeUpdate(index: number, idManager: number) {
     this.editForm[index].startDate = true;
     this.editForm[index].observations = true;
+    console.log(idManager);
+    this.idManagerUpdate = idManager;
   }
   update(index: number) {
     const dataUpdate: UpdateInformationByWorkspace = {
@@ -291,6 +295,7 @@ export class OperatorAssignmentComponent implements OnInit {
         this.editForm[index].startDate = false;
         this.editForm[index].observations = false;
         this.toastr.success('Información Actualizada');
+        this.idManagerUpdate = 0;
       });
   }
   tab1() {

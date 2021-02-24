@@ -35,7 +35,7 @@
             (click)="tab1()"
             aria-controls="home"
           >
-            <i class="material-icons"> home </i>Información Básica</a
+            <i class="material-icons"> home </i>Gestores</a
           >
         </li>
         <li class="nav-item">
@@ -47,7 +47,7 @@
             (click)="getOperator()"
             aria-controls="messages"
           >
-            <i class="material-icons"> people </i>Operador</a
+            <i class="material-icons"> people </i>Operadores</a
           >
         </li>
         <li class="nav-item" *ngIf="assingOperator">
@@ -67,16 +67,6 @@
       <div class="tab-content">
         <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel">
           <br />
-          <div class="input-group mb-2">
-            <div class="input-group-prepend">
-              <label class="input-group-text"
-                >Fecha de creación del espacio de trabajo:</label
-              >
-            </div>
-            <div class="form-control">
-              {{ formatDate(dataWorkSpace.createdAt) }}
-            </div>
-          </div>
           <div class="table-inverse table-responsive">
             <table class="table table-striped">
               <thead class="thead-inverse">
@@ -92,6 +82,12 @@
               </thead>
               <tbody>
                 <tr
+                  [style.background-color]="
+                    item.managerCode == idManagerUpdate ? '#3ada1273' : ''
+                  "
+                  [style.font-weight]="
+                    item.managerCode == idManagerUpdate ? 'bold' : ''
+                  "
                   *ngFor="let item of dataWorkSpace.managers; let index = index"
                 >
                   <td scope="row">{{ item.manager.alias }}</td>
@@ -130,20 +126,19 @@
                     ></textarea>
                   </td>
                   <td scope="row">
-                    <div class="mb-2 form-group row" *ngIf="updateInfoBasic">
-                      <button
+                    <div *ngIf="updateInfoBasic">
+                      <i
                         *ngIf="!editForm[index]?.observations"
-                        type="button"
-                        class="btn btn-primary btn-sm btn-block"
-                        (click)="changeUpdate(index)"
+                        class="material-icons mr-2 cursor"
+                        (click)="changeUpdate(index, item.managerCode)"
                         id="buttonEditar{{ index }}"
                       >
-                        Editar
-                      </button>
+                        edit
+                      </i>
                       <button
                         *ngIf="editForm[index]?.observations"
                         type="button"
-                        class="btn btn-primary btn-sm btn-block"
+                        class="btn btn-dark btn-sm btn-block"
                         (click)="openModalUpdate(modalRegistrar)"
                         id="buttonActualizar{{ index }}"
                       >
@@ -290,7 +285,7 @@
           <div class="card" *ngIf="assingOperator">
             <div class="card-header text-center">
               <h3>
-                {{ idOperator > 0 ? "Actualizar" : "Crear" }} Operador
+                {{ idOperator > 0 ? "Actualizar" : "Asignar" }} Operador
                 <span *ngIf="idOperator > 0"
                   ><b>#{{ idOperator }}</b></span
                 >
@@ -469,7 +464,7 @@
           </div>
           <div class="card mt-1" *ngIf="dataWorkSpace.operators?.length > 0">
             <div class="card-header text-center">
-              <h3>Listado de operadores</h3>
+              <h3>Operadores asignados</h3>
             </div>
             <div class="card-body">
               <div class="table-inverse table-responsive">
@@ -536,6 +531,15 @@
                     </tr>
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="dataWorkSpace.operators?.length === 0">
+            <div class="row mt-3">
+              <div class="col-12">
+                <div class="alert alert-primary text-center" role="alert">
+                  No hay operadores asignados.
+                </div>
               </div>
             </div>
           </div>

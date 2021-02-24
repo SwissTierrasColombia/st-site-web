@@ -185,8 +185,8 @@ export class WorkspaceComponent implements OnInit {
       });
     }
   }
-  validateMunicipalities() {
-    let validateMunicipalities = this.dataCreateWorkSpace.municipalityId.join();
+  validateMunicipalities(modal: any) {
+    const validateMunicipalities = this.dataCreateWorkSpace.municipalityId.join();
     this.cadastralAuthorityService
       .validateMunicipalities(validateMunicipalities)
       .subscribe((element: ValidateMunicipalitiesInterface[]) => {
@@ -201,6 +201,7 @@ export class WorkspaceComponent implements OnInit {
             'Puede asignar los municipios al gestor seleccionado, por favor haga click en Asignar Gestor Catastral'
           );
           this.createActive2 = true;
+          this.openModal(modal);
         } else {
           this.toastr.info(
             'Tiene municipios en conflicto asignados ya a otro gestor, por favor completa los siguientes campos para poder ser asignados.'
