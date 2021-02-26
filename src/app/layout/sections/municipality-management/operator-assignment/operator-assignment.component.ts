@@ -287,7 +287,6 @@ export class OperatorAssignmentComponent implements OnInit {
   changeUpdate(index: number, idManager: number) {
     this.editForm[index].startDate = true;
     this.editForm[index].observations = true;
-    console.log(idManager);
     this.idManagerUpdate = idManager;
   }
   update(index: number) {

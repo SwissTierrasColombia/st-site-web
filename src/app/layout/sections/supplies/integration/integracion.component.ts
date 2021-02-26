@@ -6,6 +6,7 @@ import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ViewportScroller } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SuppliesService } from 'src/app/services/supplies/supplies.service';
 
 @Component({
   selector: 'app-integracion',
@@ -43,13 +44,15 @@ export class IntegracionComponent implements OnInit {
   idCancel: number;
   tab: number;
   SelectIntegrationPossible: any;
+  municipalityCode: string;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private toastr: ToastrService,
     private modalService: NgbModal,
     private router: Router,
     private scroll: ViewportScroller,
-    private activedRoute: ActivatedRoute
+    private activedRoute: ActivatedRoute,
+    private suppliesService: SuppliesService
   ) {
     this.departments = [];
     this.munucipalities = [];
@@ -123,6 +126,7 @@ export class IntegracionComponent implements OnInit {
     this.idCancel = 0;
     this.SelectIntegrationPossible = {};
     this.tab = 1;
+    this.municipalityCode = '0';
   }
 
   ngOnInit() {
@@ -169,9 +173,10 @@ export class IntegracionComponent implements OnInit {
   changeMunucipality() {
     this.serviceWorkspaces
       .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         this.dataWorkSpaceMunicipality = response;
         this.idWorkspace = this.dataWorkSpaceMunicipality.id;
+        this.municipalityCode = response.municipality.code;
         this.serviceWorkspaces
           .GetIntegrationsByWorkspace(this.idWorkspace)
           .subscribe((resp) => {
@@ -181,21 +186,21 @@ export class IntegracionComponent implements OnInit {
               self.scroll.scrollToAnchor('actionForm');
             }, 1000);
           });
-      });
-    this.serviceWorkspaces
-      .GetSuppliesByMunicipalityXTF(this.selectMunicipality)
-      .subscribe((response) => {
-        this.municipalityXTF = response;
-        this.catastro = this.municipalityXTF.filter((item) => {
-          if (item.typeSupply.providerProfile.id === 1) {
-            return item;
-          }
-        });
-        this.registro = this.municipalityXTF.filter((item) => {
-          if (item.typeSupply.providerProfile.id === 4) {
-            return item;
-          }
-        });
+        this.suppliesService
+          .getSuppliesXTFbyMunicipality(this.municipalityCode)
+          .subscribe((element) => {
+            this.municipalityXTF = element;
+            this.catastro = this.municipalityXTF.filter((item) => {
+              if (item.typeSupplyCode === 2) {
+                return item;
+              }
+            });
+            this.registro = this.municipalityXTF.filter((item) => {
+              if (item.typeSupplyCode === 12) {
+                return item;
+              }
+            });
+          });
       });
   }
   integrationSupplies() {
@@ -325,8 +330,8 @@ export class IntegracionComponent implements OnInit {
   roundDecimal(num: any) {
     return Math.round(num * 100) / 100;
   }
-  parcelNumber(number: number) {
-    return new Intl.NumberFormat().format(number);
+  parcelNumber(index: number) {
+    return new Intl.NumberFormat().format(index);
   }
   openModalXTF(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });

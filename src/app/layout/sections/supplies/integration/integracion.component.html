@@ -109,40 +109,11 @@
               </div>
             </div>
           </div>
-          <div
-            class="row mb-2"
-            *ngIf="dataWorkSpaceMunicipality.manager.name !== ''"
-          >
-            <div class="col-12 col-sm-6 mb-2">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <label class="input-group-text">Gestor</label>
-                </div>
-                <div class="form-control">
-                  {{ dataWorkSpaceMunicipality.manager.name }}
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 mb-2">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <label class="input-group-text">Operador</label>
-                </div>
-                <div class="form-control">
-                  {{
-                    dataWorkSpaceMunicipality.operators[0]
-                      ? dataWorkSpaceMunicipality.operators[0].operator.name
-                      : " "
-                  }}
-                </div>
-              </div>
-            </div>
-          </div>
         </form>
         <div
           class="row justify-content-center text-center"
           id="insumosXTF"
-          *ngIf="dataWorkSpaceMunicipality.manager.name !== ''"
+          *ngIf="catastro.length > 0"
         >
           <div class="col-12 col-sm-6 mb-2">
             <div class="card">
@@ -169,7 +140,7 @@
                       placement="bottom"
                       show-delay="500"
                     >
-                      {{ item.typeSupply.name }} v{{ i + 1 }}
+                      {{ item.name }} v{{ i + 1 }}
                       {{ globalFuntionDate(item.createdAt) }}
                     </span>
                   </label>
@@ -210,7 +181,7 @@
                       placement="bottom"
                       show-delay="500"
                     >
-                      {{ item.typeSupply.name }} v{{ i + 1 }}
+                      {{ item.name }} v{{ i + 1 }}
                       {{ globalFuntionDate(item.createdAt) }}
                     </span>
                   </label>
@@ -243,13 +214,7 @@
       </div>
     </div>
   </div>
-  <div
-    *ngIf="
-      dataWorkSpaceMunicipality.manager.name !== '' &&
-      integrationByWorkspace.length > 0 &&
-      tab === 3
-    "
-  >
+  <div *ngIf="integrationByWorkspace.length > 0 && tab === 3">
     <div class="card text-center">
       <div class="card-header">
         <h5>Historial de Integraciones</h5>

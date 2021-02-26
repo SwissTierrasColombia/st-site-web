@@ -98,32 +98,6 @@
                 </div>
               </div>
             </div>
-            <div class="row mb-2" *ngIf="dataWorkSpaceMunicipality">
-              <div class="col-12 col-sm-6 mb-2">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text">Gestor</label>
-                  </div>
-                  <div class="form-control">
-                    {{ dataWorkSpaceMunicipality.manager.name }}
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6 mb-2">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text">Operador</label>
-                  </div>
-                  <div class="form-control">
-                    {{
-                      dataWorkSpaceMunicipality.operators[0]
-                        ? dataWorkSpaceMunicipality.operators[0].operator.name
-                        : " "
-                    }}
-                  </div>
-                </div>
-              </div>
-            </div>
             <div class="row mb-1" *ngIf="dataWorkSpaceMunicipality.id">
               <div class="col-12 col-sm-3 mb-1">
                 <div class="input-group">
