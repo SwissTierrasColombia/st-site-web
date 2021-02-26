@@ -30,6 +30,8 @@ export class EntregarComponent implements OnInit {
   enabledButton: boolean;
   listDelivery: any;
   firstSearch: boolean;
+  operators: any;
+  selectOperatorId: number;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
@@ -50,12 +52,15 @@ export class EntregarComponent implements OnInit {
     this.deliverySupplies = {
       observations: '',
       supplies: [],
+      operatorCode: 0,
     };
     this.sendSuppliesFilter = true;
     this.idWorkSpace = 0;
     this.enabledButton = true;
     this.listDelivery = [];
     this.firstSearch = false;
+    this.operators = [];
+    this.selectOperatorId = 0;
   }
 
   ngOnInit() {
@@ -78,15 +83,31 @@ export class EntregarComponent implements OnInit {
       .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
       .subscribe((data) => {
         this.munucipalities = data;
+        this.changeSelects();
       });
   }
   changeMunucipality() {
-    this.sendSuppliesFilter = false;
     this.serviceWorkspaces
       .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
       .subscribe((response: any) => {
         this.idWorkSpace = response.id;
+        this.changeSelects();
+        this.serviceWorkspaces
+          .getOnlyOperatorAssignByWorkspace(this.idWorkSpace)
+          .subscribe((element: any) => {
+            this.operators = element;
+          });
       });
+  }
+  changeSelects() {
+    this.sendSuppliesFilter = true;
+    if (
+      this.selectDepartment !== 0 &&
+      this.selectMunicipality !== 0 &&
+      this.selectOperatorId !== 0
+    ) {
+      this.sendSuppliesFilter = false;
+    }
   }
   getPage(page: number) {
     this.firstSearch = true;
@@ -201,34 +222,41 @@ export class EntregarComponent implements OnInit {
     }
   }
   sendSupplies() {
+    this.deliverySupplies.operatorCode = this.selectOperatorId;
     if (this.deliverySupplies.supplies.length > 0) {
       if (this.deliverySupplies.observations.length > 0) {
         const data = this.deliverySupplies.supplies.find((element) => {
           return element.observations === '';
         });
         if (data) {
-          this.toastr.error('Te faltan algunas observaciones');
+          this.toastr.error('Le faltan algunas observaciones');
         } else {
-          this.serviceWorkspaces
-            .deliveriesSupplies(this.idWorkSpace, this.deliverySupplies)
-            .subscribe((_) => {
-              this.toastr.success(
-                'Se ha realizado la entrega de los insumos al operador'
-              );
-              this.getPage(1);
-              this.deliverySupplies = {
-                observations: '',
-                supplies: [],
-              };
-              this.enabledButton = true;
-            });
+          if (this.deliverySupplies.operatorCode === 0) {
+            this.toastr.error('No ha seleccionado ningún operador');
+          } else {
+            console.log(this.deliverySupplies);
+
+            this.serviceWorkspaces
+              .deliveriesSupplies(this.idWorkSpace, this.deliverySupplies)
+              .subscribe((_) => {
+                this.toastr.success(
+                  'Se ha realizado la entrega de los insumos al operador'
+                );
+                this.getPage(1);
+                this.deliverySupplies = {
+                  observations: '',
+                  supplies: [],
+                };
+                this.enabledButton = true;
+              });
+          }
         }
       } else {
         this.toastr.error('Las observaciones generales son obligatorias');
       }
     } else {
       this.toastr.error(
-        'No has seleccionado ningún insumo, ó te faltan las observaciones'
+        'No ha seleccionado ningún insumo, ó te faltan las observaciones'
       );
     }
   }
