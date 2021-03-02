@@ -234,8 +234,6 @@ export class EntregarComponent implements OnInit {
           if (this.deliverySupplies.operatorCode === 0) {
             this.toastr.error('No ha seleccionado ningún operador');
           } else {
-            console.log(this.deliverySupplies);
-
             this.serviceWorkspaces
               .deliveriesSupplies(this.idWorkSpace, this.deliverySupplies)
               .subscribe((_) => {
