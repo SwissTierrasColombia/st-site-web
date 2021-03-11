@@ -163,6 +163,7 @@
                           <th>Fecha limite</th>
                           <th>Fecha de Cargue</th>
                           <th>Estado</th>
+                          <th>Opciones</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -197,6 +198,146 @@
                                 ? "Solicitud Cerrada"
                                 : "Solicitud Abierta"
                             }}
+                          </td>
+                          <td scope="row">
+                            <span
+                              ngbTooltip="Ver detalle"
+                              placement="top"
+                              show-delay="500"
+                            >
+                              <i
+                                class="material-icons cursor ml-4"
+                                (click)="
+                                  openModalViewDetail(viewDetailMunicipality)
+                                "
+                              >
+                                pageview
+                              </i>
+                            </span>
+                            <ng-template #viewDetailMunicipality let-modal>
+                              <div class="modal-header">
+                                <h4 class="modal-title">Solicitud</h4>
+                                <button
+                                  type="button"
+                                  class="close"
+                                  aria-label="Close"
+                                  (click)="modal.dismiss('Cross click')"
+                                >
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div
+                                  class="table-inverse table-responsive text-center"
+                                >
+                                  <table class="table table-striped">
+                                    <thead class="thead-inverse">
+                                      <tr>
+                                        <th>Proveedor</th>
+                                        <th>Fecha de solicitud</th>
+                                        <th>Fecha limite</th>
+                                        <th>Fecha de cargue</th>
+                                        <th>Estado</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td scope="row">
+                                          {{
+                                            item.provider
+                                              ? item.provider.name
+                                              : "N/A"
+                                          }}
+                                        </td>
+                                        <td scope="row">
+                                          {{
+                                            globalFuntionDate(item.createdAt)
+                                          }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ globalFuntionDate(item.deadline) }}
+                                        </td>
+                                        <td scope="row">
+                                          {{
+                                            item.closedAt
+                                              ? globalFuntionDate(item.closedAt)
+                                              : "N/A"
+                                          }}
+                                        </td>
+                                        <td scope="row">
+                                          {{
+                                            item.closedAt
+                                              ? "Solicitud Cerrada"
+                                              : "Solicitud Abierta"
+                                          }}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div
+                                  class="table-inverse table-responsive text-center"
+                                >
+                                  <table class="table table-striped">
+                                    <thead class="thead-inverse">
+                                      <tr>
+                                        <th>Insumo</th>
+                                        <th>Estado</th>
+                                        <th>Observación/Justificación</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr
+                                        *ngFor="
+                                          let supp of item.suppliesRequested
+                                        "
+                                      >
+                                        <td scope="row">
+                                          {{ supp.typeSupply.name }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ supp.state.name }}
+                                        </td>
+                                        <td scope="row">
+                                          <textarea
+                                            *ngIf="supp.observations"
+                                            maxlength="255"
+                                            class="form-control"
+                                            id="observations"
+                                            rows="2"
+                                            [(ngModel)]="supp.observations"
+                                            name="observationsSupplie"
+                                            disabled="true"
+                                          ></textarea>
+                                          <textarea
+                                            *ngIf="supp.justification"
+                                            maxlength="255"
+                                            class="form-control"
+                                            id="justification"
+                                            rows="2"
+                                            [(ngModel)]="supp.justification"
+                                            name="justificationSupplie"
+                                            disabled="true"
+                                          ></textarea>
+                                          <textarea
+                                            *ngIf="
+                                              !supp.justification &&
+                                              !supp.observations
+                                            "
+                                            maxlength="255"
+                                            class="form-control"
+                                            id="justificationObservations"
+                                            rows="2"
+                                            name="justificationObservationsSupplie"
+                                            disabled="true"
+                                          ></textarea>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </ng-template>
                           </td>
                         </tr>
                       </tbody>
@@ -298,6 +439,7 @@
                           <th>Fecha límite</th>
                           <th>Fecha de Cargue</th>
                           <th>Estado</th>
+                          <th>Opciones</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -337,6 +479,148 @@
                                 ? "Solicitud Cerrada"
                                 : "Solicitud Abierta"
                             }}
+                          </td>
+                          <td scope="row">
+                            <span
+                              ngbTooltip="Ver detalle"
+                              placement="top"
+                              show-delay="500"
+                            >
+                              <i
+                                class="material-icons cursor ml-4"
+                                (click)="
+                                  openModalViewDetail(viewDetailProvider)
+                                "
+                              >
+                                pageview
+                              </i>
+                            </span>
+                            <ng-template #viewDetailProvider let-modal>
+                              <div class="modal-header">
+                                <h4 class="modal-title">Solicitud</h4>
+                                <button
+                                  type="button"
+                                  class="close"
+                                  aria-label="Close"
+                                  (click)="modal.dismiss('Cross click')"
+                                >
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div
+                                  class="table-inverse table-responsive text-center"
+                                >
+                                  <table class="table table-striped">
+                                    <thead class="thead-inverse">
+                                      <tr>
+                                        <th>Departamento</th>
+                                        <th>Municipio</th>
+                                        <th>Fecha de solicitud</th>
+                                        <th>Fecha limite</th>
+                                        <th>Fecha de cargue</th>
+                                        <th>Estado</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td scope="row">
+                                          {{
+                                            item.municipality.department.name
+                                          }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ item.municipality.name }}
+                                        </td>
+                                        <td scope="row">
+                                          {{
+                                            globalFuntionDate(item.createdAt)
+                                          }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ globalFuntionDate(item.deadline) }}
+                                        </td>
+                                        <td scope="row">
+                                          {{
+                                            item.closedAt
+                                              ? globalFuntionDate(item.closedAt)
+                                              : "N/A"
+                                          }}
+                                        </td>
+                                        <td scope="row">
+                                          {{
+                                            item.closedAt
+                                              ? "Solicitud Cerrada"
+                                              : "Solicitud Abierta"
+                                          }}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div
+                                  class="table-inverse table-responsive text-center"
+                                >
+                                  <table class="table table-striped">
+                                    <thead class="thead-inverse">
+                                      <tr>
+                                        <th>Insumo</th>
+                                        <th>Estado</th>
+                                        <th>Observación/Justificación</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr
+                                        *ngFor="
+                                          let supp of item.suppliesRequested
+                                        "
+                                      >
+                                        <td scope="row">
+                                          {{ supp.typeSupply.name }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ supp.state.name }}
+                                        </td>
+                                        <td scope="row">
+                                          <textarea
+                                            *ngIf="supp.observations"
+                                            maxlength="255"
+                                            class="form-control"
+                                            id="observations"
+                                            rows="2"
+                                            [(ngModel)]="supp.observations"
+                                            name="observationsSupplie"
+                                            disabled="true"
+                                          ></textarea>
+                                          <textarea
+                                            *ngIf="supp.justification"
+                                            maxlength="255"
+                                            class="form-control"
+                                            id="justification"
+                                            rows="2"
+                                            [(ngModel)]="supp.justification"
+                                            name="justificationSupplie"
+                                            disabled="true"
+                                          ></textarea>
+                                          <textarea
+                                            *ngIf="
+                                              !supp.justification &&
+                                              !supp.observations
+                                            "
+                                            maxlength="255"
+                                            class="form-control"
+                                            id="justificationObservations"
+                                            rows="2"
+                                            name="justificationObservationsSupplie"
+                                            disabled="true"
+                                          ></textarea>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </ng-template>
                           </td>
                         </tr>
                       </tbody>
@@ -434,6 +718,7 @@
                           <!-- <th>Fecha límite</th> -->
                           <!-- <th>Fecha de cargue</th> -->
                           <th>Estado</th>
+                          <th>Opciones</th>
                         </tr>
                       </thead>
                       <tbody *ngFor="let element of infoTabOrder">
@@ -485,6 +770,154 @@
                                 ? "Solicitud Cerrada"
                                 : "Solicitud Abierta"
                             }}
+                          </td>
+                          <td scope="row">
+                            <span
+                              ngbTooltip="Ver detalle"
+                              placement="top"
+                              show-delay="500"
+                            >
+                              <i
+                                class="material-icons cursor ml-4"
+                                (click)="openModalViewDetail(viewDetailOrder)"
+                              >
+                                pageview
+                              </i>
+                            </span>
+                            <ng-template #viewDetailOrder let-modal>
+                              <div class="modal-header">
+                                <h4 class="modal-title">Solicitud</h4>
+                                <button
+                                  type="button"
+                                  class="close"
+                                  aria-label="Close"
+                                  (click)="modal.dismiss('Cross click')"
+                                >
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div
+                                  class="table-inverse table-responsive text-center"
+                                >
+                                  <table class="table table-striped">
+                                    <thead class="thead-inverse">
+                                      <tr>
+                                        <th>Número de orden</th>
+                                        <th>Departamento</th>
+                                        <th>Municipio</th>
+                                        <th>Proveedor</th>
+                                        <th>Fecha de solicitud</th>
+                                        <th>Fecha limite</th>
+                                        <th>Fecha de cargue</th>
+                                        <th>Estado</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td scope="row">
+                                          {{ item.packageLabel }}
+                                        </td>
+                                        <td scope="row">
+                                          {{
+                                            item.municipality.department.name
+                                          }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ item.municipality.name }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ item.provider.name }}
+                                        </td>
+                                        <td scope="row">
+                                          {{
+                                            globalFuntionDate(item.createdAt)
+                                          }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ globalFuntionDate(item.deadline) }}
+                                        </td>
+                                        <td scope="row">
+                                          {{
+                                            item.closedAt
+                                              ? globalFuntionDate(item.closedAt)
+                                              : "N/A"
+                                          }}
+                                        </td>
+                                        <td scope="row">
+                                          {{
+                                            item.closedAt
+                                              ? "Solicitud Cerrada"
+                                              : "Solicitud Abierta"
+                                          }}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div
+                                  class="table-inverse table-responsive text-center"
+                                >
+                                  <table class="table table-striped">
+                                    <thead class="thead-inverse">
+                                      <tr>
+                                        <th>Insumo</th>
+                                        <th>Estado</th>
+                                        <th>Observación/Justificación</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr
+                                        *ngFor="
+                                          let supp of item.suppliesRequested
+                                        "
+                                      >
+                                        <td scope="row">
+                                          {{ supp.typeSupply.name }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ supp.state.name }}
+                                        </td>
+                                        <td scope="row">
+                                          <textarea
+                                            *ngIf="supp.observations"
+                                            maxlength="255"
+                                            class="form-control"
+                                            id="observations"
+                                            rows="2"
+                                            [(ngModel)]="supp.observations"
+                                            name="observationsSupplie"
+                                            disabled="true"
+                                          ></textarea>
+                                          <textarea
+                                            *ngIf="supp.justification"
+                                            maxlength="255"
+                                            class="form-control"
+                                            id="justification"
+                                            rows="2"
+                                            [(ngModel)]="supp.justification"
+                                            name="justificationSupplie"
+                                            disabled="true"
+                                          ></textarea>
+                                          <textarea
+                                            *ngIf="
+                                              !supp.justification &&
+                                              !supp.observations
+                                            "
+                                            maxlength="255"
+                                            class="form-control"
+                                            id="justificationObservations"
+                                            rows="2"
+                                            name="justificationObservationsSupplie"
+                                            disabled="true"
+                                          ></textarea>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </ng-template>
                           </td>
                         </tr>
                       </tbody>

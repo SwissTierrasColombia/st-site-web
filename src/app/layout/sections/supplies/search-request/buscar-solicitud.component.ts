@@ -4,6 +4,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-buscar-solicitud',
@@ -40,7 +41,8 @@ export class BuscarSolicitudComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService,
     private serviceProvider: ProvidersService,
     private router: Router,
-    private activedRoute: ActivatedRoute
+    private activedRoute: ActivatedRoute,
+    private modalService: NgbModal
   ) {
     this.usermanager = false;
     this.departments = [];
@@ -125,6 +127,7 @@ export class BuscarSolicitudComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
+        console.log('this.allSupplies: ', this.allSupplies);
       });
   }
   getPageProvider(page: string) {
@@ -135,6 +138,7 @@ export class BuscarSolicitudComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.infoTabProvider = response.items;
+        console.log('this.infoTabProvider: ', this.infoTabProvider);
       });
   }
   getPageOrder() {
@@ -144,6 +148,7 @@ export class BuscarSolicitudComponent implements OnInit {
         this.infoTabOrder = response;
         this.search3 = true;
         this.totalElements = this.infoTabOrder.length;
+        console.log('this.infoTabOrder: ', this.infoTabOrder);
       });
   }
   activebuttontab1() {
@@ -167,5 +172,12 @@ export class BuscarSolicitudComponent implements OnInit {
       this.buttonTab3 = false;
       this.search3 = false;
     }
+  }
+  openModalViewDetail(modal: any) {
+    this.modalService.open(modal, {
+      centered: true,
+      scrollable: true,
+      size: 'lg',
+    });
   }
 }
