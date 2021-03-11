@@ -127,7 +127,6 @@ export class BuscarSolicitudComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.allSupplies = response.items;
-        console.log('this.allSupplies: ', this.allSupplies);
       });
   }
   getPageProvider(page: string) {
@@ -138,7 +137,6 @@ export class BuscarSolicitudComponent implements OnInit {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.infoTabProvider = response.items;
-        console.log('this.infoTabProvider: ', this.infoTabProvider);
       });
   }
   getPageOrder() {
@@ -148,7 +146,6 @@ export class BuscarSolicitudComponent implements OnInit {
         this.infoTabOrder = response;
         this.search3 = true;
         this.totalElements = this.infoTabOrder.length;
-        console.log('this.infoTabOrder: ', this.infoTabOrder);
       });
   }
   activebuttontab1() {
