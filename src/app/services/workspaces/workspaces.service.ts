@@ -704,7 +704,16 @@ export class WorkspacesService {
   /**
    * getSuppliesAttachments
    */
-  public getSuppliesAttachments(municipalityId: number) {
+  public getSuppliesAttachments(municipalityId: number, managerId?: number) {
+    if (managerId) {
+      return this.httpClient.get(
+        this.url +
+          '/workspaces/v1/supplies/' +
+          municipalityId +
+          '?active=false&manager=' +
+          managerId
+      );
+    }
     return this.httpClient.get(
       this.url + '/workspaces/v1/supplies/' + municipalityId + '?active=false'
     );
@@ -736,9 +745,13 @@ export class WorkspacesService {
   /**
    * getReportAuthority
    */
-  public getReportAuthority(municipalityId: number) {
+  public getReportAuthority(municipalityId: number, managerId: number) {
     return this.httpClient.get(
-      this.url + '/workspaces/v1/cadastral-authority/report/' + municipalityId,
+      this.url +
+        '/workspaces/v1/cadastral-authority/report/' +
+        municipalityId +
+        '?manager=' +
+        managerId,
       { responseType: 'arraybuffer', observe: 'response' }
     );
   }

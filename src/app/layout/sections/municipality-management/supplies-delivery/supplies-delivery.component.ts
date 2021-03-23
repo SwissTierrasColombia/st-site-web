@@ -114,7 +114,7 @@ export class SuppliesDeliveryComponent implements OnInit {
       this.dataAttachmentsTypes = data;
     });
     this.serviceWorkspaces
-      .getSuppliesAttachments(this.selectMunicipality)
+      .getSuppliesAttachments(this.selectMunicipality, this.selectManager)
       .subscribe((response) => {
         this.suppliesAttachmentsData = response;
         this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(
@@ -195,13 +195,14 @@ export class SuppliesDeliveryComponent implements OnInit {
     }
     form.append('name', this.nameAttachmentsTypes);
     form.append('observations', this.observationsAttachmentsTypes);
+    form.append('managerCode', this.selectManager.toString());
     this.serviceWorkspaces
       .createAttachmentsSupply(this.selectMunicipality, form)
       .subscribe((_) => {
         this.toastr.success('Ha agregado correctamente el registro.');
         this.validInputAttachmentsTypes = false;
         this.serviceWorkspaces
-          .getSuppliesAttachments(this.selectMunicipality)
+          .getSuppliesAttachments(this.selectMunicipality, this.selectManager)
           .subscribe((response) => {
             this.suppliesAttachmentsData = response;
             this.selectAttachments = 0;
@@ -251,7 +252,7 @@ export class SuppliesDeliveryComponent implements OnInit {
   }
   downloadGetReportAuthority() {
     this.serviceWorkspaces
-      .getReportAuthority(this.selectMunicipality)
+      .getReportAuthority(this.selectMunicipality, this.selectManager)
       .subscribe((data: any) => {
         const contentType = data.headers.get('content-type');
         const type = contentType.split(',')[0];
