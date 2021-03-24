@@ -1,12 +1,12 @@
 <div>
   <app-page-header
-    [heading]="'Gestión de Municipios'"
+    [heading]="'Desasignar'"
     [icon]="'fa-star'"
   ></app-page-header>
 
   <div class="card">
     <div class="card-header text-center">
-      <h3>Desasignar espacio de trabajo</h3>
+      <h3>Desasignar gestión del municipio</h3>
     </div>
     <div class="card-body">
       <form action="" method="post">
@@ -65,7 +65,7 @@
       <button
         type="button"
         class="btn btn-dark"
-        (click)="refuseWorkSpaceActive()"
+        (click)="openModalRefuse(modalRefuse)"
         [disabled]="!isActiveSearch"
       >
         Desasignar
@@ -74,9 +74,51 @@
     <div *ngIf="isActive === false">
       <div class="col-12">
         <div class="alert alert-primary text-center" role="alert">
-          No existe un espacio de trabajo para el municipio.
+          No existe una gestión de municipio..
         </div>
       </div>
     </div>
   </div>
+  <ng-template #modalRefuse let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de desasignar el Municipio a este gestor?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción desasignará el municipio al gestor
+        seleccionado.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalRefuse(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalRefuse(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
 </div>

@@ -6,6 +6,7 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { CadastralAuthorityService } from 'src/app/services/v2/cadastral-authority/cadastral-authority.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-workspace-refuse',
@@ -25,7 +26,8 @@ export class WorkspaceRefuseComponent implements OnInit {
     private cadastralAuthorityService: CadastralAuthorityService,
     private roles: RoleModel,
     public toastrService: ToastrService,
-    private serviceManagers: ManagersService
+    private serviceManagers: ManagersService,
+    private modalService: NgbModal
   ) {
     this.activeManagers = [];
     this.selectManager = 0;
@@ -67,13 +69,22 @@ export class WorkspaceRefuseComponent implements OnInit {
         this.isAdministrator = false;
         this.selectMunicipality = 0;
         this.isActiveSearch = false;
-        this.toastrService.success('Ha desasignado el espacio de trabajo.');
+        this.toastrService.success('Ha desasignado el municipio.');
       });
   }
   changeMunicipalitie() {
     this.isActiveSearch = false;
     if (this.selectMunicipality !== 0) {
       this.isActiveSearch = true;
+    }
+  }
+  openModalRefuse(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  closeModalRefuse(option: boolean) {
+    this.modalService.dismissAll();
+    if (option) {
+      this.refuseWorkSpaceActive();
     }
   }
 }

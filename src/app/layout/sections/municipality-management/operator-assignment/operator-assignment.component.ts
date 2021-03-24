@@ -567,4 +567,15 @@ export class OperatorAssignmentComponent implements OnInit {
     this.idOperator = item.id;
     this.scroll.scrollToAnchor('actionFormOperator');
   }
+  cancel() {
+    this.idOperator = 0;
+    this.dataOperatorsWorkSpace = {
+      startDate: '',
+      endDate: '',
+      numberParcelsExpected: 0,
+      workArea: 0,
+      observations: '',
+      operatorCode: 0,
+    };
+  }
 }

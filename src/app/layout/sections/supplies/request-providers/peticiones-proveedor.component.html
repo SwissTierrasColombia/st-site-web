@@ -32,7 +32,7 @@
         <thead class="thead-inverse">
           <tr>
             <th>ID</th>
-            <th>Proveedor</th>
+            <th>Gestor</th>
             <th>Descripción</th>
             <th>Estado</th>
             <th>Fecha de petición</th>
@@ -42,7 +42,7 @@
         <tbody>
           <tr *ngFor="let item of petitionsForManagerOpen">
             <td scope="row">{{ item.id }}</td>
-            <td scope="row">{{ item.provider.name }}</td>
+            <td scope="row">{{ item.manager.name }}</td>
             <td scope="row">
               <textarea
                 class="form-control"
@@ -222,7 +222,7 @@
         <thead class="thead-inverse">
           <tr>
             <th>ID</th>
-            <th>Proveedor</th>
+            <th>Gestor</th>
             <th>Descripción</th>
             <th>Fecha de petición</th>
             <th>Estado</th>
@@ -232,7 +232,7 @@
         <tbody>
           <tr *ngFor="let item of petitionsForManagerClose">
             <td scope="row">{{ item.id }}</td>
-            <td scope="row">{{ item.provider.name }}</td>
+            <td scope="row">{{ item.manager.name }}</td>
             <td scope="row">
               <textarea
                 class="form-control"

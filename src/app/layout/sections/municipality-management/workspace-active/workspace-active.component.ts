@@ -53,6 +53,16 @@ export class WorkspaceActiveComponent implements OnInit {
       .getMunicipalitiesByManager(this.selectManager)
       .subscribe((data) => {
         this.munucipalities = data;
+        this.munucipalities.sort(function (a, b) {
+          if (a.department.name > b.department.name) {
+            return 1;
+          }
+          if (a.department.name < b.department.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
       });
   }
   searchWorkSpaceActive() {
@@ -66,9 +76,7 @@ export class WorkspaceActiveComponent implements OnInit {
           ]);
         } else {
           this.isActive = false;
-          this.toastrService.error(
-            'No existe un espacio de trabajo para el municipio.'
-          );
+          this.toastrService.error('No existe una gestión del municipio.');
         }
       });
   }
