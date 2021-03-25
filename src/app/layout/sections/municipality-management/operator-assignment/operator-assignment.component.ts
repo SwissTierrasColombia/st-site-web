@@ -285,9 +285,13 @@ export class OperatorAssignmentComponent implements OnInit {
     }
   }
   changeUpdate(index: number, idManager: number) {
+    this.editForm.forEach((element) => {
+      element.startDate = false;
+      element.observations = false;
+    });
+    this.idManagerUpdate = idManager;
     this.editForm[index].startDate = true;
     this.editForm[index].observations = true;
-    this.idManagerUpdate = idManager;
   }
   update(index: number) {
     const dataUpdate: UpdateInformationByWorkspace = {
@@ -581,5 +585,22 @@ export class OperatorAssignmentComponent implements OnInit {
     this.myInputVariable.nativeElement.value = '';
     this.isActiveAssignOperator = false;
     this.isChangeDataOperator = false;
+  }
+  cancelarUpdate(index: number) {
+    this.idManagerUpdate = 0;
+    this.editForm[index].startDate = false;
+    this.editForm[index].observations = false;
+    this.serviceWorkspaces
+      .getWorkSpace(this.idWorkspace)
+      .subscribe((response: any) => {
+        this.dataWorkSpace = response;
+        this.dataWorkSpace.managers.forEach((_) => {
+          this.editForm.push({
+            startDate: false,
+            observations: false,
+          });
+        });
+        this.selectDepartment = this.dataWorkSpace.municipality.department.id;
+      });
   }
 }

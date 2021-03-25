@@ -98,12 +98,18 @@
                     {{ formatDate(item.manager.createdAt) }}
                   </td>
                   <td scope="row">
-                    <i
-                      class="material-icons mt-2 ml-2 cursor"
-                      (click)="previewSupplies(item.managerCode, index)"
+                    <span
+                      ngbTooltip="Ver soporte"
+                      placement="top"
+                      show-delay="500"
                     >
-                      preview
-                    </i>
+                      <i
+                        class="material-icons cursor"
+                        (click)="previewSupplies(item.managerCode, index)"
+                      >
+                        preview
+                      </i>
+                    </span>
                   </td>
                   <td scope="row">
                     <input
@@ -127,14 +133,21 @@
                   </td>
                   <td scope="row">
                     <div *ngIf="updateInfoBasic">
-                      <i
-                        *ngIf="!editForm[index]?.observations"
-                        class="material-icons mr-2 cursor"
-                        (click)="changeUpdate(index, item.managerCode)"
-                        id="buttonEditar{{ index }}"
+                      <span
+                        ngbTooltip="Editar información"
+                        placement="top"
+                        show-delay="500"
                       >
-                        edit
-                      </i>
+                        <i
+                          *ngIf="!editForm[index]?.observations"
+                          class="material-icons mr-2 cursor"
+                          (click)="changeUpdate(index, item.managerCode)"
+                          id="buttonEditar{{ index }}"
+                        >
+                          edit
+                        </i>
+                      </span>
+
                       <button
                         *ngIf="editForm[index]?.observations"
                         type="button"
@@ -143,6 +156,15 @@
                         id="buttonActualizar{{ index }}"
                       >
                         Actualizar
+                      </button>
+                      <button
+                        *ngIf="editForm[index]?.observations"
+                        type="button"
+                        class="btn btn-dark btn-sm btn-block"
+                        (click)="cancelarUpdate(index)"
+                        id="buttonCancelar{{ index }}"
+                      >
+                        Cancelar
                       </button>
                     </div>
                   </td>
@@ -518,22 +540,34 @@
                         ></textarea>
                       </td>
                       <td scope="row">
-                        <i
-                          class="material-icons mt-2 ml-2 cursor"
-                          (click)="
-                            previewSupportOperator(item.operatorCode, index)
-                          "
+                        <span
+                          ngbTooltip="Ver soporte"
+                          placement="top"
+                          show-delay="500"
                         >
-                          preview
-                        </i>
+                          <i
+                            class="material-icons cursor"
+                            (click)="
+                              previewSupportOperator(item.operatorCode, index)
+                            "
+                          >
+                            preview
+                          </i>
+                        </span>
                       </td>
                       <td scope="row" *ngIf="assingOperator">
-                        <i
-                          class="material-icons mr-2"
-                          (click)="updateOperator(item)"
+                        <span
+                          ngbTooltip="Editar operador"
+                          placement="top"
+                          show-delay="500"
                         >
-                          edit
-                        </i>
+                          <i
+                            class="material-icons cursor"
+                            (click)="updateOperator(item)"
+                          >
+                            edit
+                          </i>
+                        </span>
                       </td>
                     </tr>
                   </tbody>
