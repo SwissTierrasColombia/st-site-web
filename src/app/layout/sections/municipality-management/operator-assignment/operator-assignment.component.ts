@@ -577,5 +577,9 @@ export class OperatorAssignmentComponent implements OnInit {
       observations: '',
       operatorCode: 0,
     };
+    this.supportFileOperator = undefined;
+    this.myInputVariable.nativeElement.value = '';
+    this.isActiveAssignOperator = false;
+    this.isChangeDataOperator = false;
   }
 }
