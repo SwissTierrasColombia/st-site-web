@@ -1,9 +1,13 @@
+import { AdministrationService } from './../../../../services/administration/administration.service';
 import { Component, OnInit } from '@angular/core';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ManagersService } from 'src/app/services/managers/managers.service';
+import { OperatorsService } from 'src/app/services/operators/operators.service';
+import { ProvidersService } from 'src/app/services/providers/providers.service';
 
 @Component({
   selector: 'app-list-user',
@@ -23,10 +27,23 @@ export class ListUserComponent implements OnInit {
   roleConnectManager: any;
   roleConnectProvider: any;
   tab: number;
+  managers: any;
+  operators: any;
+  providers: any;
+  usersManagers: any;
+  usersOperators: any;
+  usersProviders: any;
+  managerId: number;
+  operatorId: number;
+  providerId: number;
   constructor(
     private serviceWorkspace: WorkspacesService,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private administrationService: AdministrationService,
+    private managersService: ManagersService,
+    private operatorsService: OperatorsService,
+    private providersService: ProvidersService
   ) {
     this.dataListUser = [];
     this.page = 1;
@@ -39,6 +56,15 @@ export class ListUserComponent implements OnInit {
     this.roleConnectManager = {};
     this.roleConnectProvider = {};
     this.tab = 1;
+    this.managers = [];
+    this.operators = [];
+    this.providers = [];
+    this.managerId = 0;
+    this.operatorId = 0;
+    this.providerId = 0;
+    this.usersManagers = [];
+    this.usersOperators = [];
+    this.usersProviders = [];
   }
 
   ngOnInit() {
@@ -57,21 +83,21 @@ export class ListUserComponent implements OnInit {
       return elem.id === 4;
     });
 
-    this.serviceWorkspace.GetUsers().subscribe((arg: any) => {
+    this.administrationService.getAllUsers().subscribe((arg: any) => {
       this.dataListUser = arg;
       this.dataListUser = this.dataListUser.filter((element: any) => {
         return element.username !== this.dataUserLogger.user_name;
       });
       if (this.roleConnectAdmin) {
-        this.dataListUser.sort(function (a: any, b: any) {
-          if (a.entity.name > b.entity.name) {
-            return 1;
-          }
-          if (a.entity.name < b.entity.name) {
-            return -1;
-          }
-          //a must be equal to b
-          return 0;
+        this.tab1();
+        this.managersService.getManagers().subscribe((data) => {
+          this.managers = data;
+        });
+        this.operatorsService.getOperatorsByFilters().subscribe((response) => {
+          this.operators = response;
+        });
+        this.providersService.getProvidersActive().subscribe((data) => {
+          this.providers = data;
         });
       }
     });
@@ -142,6 +168,12 @@ export class ListUserComponent implements OnInit {
     });
     return data || data2 || data3 ? true : false;
   }
+  isDirectorManager(item) {
+    let data = item.profiles.find((element) => {
+      return element.id === 1;
+    });
+    return data ? true : false;
+  }
   isProvider(item) {
     let data = item.roles.find((element) => {
       return element.id === 4;
@@ -153,5 +185,29 @@ export class ListUserComponent implements OnInit {
       return element.id === 2;
     });
     return data ? true : false;
+  }
+  tab1() {
+    this.tab = 1;
+    this.administrationService
+      .getManagerUser(this.managerId)
+      .subscribe((response) => {
+        this.usersManagers = response;
+      });
+  }
+  tab2() {
+    this.tab = 2;
+    this.administrationService
+      .getOperatorUser(this.operatorId)
+      .subscribe((response) => {
+        this.usersOperators = response;
+      });
+  }
+  tab3() {
+    this.tab = 3;
+    this.administrationService
+      .getProviderUser(this.providerId)
+      .subscribe((response) => {
+        this.usersProviders = response;
+      });
   }
 }

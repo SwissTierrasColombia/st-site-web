@@ -322,14 +322,6 @@ export class WorkspacesService {
     );
   }
   /**
-   * GetUsers
-   */
-  public GetUsers() {
-    return this.httpClient.get(
-      this.url + '/workspaces/v1/administration/users'
-    );
-  }
-  /**
    * CreateUser
    */
   public CreateUser(data: any) {
