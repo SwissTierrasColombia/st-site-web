@@ -133,21 +133,14 @@
                   </td>
                   <td scope="row">
                     <div *ngIf="updateInfoBasic">
-                      <span
-                        ngbTooltip="Editar información"
-                        placement="top"
-                        show-delay="500"
+                      <button
+                        *ngIf="!editForm[index]?.observations"
+                        class="btn btn-dark btn-sm btn-block"
+                        (click)="changeUpdate(index, item.managerCode)"
+                        id="buttonEditar{{ index }}"
                       >
-                        <i
-                          *ngIf="!editForm[index]?.observations"
-                          class="material-icons mr-2 cursor"
-                          (click)="changeUpdate(index, item.managerCode)"
-                          id="buttonEditar{{ index }}"
-                        >
-                          edit
-                        </i>
-                      </span>
-
+                        Editar
+                      </button>
                       <button
                         *ngIf="editForm[index]?.observations"
                         type="button"
