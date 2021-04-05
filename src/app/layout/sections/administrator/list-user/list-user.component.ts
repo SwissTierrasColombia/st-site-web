@@ -22,6 +22,7 @@ export class ListUserComponent implements OnInit {
   roleConnectAdmin: any;
   roleConnectManager: any;
   roleConnectProvider: any;
+  tab: number;
   constructor(
     private serviceWorkspace: WorkspacesService,
     private modalService: NgbModal,
@@ -37,6 +38,7 @@ export class ListUserComponent implements OnInit {
     this.roleConnectAdmin = {};
     this.roleConnectManager = {};
     this.roleConnectProvider = {};
+    this.tab = 1;
   }
 
   ngOnInit() {
