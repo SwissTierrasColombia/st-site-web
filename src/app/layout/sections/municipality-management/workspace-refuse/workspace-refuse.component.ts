@@ -3,15 +3,17 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { RoleModel } from 'src/app/helpers/role.model';
+import { CadastralAuthorityService } from 'src/app/services/v2/cadastral-authority/cadastral-authority.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-workspace-active',
-  templateUrl: './workspace-active.component.html',
-  styleUrls: ['./workspace-active.component.scss'],
+  selector: 'app-workspace-refuse',
+  templateUrl: './workspace-refuse.component.html',
+  styleUrls: ['./workspace-refuse.component.scss'],
 })
-export class WorkspaceActiveComponent implements OnInit {
+export class WorkspaceRefuseComponent implements OnInit {
   activeManagers: any;
   selectManager: number;
   munucipalities: any;
@@ -21,10 +23,11 @@ export class WorkspaceActiveComponent implements OnInit {
   isActiveSearch: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
+    private cadastralAuthorityService: CadastralAuthorityService,
     private roles: RoleModel,
-    private router: Router,
     public toastrService: ToastrService,
-    private serviceManagers: ManagersService
+    private serviceManagers: ManagersService,
+    private modalService: NgbModal
   ) {
     this.activeManagers = [];
     this.selectManager = 0;
@@ -53,37 +56,35 @@ export class WorkspaceActiveComponent implements OnInit {
       .getMunicipalitiesByManager(this.selectManager)
       .subscribe((data) => {
         this.munucipalities = data;
-        this.munucipalities.sort(function (a, b) {
-          if (a.department.name > b.department.name) {
-            return 1;
-          }
-          if (a.department.name < b.department.name) {
-            return -1;
-          }
-          //a must be equal to b
-          return 0;
-        });
       });
   }
-  searchWorkSpaceActive() {
-    this.serviceWorkspaces
-      .getWorkSpaceByMunicipality(this.selectMunicipality.toString())
-      .subscribe((response: any) => {
-        if (response.length > 0) {
-          this.isActive = true;
-          this.router.navigate([
-            'gestion/workspace/' + this.selectMunicipality + '/operador',
-          ]);
-        } else {
-          this.isActive = false;
-          this.toastrService.error('No existe una gestión del municipio.');
-        }
+  refuseWorkSpaceActive() {
+    this.cadastralAuthorityService
+      .unassignManagerFromMunicipality(
+        this.selectMunicipality,
+        this.selectManager
+      )
+      .subscribe((_) => {
+        this.selectManager = 0;
+        this.isAdministrator = false;
+        this.selectMunicipality = 0;
+        this.isActiveSearch = false;
+        this.toastrService.success('Ha desasignado el municipio.');
       });
   }
   changeMunicipalitie() {
     this.isActiveSearch = false;
     if (this.selectMunicipality !== 0) {
       this.isActiveSearch = true;
+    }
+  }
+  openModalRefuse(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  closeModalRefuse(option: boolean) {
+    this.modalService.dismissAll();
+    if (option) {
+      this.refuseWorkSpaceActive();
     }
   }
 }

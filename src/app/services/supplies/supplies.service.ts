@@ -16,4 +16,12 @@ export class SuppliesService {
   public GetAttachmentsTypes() {
     return this.httpClient.get(this.url + '/supplies/v1/attachments-types');
   }
+  /**
+   * getSuppliesXTFbyMunicipality
+   */
+  public getSuppliesXTFbyMunicipality(municipalityCode: string) {
+    return this.httpClient.get(
+      this.url + '/supplies/v2/supplies/xtf/' + municipalityCode
+    );
+  }
 }

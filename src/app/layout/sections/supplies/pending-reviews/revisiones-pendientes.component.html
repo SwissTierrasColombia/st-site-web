@@ -1,162 +1,251 @@
 <div>
-    <app-page-header [heading]="'Revisiones pendientes'" [icon]="'fa-star'">
-    </app-page-header>
-    <div class="row justify-content-center text-center">
-        <div class="card text-center">
-            <div class="card-header">
-                <h3>Revisiones Pendientes
-                    <h4 style="color: green;">({{numSolicitudes}})</h4>
-                </h3>
-            </div>
-            <div class="card-body">
-                <div class="search-hero">
-                    <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Buscar">
-                </div>
-                <div class="table-inverse table-responsive">
-                    <table *ngIf="data.length > 0" class="table table-striped">
-                        <thead class="thead-inverse">
-                            <tr>
-                                <th>ID</th>
-                                <th>Departamento</th>
-                                <th>Municipio</th>
-                                <th>Areá de trabajo</th>
-                                <th>Insumo</th>
-                                <th>Observación <br> GESTOR</th>
-                                <th>Observación <br> PROVEEDOR</th>
-                                <th>Fecha de cargue</th>
-                                <th>Estado</th>
-                                <th>Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of data |filter:searchText">
-                                <td scope="row">{{item.id}}</td>
-                                <td scope="row">
-                                    {{item.request.municipality.department.name}}
-                                </td>
-                                <td scope="row">
-                                    {{item.request.municipality.name}}
-                                </td>
-                                <td scope="row">{{item.typeSupply.providerProfile.name}}</td>
-                                <td scope="row">{{item.typeSupply.name}}</td>
-                                <td scope="row">
-                                    <textarea class="form-control" rows="3" maxlength="255" disabled="true">{{item.description}}</textarea>
-                                </td>
-                                <td scope="row">
-                                    <textarea class="form-control" rows="3" maxlength="255" disabled="true">{{item.observations}}</textarea>
-                                </td>
-                                <td scope="row">{{formatDate(item.deliveredAt)}}</td>
-                                <td scope="row">
-                                    <div *ngIf="item.state.id === 6">
-                                        <div ngbTooltip="Puede iniciar revisión o omitirla" placement="top">
-                                            <span class="badge badge-warning">{{item.state.name}}</span>
-                                        </div>
-                                    </div>
-                                    <div *ngIf="item.state.id === 7">
-                                        <div ngbTooltip="Configurando base de datos para iniciar la revisión" placement="top" show-delay="500">
-                                            <span class="badge badge-info">
-                        {{item.state.name}}
+  <app-page-header [heading]="'Revisiones pendientes'" [icon]="'fa-star'">
+  </app-page-header>
+  <div class="row justify-content-center text-center">
+    <div class="card text-center">
+      <div class="card-header">
+        <h3>
+          Revisiones Pendientes
+          <h4 style="color: green">({{ numSolicitudes }})</h4>
+        </h3>
+      </div>
+      <div class="card-body">
+        <div class="search-hero">
+          <input
+            class="form-control"
+            type="text"
+            name="search"
+            [(ngModel)]="searchText"
+            autocomplete="off"
+            placeholder="&#61442;  Buscar"
+          />
+        </div>
+        <div class="table-inverse table-responsive">
+          <table *ngIf="data.length > 0" class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>ID</th>
+                <th>Departamento</th>
+                <th>Municipio</th>
+                <th>Areá de trabajo</th>
+                <th>Insumo</th>
+                <th>
+                  Observación <br />
+                  GESTOR
+                </th>
+                <th>
+                  Observación <br />
+                  PROVEEDOR
+                </th>
+                <th>Fecha de cargue</th>
+                <th>Estado</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data | filter: searchText">
+                <td scope="row">{{ item.id }}</td>
+                <td scope="row">
+                  {{ item.request.municipality.department.name }}
+                </td>
+                <td scope="row">
+                  {{ item.request.municipality.name }}
+                </td>
+                <td scope="row">{{ item.typeSupply.providerProfile.name }}</td>
+                <td scope="row">{{ item.typeSupply.name }}</td>
+                <td scope="row">
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    maxlength="255"
+                    disabled="true"
+                    >{{ item.description }}</textarea
+                  >
+                </td>
+                <td scope="row">
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    maxlength="255"
+                    disabled="true"
+                    >{{ item.observations }}</textarea
+                  >
+                </td>
+                <td scope="row">{{ formatDate(item.deliveredAt) }}</td>
+                <td scope="row">
+                  <div *ngIf="item.state.id === 6">
+                    <div
+                      ngbTooltip="Puede iniciar revisión o omitirla"
+                      placement="top"
+                    >
+                      <span class="badge badge-warning">{{
+                        item.state.name
+                      }}</span>
+                    </div>
+                  </div>
+                  <div *ngIf="item.state.id === 7">
+                    <div
+                      ngbTooltip="Configurando base de datos para iniciar la revisión"
+                      placement="top"
+                      show-delay="500"
+                    >
+                      <span class="badge badge-info">
+                        {{ item.state.name }}
                       </span>
-                                        </div>
-                                    </div>
-                                    <div *ngIf="item.state.id === 8">
-                                        <div ngbTooltip="Ingrese para que realice la revisión" placement="top">
-                                            <span class="badge badge-success">
-                        {{item.state.name}}
+                    </div>
+                  </div>
+                  <div *ngIf="item.state.id === 8">
+                    <div
+                      ngbTooltip="Ingrese para que realice la revisión"
+                      placement="top"
+                    >
+                      <span class="badge badge-success">
+                        {{ item.state.name }}
                       </span>
-                                        </div>
-                                    </div>
-                                    <div *ngIf="item.state.id === 9">
-                                        <div ngbTooltip="Se esta generando el XTF final y entregando al Gestor" placement="top">
-                                            <span class="badge badge-secondary">{{item.state.name}}</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td scope="row">
-                                    <div *ngIf="item.state.id === 6">
-                                        <div ngbTooltip="Iniciar Revisión" placement="left" show-delay="500">
-                                            <span class="material-icons" (click)="openModal(modalRevision)">
+                    </div>
+                  </div>
+                  <div *ngIf="item.state.id === 9">
+                    <div
+                      ngbTooltip="Se esta generando el XTF final y entregando al Gestor"
+                      placement="top"
+                    >
+                      <span class="badge badge-secondary">{{
+                        item.state.name
+                      }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td scope="row">
+                  <div *ngIf="item.state.id === 6">
+                    <div
+                      ngbTooltip="Iniciar Revisión"
+                      placement="left"
+                      show-delay="500"
+                    >
+                      <span
+                        class="material-icons"
+                        (click)="openModal(modalRevision)"
+                      >
                         not_started
                       </span>
-                                        </div>
-                                        <div ngbTooltip="Entregar sin revisar" placement="left" show-delay="500" (click)="openModalskip(modalSkip)">
-                                            <span class="material-icons">
-                        switch_camera
-                      </span>
-                                        </div>
-                                    </div>
-                                    <div *ngIf="item.state.id === 7">
-                                        --
-                                    </div>
-                                    <div *ngIf="item.state.id === 8">
-                                        <div ngbTooltip="Revisar" placement="left" show-delay="500">
-                                            <i class="material-icons cursor" (click)="viewRecords(item.id)">
+                    </div>
+                    <div
+                      ngbTooltip="Entregar sin revisar"
+                      placement="left"
+                      show-delay="500"
+                      (click)="openModalskip(modalSkip)"
+                    >
+                      <span class="material-icons"> switch_camera </span>
+                    </div>
+                  </div>
+                  <div *ngIf="item.state.id === 7">--</div>
+                  <div *ngIf="item.state.id === 8">
+                    <div ngbTooltip="Revisar" placement="left" show-delay="500">
+                      <i
+                        class="material-icons cursor"
+                        (click)="viewRecords(item.id)"
+                      >
                         input
                       </i>
-                                        </div>
-                                    </div>
-                                    <div *ngIf="item.state.id === 9">
-                                        --
-                                    </div>
-                                </td>
-                                <ng-template #modalRevision let-modal>
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">
-                                            ¿Está seguro de iniciar la revisión?
-                                        </h4>
-                                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h5 class="alert alert-warning text-center">
-                                            Advertencia: Va a iniciar la revisión.
-                                        </h5>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="col-6">
-                                            <button type="button" class="btn btn-dark btn-block" (click)="closeModal(item.id,false)">No</button>
-                                        </div>
-                                        <div class="col-6 text-right">
-                                            <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(item.id,true)">Si</button>
-                                        </div>
-                                    </div>
-                                </ng-template>
-                                <ng-template #modalSkip let-modal>
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">
-                                            ¿Está seguro de omitir la revisión?
-                                        </h4>
-                                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h5 class="alert alert-warning text-center">
-                                            Advertencia: Va a omitir la revisión y va hacer entrega de este insumo al Gestor.
-                                        </h5>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="col-6">
-                                            <button type="button" class="btn btn-dark btn-block" (click)="closeModalSkip(item.id,false)">No</button>
-                                        </div>
-                                        <div class="col-6 text-right">
-                                            <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModalSkip(item.id,true)">Si</button>
-                                        </div>
-                                    </div>
-                                </ng-template>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div *ngIf="data.length === 0" class="row mt-3">
-                    <div class="col-12">
-                        <div class="alert alert-primary text-center" role="alert">
-                            No tiene revisiones pendientes
-                        </div>
                     </div>
-                </div>
-            </div>
+                  </div>
+                  <div *ngIf="item.state.id === 9">--</div>
+                </td>
+                <ng-template #modalRevision let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title">
+                      ¿Está seguro de iniciar la revisión?
+                    </h4>
+                    <button
+                      type="button"
+                      class="close"
+                      aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h5 class="alert alert-warning text-center">
+                      Advertencia: Va a iniciar la revisión.
+                    </h5>
+                  </div>
+                  <div class="modal-footer">
+                    <div class="col-6">
+                      <button
+                        type="button"
+                        class="btn btn-dark btn-block"
+                        (click)="closeModal(item.id, false)"
+                      >
+                        No
+                      </button>
+                    </div>
+                    <div class="col-6 text-right">
+                      <button
+                        type="button"
+                        ngbAutofocus
+                        class="btn btn-success btn-block"
+                        (click)="closeModal(item.id, true)"
+                      >
+                        Si
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template #modalSkip let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title">
+                      ¿Está seguro de omitir la revisión?
+                    </h4>
+                    <button
+                      type="button"
+                      class="close"
+                      aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h5 class="alert alert-warning text-center">
+                      Advertencia: Va a omitir la revisión y va hacer entrega de
+                      este insumo al Gestor.
+                    </h5>
+                  </div>
+                  <div class="modal-footer">
+                    <div class="col-6">
+                      <button
+                        type="button"
+                        class="btn btn-dark btn-block"
+                        (click)="closeModalSkip(item.id, false)"
+                      >
+                        No
+                      </button>
+                    </div>
+                    <div class="col-6 text-right">
+                      <button
+                        type="button"
+                        ngbAutofocus
+                        class="btn btn-success btn-block"
+                        (click)="closeModalSkip(item.id, true)"
+                      >
+                        Si
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <div *ngIf="data.length === 0" class="row mt-3">
+          <div class="col-12">
+            <div class="alert alert-primary text-center" role="alert">
+              No tiene revisiones pendientes
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

@@ -4,6 +4,7 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-buscar-solicitud',
@@ -40,7 +41,8 @@ export class BuscarSolicitudComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService,
     private serviceProvider: ProvidersService,
     private router: Router,
-    private activedRoute: ActivatedRoute
+    private activedRoute: ActivatedRoute,
+    private modalService: NgbModal
   ) {
     this.usermanager = false;
     this.departments = [];
@@ -167,5 +169,12 @@ export class BuscarSolicitudComponent implements OnInit {
       this.buttonTab3 = false;
       this.search3 = false;
     }
+  }
+  openModalViewDetail(modal: any) {
+    this.modalService.open(modal, {
+      centered: true,
+      scrollable: true,
+      size: 'lg',
+    });
   }
 }

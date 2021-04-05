@@ -64,7 +64,7 @@ export class UpdateUserComponent implements OnInit {
       }
     );
     const promise1 = new Promise((resolve) => {
-      this.serviceWorkSpace.GetUsers().subscribe(
+      this.serviceWorkSpace.getUsers().subscribe(
         (arg: any) => {
           this.dataListUser = arg
           this.profile = this.dataListUser.find((element: any) => {
@@ -133,7 +133,7 @@ export class UpdateUserComponent implements OnInit {
     }
     this.serviceWorkSpace.UpdateUser(this.idUser, data).subscribe(element => {
       this.updateInfo = false;
-      this.serviceWorkSpace.GetUsers().subscribe(
+      this.serviceWorkSpace.getUsers().subscribe(
         (arg: any) => {
           this.dataListUser = arg
           this.profile = this.dataListUser.find((element: any) => {

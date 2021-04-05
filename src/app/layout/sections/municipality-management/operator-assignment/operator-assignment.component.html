@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="card">
-    <div class="card-header"><b>Espacio de Trabajo</b></div>
+    <div class="card-header"><b>Gestión de Municipio</b></div>
     <div class="card-body">
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
@@ -35,19 +35,7 @@
             (click)="tab1()"
             aria-controls="home"
           >
-            <i class="material-icons"> home </i>Información Básica</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            [ngClass]="{ active: tab === 2 }"
-            data-toggle="tab"
-            role="tab"
-            (click)="getSopports()"
-            aria-controls="messages"
-          >
-            <i class="material-icons"> archive </i>Soportes</a
+            <i class="material-icons"> home </i>Gestores</a
           >
         </li>
         <li class="nav-item">
@@ -59,20 +47,7 @@
             (click)="getOperator()"
             aria-controls="messages"
           >
-            <i class="material-icons"> people </i>Operador</a
-          >
-        </li>
-        <li class="nav-item" *ngIf="updateInfoBasic">
-          <a
-            class="nav-link"
-            [ngClass]="{ active: tab === 4 }"
-            data-toggle="tab"
-            role="tab"
-            (click)="tab4()"
-            aria-controls="messages"
-          >
-            <i class="material-icons"> vertical_split </i>Entrega de información
-            para la Gestión Catastral</a
+            <i class="material-icons"> people </i>Operadores</a
           >
         </li>
         <li class="nav-item" *ngIf="assingOperator">
@@ -84,628 +59,532 @@
             (click)="tab5()"
             aria-controls="messages"
           >
-            <i class="material-icons"> view_list </i>Información para la Gestión
-            Catastral</a
+            <i class="material-icons"> view_list </i>Información -
+            <em>Habilitación Catastral</em></a
           >
         </li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel">
           <br />
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Fecha de Creación:</label>
-            <div class="col-sm-8">
-              <div>{{ formatDate(dataWorkSpace.createdAt) }}</div>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Fecha de Inicio:</label>
-            <div class="col-sm-8">
-              <input
-                class="form-control"
-                type="date"
-                name="startDate"
-                [(ngModel)]="dataWorkSpace.startDate"
-                disabled="{{ editForm.startDate }}"
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Observaciones:</label>
-            <div class="col-sm-8">
-              <textarea
-                [(ngModel)]="dataWorkSpace.observations"
-                (keyup.enter)="onKey($event)"
-                class="form-control"
-                rows="3"
-                maxlength="255"
-                disabled="{{ editForm.observations }}"
-              ></textarea>
-            </div>
-          </div>
-          <div class="mb-2 form-group row" *ngIf="updateInfoBasic">
-            <button
-              *ngIf="editForm.municipalityArea"
-              type="button"
-              class="btn btn-primary btn-sm btn-block"
-              (click)="changeUpdate()"
-            >
-              Editar
-            </button>
-            <button
-              *ngIf="editForm.municipalityArea === false"
-              type="button"
-              class="btn btn-primary btn-sm btn-block"
-              (click)="openModalUpdate(modalRegistrar)"
-            >
-              Actualizar
-            </button>
-          </div>
-          <h3>Gestor</h3>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Nombre:</label>
-            <div class="col-sm-8">
-              <input
-                disabled="{{ !assingOperator }}"
-                class="form-control"
-                type="text"
-                name="managerName"
-                [(ngModel)]="dataWorkSpace.manager.name"
-                disabled="true"
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">NIT:</label>
-            <div class="col-sm-8">
-              <input
-                disabled="{{ !assingOperator }}"
-                class="form-control"
-                type="text"
-                name="taxIdentificationNumber"
-                [(ngModel)]="dataWorkSpace.manager.taxIdentificationNumber"
-                disabled="true"
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Fecha de Asignación:</label>
-            <div class="col-sm-8">
-              <div>{{ formatDate(dataWorkSpace.manager.createdAt) }}</div>
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel">
-          <br />
-          <div class="row">
-            <div class="col-12">
-              <div class="table-inverse table-responsive">
-                <table class="table table-striped text-center">
-                  <thead class="thead-inverse">
-                    <tr>
-                      <th>ID</th>
-                      <th>Repositorio Documental</th>
-                      <th>Hito</th>
-                      <th>Entregado por</th>
-                      <th>Fecha de Creación</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of dataSoports; let i = index">
-                      <td scope="row">{{ i + 1 }}</td>
-                      <td scope="row">
-                        soporte
-                        <i
-                          class="material-icons mt-2 ml-2 cursor"
-                          (click)="previewSupplies(item.id, item)"
-                        >
-                          preview
-                        </i>
-                      </td>
-                      <td scope="row">{{ item.milestone.name }}</td>
-                      <td scope="row">
-                        <div *ngIf="item.milestone.id === 1">
-                          AUTORIDAD CATASTRAL
-                        </div>
-                        <div *ngIf="item.milestone.id === 3">
-                          {{ dataWorkSpace.manager.alias }}
-                        </div>
-                      </td>
-                      <td scope="row">{{ formatDate(item.createdAt) }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel">
-          <br />
-          <form action="" method="post">
-            <div class="row mb-2">
-              <div class="col-12">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text" aria-required="true"
-                      >* Operador</label
-                    >
-                  </div>
-                  <select
-                    (change)="changeDataOperator()"
-                    disabled="{{ !assingOperator }}"
-                    class="custom-select"
-                    name="operators"
-                    id="operators"
-                    [(ngModel)]="dataOperatorsWorkSpace.operatorCode"
-                  >
-                    <option value="0" selected>Seleccione el Operador</option>
-                    <option [ngValue]="item.id" *ngFor="let item of operators">
-                      {{ item.alias }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-12 col-sm-6 mb-1">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text">* Fecha de Inicio</label>
-                  </div>
-                  <input
-                    disabled="{{ !assingOperator }}"
-                    class="form-control"
-                    type="date"
-                    name="FechaInicio"
-                    [(ngModel)]="dataOperatorsWorkSpace.startDate"
-                    (change)="changeDataOperator()"
-                  />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6 mb-1">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text">* Fecha Final</label>
-                  </div>
-                  <input
-                    disabled="{{ !assingOperator }}"
-                    class="form-control"
-                    type="date"
-                    name="FechaFin"
-                    [(ngModel)]="dataOperatorsWorkSpace.endDate"
-                    (change)="changeDataOperator()"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-12 col-sm-6 mb-1">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text"
-                      >Número de Predios a Intervenir</label
-                    >
-                  </div>
-                  <input
-                    disabled="{{ !assingOperator }}"
-                    class="form-control"
-                    type="number"
-                    name="numberParcelsExpected"
-                    [(ngModel)]="dataOperatorsWorkSpace.numberParcelsExpected"
-                    (change)="changeDataOperator()"
-                  />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6 mb-1">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text"
-                      >Área de Trabajo (km <sup>2</sup>)</label
-                    >
-                  </div>
-                  <input
-                    disabled="{{ !assingOperator }}"
-                    class="form-control"
-                    type="number"
-                    name="workArea"
-                    [(ngModel)]="dataOperatorsWorkSpace.workArea"
-                    (change)="changeDataOperator()"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-12">
-                <div class="input-group">
-                  <div class="input-group-prepend input-group-text">
-                    <div class="">* Alcance / Observaciones</div>
-                  </div>
-                  <textarea
-                    maxlength="255"
-                    disabled="{{ !assingOperator }}"
-                    class="form-control"
-                    id="observations"
-                    rows="3"
-                    name="observaciones"
-                    [(ngModel)]="dataOperatorsWorkSpace.observations"
-                    (change)="changeDataOperator()"
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2" *ngIf="assingOperator">
-              <div class="col-12">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text"
-                      >* Orden de Trabajo / Documento Soporte
-                      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                    </label>
-                  </div>
-                  <input
-                    #myInput
-                    class="form-control"
-                    type="file"
-                    (change)="docSoport($event.target.files)"
-                    multiple
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="row mt-3" *ngIf="assingOperator">
-              <div class="col-12">
-                <div class="alert alert-primary text-center" role="alert">
-                  Recuerde que los campos marcados con * son obligatorios.
-                </div>
-              </div>
-            </div>
-          </form>
-          <div
-            class="card-footer text-muted text-center"
-            *ngIf="assingOperator"
-          >
-            <button
-              *ngIf="replaceOperator === false"
-              type="button"
-              class="btn btn-dark"
-              (click)="assingOperatorInWorkSpace()"
-              [disabled]="!isActiveAssignOperator"
-            >
-              Asignar Operador
-            </button>
-            <button
-              *ngIf="replaceOperator === true"
-              type="button"
-              class="btn btn-dark"
-              (click)="openModal(modalOperator)"
-              [disabled]="!isChangeDataOperator"
-            >
-              Actualizar operador
-            </button>
-          </div>
-        </div>
-        <div class="tab-pane" [ngClass]="{ active: tab === 4 }" role="tabpanel">
-          <br />
-          <div class="card-body">
-            <div class="row mb-2">
-              <div class="col-12">
-                <small
-                  id="perfil"
-                  class="form-text text-muted mb-4 ml-1 text-left"
+          <div class="table-inverse table-responsive">
+            <table class="table table-striped">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>Gestor</th>
+                  <th>NIT</th>
+                  <th>Fecha de Asignación</th>
+                  <th>Soporte</th>
+                  <th>Fecha de inicio</th>
+                  <th>Observaciones</th>
+                  <th *ngIf="updateInfoBasic">Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  [style.background-color]="
+                    item.managerCode == idManagerUpdate ? '#3ada1273' : ''
+                  "
+                  [style.font-weight]="
+                    item.managerCode == idManagerUpdate ? 'bold' : ''
+                  "
+                  *ngFor="let item of dataWorkSpace.managers; let index = index"
                 >
-                  <h6>
-                    Autoridad Catastral, cargue aquí la información que requiere
-                    entregar al Gestor para iniciar la Gestión Catastral del
-                    municipio.
-                  </h6>
-                </small>
-              </div>
-              <div class="col-12 col-sm-6 mb-2">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text" aria-required="true"
-                      >* Tipo</label
+                  <td scope="row">{{ item.manager.alias }}</td>
+                  <td scope="row">
+                    {{ item.manager.taxIdentificationNumber }}
+                  </td>
+                  <td scope="row">
+                    {{ formatDate(item.manager.createdAt) }}
+                  </td>
+                  <td scope="row">
+                    <span
+                      ngbTooltip="Ver soporte"
+                      placement="top"
+                      show-delay="500"
                     >
-                  </div>
-                  <select
-                    class="custom-select"
-                    name="attachmentsTypes"
-                    id="attachmentsTypes"
-                    [(ngModel)]="selectAttachments"
-                    (change)="validAttachmentsTypes()"
-                  >
-                    <option value="0" selected>
-                      Seleccione tipo de cargue
-                    </option>
-                    <option
-                      [ngValue]="item.id"
-                      *ngFor="let item of dataAttachmentsTypes"
-                    >
-                      {{ item.name }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6 mb-2" *ngIf="selectAttachments != 0">
-                <div [ngSwitch]="selectAttachments != 0">
-                  <div *ngSwitchCase="selectAttachments === 1">
-                    <div class="input-group">
-                      <input
-                        #myInput
-                        id="fileattachmentsTypes"
-                        name="fileattachmentsTypes"
-                        class="form-control"
-                        type="file"
-                        (change)="
-                          docSoportAttachmentsTypes($event.target.files)
-                        "
-                        multiple="false"
-                      />
+                      <i
+                        class="material-icons cursor"
+                        (click)="previewSupplies(item.managerCode, index)"
+                      >
+                        preview
+                      </i>
+                    </span>
+                  </td>
+                  <td scope="row">
+                    <input
+                      class="form-control"
+                      type="date"
+                      name="startDate"
+                      [(ngModel)]="item.startDate"
+                      disabled="{{ !editForm[index]?.startDate }}"
+                      id="startDate{{ index }}"
+                    />
+                  </td>
+                  <td scope="row">
+                    <textarea
+                      id="observations{{ index }}"
+                      [(ngModel)]="item.observations"
+                      class="form-control"
+                      rows="3"
+                      maxlength="255"
+                      disabled="{{ !editForm[index]?.observations }}"
+                    ></textarea>
+                  </td>
+                  <td scope="row">
+                    <div *ngIf="updateInfoBasic">
+                      <span
+                        ngbTooltip="Editar información"
+                        placement="top"
+                        show-delay="500"
+                      >
+                        <i
+                          *ngIf="!editForm[index]?.observations"
+                          class="material-icons mr-2 cursor"
+                          (click)="changeUpdate(index, item.managerCode)"
+                          id="buttonEditar{{ index }}"
+                        >
+                          edit
+                        </i>
+                      </span>
+
+                      <button
+                        *ngIf="editForm[index]?.observations"
+                        type="button"
+                        class="btn btn-dark btn-sm btn-block"
+                        (click)="openModalUpdate(modalRegistrar)"
+                        id="buttonActualizar{{ index }}"
+                      >
+                        Actualizar
+                      </button>
+                      <button
+                        *ngIf="editForm[index]?.observations"
+                        type="button"
+                        class="btn btn-dark btn-sm btn-block"
+                        (click)="cancelarUpdate(index)"
+                        id="buttonCancelar{{ index }}"
+                      >
+                        Cancelar
+                      </button>
                     </div>
-                    <small
-                      >Cargue el archivo con la información a entregar.</small
-                    >
-                  </div>
-                  <div *ngSwitchCase="selectAttachments === 2">
-                    <div class="input-group">
-                      <input
-                        placeholder="Ingrese la  URL ó FTP"
-                        (change)="validAttachmentsTypes()"
-                        class="form-control"
-                        id="urlattachmentsTypes"
-                        type="url"
-                        name="urlattachmentsTypes"
-                        [(ngModel)]="ftpAttachmentsTypes"
-                      />
+                  </td>
+                  <ng-template #modalRegistrar let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title">
+                        ¿Está seguro de actualizar la información?
+                      </h4>
+                      <button
+                        type="button"
+                        class="close"
+                        aria-label="Close"
+                        (click)="modal.dismiss('Cross click')"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
-                    <div class="input-group mt-1">
-                      <div class="input-group">
-                        <div class="input-group-prepend input-group-text">
-                          <div class="">Credenciales</div>
-                        </div>
-                        <input
-                          (change)="validAttachmentsTypes()"
-                          class="form-control"
-                          id="passftpAttachments"
-                          type="url"
-                          name="passftpAttachments"
-                          [(ngModel)]="passftpAttachments"
-                        />
+                    <div class="modal-body">
+                      <h5 class="alert alert-warning text-center">
+                        Advertencia: Esta acción actualizará la información del
+                        municipio.
+                      </h5>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-6">
+                        <button
+                          type="button"
+                          class="btn btn-dark btn-block"
+                          (click)="closeModalUpdate(false)"
+                        >
+                          No
+                        </button>
+                      </div>
+                      <div class="col-6 text-right">
+                        <button
+                          type="button"
+                          ngbAutofocus
+                          class="btn btn-success btn-block"
+                          (click)="closeModalUpdate(true, index)"
+                        >
+                          Si
+                        </button>
                       </div>
                     </div>
-                  </div>
-                  <div *ngSwitchCase="selectAttachments === 3">
-                    <div class="input-group">
-                      <input
-                        placeholder="Cargue la evidencia de la entrega fisica de la información."
-                        #myInput
-                        id="fileattachmentsTypesExtert"
-                        name="fileattachmentsTypesExtert"
-                        class="form-control"
-                        type="file"
-                        (change)="
-                          docSoportAttachmentsTypes($event.target.files)
-                        "
-                        multiple="false"
-                      />
-                    </div>
-                    <small
-                      >Cargue la evidencia de la entrega fisica de la
-                      información.</small
-                    >
-                  </div>
-                </div>
+                  </ng-template>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          id="actionFormOperator"
+          class="tab-pane"
+          [ngClass]="{ active: tab === 3 }"
+          role="tabpanel"
+        >
+          <br />
+          <ng-template #modalUpdateOperator let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title">
+                ¿Está seguro de modificar los datos del Operador?
+              </h4>
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción actualizará la información del
+                municipio.
+              </h5>
+            </div>
+            <div class="modal-footer">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-dark btn-block"
+                  (click)="closeModalUpdateOperator(false)"
+                >
+                  No
+                </button>
               </div>
-              <div class="col-sm-12"></div>
-              <div class="col-12 col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-prepend input-group-text">
-                    <div class="">* Nombre</div>
-                  </div>
-                  <input
-                    (change)="validAttachmentsTypes()"
-                    class="form-control"
-                    id="nameAttachmentsTypes"
-                    type="url"
-                    name="nameAttachmentsTypes"
-                    [(ngModel)]="nameAttachmentsTypes"
-                  />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-prepend input-group-text">
-                    <div class="">
-                      * Observaciones <br />
-                      <small>(max. 255 caracteres)</small>
-                    </div>
-                  </div>
-                  <textarea
-                    (change)="validAttachmentsTypes()"
-                    maxlength="255"
-                    class="form-control"
-                    id="observationsattachmentsTypes"
-                    rows="3"
-                    name="observacionesattachmentsTypes"
-                    [(ngModel)]="observationsAttachmentsTypes"
-                  ></textarea>
-                </div>
-              </div>
-              <div class="col-12 mt-2">
-                <div class="alert alert-primary text-center" role="alert">
-                  Recuerde que los campos marcados con * son obligatorios.
-                </div>
-              </div>
-              <div class="col-12 col-sm-12">
-                <div class="card-footer text-muted text-center">
-                  <button
-                    type="button"
-                    [disabled]="!validInputAttachmentsTypes"
-                    class="btn btn-dark"
-                    (click)="openModalDeliveryInfo(modalDeliveryInfo)"
-                  >
-                    Agregar
-                  </button>
-                </div>
+              <div class="col-6 text-right">
+                <button
+                  type="button"
+                  ngbAutofocus
+                  class="btn btn-success btn-block"
+                  (click)="closeModalUpdateOperator(true)"
+                >
+                  Si
+                </button>
               </div>
             </div>
-            <div class="row text-center">
-              <div
-                class="table-inverse table-responsive"
-                *ngIf="suppliesAttachmentsData.length > 0"
+          </ng-template>
+          <ng-template #modalCreateOperator let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title">¿Está seguro de asignar el Operador?</h4>
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
               >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción asignará un operador al municipio.
+              </h5>
+            </div>
+            <div class="modal-footer">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-dark btn-block"
+                  (click)="closeModalCreateOperator(false)"
+                >
+                  No
+                </button>
+              </div>
+              <div class="col-6 text-right">
+                <button
+                  type="button"
+                  ngbAutofocus
+                  class="btn btn-success btn-block"
+                  (click)="closeModalCreateOperator(true)"
+                >
+                  Si
+                </button>
+              </div>
+            </div>
+          </ng-template>
+          <div class="card" *ngIf="assingOperator">
+            <div class="card-header text-center">
+              <h3>
+                {{ idOperator > 0 ? "Actualizar" : "Asignar" }} Operador
+                <span *ngIf="idOperator > 0"
+                  ><b>#{{ idOperator }}</b></span
+                >
+              </h3>
+            </div>
+            <div class="card-body">
+              <form action="" method="post">
+                <div class="row mb-2">
+                  <div class="col-12">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" aria-required="true"
+                          >* Operador</label
+                        >
+                      </div>
+                      <select
+                        (change)="changeDataOperator()"
+                        disabled="{{ !assingOperator }}"
+                        class="custom-select"
+                        name="operators"
+                        id="operators"
+                        [(ngModel)]="dataOperatorsWorkSpace.operatorCode"
+                      >
+                        <option value="0" selected>
+                          Seleccione el Operador
+                        </option>
+                        <option
+                          [ngValue]="item.id"
+                          *ngFor="let item of operators"
+                        >
+                          {{ item.alias }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-12 col-sm-6 mb-1">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text"
+                          >* Fecha de Inicio</label
+                        >
+                      </div>
+                      <input
+                        disabled="{{ !assingOperator }}"
+                        class="form-control"
+                        type="date"
+                        name="FechaInicio"
+                        [(ngModel)]="dataOperatorsWorkSpace.startDate"
+                        (change)="changeDataOperator()"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 mb-1">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text">* Fecha Final</label>
+                      </div>
+                      <input
+                        disabled="{{ !assingOperator }}"
+                        class="form-control"
+                        type="date"
+                        name="FechaFin"
+                        [(ngModel)]="dataOperatorsWorkSpace.endDate"
+                        (change)="changeDataOperator()"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-12 col-sm-6 mb-1">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text"
+                          >Número de Predios a Intervenir</label
+                        >
+                      </div>
+                      <input
+                        disabled="{{ !assingOperator }}"
+                        class="form-control"
+                        type="number"
+                        name="numberParcelsExpected"
+                        [(ngModel)]="
+                          dataOperatorsWorkSpace.numberParcelsExpected
+                        "
+                        (change)="changeDataOperator()"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 mb-1">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text"
+                          >Área de Trabajo (km <sup>2</sup>)</label
+                        >
+                      </div>
+                      <input
+                        disabled="{{ !assingOperator }}"
+                        class="form-control"
+                        type="number"
+                        name="workArea"
+                        [(ngModel)]="dataOperatorsWorkSpace.workArea"
+                        (change)="changeDataOperator()"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-12">
+                    <div class="input-group">
+                      <div class="input-group-prepend input-group-text">
+                        <div class="">* Alcance / Observaciones</div>
+                      </div>
+                      <textarea
+                        maxlength="255"
+                        disabled="{{ !assingOperator }}"
+                        class="form-control"
+                        id="observations"
+                        rows="3"
+                        name="observaciones"
+                        [(ngModel)]="dataOperatorsWorkSpace.observations"
+                        (change)="changeDataOperator()"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-2" *ngIf="assingOperator">
+                  <div class="col-12">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text"
+                          >* Orden de Trabajo / Documento Soporte
+                          <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                        </label>
+                      </div>
+                      <input
+                        #myInputdocSoport
+                        class="form-control"
+                        type="file"
+                        (change)="docSoport($event.target.files)"
+                        multiple
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3" *ngIf="assingOperator">
+                  <div class="col-12">
+                    <div class="alert alert-primary text-center" role="alert">
+                      Recuerde que los campos marcados con * son obligatorios.
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer text-muted text-center">
+              <button
+                *ngIf="!isChangeDataOperator"
+                type="button"
+                class="btn btn-dark"
+                (click)="openModalCreateOperator(modalCreateOperator)"
+                [disabled]="!isActiveAssignOperator"
+              >
+                Asignar Operador
+              </button>
+              <button
+                *ngIf="isChangeDataOperator"
+                type="button"
+                class="btn btn-dark"
+                (click)="openModal(modalUpdateOperator)"
+                [disabled]="!isChangeDataOperator"
+              >
+                Actualizar operador
+              </button>
+              <button
+                type="button"
+                style="margin-left: 10px"
+                class="btn btn-dark"
+                (click)="cancel()"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+          <div class="card mt-1" *ngIf="dataWorkSpace.operators?.length > 0">
+            <div class="card-header text-center">
+              <h3>Operadores asignados</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-inverse table-responsive">
                 <table class="table table-striped">
                   <thead class="thead-inverse">
                     <tr>
-                      <th>#</th>
-                      <th>Entregado por</th>
-                      <th>Nombre</th>
-                      <th>Fecha de cargue</th>
-                      <th>Observación</th>
-                      <th>Eliminar</th>
+                      <th>ID</th>
+                      <th>Operador</th>
+                      <th>Fecha de inicio</th>
+                      <th>Fecha final</th>
+                      <th>Número de predios</th>
+                      <th>Área de trabajo</th>
+                      <th>Alcance/Observaciones</th>
+                      <th>Soporte</th>
+                      <th *ngIf="assingOperator">Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr
+                      [style.background-color]="
+                        item.id == idOperator ? '#3ada1273' : ''
+                      "
+                      [style.font-weight]="item.id == idOperator ? 'bold' : ''"
                       *ngFor="
-                        let item of suppliesAttachmentsData;
+                        let item of onlyOperatorAssignByWorkspace;
                         let index = index
                       "
                     >
-                      <td scope="row">{{ index + 1 }}</td>
-                      <td scope="row">AUTORIDAD CATASTRAL</td>
-                      <td scope="row">{{ item.name }}</td>
+                      <td scope="row">{{ item.operator.id }}</td>
+                      <td scope="row">{{ item.operator.alias }}</td>
                       <td scope="row">{{ formatDate(item.createdAt) }}</td>
+                      <td scope="row">{{ formatDate(item.endDate) }}</td>
+                      <td scope="row">{{ item.numberParcelsExpected }}</td>
+                      <td scope="row">{{ item.workArea }}</td>
                       <td scope="row">
                         <textarea
                           maxlength="255"
-                          readonly
-                          style="border: none; background: #dedede"
-                          >{{ item.observations }}</textarea
-                        >
+                          disabled="true"
+                          class="form-control"
+                          id="observationsOperator"
+                          rows="2"
+                          name="observacionesOperator"
+                          [(ngModel)]="item.observations"
+                        ></textarea>
                       </td>
                       <td scope="row">
-                        <i
-                          class="material-icons cursor"
-                          (click)="openModalDelete(item.id, customModal2)"
+                        <span
+                          ngbTooltip="Ver soporte"
+                          placement="top"
+                          show-delay="500"
                         >
-                          delete_forever
-                        </i>
-                        <ng-template #customModal2 let-modal>
-                          <div class="modal-header">
-                            <h4 class="modal-title">
-                              ¿Está seguro de eliminar el registro?
-                            </h4>
-                            <button
-                              type="button"
-                              class="close"
-                              aria-label="Close"
-                              (click)="modal.dismiss('Cross click')"
-                            >
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <h5 class="alert alert-warning text-center">
-                              Advertencia: La información se borrará
-                              permanentemente del Sistema.
-                            </h5>
-                          </div>
-                          <div class="modal-footer">
-                            <div class="col-6">
-                              <button
-                                type="button"
-                                class="btn btn-dark btn-block"
-                                (click)="closeModalDelete(false)"
-                              >
-                                No
-                              </button>
-                            </div>
-                            <div class="col-6 text-right">
-                              <button
-                                type="button"
-                                ngbAutofocus
-                                class="btn btn-success btn-block"
-                                (click)="closeModalDelete(true, index)"
-                              >
-                                Si
-                              </button>
-                            </div>
-                          </div>
-                        </ng-template>
+                          <i
+                            class="material-icons cursor"
+                            (click)="
+                              previewSupportOperator(item.operatorCode, index)
+                            "
+                          >
+                            preview
+                          </i>
+                        </span>
+                      </td>
+                      <td scope="row" *ngIf="assingOperator">
+                        <span
+                          ngbTooltip="Editar operador"
+                          placement="top"
+                          show-delay="500"
+                        >
+                          <i
+                            class="material-icons cursor"
+                            (click)="updateOperator(item)"
+                          >
+                            edit
+                          </i>
+                        </span>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-            <div
-              class="row justify-content-center text-center"
-              *ngIf="suppliesAttachmentsData.length > 0"
-            >
-              <div class="col-12 col-sm-6 col-md-4 col-lg-2 mt-2">
-                <button
-                  class="text-center"
-                  type="button"
-                  class="btn btn-dark btn-block"
-                  (click)="downloadGetReportAuthority()"
-                >
-                  Descargar reporte
-                  <i class="material-icons" style="color: white">description</i>
-                </button>
-              </div>
-            </div>
-            <div *ngIf="suppliesAttachmentsData.length === 0">
+          </div>
+          <div *ngIf="dataWorkSpace.operators?.length === 0">
+            <div class="row mt-3">
               <div class="col-12">
                 <div class="alert alert-primary text-center" role="alert">
-                  No hay información cargada para este Municipio.
+                  No hay operadores asignados.
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <ng-template #modalDeliveryInfo let-modal>
-          <div class="modal-header">
-            <h4 class="modal-title">
-              ¿Está seguro de realizar esta entrega al Gestor?
-            </h4>
-            <button
-              type="button"
-              class="close"
-              aria-label="Close"
-              (click)="modal.dismiss('Cross click')"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <h5 class="alert alert-warning text-center">
-              Advertencia: Esta acción realizará una entrega de información al
-              Gestor.
-            </h5>
-          </div>
-          <div class="modal-footer">
-            <div class="col-6">
-              <button
-                type="button"
-                class="btn btn-dark btn-block"
-                (click)="closeModalDeliveryInfo(false)"
-              >
-                No
-              </button>
-            </div>
-            <div class="col-6 text-right">
-              <button
-                type="button"
-                ngbAutofocus
-                class="btn btn-success btn-block"
-                (click)="closeModalDeliveryInfo(true)"
-              >
-                Si
-              </button>
-            </div>
-          </div>
-        </ng-template>
         <div class="tab-pane" [ngClass]="{ active: tab === 5 }" role="tabpanel">
           <br />
           <div class="card-body">
@@ -720,7 +599,7 @@
                 >
                   <h6>
                     Gestor, descargue o consulte la información suministrada por
-                    la Autoridad Catastral para la Gestión Catastral del
+                    la Autoridad Catastral para iniciar la Gestión Catastral del
                     municipio asignado.
                   </h6>
                 </small>
@@ -785,87 +664,4 @@
       </div>
     </div>
   </div>
-  <ng-template #modalOperator let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title">
-        ¿Está seguro de modificar los datos del Operador?
-      </h4>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <h5 class="alert alert-warning text-center">
-        Advertencia: Esta acción actualizará la información del espacio de
-        trabajo.
-      </h5>
-    </div>
-    <div class="modal-footer">
-      <div class="col-6">
-        <button
-          type="button"
-          class="btn btn-dark btn-block"
-          (click)="closeModal(false)"
-        >
-          No
-        </button>
-      </div>
-      <div class="col-6 text-right">
-        <button
-          type="button"
-          ngbAutofocus
-          class="btn btn-success btn-block"
-          (click)="closeModal(true)"
-        >
-          Si
-        </button>
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #modalRegistrar let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title">¿Está seguro de actualizar la información?</h4>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <h5 class="alert alert-warning text-center">
-        Advertencia: Esta acción actualizará la información del espacio de
-        trabajo.
-      </h5>
-    </div>
-    <div class="modal-footer">
-      <div class="col-6">
-        <button
-          type="button"
-          class="btn btn-dark btn-block"
-          (click)="closeModalUpdate(false)"
-        >
-          No
-        </button>
-      </div>
-      <div class="col-6 text-right">
-        <button
-          type="button"
-          ngbAutofocus
-          class="btn btn-success btn-block"
-          (click)="closeModalUpdate(true)"
-        >
-          Si
-        </button>
-      </div>
-    </div>
-  </ng-template>
 </div>

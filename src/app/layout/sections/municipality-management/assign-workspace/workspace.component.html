@@ -1,6 +1,6 @@
 <div>
   <app-page-header
-    [heading]="'Gestión de Municipios'"
+    [heading]="'Gestión de Municipio'"
     [icon]="'fa-star'"
   ></app-page-header>
 
@@ -21,7 +21,7 @@
                 name="managers"
                 id="managers"
                 [(ngModel)]="dataCreateWorkSpace.managerCode"
-                (change)="changeData()"
+                (change)="changeDepartament()"
               >
                 <option value="0" selected>Seleccione el Gestor</option>
                 <option [ngValue]="item.id" *ngFor="let item of activeManagers">
@@ -154,13 +154,63 @@
           </div>
         </div>
       </div>
+      <div *ngIf="municipalitieValidate.length > 0">
+        <div class="alert alert-info text-center" role="alert">
+          Tiene municipios en conflicto asignados ya a otro gestor, por favor
+          completa los siguientes campos para poder ser asignados.
+        </div>
+        <div class="table-inverse table-responsive">
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Municipio</th>
+                <th>Gestores asignados</th>
+                <th>Observación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of municipalitieValidate; let index = index">
+                <td scope="row">{{ item.municipalityName }}</td>
+                <td scope="row">
+                  <div *ngFor="let element of item.managers">
+                    {{ element.manager.alias }}
+                  </div>
+                </td>
+                <td scope="row">
+                  <div class="input-group">
+                    <textarea
+                      maxlength="255"
+                      class="form-control"
+                      id="observations{{ index }}"
+                      rows="3"
+                      name="observaciones{{ index }}"
+                      [(ngModel)]="item.observation"
+                      (change)="validateWriteObservation()"
+                    ></textarea>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <div class="card-footer text-muted text-center">
       <button
         type="button"
         class="btn btn-dark"
-        (click)="openModal(modalRegistrar)"
+        (click)="validateMunicipalities(modalRegistrar)"
         [disabled]="!createActive"
+        *ngIf="viewBotton === false"
+      >
+        Asignar Gestor Catastral
+      </button>
+      <button
+        type="button"
+        class="btn btn-dark"
+        (click)="openModal(modalRegistrar)"
+        [disabled]="!createActive2"
+        *ngIf="viewBotton === true"
       >
         Asignar Gestor Catastral
       </button>
@@ -169,7 +219,7 @@
   <ng-template #modalRegistrar let-modal>
     <div class="modal-header">
       <h4 class="modal-title">
-        ¿Está seguro de crear el espacio de trabajo para el(los) Municipio(s)?
+        ¿Está seguro de asignar el(los) Municipio(s) a este gestor?
       </h4>
       <button
         type="button"
@@ -182,7 +232,7 @@
     </div>
     <div class="modal-body">
       <h5 class="alert alert-warning text-center">
-        Advertencia: Esta acción asignará espacio(s) de trabajo ha
+        Advertencia: Esta acción asignará este gestor a
         <strong>{{ dataCreateWorkSpace.municipalityId.length }}</strong>
         municipio(s) seleccionado(s).
       </h5>

@@ -1,7 +1,720 @@
+<app-page-header [heading]="'Listar Usuarios'" [icon]="'fa-star'">
+</app-page-header>
+<div class="card" *ngIf="roleConnectAdmin">
+  <div class="card-body">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: tab === 1 }"
+          data-toggle="tab"
+          role="tab"
+          (click)="tab1()"
+          aria-controls="home"
+        >
+          <i class="material-icons"> groups </i>Gestores</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: tab === 2 }"
+          data-toggle="tab"
+          role="tab"
+          (click)="tab2()"
+          aria-controls="messages"
+        >
+          <i class="material-icons"> people </i>Operadores</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: tab === 3 }"
+          data-toggle="tab"
+          role="tab"
+          (click)="tab3()"
+          aria-controls="messages"
+        >
+          <i class="material-icons"> supervised_user_circle </i>Proveedores</a
+        >
+      </li>
+    </ul>
+    <div class="tab-content container">
+      <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel">
+        <div class="mt-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" aria-required="true"
+                >* Gestor</label
+              >
+            </div>
+            <select
+              (change)="tab1()"
+              class="custom-select"
+              name="managers"
+              id="managers"
+              [(ngModel)]="managerId"
+            >
+              <option value="0" selected>Seleccione entidad</option>
+              <option [ngValue]="item.id" *ngFor="let item of managers">
+                {{ item.alias }}
+              </option>
+            </select>
+          </div>
+          <div class="card">
+            <div class="card-body" *ngIf="usersManagers.length > 0">
+              <ngb-pagination
+                class="d-flex justify-content-center"
+                [(page)]="page"
+                [pageSize]="pageSize"
+                [collectionSize]="usersManagers.length"
+                [rotate]="true"
+                [ellipses]="false"
+                [boundaryLinks]="true"
+              >
+              </ngb-pagination>
+              <div class="search-hero">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="search"
+                  [(ngModel)]="searchText"
+                  autocomplete="off"
+                  placeholder="&#61442;  Buscar"
+                />
+              </div>
+              <div class="table-inverse table-responsive">
+                <table class="table table-striped text-center">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>Gestor</th>
+                      <th>Usuario</th>
+                      <th>Nombres</th>
+                      <th>Apellidos</th>
+                      <th>Correo</th>
+                      <th>Fecha de Creación</th>
+                      <th>Editar</th>
+                      <th>Activar/Desactivar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let item of usersManagers
+                          | filter: searchText
+                          | slice
+                            : (page - 1) * pageSize
+                            : (page - 1) * pageSize + pageSize
+                      "
+                    >
+                      <td scope="row">{{ item.manager.name }}</td>
+                      <td scope="row">{{ item.username }}</td>
+                      <td scope="row">{{ item.firstName }}</td>
+                      <td scope="row">{{ item.lastName }}</td>
+                      <td scope="row">{{ item.email }}</td>
+                      <td scope="row">
+                        {{ globalFuntionDate(item.createdAt) }}
+                      </td>
+                      <td scope="row">
+                        <div *ngIf="isDirectorManager(item)">
+                          <span
+                            ngbTooltip="Modificar Usuario"
+                            placement="bottom"
+                            show-delay="500"
+                          >
+                            <i
+                              class="material-icons mr-2"
+                              (click)="updateUser(item.id)"
+                            >
+                              edit
+                            </i>
+                          </span>
+                        </div>
+                      </td>
+                      <td scope="row">
+                        <div *ngIf="isDirectorManager(item)">
+                          <label
+                            class="switch"
+                            [title]="
+                              item.enabled
+                                ? 'Desactivar Usuario'
+                                : 'Activar Usuario'
+                            "
+                            (click)="
+                              item.enabled
+                                ? openModalDisabled(modalDisabled, item.id)
+                                : openModalEnabled(modalEnabled, item.id)
+                            "
+                          >
+                            <input
+                              (click)="clickCheckBox($event)"
+                              [(ngModel)]="item.enabled"
+                              type="checkbox"
+                            />
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-body" *ngIf="dataListUser.length === 0">
+              <div class="alert alert-primary text-center" role="alert">
+                No tiene usuarios registrados
+              </div>
+            </div>
+            <ng-template #modalDisabled let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title">
+                  ¿Está seguro de desactivar el usuario?
+                </h4>
+                <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="modal.dismiss('Cross click')"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h5 class="alert alert-warning text-center">
+                  Advertencia: Esta acción deshabilita el usuario y no lo dejara
+                  ingresar al sistema.
+                </h5>
+              </div>
+              <div class="modal-footer">
+                <div class="col-6">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-block"
+                    (click)="closeModalDisabled(false)"
+                  >
+                    No
+                  </button>
+                </div>
+                <div class="col-6 text-right">
+                  <button
+                    type="button"
+                    ngbAutofocus
+                    class="btn btn-success btn-block"
+                    (click)="closeModalDisabled(true)"
+                  >
+                    Si
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #modalEnabled let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title">¿Está seguro de activar el usuario?</h4>
+                <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="modal.dismiss('Cross click')"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h5 class="alert alert-warning text-center">
+                  Advertencia: Esta acción habilita el usuario y le permitirá el
+                  ingreso al sistema.
+                </h5>
+              </div>
+              <div class="modal-footer">
+                <div class="col-6">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-block"
+                    (click)="closeModalEnabled(false)"
+                  >
+                    No
+                  </button>
+                </div>
+                <div class="col-6 text-right">
+                  <button
+                    type="button"
+                    ngbAutofocus
+                    class="btn btn-success btn-block"
+                    (click)="closeModalEnabled(true)"
+                  >
+                    Si
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel">
+        <div class="mt-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" aria-required="true"
+                >* Operador</label
+              >
+            </div>
+            <select
+              (change)="tab2()"
+              class="custom-select"
+              name="operator"
+              id="operator"
+              [(ngModel)]="operatorId"
+            >
+              <option value="0" selected>Seleccione el operador</option>
+              <option [ngValue]="item.id" *ngFor="let item of operators">
+                {{ item.alias }}
+              </option>
+            </select>
+          </div>
+          <div class="card">
+            <div class="card-body" *ngIf="usersOperators.length > 0">
+              <ngb-pagination
+                class="d-flex justify-content-center"
+                [(page)]="page"
+                [pageSize]="pageSize"
+                [collectionSize]="usersOperators.length"
+                [rotate]="true"
+                [ellipses]="false"
+                [boundaryLinks]="true"
+              >
+              </ngb-pagination>
+              <div class="search-hero">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="search"
+                  [(ngModel)]="searchText"
+                  autocomplete="off"
+                  placeholder="&#61442;  Buscar"
+                />
+              </div>
+              <div class="table-inverse table-responsive">
+                <table class="table table-striped text-center">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>Operador</th>
+                      <th>Usuario</th>
+                      <th>Nombres</th>
+                      <th>Apellidos</th>
+                      <th>Correo</th>
+                      <th>Fecha de Creación</th>
+                      <th>Editar</th>
+                      <th>Activar/Desactivar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let item of usersOperators
+                          | filter: searchText
+                          | slice
+                            : (page - 1) * pageSize
+                            : (page - 1) * pageSize + pageSize
+                      "
+                    >
+                      <td scope="row">{{ item.operator.name }}</td>
+                      <td scope="row">{{ item.username }}</td>
+                      <td scope="row">{{ item.firstName }}</td>
+                      <td scope="row">{{ item.lastName }}</td>
+                      <td scope="row">{{ item.email }}</td>
+                      <td scope="row">
+                        {{ globalFuntionDate(item.createdAt) }}
+                      </td>
+                      <td scope="row">
+                        <div>
+                          <span
+                            ngbTooltip="Modificar Usuario"
+                            placement="bottom"
+                            show-delay="500"
+                          >
+                            <i
+                              class="material-icons mr-2"
+                              (click)="updateUser(item.id)"
+                            >
+                              edit
+                            </i>
+                          </span>
+                        </div>
+                      </td>
+                      <td scope="row" *ngIf="roleConnectAdmin">
+                        <div>
+                          <label
+                            class="switch"
+                            [title]="
+                              item.enabled
+                                ? 'Desactivar Usuario'
+                                : 'Activar Usuario'
+                            "
+                            (click)="
+                              item.enabled
+                                ? openModalDisabled(modalDisabled, item.id)
+                                : openModalEnabled(modalEnabled, item.id)
+                            "
+                          >
+                            <input
+                              (click)="clickCheckBox($event)"
+                              [(ngModel)]="item.enabled"
+                              type="checkbox"
+                            />
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </td>
+                      <td scope="row" *ngIf="!roleConnectAdmin">
+                        <label
+                          class="switch"
+                          [title]="
+                            item.enabled
+                              ? 'Desactivar Usuario'
+                              : 'Activar Usuario'
+                          "
+                          (click)="
+                            item.enabled
+                              ? openModalDisabled(modalDisabled, item.id)
+                              : openModalEnabled(modalEnabled, item.id)
+                          "
+                        >
+                          <input
+                            (click)="clickCheckBox($event)"
+                            [(ngModel)]="item.enabled"
+                            type="checkbox"
+                          />
+                          <span class="slider round"></span>
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-body" *ngIf="dataListUser.length === 0">
+              <div class="alert alert-primary text-center" role="alert">
+                No tiene usuarios registrados
+              </div>
+            </div>
+            <ng-template #modalDisabled let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title">
+                  ¿Está seguro de desactivar el usuario?
+                </h4>
+                <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="modal.dismiss('Cross click')"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h5 class="alert alert-warning text-center">
+                  Advertencia: Esta acción deshabilita el usuario y no lo dejara
+                  ingresar al sistema.
+                </h5>
+              </div>
+              <div class="modal-footer">
+                <div class="col-6">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-block"
+                    (click)="closeModalDisabled(false)"
+                  >
+                    No
+                  </button>
+                </div>
+                <div class="col-6 text-right">
+                  <button
+                    type="button"
+                    ngbAutofocus
+                    class="btn btn-success btn-block"
+                    (click)="closeModalDisabled(true)"
+                  >
+                    Si
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #modalEnabled let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title">¿Está seguro de activar el usuario?</h4>
+                <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="modal.dismiss('Cross click')"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h5 class="alert alert-warning text-center">
+                  Advertencia: Esta acción habilita el usuario y le permitirá el
+                  ingreso al sistema.
+                </h5>
+              </div>
+              <div class="modal-footer">
+                <div class="col-6">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-block"
+                    (click)="closeModalEnabled(false)"
+                  >
+                    No
+                  </button>
+                </div>
+                <div class="col-6 text-right">
+                  <button
+                    type="button"
+                    ngbAutofocus
+                    class="btn btn-success btn-block"
+                    (click)="closeModalEnabled(true)"
+                  >
+                    Si
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel">
+        <div class="mt-2">
+          <div class="card">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true"
+                  >* Proveedor</label
+                >
+              </div>
+              <select
+                (change)="tab3()"
+                class="custom-select"
+                name="providers"
+                id="providers"
+                [(ngModel)]="providerId"
+              >
+                <option value="0" selected>Seleccione entidad</option>
+                <option [ngValue]="item.id" *ngFor="let item of providers">
+                  {{ item.alias }}
+                </option>
+              </select>
+            </div>
+            <div class="card-body" *ngIf="usersProviders.length > 0">
+              <ngb-pagination
+                class="d-flex justify-content-center"
+                [(page)]="page"
+                [pageSize]="pageSize"
+                [collectionSize]="usersProviders.length"
+                [rotate]="true"
+                [ellipses]="false"
+                [boundaryLinks]="true"
+              >
+              </ngb-pagination>
+              <div class="search-hero">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="search"
+                  [(ngModel)]="searchText"
+                  autocomplete="off"
+                  placeholder="&#61442;  Buscar"
+                />
+              </div>
+              <div class="table-inverse table-responsive">
+                <table class="table table-striped text-center">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th *ngIf="roleConnectAdmin">Proveedor</th>
+                      <th *ngIf="roleConnectAdmin">Área de trabajo</th>
+                      <th *ngIf="roleConnectProvider">Perfil</th>
+                      <th>Usuario</th>
+                      <th>Nombres</th>
+                      <th>Apellidos</th>
+                      <th>Correo</th>
+                      <th>Fecha de Creación</th>
+                      <th>Editar</th>
+                      <th>Activar/Desactivar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let item of usersProviders
+                          | filter: searchText
+                          | slice
+                            : (page - 1) * pageSize
+                            : (page - 1) * pageSize + pageSize
+                      "
+                    >
+                      <td scope="row">
+                        {{ item.provider.name }}
+                      </td>
+                      <td>
+                        <div *ngIf="item.profiles.length > 0">
+                          <div *ngFor="let perfil of item.profiles">
+                            {{ perfil.name }}
+                          </div>
+                        </div>
+                        <div *ngIf="item.profiles.length === 0">N/A</div>
+                      </td>
+                      <td scope="row" *ngIf="roleConnectProvider">
+                        <div *ngIf="isDelegado(item)">Revisor</div>
+                        <div *ngIf="!isDelegado(item)">Técnico</div>
+                      </td>
+                      <td scope="row">{{ item.username }}</td>
+                      <td scope="row">{{ item.firstName }}</td>
+                      <td scope="row">{{ item.lastName }}</td>
+                      <td scope="row">{{ item.email }}</td>
+                      <td scope="row">
+                        {{ globalFuntionDate(item.createdAt) }}
+                      </td>
+                      <td scope="row">
+                        <div *ngIf="isDirectorProvider(item)">
+                          <span
+                            ngbTooltip="Modificar Usuario"
+                            placement="bottom"
+                            show-delay="500"
+                          >
+                            <i
+                              class="material-icons mr-2"
+                              (click)="updateUser(item.id)"
+                            >
+                              edit
+                            </i>
+                          </span>
+                        </div>
+                      </td>
+
+                      <td scope="row">
+                        <div *ngIf="isDirectorProvider(item)">
+                          <label
+                            class="switch"
+                            [title]="
+                              item.enabled
+                                ? 'Desactivar Usuario'
+                                : 'Activar Usuario'
+                            "
+                            (click)="
+                              item.enabled
+                                ? openModalDisabled(modalDisabled, item.id)
+                                : openModalEnabled(modalEnabled, item.id)
+                            "
+                          >
+                            <input
+                              (click)="clickCheckBox($event)"
+                              [(ngModel)]="item.enabled"
+                              type="checkbox"
+                            />
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-body" *ngIf="dataListUser.length === 0">
+              <div class="alert alert-primary text-center" role="alert">
+                No tiene usuarios registrados
+              </div>
+            </div>
+            <ng-template #modalDisabled let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title">
+                  ¿Está seguro de desactivar el usuario?
+                </h4>
+                <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="modal.dismiss('Cross click')"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h5 class="alert alert-warning text-center">
+                  Advertencia: Esta acción deshabilita el usuario y no lo dejara
+                  ingresar al sistema.
+                </h5>
+              </div>
+              <div class="modal-footer">
+                <div class="col-6">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-block"
+                    (click)="closeModalDisabled(false)"
+                  >
+                    No
+                  </button>
+                </div>
+                <div class="col-6 text-right">
+                  <button
+                    type="button"
+                    ngbAutofocus
+                    class="btn btn-success btn-block"
+                    (click)="closeModalDisabled(true)"
+                  >
+                    Si
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #modalEnabled let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title">¿Está seguro de activar el usuario?</h4>
+                <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="modal.dismiss('Cross click')"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h5 class="alert alert-warning text-center">
+                  Advertencia: Esta acción habilita el usuario y le permitirá el
+                  ingreso al sistema.
+                </h5>
+              </div>
+              <div class="modal-footer">
+                <div class="col-6">
+                  <button
+                    type="button"
+                    class="btn btn-dark btn-block"
+                    (click)="closeModalEnabled(false)"
+                  >
+                    No
+                  </button>
+                </div>
+                <div class="col-6 text-right">
+                  <button
+                    type="button"
+                    ngbAutofocus
+                    class="btn btn-success btn-block"
+                    (click)="closeModalEnabled(true)"
+                  >
+                    Si
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div>
-  <app-page-header [heading]="'Usuarios registrados'" [icon]="'fa-star'">
-  </app-page-header>
-  <div class="d-flex justify-content-around">
+  <div class="d-flex justify-content-around" *ngIf="!roleConnectAdmin">
     <div class="card">
       <div class="card-body" *ngIf="dataListUser.length > 0">
         <ngb-pagination

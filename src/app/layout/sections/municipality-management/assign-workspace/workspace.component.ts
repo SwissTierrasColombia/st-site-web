@@ -1,3 +1,4 @@
+import { ValidateMunicipalitiesInterface } from './../../../../models/validateMunicipalities.interface';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
@@ -8,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
 import { Select2OptionData } from 'ng-select2';
 import { Options } from 'select2';
+import { CadastralAuthorityService } from 'src/app/services/v2/cadastral-authority/cadastral-authority.service';
 
 @Component({
   selector: 'app-workspace',
@@ -17,7 +19,6 @@ import { Options } from 'select2';
 export class WorkspaceComponent implements OnInit {
   public options: Options;
   public munucipalities: Array<Select2OptionData>;
-
   activeManagers: any;
   docsSoport: File;
   departments: any;
@@ -30,12 +31,16 @@ export class WorkspaceComponent implements OnInit {
   createActive: boolean;
   selectAllMunicipalities: boolean;
   viewSelectAllMunicipalities: boolean;
+  municipalitieValidate: ValidateMunicipalitiesInterface[];
+  createActive2: boolean;
+  viewBotton: boolean;
   constructor(
     private serviceManagers: ManagersService,
     private serviceWorkspaces: WorkspacesService,
     private roles: RoleModel,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private cadastralAuthorityService: CadastralAuthorityService
   ) {
     this.activeManagers = [];
     this.departments = [];
@@ -62,8 +67,11 @@ export class WorkspaceComponent implements OnInit {
       width: '450',
     };
     this.createActive = false;
+    this.createActive2 = false;
     this.selectAllMunicipalities = false;
     this.viewSelectAllMunicipalities = false;
+    this.municipalitieValidate = [];
+    this.viewBotton = false;
   }
 
   ngOnInit() {
@@ -82,6 +90,7 @@ export class WorkspaceComponent implements OnInit {
     });
   }
   docSoport(file: File) {
+    this.changeData();
     if (file[0].size / 1024 / 1024 <= environment.sizeFile) {
       const re = /pdf*/;
       if (file[0].type.match(re)) {
@@ -103,21 +112,24 @@ export class WorkspaceComponent implements OnInit {
   changeDepartament() {
     this.selectAllMunicipalities = false;
     this.dataCreateWorkSpace.municipalityId = ['0'];
-    this.serviceWorkspaces
-      .getMunicipalitiesThatNotHasWorkspaces(
-        Number(this.dataCreateWorkSpace.selectDepartment)
-      )
-      .subscribe((data: any) => {
-        this.viewSelectAllMunicipalities = true;
-        this.changeData();
-        this.munucipalities = [];
-        data.forEach((element) => {
-          this.munucipalities.push({
-            id: element.id + '',
-            text: element.name,
+    if (this.dataCreateWorkSpace.selectDepartment !== '0') {
+      this.cadastralAuthorityService
+        .getMunicipalities(
+          this.dataCreateWorkSpace.managerCode,
+          this.dataCreateWorkSpace.selectDepartment
+        )
+        .subscribe((data: any) => {
+          this.viewSelectAllMunicipalities = true;
+          this.changeData();
+          this.munucipalities = [];
+          data.forEach((element) => {
+            this.munucipalities.push({
+              id: element.id + '',
+              text: element.name,
+            });
           });
         });
-      });
+    }
   }
   createWorkSpace() {
     if (this.dataCreateWorkSpace.supportFile === '') {
@@ -125,25 +137,77 @@ export class WorkspaceComponent implements OnInit {
     } else if (this.dataCreateWorkSpace.observations === '') {
       this.toastr.error('Las observaciones son obligatorias.');
     } else {
-      this.serviceWorkspaces
-        .createWorkspace(this.dataCreateWorkSpace)
-        .subscribe((_) => {
-          this.toastr.success(
-            'Se ha asignado el(los) espacio(s) de trabajo para el(los) municipio(s) seleccionado(s).'
+      let formdata = new FormData();
+      formdata.append('managerCode', this.dataCreateWorkSpace.managerCode);
+      formdata.append('startDate', this.dataCreateWorkSpace.startDate);
+      formdata.append('observations', this.dataCreateWorkSpace.observations);
+      formdata.append('supportFile', this.dataCreateWorkSpace.supportFile);
+      for (
+        let index = 0;
+        index < this.dataCreateWorkSpace.municipalityId.length;
+        index++
+      ) {
+        let validate = this.municipalitieValidate.find(
+          (element) =>
+            element.municipalityId ===
+            this.dataCreateWorkSpace.municipalityId[index]
+        );
+        formdata.append(
+          'municipalities[' + index + '].municipalityId',
+          this.dataCreateWorkSpace.municipalityId[index]
+        );
+        if (validate) {
+          formdata.append(
+            'municipalities[' + index + '].observations',
+            this.municipalitieValidate[index].observation
           );
-          this.dataCreateWorkSpace = {
-            selectDepartment: '0',
-            supportFile: '',
-            managerCode: '0',
-            municipalityId: ['0'],
-            observations: '',
-            startDate: '',
-          };
-          this.createActive = false;
-          this.viewSelectAllMunicipalities = false;
-          this.selectAllMunicipalities = false;
-        });
+        }
+      }
+      this.cadastralAuthorityService.assignManager(formdata).subscribe((_) => {
+        this.toastr.success(
+          'Se ha asignado el(los) gestor(es) para el(los) municipio(s) seleccionado(s).'
+        );
+        this.dataCreateWorkSpace = {
+          selectDepartment: '0',
+          supportFile: '',
+          managerCode: '0',
+          municipalityId: ['0'],
+          observations: '',
+          startDate: '',
+        };
+        this.createActive = false;
+        this.createActive2 = false;
+        this.viewBotton = false;
+        this.viewSelectAllMunicipalities = false;
+        this.selectAllMunicipalities = false;
+        this.municipalitieValidate = [];
+        this.myInputVariable.nativeElement.value = '';
+      });
     }
+  }
+  validateMunicipalities(modal: any) {
+    const validateMunicipalities = this.dataCreateWorkSpace.municipalityId.join();
+    this.cadastralAuthorityService
+      .validateMunicipalities(validateMunicipalities)
+      .subscribe((element: ValidateMunicipalitiesInterface[]) => {
+        this.municipalitieValidate = element.filter((x) => {
+          if (x.conflict === true) {
+            return { ...x, observation: '' };
+          }
+        });
+        this.viewBotton = true;
+        if (this.municipalitieValidate.length === 0) {
+          this.toastr.success(
+            'Puede asignar los municipios al gestor seleccionado, por favor haga click en Asignar Gestor Catastral'
+          );
+          this.createActive2 = true;
+          this.openModal(modal);
+        } else {
+          this.toastr.info(
+            'Tiene municipios en conflicto asignados ya a otro gestor, por favor completa los siguientes campos para poder ser asignados.'
+          );
+        }
+      });
   }
   openModal(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
@@ -178,6 +242,16 @@ export class WorkspaceComponent implements OnInit {
       });
     } else {
       this.dataCreateWorkSpace.municipalityId = ['0'];
+    }
+  }
+  validateWriteObservation() {
+    const validate = this.municipalitieValidate.find(
+      (x) => x.observation === ''
+    );
+    if (validate) {
+      this.createActive2 = false;
+    } else {
+      this.createActive2 = true;
     }
   }
 }

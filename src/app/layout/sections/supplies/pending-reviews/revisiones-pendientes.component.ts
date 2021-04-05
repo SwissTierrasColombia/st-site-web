@@ -10,7 +10,7 @@ const moment = _moment;
 @Component({
   selector: 'app-revisiones-pendientes',
   templateUrl: './revisiones-pendientes.component.html',
-  styleUrls: ['./revisiones-pendientes.component.scss']
+  styleUrls: ['./revisiones-pendientes.component.scss'],
 })
 export class RevisionesPendientesComponent implements OnInit {
   data: any;
@@ -21,17 +21,18 @@ export class RevisionesPendientesComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private modalService: NgbModal
-
   ) {
     this.data = [];
     this.numSolicitudes = 0;
   }
 
   ngOnInit(): void {
-    this.serviceWorkspace.GetSuppliesRequestedToReview().subscribe(response => {
-      this.data = response;
-      this.numSolicitudes = this.data.length;
-    });
+    this.serviceWorkspace
+      .GetSuppliesRequestedToReview()
+      .subscribe((response) => {
+        this.data = response;
+        this.numSolicitudes = this.data.length;
+      });
   }
   formatDate(date: string) {
     moment.locale('es');
@@ -44,31 +45,38 @@ export class RevisionesPendientesComponent implements OnInit {
     return data.user.name;
   }
   startRevision(supplyRequestedId: number) {
-    this.serviceWorkspace.StartRevision(supplyRequestedId).subscribe(
-      (item: any) => {
+    this.serviceWorkspace
+      .StartRevision(supplyRequestedId)
+      .subscribe((item: any) => {
         this.toastr.success(item.message);
-        this.serviceWorkspace.GetSuppliesRequestedToReview().subscribe(response => {
-          this.data = response;
-          this.numSolicitudes = this.data.length;
-        });
-      }
-    );
+        this.serviceWorkspace
+          .GetSuppliesRequestedToReview()
+          .subscribe((response) => {
+            this.data = response;
+            this.numSolicitudes = this.data.length;
+          });
+      });
   }
   skipRevision(supplyRequestedId: number) {
-    this.serviceWorkspace.skipRevision(supplyRequestedId).subscribe((item: any) => {
-      this.toastr.success(item.message);
-      this.serviceWorkspace.GetSuppliesRequestedToReview().subscribe(response => {
-        this.data = response;
-        this.numSolicitudes = this.data.length;
+    this.serviceWorkspace
+      .skipRevision(supplyRequestedId)
+      .subscribe((item: any) => {
+        this.toastr.success(item.message);
+        this.serviceWorkspace
+          .GetSuppliesRequestedToReview()
+          .subscribe((response) => {
+            this.data = response;
+            this.numSolicitudes = this.data.length;
+          });
       });
-    });
   }
   viewRecords(supplyRequestedId: number) {
-    this.router.navigate(['/insumos/revisiones-pendientes/registros/' + supplyRequestedId]);
+    this.router.navigate([
+      '/insumos/revisiones-pendientes/registros/' + supplyRequestedId,
+    ]);
   }
   openModal(modal: any) {
     this.modalService.open(modal, { scrollable: true, centered: true });
-
   }
   closeModal(supplyRequestedId: number, option: boolean) {
     if (option) {
