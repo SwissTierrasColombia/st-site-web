@@ -62,7 +62,6 @@
               </option>
             </select>
           </div>
-          <br />
           <div class="card">
             <div class="card-body" *ngIf="usersManagers.length > 0">
               <ngb-pagination
@@ -89,6 +88,7 @@
                 <table class="table table-striped text-center">
                   <thead class="thead-inverse">
                     <tr>
+                      <th>Gestor</th>
                       <th>Usuario</th>
                       <th>Nombres</th>
                       <th>Apellidos</th>
@@ -108,6 +108,7 @@
                             : (page - 1) * pageSize + pageSize
                       "
                     >
+                      <td scope="row">{{ item.manager.name }}</td>
                       <td scope="row">{{ item.username }}</td>
                       <td scope="row">{{ item.firstName }}</td>
                       <td scope="row">{{ item.lastName }}</td>
@@ -251,8 +252,7 @@
         </div>
       </div>
       <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel">
-        <br />
-        <div class="">
+        <div class="mt-2">
           <div class="input-group">
             <div class="input-group-prepend">
               <label class="input-group-text" aria-required="true"
@@ -298,6 +298,7 @@
                 <table class="table table-striped text-center">
                   <thead class="thead-inverse">
                     <tr>
+                      <th>Operador</th>
                       <th>Usuario</th>
                       <th>Nombres</th>
                       <th>Apellidos</th>
@@ -317,6 +318,7 @@
                             : (page - 1) * pageSize + pageSize
                       "
                     >
+                      <td scope="row">{{ item.operator.name }}</td>
                       <td scope="row">{{ item.username }}</td>
                       <td scope="row">{{ item.firstName }}</td>
                       <td scope="row">{{ item.lastName }}</td>
@@ -482,7 +484,7 @@
         </div>
       </div>
       <div class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel">
-        <div class="d-flex justify-content-around">
+        <div class="mt-2">
           <div class="card">
             <div class="input-group">
               <div class="input-group-prepend">
@@ -524,21 +526,11 @@
                   placeholder="&#61442;  Buscar"
                 />
               </div>
-              <!-- <div class="table-inverse table-responsive">
+              <div class="table-inverse table-responsive">
                 <table class="table table-striped text-center">
                   <thead class="thead-inverse">
                     <tr>
-                      <th *ngIf="roleConnectAdmin">Entidad</th>
-                      <th *ngIf="!roleConnectManager && !roleConnectProvider">
-                        Rol
-                      </th>
-                      <th *ngIf="!roleConnectSuperAdmin">
-                        {{
-                          roleConnectAdmin || roleConnectManager
-                            ? "Perfil"
-                            : "Área de trabajo"
-                        }}
-                      </th>
+                      <th *ngIf="roleConnectAdmin">Proveedor</th>
                       <th *ngIf="roleConnectAdmin">Área de trabajo</th>
                       <th *ngIf="roleConnectProvider">Perfil</th>
                       <th>Usuario</th>
@@ -553,83 +545,23 @@
                   <tbody>
                     <tr
                       *ngFor="
-                        let item of dataListUser
+                        let item of usersProviders
                           | filter: searchText
                           | slice
                             : (page - 1) * pageSize
                             : (page - 1) * pageSize + pageSize
                       "
                     >
-                      <td scope="row" *ngIf="roleConnectAdmin">
-                        {{ item.entity ? item.entity.name : "N/A" }}
+                      <td scope="row">
+                        {{ item.provider.name }}
                       </td>
-                      <td
-                        scope="row"
-                        *ngIf="!roleConnectManager && !roleConnectProvider"
-                      >
-                        <div *ngFor="let rol of item.roles">
-                          {{ globalFuntionString(rol.name) }}
-                        </div>
-                      </td>
-                      <td scope="row" *ngIf="!roleConnectSuperAdmin">
-                        <div *ngIf="item.profilesManager.length > 0">
-                          <div *ngFor="let perfil of item.profilesManager">
+                      <td>
+                        <div *ngIf="item.profiles.length > 0">
+                          <div *ngFor="let perfil of item.profiles">
                             {{ perfil.name }}
                           </div>
                         </div>
-                        <div
-                          *ngIf="
-                            item.profilesProvider.length > 0 &&
-                            !roleConnectAdmin
-                          "
-                        >
-                          <div *ngFor="let perfil of item.profilesProvider">
-                            {{ perfil.name }}
-                          </div>
-                        </div>
-                        <div *ngIf="roleConnectAdmin">
-                          <div *ngFor="let perfil of item.rolesProvider">
-                            {{ perfil.name }}
-                          </div>
-                        </div>
-                        <div
-                          *ngIf="
-                            item.profilesManager.length == 0 &&
-                            item.profilesProvider.length == 0 &&
-                            item.rolesProvider.length == 0
-                          "
-                        >
-                          N/A
-                        </div>
-                        <div
-                          *ngIf="
-                            item.profilesManager.length == 0 &&
-                            item.profilesProvider.length == 0 &&
-                            isDelegado(item) &&
-                            roleConnectProvider
-                          "
-                        >
-                          N/A
-                        </div>
-                        <div
-                          *ngIf="
-                            roleConnectAdmin &&
-                            item.rolesProvider.length == 0 &&
-                            isProvider(item)
-                          "
-                        >
-                          TÉCNICO
-                        </div>
-                      </td>
-                      <td *ngIf="roleConnectAdmin">
-                        <div *ngIf="item.profilesProvider.length > 0">
-                          <div *ngFor="let perfil of item.profilesProvider">
-                            {{ perfil.name }}
-                          </div>
-                        </div>
-                        <div *ngIf="item.profilesProvider.length === 0">
-                          N/A
-                        </div>
+                        <div *ngIf="item.profiles.length === 0">N/A</div>
                       </td>
                       <td scope="row" *ngIf="roleConnectProvider">
                         <div *ngIf="isDelegado(item)">Revisor</div>
@@ -642,8 +574,8 @@
                       <td scope="row">
                         {{ globalFuntionDate(item.createdAt) }}
                       </td>
-                      <td scope="row" *ngIf="roleConnectAdmin">
-                        <div *ngIf="isDirector(item)">
+                      <td scope="row">
+                        <div *ngIf="isDirectorProvider(item)">
                           <span
                             ngbTooltip="Modificar Usuario"
                             placement="bottom"
@@ -658,22 +590,9 @@
                           </span>
                         </div>
                       </td>
-                      <td scope="row" *ngIf="!roleConnectAdmin">
-                        <span
-                          ngbTooltip="Modificar Usuario"
-                          placement="bottom"
-                          show-delay="500"
-                        >
-                          <i
-                            class="material-icons mr-2"
-                            (click)="updateUser(item.id)"
-                          >
-                            edit
-                          </i>
-                        </span>
-                      </td>
-                      <td scope="row" *ngIf="roleConnectAdmin">
-                        <div *ngIf="isDirector(item)">
+
+                      <td scope="row">
+                        <div *ngIf="isDirectorProvider(item)">
                           <label
                             class="switch"
                             [title]="
@@ -696,32 +615,10 @@
                           </label>
                         </div>
                       </td>
-                      <td scope="row" *ngIf="!roleConnectAdmin">
-                        <label
-                          class="switch"
-                          [title]="
-                            item.enabled
-                              ? 'Desactivar Usuario'
-                              : 'Activar Usuario'
-                          "
-                          (click)="
-                            item.enabled
-                              ? openModalDisabled(modalDisabled, item.id)
-                              : openModalEnabled(modalEnabled, item.id)
-                          "
-                        >
-                          <input
-                            (click)="clickCheckBox($event)"
-                            [(ngModel)]="item.enabled"
-                            type="checkbox"
-                          />
-                          <span class="slider round"></span>
-                        </label>
-                      </td>
                     </tr>
                   </tbody>
                 </table>
-              </div> -->
+              </div>
             </div>
             <div class="card-body" *ngIf="dataListUser.length === 0">
               <div class="alert alert-primary text-center" role="alert">

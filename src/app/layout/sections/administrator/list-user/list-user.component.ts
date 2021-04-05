@@ -1,10 +1,10 @@
-import { AdministrationService } from './../../../../services/administration/administration.service';
 import { Component, OnInit } from '@angular/core';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AdministrationService } from 'src/app/services/administration/administration.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
@@ -82,8 +82,7 @@ export class ListUserComponent implements OnInit {
     this.roleConnectProvider = this.dataUserLogger.roles.find((elem) => {
       return elem.id === 4;
     });
-
-    this.administrationService.getAllUsers().subscribe((arg: any) => {
+    this.serviceWorkspace.getUsers().subscribe((arg: any) => {
       this.dataListUser = arg;
       this.dataListUser = this.dataListUser.filter((element: any) => {
         return element.username !== this.dataUserLogger.user_name;
@@ -174,6 +173,12 @@ export class ListUserComponent implements OnInit {
     });
     return data ? true : false;
   }
+  isDirectorProvider(item) {
+    let data = item.roles.find((element) => {
+      return element.id === 1;
+    });
+    return data ? true : false;
+  }
   isProvider(item) {
     let data = item.roles.find((element) => {
       return element.id === 4;
@@ -192,6 +197,7 @@ export class ListUserComponent implements OnInit {
       .getManagerUser(this.managerId)
       .subscribe((response) => {
         this.usersManagers = response;
+        console.log(this.usersManagers);
       });
   }
   tab2() {
@@ -200,6 +206,7 @@ export class ListUserComponent implements OnInit {
       .getOperatorUser(this.operatorId)
       .subscribe((response) => {
         this.usersOperators = response;
+        console.log(this.usersOperators);
       });
   }
   tab3() {
@@ -208,6 +215,7 @@ export class ListUserComponent implements OnInit {
       .getProviderUser(this.providerId)
       .subscribe((response) => {
         this.usersProviders = response;
+        console.log(this.usersProviders);
       });
   }
 }
