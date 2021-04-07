@@ -12,7 +12,7 @@ const moment = _moment;
 @Component({
   selector: 'app-cargue',
   templateUrl: './cargue.component.html',
-  styleUrls: ['./cargue.component.scss']
+  styleUrls: ['./cargue.component.scss'],
 })
 export class CargueComponent implements OnInit {
   idInsumo: string;
@@ -27,6 +27,7 @@ export class CargueComponent implements OnInit {
   myInputVariable: ElementRef;
   previewData: FileList;
   fileUrl = '';
+  errorXTF: string;
   constructor(
     private toastr: ToastrService,
     private router: Router,
@@ -37,8 +38,8 @@ export class CargueComponent implements OnInit {
   ) {
     this.respuestaValidador = [
       {
-        isValid: null
-      }
+        isValid: null,
+      },
     ];
     this.xtf = true;
     this.button = { status: true };
@@ -47,93 +48,130 @@ export class CargueComponent implements OnInit {
     this.type = [
       {
         name: 'Archivo',
-        file: 'file'
+        file: 'file',
       },
       {
         name: 'URL',
-        file: 'url'
-
+        file: 'url',
       },
       {
         name: 'No disponible',
-        file: 'none'
-      }
+        file: 'none',
+      },
     ];
     this.closeRequestButton = true;
     this.closeRequestButtonArray = [];
+    this.errorXTF = '';
   }
   ngOnInit() {
     const promise1 = new Promise((resolve) => {
-      this.activedRoute.params.subscribe(
-        response => {
-          this.idInsumo = response.idInsumo;
-          resolve(response);
-        }
-      );
+      this.activedRoute.params.subscribe((response) => {
+        this.idInsumo = response.idInsumo;
+        resolve(response);
+      });
     });
     const promise2 = new Promise((resolve) => {
-      this.serviceWorkspaces.getPendingRequestByProvider().subscribe(
-        data => {
-          this.dataRequestPending = data;
-          resolve(data);
+      this.serviceWorkspaces.getPendingRequestByProvider().subscribe((data) => {
+        this.dataRequestPending = data;
+        console.log(data);
+        resolve(data);
+      });
+    });
+    Promise.all([promise1, promise2]).then((_) => {
+      this.dataRequestPending = this.dataRequestPending.filter(
+        (element: any) => {
+          if (element.id.toString() === this.idInsumo) {
+            return element;
+          }
         }
       );
-    });
-    Promise.all([promise1, promise2]).then(_ => {
-      this.dataRequestPending = this.dataRequestPending.filter((element: any) => {
-        if (element.id.toString() === this.idInsumo) {
-          return element;
+      this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter(
+        (item: any) => {
+          if (item.state.id === 1 || item.state.id === 5) {
+            return item.state;
+          }
         }
-      });
-      this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
-        if (item.state.id === 1 || item.state.id === 5) {
-          return item.state;
-        }
-      });
-      if (this.dataRequestPending[0].suppliesRequested.length === this.closeRequestButtonArray.length) {
+      );
+      if (
+        this.dataRequestPending[0].suppliesRequested.length ===
+        this.closeRequestButtonArray.length
+      ) {
         this.closeRequestButton = false;
       }
       // tslint:disable-next-line: prefer-for-of
       for (let index = 0; index < this.dataRequestPending.length; index++) {
         // tslint:disable-next-line:prefer-for-of
-        for (let index2 = 0; index2 < this.dataRequestPending[index].suppliesRequested.length; index2++) {
-          this.dataRequestPending[index].suppliesRequested[index2].type = this.clone(this.type);
-          this.dataRequestPending[index].suppliesRequested[index2].button = this.clone(this.button);
-          this.dataRequestPending[index].suppliesRequested[index2].preview = false;
+        for (
+          let index2 = 0;
+          index2 < this.dataRequestPending[index].suppliesRequested.length;
+          index2++
+        ) {
+          this.dataRequestPending[index].suppliesRequested[
+            index2
+          ].type = this.clone(this.type);
+          this.dataRequestPending[index].suppliesRequested[
+            index2
+          ].button = this.clone(this.button);
+          this.dataRequestPending[index].suppliesRequested[
+            index2
+          ].preview = false;
           // tslint:disable-next-line:prefer-for-of
-          for (let index3 = 0;
-            index3 < this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions.length;
-            index3++) {
-            this.dataRequestPending[index].suppliesRequested[index2].
-              format = this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions.map(
+          for (
+            let index3 = 0;
+            index3 <
+            this.dataRequestPending[index].suppliesRequested[index2].typeSupply
+              .extensions.length;
+            index3++
+          ) {
+            this.dataRequestPending[index].suppliesRequested[
+              index2
+            ].format = this.dataRequestPending[index].suppliesRequested[
+              index2
+            ].typeSupply.extensions
+              .map(
                 // tslint:disable-next-line:only-arrow-functions
                 function (elem: any) {
                   return '.' + elem.name;
-                }).join(',');
+                }
+              )
+              .join(',');
             this.dataRequestPending[index].suppliesRequested[index2].format =
-              this.dataRequestPending[index].suppliesRequested[index2].format + ',.zip';
+              this.dataRequestPending[index].suppliesRequested[index2].format +
+              ',.zip';
 
-            if (this.dataRequestPending[index].suppliesRequested[index2].typeSupply.extensions[index3].name === 'xtf') {
-              this.dataRequestPending[index].suppliesRequested[index2].xtf = this.clone(this.xtf);
-              this.dataRequestPending[index].suppliesRequested[index2].type = [{
-                name: 'Archivo',
-                file: 'file'
-              },
-              {
-                name: 'No disponible',
-                file: 'none'
-              }];
+            if (
+              this.dataRequestPending[index].suppliesRequested[index2]
+                .typeSupply.extensions[index3].name === 'xtf'
+            ) {
+              this.dataRequestPending[index].suppliesRequested[
+                index2
+              ].xtf = this.clone(this.xtf);
+              this.dataRequestPending[index].suppliesRequested[index2].type = [
+                {
+                  name: 'Archivo',
+                  file: 'file',
+                },
+                {
+                  name: 'No disponible',
+                  file: 'none',
+                },
+              ];
             }
 
-            if (this.dataRequestPending[index].suppliesRequested[index2].state.id === 1) {
-              this.dataRequestPending[index].suppliesRequested[index2].preview = true;
+            if (
+              this.dataRequestPending[index].suppliesRequested[index2].state
+                .id === 1
+            ) {
+              this.dataRequestPending[index].suppliesRequested[
+                index2
+              ].preview = true;
             }
-
           }
         }
       }
-      this.dataRequestPending[0].suppliesRequested =
-        this.dataRequestPending[0].suppliesRequested.sort((a, b) => a.id - b.id);
+      this.dataRequestPending[0].suppliesRequested = this.dataRequestPending[0].suppliesRequested.sort(
+        (a, b) => a.id - b.id
+      );
     });
   }
   formatDate(date: string) {
@@ -149,63 +187,87 @@ export class CargueComponent implements OnInit {
       let re = /zip*/;
       if (files[0].type.match(re)) {
         const formato = files[0].name.split('.').pop();
-        let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
+        let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[
+          idInt
+        ].format.split(',');
         formatoPermitido = formatoPermitido.map(
           // tslint:disable-next-line:only-arrow-functions
           function (elem: any) {
             return elem.substr(1);
-          });
-        const archivoValido = formatoPermitido.filter(item => {
+          }
+        );
+        const archivoValido = formatoPermitido.filter((item) => {
           return item === formato;
         });
 
         if (archivoValido.length > 0) {
-          this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
+          this.dataRequestPending[idOut].suppliesRequested[idInt].file =
+            files[0];
           this.validsendFile(idOut, idInt);
         } else {
-          this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
-          this.toastr.error('El formato no es valido, por favor subir en: ' +
-            this.dataRequestPending[idOut].suppliesRequested[idInt].format);
+          this.dataRequestPending[idOut].suppliesRequested[
+            idInt
+          ].button.status = true;
+          this.toastr.error(
+            'El formato no es valido, por favor subir en: ' +
+              this.dataRequestPending[idOut].suppliesRequested[idInt].format
+          );
         }
       } else {
         if (files[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
-          this.toastr.error('Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.')
+          this.toastr.error(
+            'Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.'
+          );
           this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
-          this.myInputVariable.nativeElement.value = "";
+          this.myInputVariable.nativeElement.value = '';
         } else {
           const formato = files[0].name.split('.').pop();
-          let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(',');
+          let formatoPermitido = this.dataRequestPending[
+            idOut
+          ].suppliesRequested[idInt].format.split(',');
           formatoPermitido = formatoPermitido.map(
             // tslint:disable-next-line:only-arrow-functions
             function (elem: any) {
               return elem.substr(1);
-            });
-          const archivoValido = formatoPermitido.filter(item => {
+            }
+          );
+          const archivoValido = formatoPermitido.filter((item) => {
             return item === formato;
           });
           if (archivoValido.length > 0) {
-            this.dataRequestPending[idOut].suppliesRequested[idInt].file = files[0];
+            this.dataRequestPending[idOut].suppliesRequested[idInt].file =
+              files[0];
             this.validsendFile(idOut, idInt);
           } else {
-            this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
-            this.toastr.error('El formato no es valido, por favor subir en: ' +
-              this.dataRequestPending[idOut].suppliesRequested[idInt].format);
+            this.dataRequestPending[idOut].suppliesRequested[
+              idInt
+            ].button.status = true;
+            this.toastr.error(
+              'El formato no es valido, por favor subir en: ' +
+                this.dataRequestPending[idOut].suppliesRequested[idInt].format
+            );
           }
         }
       }
     } else {
       this.dataRequestPending[idOut].suppliesRequested[idInt].file = '';
       this.myInputVariable.nativeElement.value = '';
-      this.toastr.error('No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.')
+      this.toastr.error(
+        'No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.'
+      );
     }
   }
   validsendFile(idOut: number, idInt: number) {
     if (this.dataRequestPending[idOut].suppliesRequested[idInt].observations) {
       if (this.dataRequestPending[idOut].suppliesRequested[idInt].file) {
-        this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
+        this.dataRequestPending[idOut].suppliesRequested[
+          idInt
+        ].button.status = false;
       } else {
-        this.toastr.error('Por favor sube el archivo en alguno de los siguientes formatos: ' +
-          this.dataRequestPending[idOut].suppliesRequested[idInt].format);
+        this.toastr.error(
+          'Por favor sube el archivo en alguno de los siguientes formatos: ' +
+            this.dataRequestPending[idOut].suppliesRequested[idInt].format
+        );
       }
     } else {
       this.toastr.info('La observación del archivo es obligatoria');
@@ -215,25 +277,39 @@ export class CargueComponent implements OnInit {
     // https://stackoverflow.com/questions/8667070/javascript-regular-expression-to-validate-url
     function validateUrl(value) {
       // tslint:disable-next-line:max-line-length
-      return /^(?:(?:(?:https?|ftp?|ftps?|http?|ftpes?|sftp?|afp?|nfs?|smb?|ssh?|dav?|davs?):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+      return /^(?:(?:(?:https?|ftp?|ftps?|http?|ftpes?|sftp?|afp?|nfs?|smb?|ssh?|dav?|davs?):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(
+        value
+      );
     }
-    if (validateUrl(this.dataRequestPending[idOut].suppliesRequested[idInt].url)) {
-      if (this.dataRequestPending[idOut].suppliesRequested[idInt].observations) {
-        this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
+    if (
+      validateUrl(this.dataRequestPending[idOut].suppliesRequested[idInt].url)
+    ) {
+      if (
+        this.dataRequestPending[idOut].suppliesRequested[idInt].observations
+      ) {
+        this.dataRequestPending[idOut].suppliesRequested[
+          idInt
+        ].button.status = false;
       } else {
         this.toastr.info('La observación es obligatoria');
       }
     } else {
-      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
+      this.dataRequestPending[idOut].suppliesRequested[
+        idInt
+      ].button.status = true;
       this.toastr.error('La URL no es correcta.');
     }
   }
 
   intoValidJustification(idOut: number, idInt: number) {
     if (this.dataRequestPending[idOut].suppliesRequested[idInt].justification) {
-      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = false;
+      this.dataRequestPending[idOut].suppliesRequested[
+        idInt
+      ].button.status = false;
     } else {
-      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status = true;
+      this.dataRequestPending[idOut].suppliesRequested[
+        idInt
+      ].button.status = true;
     }
   }
   send(idSolicitud: string, item: any, idOut: number, idInt: number) {
@@ -248,74 +324,108 @@ export class CargueComponent implements OnInit {
     }
     if (item.hasOwnProperty('justification')) {
       form.append('justification', item.justification);
-
     }
     if (item.hasOwnProperty('url')) {
       form.append('url', item.url);
       form.append('observations', item.observations);
     }
-    this.serviceWorkspaces.loadSupplyFromRequest(idSolicitud, form).subscribe(
-      (data: any) => {
+    this.serviceWorkspaces
+      .loadSupplyFromRequest(idSolicitud, form)
+      .subscribe((data: any) => {
         let response = data.suppliesRequested.find((item: any) => {
-          return item.id == this.dataRequestPending[idOut].suppliesRequested[idInt].id;
+          return (
+            item.id ==
+            this.dataRequestPending[idOut].suppliesRequested[idInt].id
+          );
         });
         response.canUpload = true;
         response.type = this.clone(this.type);
         response.button = this.clone(this.button);
-        response.format = this.clone(this.dataRequestPending[idOut].suppliesRequested[idInt].typeSupply.extensions.map(
-          function (elem: any) {
-            return '.' + elem.name;
-          }).join(','));
-        response.format = response.format + ',.zip'
-        for (let index3 = 0; index3 < this.dataRequestPending[idOut].suppliesRequested[idInt].typeSupply.extensions.length; index3++) {
-          if (this.dataRequestPending[idOut].suppliesRequested[idInt].typeSupply.extensions[index3].name === 'xtf') {
+        response.format = this.clone(
+          this.dataRequestPending[idOut].suppliesRequested[
+            idInt
+          ].typeSupply.extensions
+            .map(function (elem: any) {
+              return '.' + elem.name;
+            })
+            .join(',')
+        );
+        response.format = response.format + ',.zip';
+        for (
+          let index3 = 0;
+          index3 <
+          this.dataRequestPending[idOut].suppliesRequested[idInt].typeSupply
+            .extensions.length;
+          index3++
+        ) {
+          if (
+            this.dataRequestPending[idOut].suppliesRequested[idInt].typeSupply
+              .extensions[index3].name === 'xtf'
+          ) {
             response.xtf = this.clone(this.xtf);
-            response.type = [{
-              name: 'Archivo',
-              file: 'file'
-            },
-            {
-              name: 'No disponible',
-              file: 'none'
-            }];
+            response.type = [
+              {
+                name: 'Archivo',
+                file: 'file',
+              },
+              {
+                name: 'No disponible',
+                file: 'none',
+              },
+            ];
           }
         }
-        this.dataRequestPending[idOut].suppliesRequested[idInt] = this.clone(response);
+        this.dataRequestPending[idOut].suppliesRequested[idInt] = this.clone(
+          response
+        );
         for (let sr of this.dataRequestPending[idOut].suppliesRequested) {
           this.dataRequestPending[0].suppliesRequested[idInt].preview = true;
-          this.fileUrl = this.dataRequestPending[0].suppliesRequested[idInt].url;
+          this.fileUrl = this.dataRequestPending[0].suppliesRequested[
+            idInt
+          ].url;
         }
-        this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
-          if (item.state.id === 1 || item.state.id === 5) {
-            return item.state;
+        this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter(
+          (item: any) => {
+            if (item.state.id === 1 || item.state.id === 5) {
+              return item.state;
+            }
           }
-        });
-        if (this.dataRequestPending[0].suppliesRequested.length === this.closeRequestButtonArray.length) {
+        );
+        if (
+          this.dataRequestPending[0].suppliesRequested.length ===
+          this.closeRequestButtonArray.length
+        ) {
           this.closeRequestButton = false;
         }
-      }
-    );
+      });
   }
   closeRequest() {
-    this.serviceWorkspaces.closeRequest(this.dataRequestPending[0].id).subscribe(
-      _ => {
+    this.serviceWorkspaces
+      .closeRequest(this.dataRequestPending[0].id)
+      .subscribe((_) => {
         this.router.navigate(['/insumos/solicitudes/pendientes']);
-      }
-    );
+      });
   }
   modelChanged(item: any, idOut: number, idInt: number) {
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].observations;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].file;
     delete this.dataRequestPending[idOut].suppliesRequested[idInt].url;
-    delete this.dataRequestPending[idOut].suppliesRequested[idInt].justification;
+    delete this.dataRequestPending[idOut].suppliesRequested[idInt]
+      .justification;
     if (item.type.file === this.typeDataFieldModel.typeDataFile) {
-      this.dataRequestPending[idOut].suppliesRequested[idInt].typeData = this.typeDataFieldModel.typeDataFile;
+      this.dataRequestPending[idOut].suppliesRequested[
+        idInt
+      ].typeData = this.typeDataFieldModel.typeDataFile;
     }
     if (item.type.file === this.typeDataFieldModel.typeDataUrl) {
-      this.dataRequestPending[idOut].suppliesRequested[idInt].typeData = this.typeDataFieldModel.typeDataUrl;
+      this.dataRequestPending[idOut].suppliesRequested[
+        idInt
+      ].typeData = this.typeDataFieldModel.typeDataUrl;
     }
     if (item.type.file === this.typeDataFieldModel.typeDataNone) {
-      this.dataRequestPending[idOut].suppliesRequested[idInt].typeData = this.typeDataFieldModel.typeDataNone;
+      this.dataRequestPending[idOut].suppliesRequested[
+        idInt
+      ].typeData = this.typeDataFieldModel.typeDataNone;
     }
   }
   getEntity(item: any) {
@@ -338,14 +448,17 @@ export class CargueComponent implements OnInit {
       this.modalService.dismissAll();
     }
   }
-  preview(url: string) {
-  }
+  preview(url: string) {}
   nameButton() {
-    let data = this.dataRequestPending.find(element => {
-      return element.suppliesRequested.find(item => {
+    let data = this.dataRequestPending.find((element) => {
+      return element.suppliesRequested.find((item) => {
         return item.typeSupply.id === 12;
       });
     });
     return data ? true : false;
+  }
+  openModalErrorXTF(modalError: any, supp: any) {
+    this.errorXTF = supp.errors;
+    this.modalService.open(modalError, { centered: true, scrollable: true });
   }
 }
