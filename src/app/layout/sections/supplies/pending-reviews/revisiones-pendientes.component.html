@@ -29,6 +29,7 @@
                 <th>Municipio</th>
                 <th>Areá de trabajo</th>
                 <th>Insumo</th>
+                <th>Gestor</th>
                 <th>
                   Observación <br />
                   GESTOR
@@ -53,6 +54,7 @@
                 </td>
                 <td scope="row">{{ item.typeSupply.providerProfile.name }}</td>
                 <td scope="row">{{ item.typeSupply.name }}</td>
+                <td scope="row">{{ getEntity(item.request) }}</td>
                 <td scope="row">
                   <textarea
                     class="form-control"
