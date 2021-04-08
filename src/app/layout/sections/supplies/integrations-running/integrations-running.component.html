@@ -153,6 +153,14 @@
                     delete
                   </i>
                 </span>
+                <div
+                  *ngIf="item.errors !== null"
+                  id="logsXTFIntegration"
+                  class="logsXTF"
+                  (click)="openModalErrorXTF(modalError, item)"
+                >
+                  <small><u> Ver log </u></small>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -337,5 +345,22 @@
         </button>
       </div>
     </div>
+  </ng-template>
+  <ng-template #modalError let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Logs</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <span class="text-center">{{ errorXTF }}</span>
+    </div>
+    <div class="modal-footer"></div>
   </ng-template>
 </div>

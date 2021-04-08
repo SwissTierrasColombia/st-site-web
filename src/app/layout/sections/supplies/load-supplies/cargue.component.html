@@ -223,7 +223,10 @@
                 <!-- <app-preview *ngIf="supp.preview" [url]="supp.url" [version]="supp.modelVersion?supp.modelVersion:''">
                 </app-preview> -->
               </div>
-              <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 2">
+              <div
+                class="col-12 col-sm-2 col-lg-2 mb-2"
+                *ngIf="supp.state.id === 2"
+              >
                 <button
                   type="button"
                   class="btn"
@@ -238,6 +241,14 @@
                 >
                   {{ supp.button.status ? "Rechazado" : "Reenviar" }}
                 </button>
+                <div
+                  *ngIf="supp.errors !== null"
+                  id="logsXTF{{ idOut }}{{ idInt }}"
+                  class="logsXTF"
+                  (click)="openModalErrorXTF(modalError, supp)"
+                >
+                  <small><u> Ver log </u></small>
+                </div>
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 3">
                 <button
@@ -423,5 +434,22 @@
         </button>
       </div>
     </div>
+  </ng-template>
+  <ng-template #modalError let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Logs</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <span class="text-center">{{ errorXTF }}</span>
+    </div>
+    <div class="modal-footer"></div>
   </ng-template>
 </div>

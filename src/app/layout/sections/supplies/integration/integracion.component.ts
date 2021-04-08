@@ -45,6 +45,7 @@ export class IntegracionComponent implements OnInit {
   tab: number;
   SelectIntegrationPossible: any;
   municipalityCode: string;
+  errorXTF: string;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private toastr: ToastrService,
@@ -127,6 +128,7 @@ export class IntegracionComponent implements OnInit {
     this.SelectIntegrationPossible = {};
     this.tab = 1;
     this.municipalityCode = '0';
+    this.errorXTF = '';
   }
 
   ngOnInit() {
@@ -355,5 +357,9 @@ export class IntegracionComponent implements OnInit {
   tab3() {
     this.tab = 3;
     this.router.navigate(['/insumos/integracion', { tab: 3 }]);
+  }
+  openModalErrorXTF(modalError: any, supp: any) {
+    this.errorXTF = supp.errors;
+    this.modalService.open(modalError, { centered: true, scrollable: true });
   }
 }
