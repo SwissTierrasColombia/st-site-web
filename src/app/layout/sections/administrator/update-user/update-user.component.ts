@@ -5,14 +5,14 @@ import { ToastrService } from 'ngx-toastr';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EmailValidator } from '@angular/forms';
 
 @Component({
   selector: 'app-update-user',
   templateUrl: './update-user.component.html',
-  styleUrls: ['./update-user.component.scss']
+  styleUrls: ['./update-user.component.scss'],
 })
 export class UpdateUserComponent implements OnInit {
-
   profile: any;
   firstName: string;
   lastName: string;
@@ -28,6 +28,7 @@ export class UpdateUserComponent implements OnInit {
   profilesProvider: any;
   dataJWT: any;
   updateInfo: boolean;
+  email: EmailValidator;
   constructor(
     private router: Router,
     private toast: ToastrService,
@@ -44,7 +45,7 @@ export class UpdateUserComponent implements OnInit {
       lastName: '',
       roles: [],
       profilesManager: [],
-      profilesProvider: []
+      profilesProvider: [],
     };
     this.profilesManagers = [];
     this.profilesProvider = [];
@@ -58,40 +59,36 @@ export class UpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataJWT = JwtHelper.getUserPublicInformation();
-    this.activedRoute.params.subscribe(
-      response => {
-        this.idUser = response.idUser;
-      }
-    );
+    this.activedRoute.params.subscribe((response) => {
+      this.idUser = response.idUser;
+    });
     const promise1 = new Promise((resolve) => {
-      this.serviceWorkSpace.getUsers().subscribe(
-        (arg: any) => {
-          this.dataListUser = arg
-          this.profile = this.dataListUser.find((element: any) => {
-            if (element.id == this.idUser) {
-              return element;
-            }
-          });
-          this.firstName = this.profile.firstName;
-          this.lastName = this.profile.lastName;
-          resolve(this.profile);
+      this.serviceWorkSpace.getUsers().subscribe((arg: any) => {
+        this.dataListUser = arg;
+        this.profile = this.dataListUser.find((element: any) => {
+          if (element.id == this.idUser) {
+            return element;
+          }
         });
+        this.firstName = this.profile.firstName;
+        this.lastName = this.profile.lastName;
+        this.email = this.profile.email;
+        resolve(this.profile);
+      });
     });
     Promise.all([promise1]).then((values: any) => {
       if (this.dataJWT.is_manager_director) {
         this.manager = true;
-        this.serviceManagers.getManagersProfiles().subscribe(data => {
+        this.serviceManagers.getManagersProfiles().subscribe((data) => {
           this.profilesManagers = data;
-          this.profilesManagers = this.profilesManagers.filter(
-            item => {
-              if (item.id != 1) {
-                return item;
-              }
+          this.profilesManagers = this.profilesManagers.filter((item) => {
+            if (item.id != 1) {
+              return item;
             }
-          );
-          this.profilesManagers.forEach(element => {
-            let data = this.profile.profilesManager.find(item => {
-              return item.id == element.id
+          });
+          this.profilesManagers.forEach((element) => {
+            let data = this.profile.profilesManager.find((item) => {
+              return item.id == element.id;
             });
             if (data) {
               element.enabled = true;
@@ -103,12 +100,12 @@ export class UpdateUserComponent implements OnInit {
       }
       if (this.dataJWT.is_provider_director) {
         this.provider = true;
-        this.serviceWorkSpace.GetProviderProfiles().subscribe(data => {
+        this.serviceWorkSpace.GetProviderProfiles().subscribe((data) => {
           this.profilesProvider = data;
 
-          this.profilesProvider.forEach(element => {
-            let data = this.profile.profilesProvider.find(item => {
-              return item.id == element.id
+          this.profilesProvider.forEach((element) => {
+            let data = this.profile.profilesProvider.find((item) => {
+              return item.id == element.id;
             });
             if (data) {
               element.enabled = true;
@@ -128,128 +125,136 @@ export class UpdateUserComponent implements OnInit {
   }
   submitChange() {
     let data = {
-      "firstName": this.firstName,
-      "lastName": this.lastName
-    }
-    this.serviceWorkSpace.UpdateUser(this.idUser, data).subscribe(element => {
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+    };
+    this.serviceWorkSpace.UpdateUser(this.idUser, data).subscribe((element) => {
       this.updateInfo = false;
-      this.serviceWorkSpace.getUsers().subscribe(
-        (arg: any) => {
-          this.dataListUser = arg
-          this.profile = this.dataListUser.find((element: any) => {
-            if (element.id == this.idUser) {
-              return element;
-            }
-          });
-          this.firstName = this.profile.firstName;
-          this.lastName = this.profile.lastName;
-          if (this.dataJWT.is_manager_director) {
-            this.profilesManagers.forEach(element => {
-              let data = this.profile.profilesManager.find(item => {
-                return item.id == element.id
-              });
-              if (data) {
-                element.enabled = true;
-              } else {
-                element.enabled = false;
-              }
-            });
-          }
-          if (this.dataJWT.is_provider_director) {
-            this.profilesProvider.forEach(element => {
-              let data = this.profile.profilesProvider.find(item => {
-                return item.id == element.id
-              });
-              if (data) {
-                element.enabled = true;
-              } else {
-                element.enabled = false;
-              }
-            });
+      this.serviceWorkSpace.getUsers().subscribe((arg: any) => {
+        this.dataListUser = arg;
+        this.profile = this.dataListUser.find((element: any) => {
+          if (element.id == this.idUser) {
+            return element;
           }
         });
-      this.toast.success("Se ha actualizado la información del usuario.");
+        this.firstName = this.profile.firstName;
+        this.lastName = this.profile.lastName;
+        this.email = this.profile.email;
+        if (this.dataJWT.is_manager_director) {
+          this.profilesManagers.forEach((element) => {
+            let data = this.profile.profilesManager.find((item) => {
+              return item.id == element.id;
+            });
+            if (data) {
+              element.enabled = true;
+            } else {
+              element.enabled = false;
+            }
+          });
+        }
+        if (this.dataJWT.is_provider_director) {
+          this.profilesProvider.forEach((element) => {
+            let data = this.profile.profilesProvider.find((item) => {
+              return item.id == element.id;
+            });
+            if (data) {
+              element.enabled = true;
+            } else {
+              element.enabled = false;
+            }
+          });
+        }
+      });
+      this.toast.success('Se ha actualizado la información del usuario.');
     });
-
   }
   addprofileManager() {
     let data = {
-      "profileId": this.addprofiles.id
+      profileId: this.addprofiles.id,
     };
-    this.serviceWorkSpace.AddProfileToUser(this.idUser, data).subscribe(element => {
-      this.profile = element;
-      this.toast.success("Se ha agregado el perfil correctamente.");
-      this.addprofiles = {};
-      this.profilesManagers.forEach(element => {
-        let data = this.profile.profilesManager.find(item => {
-          return item.id == element.id
+    this.serviceWorkSpace
+      .AddProfileToUser(this.idUser, data)
+      .subscribe((element) => {
+        this.profile = element;
+        this.toast.success('Se ha agregado el perfil correctamente.');
+        this.addprofiles = {};
+        this.profilesManagers.forEach((element) => {
+          let data = this.profile.profilesManager.find((item) => {
+            return item.id == element.id;
+          });
+          if (data) {
+            element.enabled = true;
+          } else {
+            element.enabled = false;
+          }
         });
-        if (data) {
-          element.enabled = true;
-        } else {
-          element.enabled = false;
-        }
       });
-    });
   }
   deleteprofileManager() {
     let data = {
-      "profileId": this.deleteProfiles.id
+      profileId: this.deleteProfiles.id,
     };
-    this.serviceWorkSpace.RemoveProfileToUser(this.idUser, data).subscribe(element => {
-      this.profile = element;
-      this.toast.success("Se ha eliminado el perfil correctamente.");
-      this.deleteProfiles = {};
-      this.profilesManagers.forEach(element => {
-        let data = this.profile.profilesManager.find(item => {
-          return item.id == element.id
+    this.serviceWorkSpace
+      .RemoveProfileToUser(this.idUser, data)
+      .subscribe((element) => {
+        this.profile = element;
+        this.toast.success('Se ha eliminado el perfil correctamente.');
+        this.deleteProfiles = {};
+        this.profilesManagers.forEach((element) => {
+          let data = this.profile.profilesManager.find((item) => {
+            return item.id == element.id;
+          });
+          if (data) {
+            element.enabled = true;
+          } else {
+            element.enabled = false;
+          }
         });
-        if (data) {
-          element.enabled = true;
-        } else {
-          element.enabled = false;
-        }
       });
-    });
   }
   addprofileProvider() {
     let data = {
-      "profileId": this.addprofiles.id
-    }
-    this.serviceWorkSpace.AddProfileToUser(this.idUser, data).subscribe(element => {
-      this.profile = element;
-      this.toast.success("Se ha agregado el perfil correctamente.");
-      this.addprofiles = {};
-      this.profilesProvider.forEach(element => {
-        let data = this.profile.profilesProvider.find(item => {
-          return item.id == element.id
+      profileId: this.addprofiles.id,
+    };
+    this.serviceWorkSpace
+      .AddProfileToUser(this.idUser, data)
+      .subscribe((element) => {
+        this.profile = element;
+        this.toast.success('Se ha agregado el perfil correctamente.');
+        this.addprofiles = {};
+        this.profilesProvider.forEach((element) => {
+          let data = this.profile.profilesProvider.find((item) => {
+            return item.id == element.id;
+          });
+          if (data) {
+            element.enabled = true;
+          } else {
+            element.enabled = false;
+          }
         });
-        if (data) {
-          element.enabled = true;
-        } else {
-          element.enabled = false;
-        }
       });
-    });
   }
   deleteprofileProvider() {
     let data = {
-      "profileId": this.deleteProfiles.id
-    }
-    this.serviceWorkSpace.RemoveProfileToUser(this.idUser, data).subscribe(element => {
-      this.profile = element;
-      this.toast.success("Se ha eliminado el perfil correctamente.");
-      this.profilesProvider.forEach(element => {
-        let data = this.profile.profilesProvider.find(item => {
-          return item.id == element.id
+      profileId: this.deleteProfiles.id,
+    };
+    this.serviceWorkSpace
+      .RemoveProfileToUser(this.idUser, data)
+      .subscribe((element) => {
+        this.profile = element;
+        this.toast.success('Se ha eliminado el perfil correctamente.');
+        this.profilesProvider.forEach((element) => {
+          let data = this.profile.profilesProvider.find((item) => {
+            return item.id == element.id;
+          });
+          if (data) {
+            element.enabled = true;
+          } else {
+            element.enabled = false;
+          }
         });
-        if (data) {
-          element.enabled = true;
-        } else {
-          element.enabled = false;
-        }
       });
-    });
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
@@ -258,7 +263,6 @@ export class UpdateUserComponent implements OnInit {
   openModaladdManager(modal: any, item: any) {
     this.addprofiles = this.clone(item);
     this.modalService.open(modal, { centered: true, scrollable: true });
-
   }
   closeModalEnabled(option: boolean) {
     if (option) {
@@ -305,15 +309,27 @@ export class UpdateUserComponent implements OnInit {
     }
   }
   isDelegado() {
-    let data = this.profile.rolesProvider.find(element => {
+    let data = this.profile.rolesProvider.find((element) => {
       return element.id === 2;
     });
     return data ? true : false;
   }
   changeInfoUser() {
     this.updateInfo = false;
-    if (this.firstName != '' && this.lastName != '') {
+    if (this.firstName != '' || this.lastName != '' || this.email) {
       this.updateInfo = true;
+    }
+  }
+  openModalInfoUser(modalUpdateInfo: any) {
+    this.modalService.open(modalUpdateInfo, {
+      centered: true,
+      scrollable: true,
+    });
+  }
+  closeModalInfoUser(option: boolean) {
+    this.modalService.dismissAll();
+    if (option) {
+      this.submitChange();
     }
   }
 }
