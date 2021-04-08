@@ -27,6 +27,7 @@ export class IntegrationsRunningComponent implements OnInit {
   catastro: any;
   registro: any;
   ant: any;
+  errorXTF: string;
 
   constructor(
     private router: Router,
@@ -51,6 +52,7 @@ export class IntegrationsRunningComponent implements OnInit {
         window.scrollTo(0, 0);
       }
     });
+    this.errorXTF = '';
   }
 
   ngOnInit(): void {
@@ -178,5 +180,9 @@ export class IntegrationsRunningComponent implements OnInit {
       this.cancel(this.idCancel);
     }
     this.modalService.dismissAll();
+  }
+  openModalErrorXTF(modalError: any, supp: any) {
+    this.errorXTF = supp.errors;
+    this.modalService.open(modalError, { centered: true, scrollable: true });
   }
 }

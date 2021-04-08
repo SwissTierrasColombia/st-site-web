@@ -197,7 +197,6 @@ export class ListUserComponent implements OnInit {
       .getManagerUser(this.managerId)
       .subscribe((response) => {
         this.usersManagers = response;
-        console.log(this.usersManagers);
       });
   }
   tab2() {
@@ -206,7 +205,6 @@ export class ListUserComponent implements OnInit {
       .getOperatorUser(this.operatorId)
       .subscribe((response) => {
         this.usersOperators = response;
-        console.log(this.usersOperators);
       });
   }
   tab3() {
@@ -215,7 +213,6 @@ export class ListUserComponent implements OnInit {
       .getProviderUser(this.providerId)
       .subscribe((response) => {
         this.usersProviders = response;
-        console.log(this.usersProviders);
       });
   }
 }
