@@ -46,7 +46,7 @@
                 (click)="recoverPassword(modalRecover)"
                 style="cursor: pointer"
                 ><span class="text-primary font-weight-bold"
-                  >¿Ha olvidado la contraseña?
+                  >¿Ha olvidado el usuario o contraseña?
                 </span>
               </small>
             </div>
@@ -162,7 +162,7 @@
   </div>
   <ng-template #modalRecover let-modal>
     <div class="modal-header">
-      <h4 class="modal-title">¿Ha olvidado la contraseña?</h4>
+      <h4 class="modal-title">¿Ha olvidado el usuario o contraseña?</h4>
       <button
         type="button"
         class="close"
@@ -202,7 +202,7 @@
           (click)="closeModalRecover(modalReset)"
           [disabled]="!buttonRecover"
         >
-          Recuperar contraseña
+          Enviar
         </button>
       </div>
     </div>
@@ -300,7 +300,7 @@
           (click)="closeModalReset()"
           [disabled]="!buttonReset"
         >
-          Guardar
+          Enviar
         </button>
       </div>
     </div>

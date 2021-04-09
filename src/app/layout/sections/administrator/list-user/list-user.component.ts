@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationService } from 'src/app/services/administration/administration.service';
@@ -43,7 +43,8 @@ export class ListUserComponent implements OnInit {
     private administrationService: AdministrationService,
     private managersService: ManagersService,
     private operatorsService: OperatorsService,
-    private providersService: ProvidersService
+    private providersService: ProvidersService,
+    private activedRoute: ActivatedRoute
   ) {
     this.dataListUser = [];
     this.page = 1;
@@ -88,7 +89,6 @@ export class ListUserComponent implements OnInit {
         return element.username !== this.dataUserLogger.user_name;
       });
       if (this.roleConnectAdmin) {
-        this.tab1();
         this.managersService.getManagers().subscribe((data) => {
           this.managers = data;
         });
@@ -99,6 +99,18 @@ export class ListUserComponent implements OnInit {
           this.providers = data;
         });
       }
+      this.activedRoute.params.subscribe((response) => {
+        this.tab = parseInt(response.tab);
+        if (this.tab === 1) {
+          this.tab1();
+        }
+        if (this.tab === 2) {
+          this.tab2();
+        }
+        if (this.tab === 3) {
+          this.tab3();
+        }
+      });
     });
   }
 
@@ -149,7 +161,9 @@ export class ListUserComponent implements OnInit {
     }
   }
   updateUser(idUser: number) {
-    this.router.navigate(['/administrador/usuario/' + idUser + '/modificar']);
+    this.router.navigate([
+      '/administrador/usuario/' + idUser + '/modificar/' + this.tab,
+    ]);
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
