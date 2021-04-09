@@ -298,7 +298,7 @@
                     </i>
                   </span>
                   <div
-                    *ngIf="item.errors !== null"
+                    *ngIf="item.errors && item.errors !== null"
                     id="logsXTFIntegration"
                     class="logsXTF"
                     (click)="openModalErrorXTF(modalError, item)"

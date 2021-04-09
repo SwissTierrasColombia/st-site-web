@@ -98,19 +98,19 @@ export class ListUserComponent implements OnInit {
         this.providersService.getProvidersActive().subscribe((data) => {
           this.providers = data;
         });
+        this.activedRoute.params.subscribe((response) => {
+          this.tab = parseInt(response.tab);
+          if (this.tab === 1) {
+            this.tab1();
+          }
+          if (this.tab === 2) {
+            this.tab2();
+          }
+          if (this.tab === 3) {
+            this.tab3();
+          }
+        });
       }
-      this.activedRoute.params.subscribe((response) => {
-        this.tab = parseInt(response.tab);
-        if (this.tab === 1) {
-          this.tab1();
-        }
-        if (this.tab === 2) {
-          this.tab2();
-        }
-        if (this.tab === 3) {
-          this.tab3();
-        }
-      });
     });
   }
 
