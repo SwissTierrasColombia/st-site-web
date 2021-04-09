@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationService } from 'src/app/services/administration/administration.service';
@@ -43,7 +43,8 @@ export class ListUserComponent implements OnInit {
     private administrationService: AdministrationService,
     private managersService: ManagersService,
     private operatorsService: OperatorsService,
-    private providersService: ProvidersService
+    private providersService: ProvidersService,
+    private activedRoute: ActivatedRoute
   ) {
     this.dataListUser = [];
     this.page = 1;
@@ -88,7 +89,6 @@ export class ListUserComponent implements OnInit {
         return element.username !== this.dataUserLogger.user_name;
       });
       if (this.roleConnectAdmin) {
-        this.tab1();
         this.managersService.getManagers().subscribe((data) => {
           this.managers = data;
         });
@@ -97,6 +97,18 @@ export class ListUserComponent implements OnInit {
         });
         this.providersService.getProvidersActive().subscribe((data) => {
           this.providers = data;
+        });
+        this.activedRoute.params.subscribe((response) => {
+          this.tab = parseInt(response.tab);
+          if (this.tab === 1) {
+            this.tab1();
+          }
+          if (this.tab === 2) {
+            this.tab2();
+          }
+          if (this.tab === 3) {
+            this.tab3();
+          }
         });
       }
     });
@@ -149,7 +161,9 @@ export class ListUserComponent implements OnInit {
     }
   }
   updateUser(idUser: number) {
-    this.router.navigate(['/administrador/usuario/' + idUser + '/modificar']);
+    this.router.navigate([
+      '/administrador/usuario/' + idUser + '/modificar/' + this.tab,
+    ]);
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
@@ -197,6 +211,15 @@ export class ListUserComponent implements OnInit {
       .getManagerUser(this.managerId)
       .subscribe((response) => {
         this.usersManagers = response;
+        this.usersManagers.sort(function (a, b) {
+          if (a.manager.name > b.manager.name) {
+            return 1;
+          }
+          if (a.manager.name < b.manager.name) {
+            return -1;
+          }
+          return 0;
+        });
       });
   }
   tab2() {
@@ -205,6 +228,15 @@ export class ListUserComponent implements OnInit {
       .getOperatorUser(this.operatorId)
       .subscribe((response) => {
         this.usersOperators = response;
+        this.usersOperators.sort(function (a, b) {
+          if (a.operator.name > b.operator.name) {
+            return 1;
+          }
+          if (a.operator.name < b.operator.name) {
+            return -1;
+          }
+          return 0;
+        });
       });
   }
   tab3() {
@@ -213,6 +245,15 @@ export class ListUserComponent implements OnInit {
       .getProviderUser(this.providerId)
       .subscribe((response) => {
         this.usersProviders = response;
+        this.usersProviders.sort(function (a, b) {
+          if (a.provider.name > b.provider.name) {
+            return 1;
+          }
+          if (a.provider.name < b.provider.name) {
+            return -1;
+          }
+          return 0;
+        });
       });
   }
 }

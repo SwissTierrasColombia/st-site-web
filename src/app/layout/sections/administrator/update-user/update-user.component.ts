@@ -29,6 +29,7 @@ export class UpdateUserComponent implements OnInit {
   dataJWT: any;
   updateInfo: boolean;
   email: EmailValidator;
+  tab: number;
   constructor(
     private router: Router,
     private toast: ToastrService,
@@ -55,12 +56,16 @@ export class UpdateUserComponent implements OnInit {
     this.provider = false;
     this.dataJWT = {};
     this.updateInfo = false;
+    this.tab = 0;
   }
 
   ngOnInit(): void {
     this.dataJWT = JwtHelper.getUserPublicInformation();
     this.activedRoute.params.subscribe((response) => {
       this.idUser = response.idUser;
+      if (response.tab) {
+        this.tab = parseInt(response.tab);
+      }
     });
     const promise1 = new Promise((resolve) => {
       this.serviceWorkSpace.getUsers().subscribe((arg: any) => {
@@ -121,7 +126,7 @@ export class UpdateUserComponent implements OnInit {
     return JSON.parse(JSON.stringify(obj));
   }
   volver() {
-    this.router.navigate(['/administrador/usuarios']);
+    this.router.navigate(['/administrador/usuarios/' + this.tab]);
   }
   submitChange() {
     let data = {

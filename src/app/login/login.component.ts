@@ -58,10 +58,10 @@ export class LoginComponent implements OnInit {
         .recoverPassword(this.emailByRecover)
         .subscribe((response: any) => {
           this.toast.success(response.message);
-          this.modalService.dismissAll();
           this.modalService.open(modal, { centered: true, scrollable: true });
         });
     }
+    this.modalService.dismissAll();
   }
   validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

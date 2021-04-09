@@ -31,6 +31,8 @@ export class RevisionesPendientesComponent implements OnInit {
       .GetSuppliesRequestedToReview()
       .subscribe((response) => {
         this.data = response;
+        console.log(this.data);
+
         this.numSolicitudes = this.data.length;
       });
   }

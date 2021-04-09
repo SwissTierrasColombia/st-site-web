@@ -484,7 +484,7 @@
               </button>
             </div>
           </div>
-          <div class="card mt-1" *ngIf="dataWorkSpace.operators?.length > 0">
+          <div class="card mt-1" *ngIf="onlyOperatorAssignByWorkspace?.length > 0">
             <div class="card-header text-center">
               <h3>Operadores asignados</h3>
             </div>
@@ -495,6 +495,7 @@
                     <tr>
                       <th>ID</th>
                       <th>Operador</th>
+                      <th>Gestor</th>
                       <th>Fecha de inicio</th>
                       <th>Fecha final</th>
                       <th>Número de predios</th>
@@ -517,6 +518,7 @@
                     >
                       <td scope="row">{{ item.operator.id }}</td>
                       <td scope="row">{{ item.operator.alias }}</td>
+                      <td scope="row">{{ item.manager.name }}</td>
                       <td scope="row">{{ formatDate(item.createdAt) }}</td>
                       <td scope="row">{{ formatDate(item.endDate) }}</td>
                       <td scope="row">{{ item.numberParcelsExpected }}</td>
@@ -636,7 +638,7 @@
                           (click)="
                             downloadSuppliesAutoridad(
                               item.id,
-                              item.typeSupply ? item.typeSupply.name : 'Insumo'
+                              item.typeSupply ? item.typeSupply.name : 'insumo'
                             )
                           "
                           >cloud_download</i

@@ -88,7 +88,8 @@ export class OperatorAssignmentComponent implements OnInit {
     this.isActiveAssignOperator = false;
     this.idOperator = 0;
     this.idManagerUpdate = 0;
-    this.onlyOperatorAssignByWorkspace = 0;
+    this.onlyOperatorAssignByWorkspace = [];
+    this.supportFileOperator = undefined;
   }
 
   ngOnInit() {
@@ -166,6 +167,7 @@ export class OperatorAssignmentComponent implements OnInit {
       .getOnlyOperatorAssignByWorkspace(this.idWorkspace)
       .subscribe((element) => {
         this.onlyOperatorAssignByWorkspace = element;
+        this.onlyOperatorAssignByWorkspace.sort((a, b) => a.id - b.id);
       });
   }
   clone(obj: any) {
@@ -517,10 +519,9 @@ export class OperatorAssignmentComponent implements OnInit {
     if (
       this.dataOperatorsWorkSpace.startDate !== '' &&
       this.dataOperatorsWorkSpace.endDate !== '' &&
-      this.dataOperatorsWorkSpace.numberParcelsExpected !== 0 &&
-      this.dataOperatorsWorkSpace.workArea !== 0 &&
       this.dataOperatorsWorkSpace.observations !== '' &&
-      this.dataOperatorsWorkSpace.operatorCode !== 0
+      this.dataOperatorsWorkSpace.operatorCode !== 0 &&
+      this.supportFileOperator !== undefined
     ) {
       this.isActiveAssignOperator = true;
     }
@@ -532,7 +533,10 @@ export class OperatorAssignmentComponent implements OnInit {
       const dataFile = data.body;
       const blob = new Blob([dataFile], { type });
       const url = window.URL.createObjectURL(blob);
-      saveAs(blob, nameSupplie + '.zip');
+      saveAs(
+        blob,
+        nameSupplie + '_' + this.dataWorkSpace.municipality.code + '.zip'
+      );
     });
   }
   openModalCreateOperator(modal: any) {

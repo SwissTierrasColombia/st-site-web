@@ -27,7 +27,7 @@
               >
                 <option value="0" selected>Seleccione el Gestor</option>
                 <option [ngValue]="item.id" *ngFor="let item of activeManagers">
-                  {{ item.name }}
+                  {{ item.alias }}
                 </option>
               </select>
             </div>
@@ -82,7 +82,7 @@
   <ng-template #modalRefuse let-modal>
     <div class="modal-header">
       <h4 class="modal-title">
-        ¿Está seguro de desasignar el Municipio a este gestor?
+        ¿Está seguro de retirar la asignación de este municipio?
       </h4>
       <button
         type="button"
@@ -95,8 +95,7 @@
     </div>
     <div class="modal-body">
       <h5 class="alert alert-warning text-center">
-        Advertencia: Esta acción desasignará el municipio al gestor
-        seleccionado.
+        Advertencia: Esta acción designará el municipio al Gestor seleccionado.
       </h5>
     </div>
     <div class="modal-footer">

@@ -21,8 +21,8 @@
           <table class="table table-striped">
             <thead class="thead-inverse">
               <tr>
-                <th>Código</th>
-                <th>Gestor</th>
+                <th>Entrega</th>
+                <th>Operador</th>
                 <th>Municipio</th>
                 <th>Código Municipio</th>
                 <th>Fecha de entrega</th>
@@ -33,7 +33,7 @@
             <tbody>
               <tr>
                 <td scope="row">{{ dataRequestPending.id }}</td>
-                <td scope="row">{{ dataRequestPending.manager.alias }}</td>
+                <td scope="row">{{ dataRequestPending.operator.name }}</td>
                 <td scope="row">{{ dataRequestPending.municipality.name }}</td>
                 <td scope="row">{{ dataRequestPending.municipality.code }}</td>
                 <td scope="row">

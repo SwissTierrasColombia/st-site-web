@@ -1,6 +1,6 @@
 <div>
   <app-page-header
-    [heading]="'Integración de Insumos catastro-registro'"
+    [heading]="'Integración XTF Catastro-Registro'"
     [icon]="'fa-star'"
   >
   </app-page-header>
@@ -42,7 +42,8 @@
             (click)="tab3()"
             aria-controls="messages"
           >
-            <span class="material-icons"> note </span>Integración de Insumos</a
+            <span class="material-icons"> note </span>Integración XTF
+            Catastro-Registro</a
           >
         </li>
       </ul>
@@ -55,7 +56,7 @@
     </div> -->
     <div class="card" *ngIf="tab === 3">
       <div class="card-header text-center">
-        <h3>Integración de Insumos</h3>
+        <h3>Integración XTF Catastro-Registro</h3>
       </div>
       <div class="card-body">
         <form action="" method="post">
@@ -297,7 +298,7 @@
                     </i>
                   </span>
                   <div
-                    *ngIf="item.errors !== null"
+                    *ngIf="item.errors && item.errors !== null"
                     id="logsXTFIntegration"
                     class="logsXTF"
                     (click)="openModalErrorXTF(modalError, item)"
@@ -331,7 +332,6 @@
             <tr>
               <th>Tipo de Integración</th>
               <th>Descripción</th>
-              <th>Insumos</th>
               <th *ngIf="selectIntegration[0].stats.length > 0">
                 Número de Registros Catastrales
               </th>
@@ -350,15 +350,6 @@
               <td scope="row">
                 {{
                   item.integrationState ? item.integrationState.description : ""
-                }}
-              </td>
-              <td scope="row">
-                {{
-                  item.supplyCadastre
-                    ? item.supplyCadastre.typeSupply.name
-                    : ""
-                }}<br />{{
-                  item.supplySnr ? item.supplySnr.typeSupply.name : ""
                 }}
               </td>
               <td scope="row" *ngIf="item.stats.length > 0">

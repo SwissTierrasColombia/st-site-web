@@ -84,8 +84,8 @@ export class SidebarComponent implements OnInit {
       return (
         elem.id === this.roles.superAdministrador ||
         elem.id === this.roles.administrador ||
-        // (this.user.is_manager_director === this.roles.gestorDirector &&
-        //   elem.id === this.roles.gestor) ||
+        (this.user.is_manager_director === this.roles.gestorDirector &&
+          elem.id === this.roles.gestor) ||
         (this.user.is_provider_director === this.roles.proveedorDirector &&
           elem.id === this.roles.proveedor)
       );

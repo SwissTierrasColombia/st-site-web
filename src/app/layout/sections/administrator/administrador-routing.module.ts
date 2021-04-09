@@ -16,11 +16,11 @@ const routes: Routes = [
     component: CreateUserComponent,
   },
   {
-    path: 'usuarios',
+    path: 'usuarios/:tab',
     component: ListUserComponent,
   },
   {
-    path: 'usuario/:idUser/modificar',
+    path: 'usuario/:idUser/modificar/:tab',
     component: UpdateUserComponent,
   },
   {

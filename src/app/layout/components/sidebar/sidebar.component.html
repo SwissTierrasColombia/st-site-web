@@ -253,7 +253,7 @@
         <ul class="submenu">
           <li>
             <a
-              [routerLink]="['/administrador/usuarios']"
+              [routerLink]="['/administrador/usuarios/1']"
               (click)="isCollapsed(listMenu.administrador)"
             >
               <i class="fa fa-fw fa-angle-double-right"></i>
@@ -261,7 +261,7 @@
               <span class="ml-3">Usuarios</span>
             </a>
           </li>
-          <li>
+          <li *ngIf="!this.user.is_manager_director">
             <a
               [routerLink]="['/administrador/crear-usuario']"
               (click)="isCollapsed(listMenu.administrador)"
