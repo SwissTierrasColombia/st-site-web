@@ -20,7 +20,7 @@ export class AdministrationService {
    * get Manager User
    */
   public getManagerUser(managerId: number) {
-    if (managerId !== 0) {
+    if (managerId > 0) {
       return this.httpClient.get(
         this.url + '/administration/v1/users/managers?manager=' + managerId
       );
@@ -31,7 +31,7 @@ export class AdministrationService {
    * get Provider User
    */
   public getProviderUser(providerId: number) {
-    if (providerId !== 0) {
+    if (providerId > 0) {
       return this.httpClient.get(
         this.url + '/administration/v1/users/providers?provider=' + providerId
       );
@@ -42,7 +42,7 @@ export class AdministrationService {
    * get Operator User
    */
   public getOperatorUser(operatorId: number) {
-    if (operatorId !== 0) {
+    if (operatorId > 0) {
       return this.httpClient.get(
         this.url + '/administration/v1/users/operators?operator=' + operatorId
       );

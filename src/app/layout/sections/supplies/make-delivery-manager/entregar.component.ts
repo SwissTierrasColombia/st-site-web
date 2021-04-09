@@ -32,6 +32,8 @@ export class EntregarComponent implements OnInit {
   firstSearch: boolean;
   operators: any;
   selectOperatorId: number;
+  managerId: number;
+  countSearch: number;
   constructor(
     private roles: RoleModel,
     private serviceWorkspaces: WorkspacesService,
@@ -61,6 +63,7 @@ export class EntregarComponent implements OnInit {
     this.firstSearch = false;
     this.operators = [];
     this.selectOperatorId = 0;
+    this.countSearch = 0;
   }
 
   ngOnInit() {
@@ -69,6 +72,7 @@ export class EntregarComponent implements OnInit {
       return elem.id === this.roles.gestor;
     });
     if (role) {
+      this.managerId = role.id;
       this.usermanager = true;
     }
     this.serviceWorkspaces.getDepartments().subscribe((response) => {
@@ -104,15 +108,31 @@ export class EntregarComponent implements OnInit {
     if (
       this.selectDepartment !== 0 &&
       this.selectMunicipality !== 0 &&
-      this.selectOperatorId !== 0
+      this.selectOperatorId > 0
     ) {
       this.sendSuppliesFilter = false;
     }
   }
-  getPage(page: number) {
+  changeOperator() {
+    this.changeSelects();
+    if (this.countSearch > 0 && this.selectOperatorId > 0) {
+      this.search(1);
+    }
+    if (this.selectOperatorId <= 0) {
+      this.countSearch = 0;
+    }
+    this.countSearch++;
+
+  }
+  search(page: number) {
     this.firstSearch = true;
     this.serviceWorkspaces
-      .GetSuppliesByMunicipalityFilter(this.selectMunicipality, page, true)
+      .GetSuppliesByMunicipalityFilter(
+        this.selectMunicipality,
+        page,
+        true,
+        this.selectOperatorId
+      )
       .subscribe((response: any) => {
         this.number = response.number + 1;
         this.size = response.size;
@@ -240,7 +260,7 @@ export class EntregarComponent implements OnInit {
                 this.toastr.success(
                   'Se ha realizado la entrega de los insumos al operador'
                 );
-                this.getPage(1);
+                this.search(1);
                 this.deliverySupplies = {
                   observations: '',
                   supplies: [],

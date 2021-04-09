@@ -28,7 +28,6 @@
               <th>Municipio</th>
               <th>Estado</th>
               <th>Descripción</th>
-              <th>Insumos</th>
               <th>Número de Registros Catastrales</th>
               <th>Número de Registros SNR</th>
               <th>Registros Integrados</th>
@@ -51,15 +50,6 @@
               <td scope="row">
                 {{
                   item.integrationState ? item.integrationState.description : ""
-                }}
-              </td>
-              <td scope="row">
-                {{
-                  item.supplyCadastre
-                    ? item.supplyCadastre.typeSupply.name
-                    : ""
-                }}<br />{{
-                  item.supplySnr ? item.supplySnr.typeSupply.name : ""
                 }}
               </td>
               <td scope="row">

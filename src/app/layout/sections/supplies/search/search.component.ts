@@ -91,6 +91,8 @@ export class SearchComponent implements OnInit {
   }
   getPage(page: number) {
     this.page = page;
+    console.log(this.selectMunicipality, this.page, false);
+
     this.serviceWorkspaces
       .GetSuppliesByMunicipalityFilter(
         this.selectMunicipality,

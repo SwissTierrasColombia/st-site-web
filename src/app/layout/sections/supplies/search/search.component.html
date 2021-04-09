@@ -67,7 +67,7 @@
       </button>
     </div>
   </div>
-  <div *ngIf="allSupplies.length > 0">
+  <div *ngIf="allSupplies?.length > 0">
     <div class="row justify-content-md-center">
       <div class="card text-center">
         <div class="card-header text-center">
@@ -331,7 +331,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="allSupplies.length === 0 && isSearch">
+  <div *ngIf="allSupplies?.length === 0 && isSearch">
     <div class="col-12">
       <div class="alert alert-primary text-center" role="alert">
         No hay insumos cargados en este Municipio.

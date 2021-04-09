@@ -197,6 +197,15 @@ export class ListUserComponent implements OnInit {
       .getManagerUser(this.managerId)
       .subscribe((response) => {
         this.usersManagers = response;
+        this.usersManagers.sort(function (a, b) {
+          if (a.manager.name > b.manager.name) {
+            return 1;
+          }
+          if (a.manager.name < b.manager.name) {
+            return -1;
+          }
+          return 0;
+        });
       });
   }
   tab2() {
@@ -205,6 +214,15 @@ export class ListUserComponent implements OnInit {
       .getOperatorUser(this.operatorId)
       .subscribe((response) => {
         this.usersOperators = response;
+        this.usersOperators.sort(function (a, b) {
+          if (a.operator.name > b.operator.name) {
+            return 1;
+          }
+          if (a.operator.name < b.operator.name) {
+            return -1;
+          }
+          return 0;
+        });
       });
   }
   tab3() {
@@ -213,6 +231,15 @@ export class ListUserComponent implements OnInit {
       .getProviderUser(this.providerId)
       .subscribe((response) => {
         this.usersProviders = response;
+        this.usersProviders.sort(function (a, b) {
+          if (a.provider.name > b.provider.name) {
+            return 1;
+          }
+          if (a.provider.name < b.provider.name) {
+            return -1;
+          }
+          return 0;
+        });
       });
   }
 }

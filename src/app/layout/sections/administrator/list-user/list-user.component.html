@@ -90,6 +90,7 @@
                     <tr>
                       <th>Gestor</th>
                       <th>Usuario</th>
+                      <th>Perfil</th>
                       <th>Nombres</th>
                       <th>Apellidos</th>
                       <th>Correo</th>
@@ -110,6 +111,14 @@
                     >
                       <td scope="row">{{ item.manager.name }}</td>
                       <td scope="row">{{ item.username }}</td>
+                      <td scope="row">
+                        <div *ngIf="item.profiles.length > 0">
+                          <div *ngFor="let profile of item.profiles">
+                            {{ profile.name }}
+                          </div>
+                        </div>
+                        <div *ngIf="item.profiles.length === 0">--</div>
+                      </td>
                       <td scope="row">{{ item.firstName }}</td>
                       <td scope="row">{{ item.lastName }}</td>
                       <td scope="row">{{ item.email }}</td>
@@ -161,7 +170,7 @@
                 </table>
               </div>
             </div>
-            <div class="card-body" *ngIf="dataListUser.length === 0">
+            <div class="card-body" *ngIf="usersManagers.length === 0">
               <div class="alert alert-primary text-center" role="alert">
                 No tiene usuarios registrados
               </div>
@@ -266,7 +275,7 @@
               id="operator"
               [(ngModel)]="operatorId"
             >
-              <option value="0" selected>Seleccione el operador</option>
+              <option value="0" selected>Seleccione entidad</option>
               <option [ngValue]="item.id" *ngFor="let item of operators">
                 {{ item.alias }}
               </option>
@@ -300,6 +309,7 @@
                     <tr>
                       <th>Operador</th>
                       <th>Usuario</th>
+                      <!-- <th>Perfil</th> -->
                       <th>Nombres</th>
                       <th>Apellidos</th>
                       <th>Correo</th>
@@ -320,6 +330,11 @@
                     >
                       <td scope="row">{{ item.operator.name }}</td>
                       <td scope="row">{{ item.username }}</td>
+                      <!-- <td scope="row">
+                        <div *ngFor="let profile of item.profiles">
+                          {{ profile.name }}
+                        </div>
+                      </td> -->
                       <td scope="row">{{ item.firstName }}</td>
                       <td scope="row">{{ item.lastName }}</td>
                       <td scope="row">{{ item.email }}</td>
@@ -393,7 +408,7 @@
                 </table>
               </div>
             </div>
-            <div class="card-body" *ngIf="dataListUser.length === 0">
+            <div class="card-body" *ngIf="usersOperators.length === 0">
               <div class="alert alert-primary text-center" role="alert">
                 No tiene usuarios registrados
               </div>
@@ -530,10 +545,10 @@
                 <table class="table table-striped text-center">
                   <thead class="thead-inverse">
                     <tr>
-                      <th *ngIf="roleConnectAdmin">Proveedor</th>
-                      <th *ngIf="roleConnectAdmin">Área de trabajo</th>
-                      <th *ngIf="roleConnectProvider">Perfil</th>
+                      <th>Proveedor</th>
+                      <th>Área de trabajo</th>
                       <th>Usuario</th>
+                      <th>Perfil</th>
                       <th>Nombres</th>
                       <th>Apellidos</th>
                       <th>Correo</th>
@@ -561,13 +576,21 @@
                             {{ perfil.name }}
                           </div>
                         </div>
-                        <div *ngIf="item.profiles.length === 0">N/A</div>
+                        <div *ngIf="item.profiles.length === 0">--</div>
                       </td>
                       <td scope="row" *ngIf="roleConnectProvider">
                         <div *ngIf="isDelegado(item)">Revisor</div>
                         <div *ngIf="!isDelegado(item)">Técnico</div>
                       </td>
                       <td scope="row">{{ item.username }}</td>
+                      <td scope="row">
+                        <div *ngIf="item.roles.length > 0">
+                          <div *ngFor="let roles of item.roles">
+                            {{ roles.name }}
+                          </div>
+                        </div>
+                        <div *ngIf="item.roles.length === 0">--</div>
+                      </td>
                       <td scope="row">{{ item.firstName }}</td>
                       <td scope="row">{{ item.lastName }}</td>
                       <td scope="row">{{ item.email }}</td>
@@ -620,7 +643,7 @@
                 </table>
               </div>
             </div>
-            <div class="card-body" *ngIf="dataListUser.length === 0">
+            <div class="card-body" *ngIf="usersProviders.length === 0">
               <div class="alert alert-primary text-center" role="alert">
                 No tiene usuarios registrados
               </div>
@@ -772,7 +795,7 @@
                 "
               >
                 <td scope="row" *ngIf="roleConnectAdmin">
-                  {{ item.entity ? item.entity.name : "N/A" }}
+                  {{ item.entity ? item.entity.name : "--" }}
                 </td>
                 <td
                   scope="row"
@@ -809,7 +832,7 @@
                       item.rolesProvider.length == 0
                     "
                   >
-                    N/A
+                    --
                   </div>
                   <div
                     *ngIf="
@@ -819,7 +842,7 @@
                       roleConnectProvider
                     "
                   >
-                    N/A
+                    --
                   </div>
                   <div
                     *ngIf="
@@ -837,7 +860,7 @@
                       {{ perfil.name }}
                     </div>
                   </div>
-                  <div *ngIf="item.profilesProvider.length === 0">N/A</div>
+                  <div *ngIf="item.profilesProvider.length === 0">--</div>
                 </td>
                 <td scope="row" *ngIf="roleConnectProvider">
                   <div *ngIf="isDelegado(item)">Revisor</div>

@@ -232,8 +232,22 @@ export class WorkspacesService {
   public GetSuppliesByMunicipalityFilter(
     idMunicipality: number,
     page: number,
-    active: boolean
+    active: boolean,
+    operatorId?: number
   ) {
+    if (operatorId) {
+      return this.httpClient.get(
+        this.url +
+          '/workspaces/v1/supplies/' +
+          idMunicipality +
+          '?page=' +
+          page +
+          '&active=' +
+          active +
+          '&operator=' +
+          operatorId
+      );
+    }
     return this.httpClient.get(
       this.url +
         '/workspaces/v1/supplies/' +
