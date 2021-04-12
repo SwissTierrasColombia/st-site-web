@@ -244,6 +244,23 @@
       <div class="input-group mb-1">
         <div class="input-group-prepend">
           <span class="input-group-text">
+            <i class="material-icons"> account_circle </i>
+          </span>
+        </div>
+        <input
+          (change)="validfield2()"
+          type="text"
+          name="username"
+          class="form-control"
+          placeholder="Nombre de usuario"
+          autocomplete="username"
+          [(ngModel)]="username"
+          required
+        />
+      </div>
+      <div class="input-group mb-1">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
             <i class="material-icons"> code </i>
           </span>
         </div>

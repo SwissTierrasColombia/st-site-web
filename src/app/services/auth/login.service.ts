@@ -46,11 +46,17 @@ export class LoginService {
       email: email,
     });
   }
-  ResetPassword(email: string, code: string, newPassword: string) {
+  ResetPassword(
+    email: string,
+    code: string,
+    newPassword: string,
+    username: string
+  ) {
     return this.httpClient.put(this.url + '/administration/v1/users/reset', {
       email: email,
       code: code,
       newPassword: newPassword,
+      username: username,
     });
   }
 }

@@ -21,12 +21,14 @@ export class LoginComponent implements OnInit {
   newPassword: string;
   confirmationNewPassword: string;
   buttonReset: boolean;
+  username: string;
   constructor(
     public router: Router,
     private serviceAUTH: LoginService,
     private modalService: NgbModal,
     private toast: ToastrService
   ) {
+    this.username = '';
     this.emailByRecover = '';
     this.buttonRecover = false;
     this.codeRecover = '';
@@ -76,6 +78,7 @@ export class LoginComponent implements OnInit {
   validfield2() {
     this.buttonReset = false;
     if (
+      this.username !== '' &&
       this.codeRecover !== '' &&
       this.newPassword !== '' &&
       this.confirmationNewPassword !== ''
@@ -86,7 +89,12 @@ export class LoginComponent implements OnInit {
   closeModalReset() {
     if (this.newPassword === this.confirmationNewPassword) {
       this.serviceAUTH
-        .ResetPassword(this.emailByRecover, this.codeRecover, this.newPassword)
+        .ResetPassword(
+          this.emailByRecover,
+          this.codeRecover,
+          this.newPassword,
+          this.username
+        )
         .subscribe((response: any) => {
           this.toast.success(response.message);
           this.modalService.dismissAll();
