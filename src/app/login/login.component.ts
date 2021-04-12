@@ -98,6 +98,15 @@ export class LoginComponent implements OnInit {
         .subscribe((response: any) => {
           this.toast.success(response.message);
           this.modalService.dismissAll();
+          this.serviceAUTH
+            .login(this.username.toLowerCase(), this.newPassword)
+            .subscribe((data) => {
+              localStorage.setItem(
+                environment.nameTokenSession,
+                data.access_token
+              );
+              this.router.navigate(['inicio']);
+            });
         });
     } else {
       this.toast.error('Las contraseñas no son iguales.');
