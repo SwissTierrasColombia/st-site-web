@@ -90,7 +90,7 @@
                   "
                   *ngFor="let item of dataWorkSpace.managers; let index = index"
                 >
-                  <td scope="row">{{ item.manager.alias }}</td>
+                  <td scope="row">{{ item.manager.name }}</td>
                   <td scope="row">
                     {{ item.manager.taxIdentificationNumber }}
                   </td>
@@ -517,7 +517,7 @@
                       "
                     >
                       <td scope="row">{{ item.operator.id }}</td>
-                      <td scope="row">{{ item.operator.alias }}</td>
+                      <td scope="row">{{ item.operator.name }}</td>
                       <td scope="row">{{ item.manager.name }}</td>
                       <td scope="row">{{ formatDate(item.createdAt) }}</td>
                       <td scope="row">{{ formatDate(item.endDate) }}</td>

@@ -132,6 +132,15 @@
                     ><span *ngIf="isAuthority(item) === false">{{
                       item.typeSupply.name
                     }}</span>
+                    <div
+                      *ngIf="
+                        item.typeSupply.id === 2 && !item.hasGeometryValidation
+                      "
+                    >
+                      <span class="badge badge-warning">
+                        Sin validación geometríca
+                      </span>
+                    </div>
                   </td>
                   <td scope="row">{{ globalFuntionDate(item.createdAt) }}</td>
                   <td scope="row">

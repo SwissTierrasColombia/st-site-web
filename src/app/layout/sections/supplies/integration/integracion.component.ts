@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -236,7 +235,15 @@ export class IntegracionComponent implements OnInit {
         }
       );
   }
-  comprobar() {
+  comprobar(modalskipValidated?: any, item?: any) {
+    if (modalskipValidated && item) {
+      if (!item.hasGeometryValidation) {
+        this.modalService.open(modalskipValidated, {
+          centered: true,
+          scrollable: true,
+        });
+      }
+    }
     if (
       this.selectsupplyCadastre !== 0 &&
       this.selectsupplyRegistration !== 0
@@ -361,5 +368,11 @@ export class IntegracionComponent implements OnInit {
   openModalErrorXTF(modalError: any, supp: any) {
     this.errorXTF = supp.errors;
     this.modalService.open(modalError, { centered: true, scrollable: true });
+  }
+  closeModalSkipValidation(option: boolean) {
+    this.modalService.dismissAll();
+    if (!option) {
+      this.selectsupplyCadastre = 0;
+    }
   }
 }

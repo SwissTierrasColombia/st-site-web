@@ -33,7 +33,7 @@
             <tbody>
               <tr>
                 <td scope="row">{{ dataRequestPending.id }}</td>
-                <td scope="row">{{ dataRequestPending.operator.name }}</td>
+                <td scope="row">{{ dataRequestPending.operator?.name }}</td>
                 <td scope="row">{{ dataRequestPending.municipality.name }}</td>
                 <td scope="row">{{ dataRequestPending.municipality.code }}</td>
                 <td scope="row">
@@ -100,6 +100,16 @@
                         : ""
                     }})
                   </span>
+                  <div
+                    *ngIf="
+                      item.supply.typeSupply?.id === 2 &&
+                      !item.supply.hasGeometryValidation
+                    "
+                  >
+                    <span class="badge badge-warning">
+                      Sin validación geometríca
+                    </span>
+                  </div>
                 </td>
                 <td scope="row">
                   <textarea

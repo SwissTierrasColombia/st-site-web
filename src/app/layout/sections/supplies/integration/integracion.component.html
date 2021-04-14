@@ -133,7 +133,7 @@
                     type="radio"
                     value="{{ item.id }}"
                     id="{{ item.id }}"
-                    (change)="comprobar()"
+                    (change)="comprobar(modalskipValidated, item)"
                   />
                   <label class="form-check-label" for="radio{{ i + 1 }}">
                     <span
@@ -152,6 +152,11 @@
                   >
                     <!-- <strong>Modelo {{item.modelVersion}}</strong> -->
                     <strong>Submodelo Insumos V1.0</strong>
+                    <div *ngIf="!item.hasGeometryValidation">
+                      <span class="badge badge-warning">
+                        Sin validación geometríca
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -601,4 +606,46 @@
     <span class="text-center">{{ errorXTF }}</span>
   </div>
   <div class="modal-footer"></div>
+</ng-template>
+<ng-template #modalskipValidated let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      ¿Está seguro de seleccionar un XTF sin validación geometríca?
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h5 class="alert alert-warning text-center">
+      Advertencia: Ha escogido un XTF sin validación geométrica, esta
+      integración puede fallar.
+    </h5>
+  </div>
+  <div class="modal-footer">
+    <div class="col-6">
+      <button
+        type="button"
+        class="btn btn-dark btn-block"
+        (click)="closeModalSkipValidation(false)"
+      >
+        No
+      </button>
+    </div>
+    <div class="col-6 text-right">
+      <button
+        type="button"
+        ngbAutofocus
+        class="btn btn-success btn-block"
+        (click)="closeModalSkipValidation(true)"
+      >
+        Si
+      </button>
+    </div>
+  </div>
 </ng-template>

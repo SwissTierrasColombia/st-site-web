@@ -128,7 +128,7 @@ export class ListUserComponent implements OnInit {
     this.modalService.open(modal, { centered: true, scrollable: true });
     this.idUserDisabled = idUser;
   }
-  closeModalEnabled(option: boolean) {
+  closeModalEnabled(option: boolean): void {
     if (option) {
       this.serviceWorkspace
         .EnableUser(this.idUserEnabled, {})

@@ -100,6 +100,11 @@
                         : ""
                     }})</span
                   >
+                  <div *ngIf="item.supply.typeSupply?.id === 2 && !item.supply.hasGeometryValidation">
+                    <span class="badge badge-warning">
+                      Sin validación geometríca
+                    </span>
+                  </div>
                 </td>
                 <td scope="row">
                   <textarea

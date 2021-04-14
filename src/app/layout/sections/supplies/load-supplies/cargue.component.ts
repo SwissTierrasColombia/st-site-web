@@ -1,11 +1,18 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import * as _moment from 'moment';
 import { TypeDataSuppliesModel } from 'src/app/models/typeDataSupplies.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
+import * as _moment from 'moment';
 
 const moment = _moment;
 
@@ -14,7 +21,7 @@ const moment = _moment;
   templateUrl: './cargue.component.html',
   styleUrls: ['./cargue.component.scss'],
 })
-export class CargueComponent implements OnInit {
+export class CargueComponent implements OnInit, AfterViewInit {
   idInsumo: string;
   dataRequestPending: any;
   type: any;
@@ -28,13 +35,15 @@ export class CargueComponent implements OnInit {
   previewData: FileList;
   fileUrl = '';
   errorXTF: string;
+  skipGeometryValidation: boolean;
   constructor(
     private toastr: ToastrService,
     private router: Router,
     private activedRoute: ActivatedRoute,
     private serviceWorkspaces: WorkspacesService,
     public typeDataFieldModel: TypeDataSuppliesModel,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private cdr: ChangeDetectorRef
   ) {
     this.respuestaValidador = [
       {
@@ -62,6 +71,10 @@ export class CargueComponent implements OnInit {
     this.closeRequestButton = true;
     this.closeRequestButtonArray = [];
     this.errorXTF = '';
+    this.skipGeometryValidation = false;
+  }
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
   }
   ngOnInit() {
     const promise1 = new Promise((resolve) => {
@@ -328,6 +341,12 @@ export class CargueComponent implements OnInit {
       form.append('url', item.url);
       form.append('observations', item.observations);
     }
+    if (item.typeSupply.id === 2 || item.typeSupply.id === 12) {
+      form.append(
+        'skipGeometryValidation',
+        new Boolean(this.skipGeometryValidation).toString()
+      );
+    }
     this.serviceWorkspaces
       .loadSupplyFromRequest(idSolicitud, form)
       .subscribe((data: any) => {
@@ -447,7 +466,6 @@ export class CargueComponent implements OnInit {
       this.modalService.dismissAll();
     }
   }
-  preview(url: string) {}
   nameButton() {
     let data = this.dataRequestPending.find((element) => {
       return element.suppliesRequested.find((item) => {
@@ -459,5 +477,16 @@ export class CargueComponent implements OnInit {
   openModalErrorXTF(modalError: any, supp: any) {
     this.errorXTF = supp.errors;
     this.modalService.open(modalError, { centered: true, scrollable: true });
+  }
+  openModalSkipValidated(modal: any): void {
+    if (this.skipGeometryValidation) {
+      this.modalService.open(modal, { centered: true, scrollable: true });
+    }
+  }
+  closeModalSkipValidation(option: boolean) {
+    this.modalService.dismissAll();
+    if (!option) {
+      this.skipGeometryValidation = false;
+    }
   }
 }
