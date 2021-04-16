@@ -476,14 +476,16 @@
         type="button"
         class="close"
         aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
+        (click)="closeModalSkipValidation(false)"
       >
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
       <h5 class="alert alert-warning text-center">
-        Advertencia: Va a omitir la validación geométrica.
+        Advertencia: Esta acción puede afectar la integración con los datos
+        registrales y generar inconvenientes en el despliegue de datos y
+        representación Cartográfica al Operador.
       </h5>
     </div>
     <div class="modal-footer">

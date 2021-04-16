@@ -480,13 +480,19 @@ export class CargueComponent implements OnInit, AfterViewInit {
   }
   openModalSkipValidated(modal: any): void {
     if (this.skipGeometryValidation) {
-      this.modalService.open(modal, { centered: true, scrollable: true });
+      this.modalService.open(modal, {
+        centered: true,
+        scrollable: true,
+        backdrop: 'static',
+        keyboard: false,
+      });
     }
   }
   closeModalSkipValidation(option: boolean) {
     this.modalService.dismissAll();
-    if (!option) {
-      this.skipGeometryValidation = false;
+    this.skipGeometryValidation = false;
+    if (option) {
+      this.skipGeometryValidation = true;
     }
   }
 }
