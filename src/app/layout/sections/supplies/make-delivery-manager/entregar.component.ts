@@ -122,9 +122,9 @@ export class EntregarComponent implements OnInit {
       this.countSearch = 0;
     }
     this.countSearch++;
-
   }
   search(page: number) {
+    this.searchText = '';
     this.firstSearch = true;
     this.serviceWorkspaces
       .GetSuppliesByMunicipalityFilter(

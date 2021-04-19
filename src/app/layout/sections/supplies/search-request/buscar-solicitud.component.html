@@ -682,7 +682,7 @@
                   <h5>Resultados de Búsqueda</h5>
                 </div>
                 <div class="card-body">
-                  <ngb-pagination
+                  <!-- <ngb-pagination
                     class="d-flex justify-content-center"
                     id="serverSupplies"
                     [(page)]="number"
@@ -693,8 +693,8 @@
                     [boundaryLinks]="true"
                     (pageChange)="getPageOrder()"
                   >
-                  </ngb-pagination>
-                  <div class="search-hero">
+                  </ngb-pagination> -->
+                  <!-- <div class="search-hero">
                     <input
                       class="form-control"
                       type="text"
@@ -703,7 +703,7 @@
                       autocomplete="off"
                       placeholder="&#61442;  Buscar insumo"
                     />
-                  </div>
+                  </div> -->
                   <!-- <pre>{{infoTabOrder | json}}</pre> -->
                   <div class="table-inverse table-responsive">
                     <table class="table table-striped text-center">
@@ -723,11 +723,7 @@
                         </tr>
                       </thead>
                       <tbody *ngFor="let element of infoTabOrder">
-                        <tr
-                          *ngFor="
-                            let item of element.requests | filter: searchText
-                          "
-                        >
+                        <tr *ngFor="let item of element.requests">
                           <td scope="row">
                             {{ item.packageLabel }}
                           </td>

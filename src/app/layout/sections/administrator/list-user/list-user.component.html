@@ -65,13 +65,15 @@
           <div class="card">
             <div class="card-body" *ngIf="usersManagers.length > 0">
               <ngb-pagination
+                id="pagination-usersManagers"
                 class="d-flex justify-content-center"
-                [(page)]="page"
-                [pageSize]="pageSize"
+                [(page)]="page1"
+                [pageSize]="pageSize1"
                 [collectionSize]="usersManagers.length"
                 [rotate]="true"
                 [ellipses]="false"
                 [boundaryLinks]="true"
+                (pageChange)="cleanPagination()"
               >
               </ngb-pagination>
               <div class="search-hero">
@@ -105,8 +107,8 @@
                         let item of usersManagers
                           | filter: searchText
                           | slice
-                            : (page - 1) * pageSize
-                            : (page - 1) * pageSize + pageSize
+                            : (page1 - 1) * pageSize1
+                            : (page1 - 1) * pageSize1 + pageSize1
                       "
                     >
                       <td scope="row">{{ item.manager.name }}</td>
@@ -284,13 +286,15 @@
           <div class="card">
             <div class="card-body" *ngIf="usersOperators.length > 0">
               <ngb-pagination
+                id="pagination-usersOperators"
                 class="d-flex justify-content-center"
-                [(page)]="page"
-                [pageSize]="pageSize"
+                [(page)]="page2"
+                [pageSize]="pageSize2"
                 [collectionSize]="usersOperators.length"
                 [rotate]="true"
                 [ellipses]="false"
                 [boundaryLinks]="true"
+                (pageChange)="cleanPagination()"
               >
               </ngb-pagination>
               <div class="search-hero">
@@ -324,8 +328,8 @@
                         let item of usersOperators
                           | filter: searchText
                           | slice
-                            : (page - 1) * pageSize
-                            : (page - 1) * pageSize + pageSize
+                            : (page2 - 1) * pageSize2
+                            : (page2 - 1) * pageSize2 + pageSize2
                       "
                     >
                       <td scope="row">{{ item.operator.name }}</td>
@@ -522,13 +526,15 @@
             </div>
             <div class="card-body" *ngIf="usersProviders.length > 0">
               <ngb-pagination
+                id="pagination-usersProviders"
                 class="d-flex justify-content-center"
-                [(page)]="page"
-                [pageSize]="pageSize"
+                [(page)]="page3"
+                [pageSize]="pageSize3"
                 [collectionSize]="usersProviders.length"
                 [rotate]="true"
                 [ellipses]="false"
                 [boundaryLinks]="true"
+                (pageChange)="cleanPagination()"
               >
               </ngb-pagination>
               <div class="search-hero">
@@ -563,8 +569,8 @@
                         let item of usersProviders
                           | filter: searchText
                           | slice
-                            : (page - 1) * pageSize
-                            : (page - 1) * pageSize + pageSize
+                            : (page3 - 1) * pageSize3
+                            : (page3 - 1) * pageSize3 + pageSize3
                       "
                     >
                       <td scope="row">
@@ -741,13 +747,15 @@
     <div class="card">
       <div class="card-body" *ngIf="dataListUser.length > 0">
         <ngb-pagination
+          id="pagination-dataListUser"
           class="d-flex justify-content-center"
-          [(page)]="page"
-          [pageSize]="pageSize"
+          [(page)]="page4"
+          [pageSize]="pageSize4"
           [collectionSize]="dataListUser.length"
           [rotate]="true"
           [ellipses]="false"
           [boundaryLinks]="true"
+          (pageChange)="cleanPagination()"
         >
         </ngb-pagination>
         <div class="search-hero">
@@ -790,8 +798,8 @@
                   let item of dataListUser
                     | filter: searchText
                     | slice
-                      : (page - 1) * pageSize
-                      : (page - 1) * pageSize + pageSize
+                      : (page4 - 1) * pageSize4
+                      : (page4 - 1) * pageSize4 + pageSize4
                 "
               >
                 <td scope="row" *ngIf="roleConnectAdmin">

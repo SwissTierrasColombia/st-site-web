@@ -93,10 +93,12 @@ export class BuscarSolicitudComponent implements OnInit {
   }
   tab1() {
     this.tab = 1;
+    this.searchText = '';
     this.router.navigate(['/insumos/buscar-solicitud', { tab: 1 }]);
   }
   tab2() {
     this.tab = 2;
+    this.searchText = '';
     this.router.navigate(['/insumos/buscar-solicitud', { tab: 2 }]);
     this.serviceProvider
       .getProvidersFromManager(this.dataUser.entity.id)
@@ -106,8 +108,9 @@ export class BuscarSolicitudComponent implements OnInit {
   }
   tab3() {
     this.tab = 3;
+    this.searchText = '';
     this.router.navigate(['/insumos/buscar-solicitud', { tab: 3 }]);
-    this.getPageOrder();
+    // this.getPageOrder();
   }
   globalFuntionDate(date: any) {
     return FuntionsGlobalsHelper.formatDate(date);
@@ -120,6 +123,7 @@ export class BuscarSolicitudComponent implements OnInit {
       });
   }
   getPage(page: string) {
+    this.searchText = '';
     this.serviceWorkspaces
       .searchSuppliesMunicipality(page, this.selectMunicipality)
       .subscribe((response: any) => {

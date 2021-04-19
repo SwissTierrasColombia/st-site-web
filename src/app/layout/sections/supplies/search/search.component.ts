@@ -98,6 +98,7 @@ export class SearchComponent implements OnInit {
         false
       )
       .subscribe((response: any) => {
+        this.searchText = '';
         this.isSearch = false;
         if (response.numberOfElements === 0) {
           this.isSearch = true;
