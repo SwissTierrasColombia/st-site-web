@@ -317,7 +317,7 @@
                       </div>
                       <select
                         (change)="changeDataOperator()"
-                        disabled="{{ !assingOperator }}"
+                        disabled="{{ !assingOperator || isUpdate }}"
                         class="custom-select"
                         name="operators"
                         id="operators"
@@ -345,7 +345,7 @@
                         >
                       </div>
                       <input
-                        disabled="{{ !assingOperator }}"
+                        disabled="{{ !assingOperator || isUpdate }}"
                         class="form-control"
                         type="date"
                         name="FechaInicio"

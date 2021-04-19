@@ -52,6 +52,7 @@ export class OperatorAssignmentComponent implements OnInit {
   formGroup2 = new FormGroup({
     number: new FormControl(0, Validators.minLength(1)),
   });
+  isUpdate: boolean;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -97,6 +98,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.idManagerUpdate = 0;
     this.onlyOperatorAssignByWorkspace = [];
     this.supportFileOperator = undefined;
+    this.isUpdate = false;
   }
 
   ngOnInit() {
@@ -402,22 +404,12 @@ export class OperatorAssignmentComponent implements OnInit {
       'observations',
       this.dataOperatorsWorkSpace.observations
     );
-    const numberAlphanumericParcels = Number.isInteger(
-      this.dataOperatorsWorkSpace.numberParcelsExpected
-    );
-    const workArea = Number.isInteger(this.dataOperatorsWorkSpace.workArea);
     if (this.supportFileOperator === undefined) {
       this.toastr.error('No se ha cargado ningún soporte.');
     } else if (this.dataOperatorsWorkSpace.observations === '') {
       this.toastr.error('Las observaciones son obligatorias.');
-    } else if (!numberAlphanumericParcels) {
-      this.toastr.error(
-        'El número de predios a intervenir debe ser de tipo numérico.'
-      );
     } else if (this.dataOperatorsWorkSpace.numberParcelsExpected < 0) {
       this.toastr.error('El número de predios no es correcto.');
-    } else if (!workArea) {
-      this.toastr.error('El área de trabajo debe ser de tipo numérico.');
     } else if (this.dataOperatorsWorkSpace.workArea < 0) {
       this.toastr.error('El área de trabajo no es correcta.');
     } else {
@@ -443,6 +435,7 @@ export class OperatorAssignmentComponent implements OnInit {
           this.idOperator = 0;
           this.isActiveAssignOperator = false;
           this.isChangeDataOperator = false;
+          this.isUpdate = false;
         });
     }
   }
@@ -564,6 +557,7 @@ export class OperatorAssignmentComponent implements OnInit {
       });
   }
   updateOperator(item: any) {
+    this.isUpdate = true;
     this.dataOperatorsWorkSpace = item;
     const startDate = this.dataWorkSpace.operators[0].startDate.split('T')[0];
     const endDate = this.dataWorkSpace.operators[0].endDate.split('T')[0];
@@ -574,6 +568,7 @@ export class OperatorAssignmentComponent implements OnInit {
     this.scroll.scrollToAnchor('actionFormOperator');
   }
   cancel() {
+    this.isUpdate = false;
     this.idOperator = 0;
     this.dataOperatorsWorkSpace = {
       startDate: '',
