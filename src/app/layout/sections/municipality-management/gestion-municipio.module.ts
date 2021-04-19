@@ -12,6 +12,8 @@ import { WorkspaceActiveComponent } from './workspace-active/workspace-active.co
 import { NgSelect2Module } from 'ng-select2';
 import { SearchWorkspaceComponent } from './search-workspace/search-workspace.component';
 import { SuppliesDeliveryComponent } from './supplies-delivery/supplies-delivery.component';
+import { NumberDirective } from './numbers-only.directive';
+import { TwoDigitDecimaNumberDirective } from './numbers-decimal.directive';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { SuppliesDeliveryComponent } from './supplies-delivery/supplies-delivery
     SearchWorkspaceComponent,
     WorkspaceRefuseComponent,
     SuppliesDeliveryComponent,
+    NumberDirective,
+    TwoDigitDecimaNumberDirective,
   ],
   imports: [
     CommonModule,

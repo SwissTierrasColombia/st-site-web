@@ -13,6 +13,7 @@ import { CadastralAuthorityService } from 'src/app/services/v2/cadastral-authori
 import { UpdateInformationByWorkspace } from 'src/app/models/updateInformationByWorkspace.interface';
 import { ManagerService } from 'src/app/services/v2/manager/manager.service';
 import { ViewportScroller } from '@angular/common';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 const moment = _moment;
 @Component({
@@ -45,6 +46,12 @@ export class OperatorAssignmentComponent implements OnInit {
   idOperator: number;
   idManagerUpdate: number;
   onlyOperatorAssignByWorkspace: any;
+  formGroup1 = new FormGroup({
+    number: new FormControl(0, Validators.minLength(1)),
+  });
+  formGroup2 = new FormGroup({
+    number: new FormControl(0, Validators.minLength(1)),
+  });
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -76,8 +83,8 @@ export class OperatorAssignmentComponent implements OnInit {
     this.dataOperatorsWorkSpace = {
       startDate: '',
       endDate: '',
-      numberParcelsExpected: 0,
-      workArea: 0,
+      numberParcelsExpected: '0',
+      workArea: '0',
       observations: '',
       operatorCode: 0,
     };
@@ -162,6 +169,7 @@ export class OperatorAssignmentComponent implements OnInit {
       this.getOnlyOperatorByWorkspace();
     });
   }
+
   getOnlyOperatorByWorkspace(): void {
     this.serviceWorkspaces
       .getOnlyOperatorAssignByWorkspace(this.idWorkspace)
@@ -346,22 +354,12 @@ export class OperatorAssignmentComponent implements OnInit {
       'observations',
       this.dataOperatorsWorkSpace.observations
     );
-    const numberAlphanumericParcels = Number.isInteger(
-      this.dataOperatorsWorkSpace.numberParcelsExpected
-    );
-    const workArea = Number.isInteger(this.dataOperatorsWorkSpace.workArea);
     if (this.supportFileOperator === undefined) {
       this.toastr.error('No se ha cargado ningún soporte.');
     } else if (this.dataOperatorsWorkSpace.observations === '') {
       this.toastr.error('Las observaciones son obligatorias.');
-    } else if (!numberAlphanumericParcels) {
-      this.toastr.error(
-        'El número de predios a intervenir debe ser de tipo numérico.'
-      );
     } else if (this.dataOperatorsWorkSpace.numberParcelsExpected < 0) {
       this.toastr.error('El número de predios no es correcto.');
-    } else if (!workArea) {
-      this.toastr.error('El área de trabajo debe ser de tipo numérico.');
     } else if (this.dataOperatorsWorkSpace.workArea < 0) {
       this.toastr.error('El área de trabajo no es correcta.');
     } else {

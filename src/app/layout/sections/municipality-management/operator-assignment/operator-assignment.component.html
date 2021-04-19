@@ -372,40 +372,48 @@
                 </div>
                 <div class="row mb-2">
                   <div class="col-12 col-sm-6 mb-1">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text"
-                          >Número de Predios a Intervenir</label
-                        >
+                    <form [formGroup]="formGroup1">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text"
+                            >Número de Predios a Intervenir</label
+                          >
+                        </div>
+                        <input
+                          formControlName="number"
+                          disabled="{{ !assingOperator }}"
+                          class="form-control"
+                          type="number"
+                          name="numberParcelsExpected"
+                          [ngModel]="
+                            dataOperatorsWorkSpace.numberParcelsExpected
+                          "
+                          (change)="changeDataOperator()"
+                          numbersOnly
+                        />
                       </div>
-                      <input
-                        disabled="{{ !assingOperator }}"
-                        class="form-control"
-                        type="number"
-                        name="numberParcelsExpected"
-                        [(ngModel)]="
-                          dataOperatorsWorkSpace.numberParcelsExpected
-                        "
-                        (change)="changeDataOperator()"
-                      />
-                    </div>
+                    </form>
                   </div>
                   <div class="col-12 col-sm-6 mb-1">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text"
-                          >Área de Trabajo (km <sup>2</sup>)</label
-                        >
+                    <form [formGroup]="formGroup2">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text"
+                            >Área de Trabajo (km <sup>2</sup>)</label
+                          >
+                        </div>
+                        <input
+                          formControlName="number"
+                          disabled="{{ !assingOperator }}"
+                          class="form-control"
+                          type="text"
+                          name="workArea"
+                          [(ngModel)]="dataOperatorsWorkSpace.workArea"
+                          (change)="changeDataOperator()"
+                          appTwoDigitDecimaNumber
+                        />
                       </div>
-                      <input
-                        disabled="{{ !assingOperator }}"
-                        class="form-control"
-                        type="number"
-                        name="workArea"
-                        [(ngModel)]="dataOperatorsWorkSpace.workArea"
-                        (change)="changeDataOperator()"
-                      />
-                    </div>
+                    </form>
                   </div>
                 </div>
                 <div class="row mb-2">
@@ -484,7 +492,10 @@
               </button>
             </div>
           </div>
-          <div class="card mt-1" *ngIf="onlyOperatorAssignByWorkspace?.length > 0">
+          <div
+            class="card mt-1"
+            *ngIf="onlyOperatorAssignByWorkspace?.length > 0"
+          >
             <div class="card-header text-center">
               <h3>Operadores asignados</h3>
             </div>
