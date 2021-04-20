@@ -152,7 +152,12 @@
                   >
                     <!-- <strong>Modelo {{item.modelVersion}}</strong> -->
                     <strong>Submodelo Insumos V1.0</strong>
-                    <div *ngIf="!item.hasGeometryValidation">
+                    <div
+                      *ngIf="
+                        item.hasGeometryValidation !== null &&
+                        !item.hasGeometryValidation
+                      "
+                    >
                       <span class="badge badge-warning">
                         Sin validación geometríca
                       </span>
@@ -592,7 +597,14 @@
 </div>
 <ng-template #modalError let-modal>
   <div class="modal-header">
-    <h4 class="modal-title">Logs</h4>
+    <h4 class="modal-title">
+      Log de Integración
+      <span ngbTooltip="Copiar" placement="top" show-delay="500">
+        <span class="material-icons ml-2" (click)="myFunctionCopyOrder()">
+          content_copy
+        </span>
+      </span>
+    </h4>
     <button
       type="button"
       class="close"
@@ -616,7 +628,7 @@
       type="button"
       class="close"
       aria-label="Close"
-      (click)="modal.dismiss('Cross click')"
+      (click)="closeModalSkipValidation(false)"
     >
       <span aria-hidden="true">&times;</span>
     </button>

@@ -215,6 +215,202 @@
           role="tabpanel"
         >
           <br />
+          <div class="card" *ngIf="assingOperator">
+            <div class="card-header text-center">
+              <h3>
+                {{ idOperator > 0 ? "Actualizar" : "Asignar" }} Operador
+                <span *ngIf="idOperator > 0"
+                  ><b>#{{ idOperator }}</b></span
+                >
+              </h3>
+            </div>
+            <div class="card-body">
+              <form action="" method="post">
+                <div class="row mb-2">
+                  <div class="col-12">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" aria-required="true"
+                          >* Operador</label
+                        >
+                      </div>
+                      <select
+                        (change)="changeDataOperator()"
+                        disabled="{{ !assingOperator || isUpdate }}"
+                        class="custom-select"
+                        name="operators"
+                        id="operators"
+                        [(ngModel)]="dataOperatorsWorkSpace.operatorCode"
+                      >
+                        <option value="0" selected>
+                          Seleccione el Operador
+                        </option>
+                        <option
+                          [ngValue]="item.id"
+                          *ngFor="let item of operators"
+                        >
+                          {{ item.alias }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-12 col-sm-6 mb-1">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text"
+                          >* Fecha de Inicio</label
+                        >
+                      </div>
+                      <input
+                        disabled="{{ !assingOperator || isUpdate }}"
+                        class="form-control"
+                        type="date"
+                        name="FechaInicio"
+                        [(ngModel)]="dataOperatorsWorkSpace.startDate"
+                        (change)="changeDataOperator()"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 mb-1">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text">* Fecha Final</label>
+                      </div>
+                      <input
+                        disabled="{{ !assingOperator }}"
+                        class="form-control"
+                        type="date"
+                        name="FechaFin"
+                        [(ngModel)]="dataOperatorsWorkSpace.endDate"
+                        (change)="changeDataOperator()"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-12 col-sm-6 mb-1">
+                    <form [formGroup]="formGroup1">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text"
+                            >Número de Predios a Intervenir</label
+                          >
+                        </div>
+                        <input
+                          formControlName="number"
+                          disabled="{{ !assingOperator }}"
+                          class="form-control"
+                          type="text"
+                          name="numberParcelsExpected"
+                          [(ngModel)]="
+                            dataOperatorsWorkSpace.numberParcelsExpected
+                          "
+                          (change)="changeDataOperator()"
+                          numbersOnly
+                        />
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-12 col-sm-6 mb-1">
+                    <form [formGroup]="formGroup2">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text"
+                            >Área de Trabajo (km <sup>2</sup>)</label
+                          >
+                        </div>
+                        <input
+                          formControlName="number"
+                          disabled="{{ !assingOperator }}"
+                          class="form-control"
+                          type="text"
+                          name="workArea"
+                          [(ngModel)]="dataOperatorsWorkSpace.workArea"
+                          (change)="changeDataOperator()"
+                          appTwoDigitDecimaNumber
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-12">
+                    <div class="input-group">
+                      <div class="input-group-prepend input-group-text">
+                        <div class="">* Alcance / Observaciones</div>
+                      </div>
+                      <textarea
+                        maxlength="255"
+                        disabled="{{ !assingOperator }}"
+                        class="form-control"
+                        id="observations"
+                        rows="3"
+                        name="observaciones"
+                        [(ngModel)]="dataOperatorsWorkSpace.observations"
+                        (change)="changeDataOperator()"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-2" *ngIf="assingOperator">
+                  <div class="col-12">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text"
+                          >* Orden de Trabajo / Documento Soporte
+                          <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                        </label>
+                      </div>
+                      <input
+                        #myInputdocSoport
+                        class="form-control"
+                        type="file"
+                        (change)="docSoport($event.target.files)"
+                        multiple
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3" *ngIf="assingOperator">
+                  <div class="col-12">
+                    <div class="alert alert-primary text-center" role="alert">
+                      Recuerde que los campos marcados con * son obligatorios.
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer text-muted text-center">
+              <button
+                *ngIf="!isChangeDataOperator"
+                type="button"
+                class="btn btn-dark"
+                (click)="openModalCreateOperator(modalCreateOperator)"
+                [disabled]="!isActiveAssignOperator"
+              >
+                Asignar Operador
+              </button>
+              <button
+                *ngIf="isChangeDataOperator"
+                type="button"
+                class="btn btn-dark"
+                (click)="openModal(modalUpdateOperator)"
+                [disabled]="!isChangeDataOperator"
+              >
+                Actualizar operador
+              </button>
+              <button
+                type="button"
+                style="margin-left: 10px"
+                class="btn btn-dark"
+                (click)="cancel()"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
           <ng-template #modalUpdateOperator let-modal>
             <div class="modal-header">
               <h4 class="modal-title">
@@ -296,195 +492,10 @@
               </div>
             </div>
           </ng-template>
-          <div class="card" *ngIf="assingOperator">
-            <div class="card-header text-center">
-              <h3>
-                {{ idOperator > 0 ? "Actualizar" : "Asignar" }} Operador
-                <span *ngIf="idOperator > 0"
-                  ><b>#{{ idOperator }}</b></span
-                >
-              </h3>
-            </div>
-            <div class="card-body">
-              <form action="" method="post">
-                <div class="row mb-2">
-                  <div class="col-12">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text" aria-required="true"
-                          >* Operador</label
-                        >
-                      </div>
-                      <select
-                        (change)="changeDataOperator()"
-                        disabled="{{ !assingOperator }}"
-                        class="custom-select"
-                        name="operators"
-                        id="operators"
-                        [(ngModel)]="dataOperatorsWorkSpace.operatorCode"
-                      >
-                        <option value="0" selected>
-                          Seleccione el Operador
-                        </option>
-                        <option
-                          [ngValue]="item.id"
-                          *ngFor="let item of operators"
-                        >
-                          {{ item.alias }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-2">
-                  <div class="col-12 col-sm-6 mb-1">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text"
-                          >* Fecha de Inicio</label
-                        >
-                      </div>
-                      <input
-                        disabled="{{ !assingOperator }}"
-                        class="form-control"
-                        type="date"
-                        name="FechaInicio"
-                        [(ngModel)]="dataOperatorsWorkSpace.startDate"
-                        (change)="changeDataOperator()"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 mb-1">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text">* Fecha Final</label>
-                      </div>
-                      <input
-                        disabled="{{ !assingOperator }}"
-                        class="form-control"
-                        type="date"
-                        name="FechaFin"
-                        [(ngModel)]="dataOperatorsWorkSpace.endDate"
-                        (change)="changeDataOperator()"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-2">
-                  <div class="col-12 col-sm-6 mb-1">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text"
-                          >Número de Predios a Intervenir</label
-                        >
-                      </div>
-                      <input
-                        disabled="{{ !assingOperator }}"
-                        class="form-control"
-                        type="number"
-                        name="numberParcelsExpected"
-                        [(ngModel)]="
-                          dataOperatorsWorkSpace.numberParcelsExpected
-                        "
-                        (change)="changeDataOperator()"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 mb-1">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text"
-                          >Área de Trabajo (km <sup>2</sup>)</label
-                        >
-                      </div>
-                      <input
-                        disabled="{{ !assingOperator }}"
-                        class="form-control"
-                        type="number"
-                        name="workArea"
-                        [(ngModel)]="dataOperatorsWorkSpace.workArea"
-                        (change)="changeDataOperator()"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-2">
-                  <div class="col-12">
-                    <div class="input-group">
-                      <div class="input-group-prepend input-group-text">
-                        <div class="">* Alcance / Observaciones</div>
-                      </div>
-                      <textarea
-                        maxlength="255"
-                        disabled="{{ !assingOperator }}"
-                        class="form-control"
-                        id="observations"
-                        rows="3"
-                        name="observaciones"
-                        [(ngModel)]="dataOperatorsWorkSpace.observations"
-                        (change)="changeDataOperator()"
-                      ></textarea>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-2" *ngIf="assingOperator">
-                  <div class="col-12">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text"
-                          >* Orden de Trabajo / Documento Soporte
-                          <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                        </label>
-                      </div>
-                      <input
-                        #myInputdocSoport
-                        class="form-control"
-                        type="file"
-                        (change)="docSoport($event.target.files)"
-                        multiple
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row mt-3" *ngIf="assingOperator">
-                  <div class="col-12">
-                    <div class="alert alert-primary text-center" role="alert">
-                      Recuerde que los campos marcados con * son obligatorios.
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div class="card-footer text-muted text-center">
-              <button
-                *ngIf="!isChangeDataOperator"
-                type="button"
-                class="btn btn-dark"
-                (click)="openModalCreateOperator(modalCreateOperator)"
-                [disabled]="!isActiveAssignOperator"
-              >
-                Asignar Operador
-              </button>
-              <button
-                *ngIf="isChangeDataOperator"
-                type="button"
-                class="btn btn-dark"
-                (click)="openModal(modalUpdateOperator)"
-                [disabled]="!isChangeDataOperator"
-              >
-                Actualizar operador
-              </button>
-              <button
-                type="button"
-                style="margin-left: 10px"
-                class="btn btn-dark"
-                (click)="cancel()"
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-          <div class="card mt-1" *ngIf="onlyOperatorAssignByWorkspace?.length > 0">
+          <div
+            class="card mt-1"
+            *ngIf="onlyOperatorAssignByWorkspace?.length > 0"
+          >
             <div class="card-header text-center">
               <h3>Operadores asignados</h3>
             </div>
@@ -522,7 +533,9 @@
                       <td scope="row">{{ formatDate(item.createdAt) }}</td>
                       <td scope="row">{{ formatDate(item.endDate) }}</td>
                       <td scope="row">{{ item.numberParcelsExpected }}</td>
-                      <td scope="row">{{ item.workArea }}</td>
+                      <td scope="row">
+                        {{ replacePointByComma(item.workArea) }}
+                      </td>
                       <td scope="row">
                         <textarea
                           maxlength="255"

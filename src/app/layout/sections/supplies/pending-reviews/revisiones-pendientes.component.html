@@ -24,7 +24,8 @@
           <table *ngIf="data.length > 0" class="table table-striped">
             <thead class="thead-inverse">
               <tr>
-                <th>Número de Solicitud</th>
+                <!-- <th>Código de Orden</th> -->
+                <th>Nº de Solicitud</th>
                 <th>Departamento</th>
                 <th>Municipio</th>
                 <th>Areá de trabajo</th>
@@ -42,6 +43,9 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of data | filter: searchText">
+                <!-- <td scope="row">
+                  {{ item.packageLabel }}
+                </td> -->
                 <td scope="row">{{ item.id }}</td>
                 <td scope="row">
                   {{ item.request.municipality.department.name }}

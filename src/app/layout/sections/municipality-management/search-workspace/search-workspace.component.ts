@@ -39,6 +39,17 @@ export class SearchWorkspaceComponent implements OnInit {
   ngOnInit(): void {
     this.serviceWorkspaces.getDepartments().subscribe((response) => {
       this.departments = response;
+      this.departments.sort(function (a, b) {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        //a must be equal to b
+        return 0;
+      });
+
     });
     const rol = JwtHelper.getUserPublicInformation();
     const role = rol.roles.find((elem) => {
@@ -56,6 +67,16 @@ export class SearchWorkspaceComponent implements OnInit {
       .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
       .subscribe((data) => {
         this.munucipalities = data;
+        this.munucipalities.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
         this.searchActive = true;
       });
   }

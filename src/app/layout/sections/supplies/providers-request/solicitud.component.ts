@@ -103,6 +103,16 @@ export class SolicitudComponent implements OnInit {
     this.currentDate = this.clone(this.listsupplies.deadline);
     this.serviceWorkspaces.getDepartments().subscribe((response) => {
       this.departments = response;
+      this.departments.sort(function (a, b) {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        //a must be equal to b
+        return 0;
+      });
     });
 
     this.serviceWorkspaces.GetTypesModels().subscribe((response) => {
@@ -117,6 +127,18 @@ export class SolicitudComponent implements OnInit {
       .GetMunicipalitiesByDeparment(this.selectDepartment)
       .subscribe((data) => {
         this.municipalities = data;
+        console.log(this.municipalities);
+
+        this.municipalities.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
       });
   }
   changeMunucipality() {

@@ -157,10 +157,12 @@
                     <table class="table table-striped text-center">
                       <thead class="thead-inverse">
                         <tr>
+                          <th>Código de Orden</th>
+                          <th>Nº de Solicitud</th>
                           <th>Proveedor</th>
                           <th>Insumo</th>
                           <th>Fecha de Solicitud</th>
-                          <th>Fecha limite</th>
+                          <th>Fecha Límite</th>
                           <th>Fecha de Cargue</th>
                           <th>Estado</th>
                           <th>Opciones</th>
@@ -170,6 +172,12 @@
                         <tr
                           *ngFor="let item of allSupplies | filter: searchText"
                         >
+                          <td scope="row">
+                            {{ item.packageLabel }}
+                          </td>
+                          <td scope="row">
+                            {{ item.id }}
+                          </td>
                           <td scope="row">
                             {{ item.provider ? item.provider.name : "N/A" }}
                           </td>
@@ -216,7 +224,7 @@
                             </span>
                             <ng-template #viewDetailMunicipality let-modal>
                               <div class="modal-header">
-                                <h4 class="modal-title">Solicitud</h4>
+                                <h4 class="modal-title">Detalle de la Solicitud</h4>
                                 <button
                                   type="button"
                                   class="close"
@@ -233,15 +241,23 @@
                                   <table class="table table-striped">
                                     <thead class="thead-inverse">
                                       <tr>
+                                        <th>Código de Orden</th>
+                                        <th>Nº de Solicitud</th>
                                         <th>Proveedor</th>
-                                        <th>Fecha de solicitud</th>
-                                        <th>Fecha limite</th>
-                                        <th>Fecha de cargue</th>
+                                        <th>Fecha de Solicitud</th>
+                                        <th>Fecha Límite</th>
+                                        <th>Fecha de Cargue</th>
                                         <th>Estado</th>
                                       </tr>
                                     </thead>
                                     <tbody>
                                       <tr>
+                                        <td scope="row">
+                                          {{ item.packageLabel }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ item.id }}
+                                        </td>
                                         <td scope="row">
                                           {{
                                             item.provider
@@ -432,11 +448,13 @@
                     <table class="table table-striped text-center">
                       <thead class="thead-inverse">
                         <tr>
+                          <th>Código de Orden</th>
+                          <th>Nº de Solicitud</th>
                           <th>Departamento</th>
                           <th>Municipio</th>
                           <th>Insumo</th>
                           <th>Fecha de Solicitud</th>
-                          <th>Fecha límite</th>
+                          <th>Fecha Límite</th>
                           <th>Fecha de Cargue</th>
                           <th>Estado</th>
                           <th>Opciones</th>
@@ -448,6 +466,12 @@
                             let item of infoTabProvider | filter: searchText
                           "
                         >
+                          <td scope="row">
+                            {{ item.packageLabel }}
+                          </td>
+                          <td scope="row">
+                            {{ item.id }}
+                          </td>
                           <td scope="row">
                             {{ item.municipality.department.name }}
                           </td>
@@ -497,7 +521,7 @@
                             </span>
                             <ng-template #viewDetailProvider let-modal>
                               <div class="modal-header">
-                                <h4 class="modal-title">Solicitud</h4>
+                                <h4 class="modal-title">Detalle de la Solicitud</h4>
                                 <button
                                   type="button"
                                   class="close"
@@ -514,16 +538,24 @@
                                   <table class="table table-striped">
                                     <thead class="thead-inverse">
                                       <tr>
+                                        <th>Código de Orden</th>
+                                        <th>Nº de Solicitud</th>
                                         <th>Departamento</th>
                                         <th>Municipio</th>
-                                        <th>Fecha de solicitud</th>
-                                        <th>Fecha limite</th>
-                                        <th>Fecha de cargue</th>
+                                        <th>Fecha de Solicitud</th>
+                                        <th>Fecha Límite</th>
+                                        <th>Fecha de Cargue</th>
                                         <th>Estado</th>
                                       </tr>
                                     </thead>
                                     <tbody>
                                       <tr>
+                                        <td scope="row">
+                                          {{ item.packageLabel }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ item.id }}
+                                        </td>
                                         <td scope="row">
                                           {{
                                             item.municipality.department.name
@@ -682,7 +714,7 @@
                   <h5>Resultados de Búsqueda</h5>
                 </div>
                 <div class="card-body">
-                  <ngb-pagination
+                  <!-- <ngb-pagination
                     class="d-flex justify-content-center"
                     id="serverSupplies"
                     [(page)]="number"
@@ -693,8 +725,8 @@
                     [boundaryLinks]="true"
                     (pageChange)="getPageOrder()"
                   >
-                  </ngb-pagination>
-                  <div class="search-hero">
+                  </ngb-pagination> -->
+                  <!-- <div class="search-hero">
                     <input
                       class="form-control"
                       type="text"
@@ -703,33 +735,33 @@
                       autocomplete="off"
                       placeholder="&#61442;  Buscar insumo"
                     />
-                  </div>
+                  </div> -->
                   <!-- <pre>{{infoTabOrder | json}}</pre> -->
                   <div class="table-inverse table-responsive">
                     <table class="table table-striped text-center">
                       <thead class="thead-inverse">
                         <tr>
-                          <th>Código de la Orden</th>
+                          <th>Código de Orden</th>
+                          <th>Nº de Solicitud</th>
                           <th>Departamento</th>
                           <th>Municipio</th>
                           <th>Proveedor</th>
                           <th>Insumo</th>
                           <!-- <th>Àrea de trabajo</th> -->
-                          <th>Fecha de solicitud</th>
-                          <!-- <th>Fecha límite</th> -->
-                          <!-- <th>Fecha de cargue</th> -->
+                          <th>Fecha de Solicitud</th>
+                          <th>Fecha Límite</th>
+                          <th>Fecha de Cargue</th>
                           <th>Estado</th>
                           <th>Opciones</th>
                         </tr>
                       </thead>
                       <tbody *ngFor="let element of infoTabOrder">
-                        <tr
-                          *ngFor="
-                            let item of element.requests | filter: searchText
-                          "
-                        >
+                        <tr *ngFor="let item of element.requests">
                           <td scope="row">
                             {{ item.packageLabel }}
+                          </td>
+                          <td scope="row">
+                            {{ item.id }}
                           </td>
                           <td scope="row">
                             {{ item.municipality.department.name }}
@@ -755,16 +787,16 @@
                           <td scope="row">
                             {{ globalFuntionDate(item.createdAt) }}
                           </td>
-                          <!-- <td scope="row">
+                          <td scope="row">
                             {{ globalFuntionDate(item.deadline) }}
-                          </td> -->
-                          <!-- <td scope="row">
+                          </td>
+                          <td scope="row">
                             {{
                               item.closedAt
                                 ? globalFuntionDate(item.closedAt)
                                 : "N/A"
                             }}
-                          </td> -->
+                          </td>
                           <td scope="row">
                             {{
                               item.closedAt
@@ -787,7 +819,7 @@
                             </span>
                             <ng-template #viewDetailOrder let-modal>
                               <div class="modal-header">
-                                <h4 class="modal-title">Solicitud</h4>
+                                <h4 class="modal-title">Detalle de la Solicitud</h4>
                                 <button
                                   type="button"
                                   class="close"
@@ -804,13 +836,14 @@
                                   <table class="table table-striped">
                                     <thead class="thead-inverse">
                                       <tr>
-                                        <th>Código de la Orden</th>
+                                        <th>Código de Orden</th>
+                                        <th>Nº de Solicitud</th>
                                         <th>Departamento</th>
                                         <th>Municipio</th>
                                         <th>Proveedor</th>
-                                        <th>Fecha de solicitud</th>
-                                        <th>Fecha limite</th>
-                                        <th>Fecha de cargue</th>
+                                        <th>Fecha de Solicitud</th>
+                                        <th>Fecha Límite</th>
+                                        <th>Fecha de Cargue</th>
                                         <th>Estado</th>
                                       </tr>
                                     </thead>
@@ -818,6 +851,9 @@
                                       <tr>
                                         <td scope="row">
                                           {{ item.packageLabel }}
+                                        </td>
+                                        <td scope="row">
+                                          {{ item.id }}
                                         </td>
                                         <td scope="row">
                                           {{

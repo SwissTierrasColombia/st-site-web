@@ -16,8 +16,14 @@ import { ProvidersService } from 'src/app/services/providers/providers.service';
 })
 export class ListUserComponent implements OnInit {
   dataListUser: any;
-  page: number;
-  pageSize: number;
+  page1: number;
+  pageSize1: number;
+  page2: number;
+  pageSize2: number;
+  page3: number;
+  pageSize3: number;
+  page4: number;
+  pageSize4: number;
   searchText: string;
   idUserEnabled: number;
   idUserDisabled: number;
@@ -47,8 +53,6 @@ export class ListUserComponent implements OnInit {
     private activedRoute: ActivatedRoute
   ) {
     this.dataListUser = [];
-    this.page = 1;
-    this.pageSize = 10;
     this.idUserDisabled = 0;
     this.idUserEnabled = 0;
     this.dataUserLogger = {};
@@ -66,6 +70,14 @@ export class ListUserComponent implements OnInit {
     this.usersManagers = [];
     this.usersOperators = [];
     this.usersProviders = [];
+    this.page1 = 1;
+    this.pageSize1 = 10;
+    this.page2 = 1;
+    this.pageSize2 = 10;
+    this.page3 = 1;
+    this.pageSize3 = 10;
+    this.page4 = 1;
+    this.pageSize4 = 10;
   }
 
   ngOnInit() {
@@ -207,6 +219,9 @@ export class ListUserComponent implements OnInit {
   }
   tab1() {
     this.tab = 1;
+    this.searchText = '';
+    this.page1 = 1;
+    this.pageSize1 = 10;
     this.administrationService
       .getManagerUser(this.managerId)
       .subscribe((response) => {
@@ -224,6 +239,9 @@ export class ListUserComponent implements OnInit {
   }
   tab2() {
     this.tab = 2;
+    this.searchText = '';
+    this.page2 = 1;
+    this.pageSize2 = 10;
     this.administrationService
       .getOperatorUser(this.operatorId)
       .subscribe((response) => {
@@ -241,6 +259,9 @@ export class ListUserComponent implements OnInit {
   }
   tab3() {
     this.tab = 3;
+    this.searchText = '';
+    this.page3 = 1;
+    this.pageSize3 = 10;
     this.administrationService
       .getProviderUser(this.providerId)
       .subscribe((response) => {
@@ -255,5 +276,8 @@ export class ListUserComponent implements OnInit {
           return 0;
         });
       });
+  }
+  cleanPagination() {
+    this.searchText = '';
   }
 }

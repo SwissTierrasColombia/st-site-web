@@ -134,7 +134,8 @@
                     }}</span>
                     <div
                       *ngIf="
-                        item.typeSupply.id === 2 && !item.hasGeometryValidation
+                        item.hasGeometryValidation !== null &&
+                        !item.hasGeometryValidation
                       "
                     >
                       <span class="badge badge-warning">

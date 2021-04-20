@@ -322,10 +322,12 @@ export class CrearTipoInsumoComponent implements OnInit {
   }
   tab1() {
     this.tab = 1;
+    this.searchText = '';
     this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 1 }]);
   }
   tab2() {
     this.tab = 2;
+    this.searchText = '';
     this.router.navigate(['/insumos/caracterizacion/insumo', { tab: 2 }]);
   }
   clickCheckBox(event: Event) {
@@ -368,5 +370,8 @@ export class CrearTipoInsumoComponent implements OnInit {
         });
     }
     this.modalService.dismissAll();
+  }
+  cleanPagination() {
+    this.searchText = '';
   }
 }
