@@ -66,6 +66,16 @@ export class SearchComponent implements OnInit {
     }
     this.serviceWorkspaces.getDepartments().subscribe((response) => {
       this.departments = response;
+      this.departments.sort(function (a, b) {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        //a must be equal to b
+        return 0;
+      });
     });
   }
 
@@ -77,6 +87,16 @@ export class SearchComponent implements OnInit {
       .GetMunicipalitiesByDeparment(this.selectDepartment)
       .subscribe((data) => {
         this.munucipalities = data;
+        this.munucipalities.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
       });
   }
   changeMunucipality() {
@@ -98,6 +118,7 @@ export class SearchComponent implements OnInit {
         false
       )
       .subscribe((response: any) => {
+        this.searchText = '';
         this.isSearch = false;
         if (response.numberOfElements === 0) {
           this.isSearch = true;

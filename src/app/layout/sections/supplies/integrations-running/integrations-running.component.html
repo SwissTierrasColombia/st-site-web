@@ -28,7 +28,6 @@
               <th>Municipio</th>
               <th>Estado</th>
               <th>Descripción</th>
-              <th>Insumos</th>
               <th>Número de Registros Catastrales</th>
               <th>Número de Registros SNR</th>
               <th>Registros Integrados</th>
@@ -51,15 +50,6 @@
               <td scope="row">
                 {{
                   item.integrationState ? item.integrationState.description : ""
-                }}
-              </td>
-              <td scope="row">
-                {{
-                  item.supplyCadastre
-                    ? item.supplyCadastre.typeSupply.name
-                    : ""
-                }}<br />{{
-                  item.supplySnr ? item.supplySnr.typeSupply.name : ""
                 }}
               </td>
               <td scope="row">
@@ -153,6 +143,14 @@
                     delete
                   </i>
                 </span>
+                <div
+                  *ngIf="item.errors && item.errors !== null"
+                  id="logsXTFIntegration"
+                  class="logsXTF"
+                  (click)="openModalErrorXTF(modalError, item)"
+                >
+                  <small><u> Ver log </u></small>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -337,5 +335,29 @@
         </button>
       </div>
     </div>
+  </ng-template>
+  <ng-template #modalError let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        Log de Integración
+        <span ngbTooltip="Copiar" placement="top" show-delay="500">
+          <span class="material-icons ml-2" (click)="myFunctionCopyOrder()">
+            content_copy
+          </span>
+        </span>
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <span class="text-center">{{ errorXTF }}</span>
+    </div>
+    <div class="modal-footer"></div>
   </ng-template>
 </div>

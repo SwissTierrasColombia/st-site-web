@@ -1,12 +1,12 @@
 <div>
   <app-page-header
-    [heading]="'Gestión de Municipios'"
+    [heading]="'Búsqueda de Municipios'"
     [icon]="'fa-star'"
   ></app-page-header>
 
   <div class="card">
     <div class="card-header text-center">
-      <h3>Entrega de información</h3>
+      <h3>Búsqueda de Municipios</h3>
     </div>
     <div class="card-body">
       <form action="" method="post">
@@ -27,7 +27,7 @@
               >
                 <option value="0" selected>Seleccione el Gestor</option>
                 <option [ngValue]="item.id" *ngFor="let item of activeManagers">
-                  {{ item.name }}
+                  {{ item.alias }}
                 </option>
               </select>
             </div>
@@ -74,7 +74,7 @@
     <div *ngIf="isActive === false">
       <div class="col-12">
         <div class="alert alert-primary text-center" role="alert">
-          No existe un espacio de trabajo para el municipio.
+          No existe una gestión del municipio.
         </div>
       </div>
     </div>

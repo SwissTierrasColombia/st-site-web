@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ViewportScroller } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SuppliesService } from 'src/app/services/supplies/supplies.service';
 
 @Component({
   selector: 'app-integracion',
@@ -43,13 +43,16 @@ export class IntegracionComponent implements OnInit {
   idCancel: number;
   tab: number;
   SelectIntegrationPossible: any;
+  municipalityCode: string;
+  errorXTF: string;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private toastr: ToastrService,
     private modalService: NgbModal,
     private router: Router,
     private scroll: ViewportScroller,
-    private activedRoute: ActivatedRoute
+    private activedRoute: ActivatedRoute,
+    private suppliesService: SuppliesService
   ) {
     this.departments = [];
     this.munucipalities = [];
@@ -123,6 +126,8 @@ export class IntegracionComponent implements OnInit {
     this.idCancel = 0;
     this.SelectIntegrationPossible = {};
     this.tab = 1;
+    this.municipalityCode = '0';
+    this.errorXTF = '';
   }
 
   ngOnInit() {
@@ -138,6 +143,16 @@ export class IntegracionComponent implements OnInit {
     const promise2 = new Promise((resolve) => {
       this.serviceWorkspaces.getDepartments().subscribe((response) => {
         this.departments = response;
+        this.departments.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
         resolve(response);
       });
     });
@@ -156,6 +171,16 @@ export class IntegracionComponent implements OnInit {
       .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
       .subscribe((data) => {
         this.munucipalities = data;
+        this.munucipalities.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
         if (this.SelectIntegrationPossible.municipio) {
           let idMunicipio = this.munucipalities.find((item) => {
             return item.code === this.SelectIntegrationPossible.municipio;
@@ -169,9 +194,10 @@ export class IntegracionComponent implements OnInit {
   changeMunucipality() {
     this.serviceWorkspaces
       .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         this.dataWorkSpaceMunicipality = response;
         this.idWorkspace = this.dataWorkSpaceMunicipality.id;
+        this.municipalityCode = response.municipality.code;
         this.serviceWorkspaces
           .GetIntegrationsByWorkspace(this.idWorkspace)
           .subscribe((resp) => {
@@ -181,21 +207,21 @@ export class IntegracionComponent implements OnInit {
               self.scroll.scrollToAnchor('actionForm');
             }, 1000);
           });
-      });
-    this.serviceWorkspaces
-      .GetSuppliesByMunicipalityXTF(this.selectMunicipality)
-      .subscribe((response) => {
-        this.municipalityXTF = response;
-        this.catastro = this.municipalityXTF.filter((item) => {
-          if (item.typeSupply.providerProfile.id === 1) {
-            return item;
-          }
-        });
-        this.registro = this.municipalityXTF.filter((item) => {
-          if (item.typeSupply.providerProfile.id === 4) {
-            return item;
-          }
-        });
+        this.suppliesService
+          .getSuppliesXTFbyMunicipality(this.municipalityCode)
+          .subscribe((element) => {
+            this.municipalityXTF = element;
+            this.catastro = this.municipalityXTF.filter((item) => {
+              if (item.typeSupplyCode === 2) {
+                return item;
+              }
+            });
+            this.registro = this.municipalityXTF.filter((item) => {
+              if (item.typeSupplyCode === 12) {
+                return item;
+              }
+            });
+          });
       });
   }
   integrationSupplies() {
@@ -229,7 +255,17 @@ export class IntegracionComponent implements OnInit {
         }
       );
   }
-  comprobar() {
+  comprobar(modalskipValidated?: any, item?: any) {
+    if (modalskipValidated && item) {
+      if (item.hasGeometryValidation !== null && !item.hasGeometryValidation) {
+        this.modalService.open(modalskipValidated, {
+          centered: true,
+          scrollable: true,
+          backdrop: 'static',
+          keyboard: false,
+        });
+      }
+    }
     if (
       this.selectsupplyCadastre !== 0 &&
       this.selectsupplyRegistration !== 0
@@ -325,8 +361,8 @@ export class IntegracionComponent implements OnInit {
   roundDecimal(num: any) {
     return Math.round(num * 100) / 100;
   }
-  parcelNumber(number: number) {
-    return new Intl.NumberFormat().format(number);
+  parcelNumber(index: number) {
+    return new Intl.NumberFormat().format(index);
   }
   openModalXTF(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
@@ -350,5 +386,32 @@ export class IntegracionComponent implements OnInit {
   tab3() {
     this.tab = 3;
     this.router.navigate(['/insumos/integracion', { tab: 3 }]);
+  }
+  openModalErrorXTF(modalError: any, supp: any) {
+    this.errorXTF = supp.errors;
+    this.modalService.open(modalError, {
+      centered: true,
+      scrollable: true,
+      size: 'lg',
+    });
+  }
+  closeModalSkipValidation(option: boolean) {
+    this.modalService.dismissAll();
+    if (!option) {
+      this.selectsupplyCadastre = 0;
+    }
+  }
+  myFunctionCopyOrder() {
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = this.errorXTF;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
   }
 }

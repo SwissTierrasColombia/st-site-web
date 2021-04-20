@@ -1,0 +1,123 @@
+<div>
+  <app-page-header
+    [heading]="'Desasignar'"
+    [icon]="'fa-star'"
+  ></app-page-header>
+
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Desasignar gestión del municipio</h3>
+    </div>
+    <div class="card-body">
+      <form action="" method="post">
+        <div class="row mb-2">
+          <div class="col-12 col-sm-6 mb-1">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true"
+                  >* Gestor</label
+                >
+              </div>
+              <select
+                (change)="changeDepartament()"
+                class="custom-select"
+                name="activeManagers"
+                id="activeManagers"
+                [(ngModel)]="selectManager"
+              >
+                <option value="0" selected>Seleccione el Gestor</option>
+                <option [ngValue]="item.id" *ngFor="let item of activeManagers">
+                  {{ item.alias }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 mb-1">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Municipio</label>
+              </div>
+              <select
+                class="custom-select"
+                name="munucipalities"
+                id="munucipalities"
+                [(ngModel)]="selectMunicipality"
+                (change)="changeMunicipalitie()"
+              >
+                <option value="0" selected>Seleccione el Municipio</option>
+                <option [ngValue]="item.id" *ngFor="let item of munucipalities">
+                  {{ item.name }} - ({{ item.department.name }})
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="alert alert-primary text-center" role="alert">
+              Recuerde que los campos marcados con * son obligatorios.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button
+        type="button"
+        class="btn btn-dark"
+        (click)="openModalRefuse(modalRefuse)"
+        [disabled]="!isActiveSearch"
+      >
+        Desasignar
+      </button>
+    </div>
+    <div *ngIf="isActive === false">
+      <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          No existe una gestión de municipio..
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #modalRefuse let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de retirar la asignación de este municipio?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción designará el municipio al Gestor seleccionado.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalRefuse(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalRefuse(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>

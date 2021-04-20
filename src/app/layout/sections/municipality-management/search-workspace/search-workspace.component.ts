@@ -39,6 +39,17 @@ export class SearchWorkspaceComponent implements OnInit {
   ngOnInit(): void {
     this.serviceWorkspaces.getDepartments().subscribe((response) => {
       this.departments = response;
+      this.departments.sort(function (a, b) {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        //a must be equal to b
+        return 0;
+      });
+
     });
     const rol = JwtHelper.getUserPublicInformation();
     const role = rol.roles.find((elem) => {
@@ -56,6 +67,16 @@ export class SearchWorkspaceComponent implements OnInit {
       .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
       .subscribe((data) => {
         this.munucipalities = data;
+        this.munucipalities.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
         this.searchActive = true;
       });
   }
@@ -63,26 +84,7 @@ export class SearchWorkspaceComponent implements OnInit {
     moment.locale('es');
     return moment(date).format('DD/MM/YYYY');
   }
-  searchWorkSpaceActive() {
-    this.serviceWorkspaces
-      .GetWorkspacesByLocation(
-        this.selectDepartment,
-        this.selectMunicipality === 0 ? null : this.selectMunicipality
-      )
-      .subscribe((response: any) => {
-        if (response.length > 0) {
-          this.listWorkSpace = response;
-          this.isActive = true;
-        } else {
-          this.isActive = false;
-          this.toastrService.error(
-            'No existe un espacio de trabajo para el municipio.'
-          );
-        }
-      });
-  }
-  updateWorkSpace(item: any) {
-    this.selectMunicipality = item.municipality.id;
+  updateWorkSpace() {
     this.router.navigate([
       'gestion/workspace/' + this.selectMunicipality + '/operador',
     ]);

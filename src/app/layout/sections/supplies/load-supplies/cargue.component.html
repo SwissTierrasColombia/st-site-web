@@ -18,22 +18,24 @@
           <table class="table table-striped text-center">
             <thead class="thead-inverse">
               <tr>
+                <th>Código de Orden</th>
+                <th>Nº de Solicitud</th>
                 <th>Departamento</th>
                 <th>Municipio</th>
                 <th>Gestor</th>
-                <th>Número de Solicitud</th>
                 <th>Fecha de Solicitud</th>
                 <th>Fecha Límite</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of dataRequestPending; let i = index">
+                <td scope="row">
+                  {{ item.packageLabel }}
+                </td>
+                <td scope="row">{{ item.id }}</td>
                 <td scope="row">{{ item.municipality.department.name }}</td>
                 <td scope="row">{{ item.municipality.name }}</td>
                 <td scope="row">{{ getEntity(item) }}</td>
-                <td scope="row">
-                  <strong>{{ item.id }}</strong>
-                </td>
                 <td scope="row">{{ formatDate(item.createdAt) }}</td>
                 <td scope="row">{{ formatDate(item.deadline) }}</td>
               </tr>
@@ -127,6 +129,21 @@
                       >
                         <!-- <strong>Modelo {{supp.modelVersion}}</strong> -->
                         <strong>Submodelo Insumos V1.0</strong>
+                      </div>
+                      <div class="form-check" *ngIf="supp.typeSupply.id === 2">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="skipGeometryValidation"
+                          [(ngModel)]="skipGeometryValidation"
+                          (change)="openModalSkipValidated(modalskipValidated)"
+                        />
+                        <label
+                          class="form-check-label"
+                          for="skipGeometryValidation"
+                        >
+                          Omitir validación geométrica
+                        </label>
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend input-group-text">
@@ -223,7 +240,10 @@
                 <!-- <app-preview *ngIf="supp.preview" [url]="supp.url" [version]="supp.modelVersion?supp.modelVersion:''">
                 </app-preview> -->
               </div>
-              <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 2">
+              <div
+                class="col-12 col-sm-2 col-lg-2 mb-2"
+                *ngIf="supp.state.id === 2"
+              >
                 <button
                   type="button"
                   class="btn"
@@ -238,6 +258,14 @@
                 >
                   {{ supp.button.status ? "Rechazado" : "Reenviar" }}
                 </button>
+                <div
+                  *ngIf="supp.errors !== null"
+                  id="logsXTF{{ idOut }}{{ idInt }}"
+                  class="logsXTF"
+                  (click)="openModalErrorXTF(modalError, supp)"
+                >
+                  <small><u> Ver log </u></small>
+                </div>
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 3">
                 <button
@@ -418,6 +446,77 @@
           ngbAutofocus
           class="btn btn-success btn-block"
           (click)="closeModal(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #modalError let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        Log de validación
+        <span
+          ngbTooltip="Copiar"
+          placement="top"
+          show-delay="500"
+        >
+          <span class="material-icons ml-2" (click)="myFunctionCopyOrder()">
+            content_copy
+          </span>
+        </span>
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <span class="text-center">{{ errorXTF }}</span>
+    </div>
+    <div class="modal-footer"></div>
+  </ng-template>
+  <ng-template #modalskipValidated let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de omitir la validación geométrica?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="closeModalSkipValidation(false)"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción puede afectar la integración con los datos
+        registrales y generar inconvenientes en el despliegue de datos y
+        representación Cartográfica al Operador.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalSkipValidation(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalSkipValidation(true)"
         >
           Si
         </button>

@@ -67,7 +67,7 @@
       </button>
     </div>
   </div>
-  <div *ngIf="allSupplies.length > 0">
+  <div *ngIf="allSupplies?.length > 0">
     <div class="row justify-content-md-center">
       <div class="card text-center">
         <div class="card-header text-center">
@@ -118,12 +118,30 @@
                     let index = index
                   "
                 >
-                  <td scope="row">{{ item.typeSupply.provider.name }}</td>
+                  <td scope="row">
+                    <span *ngIf="isAuthority(item)"
+                      ><strong>{{
+                        item.typeSupply.provider.name
+                      }}</strong></span
+                    ><span *ngIf="isAuthority(item) === false">{{
+                      item.typeSupply.provider.name
+                    }}</span>
+                  </td>
                   <td scope="row">
                     <span *ngIf="isAuthority(item)">{{ item.name }}</span
                     ><span *ngIf="isAuthority(item) === false">{{
                       item.typeSupply.name
                     }}</span>
+                    <div
+                      *ngIf="
+                        item.hasGeometryValidation !== null &&
+                        !item.hasGeometryValidation
+                      "
+                    >
+                      <span class="badge badge-warning">
+                        Sin validación geometríca
+                      </span>
+                    </div>
                   </td>
                   <td scope="row">{{ globalFuntionDate(item.createdAt) }}</td>
                   <td scope="row">
@@ -323,7 +341,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="allSupplies.length === 0 && isSearch">
+  <div *ngIf="allSupplies?.length === 0 && isSearch">
     <div class="col-12">
       <div class="alert alert-primary text-center" role="alert">
         No hay insumos cargados en este Municipio.

@@ -1,3 +1,4 @@
+import { WorkspaceRefuseComponent } from './workspace-refuse/workspace-refuse.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,6 +11,9 @@ import { BsComponentModule } from '../../bs-component/bs-component.module';
 import { WorkspaceActiveComponent } from './workspace-active/workspace-active.component';
 import { NgSelect2Module } from 'ng-select2';
 import { SearchWorkspaceComponent } from './search-workspace/search-workspace.component';
+import { SuppliesDeliveryComponent } from './supplies-delivery/supplies-delivery.component';
+import { NumberDirective } from './numbers-only.directive';
+import { TwoDigitDecimaNumberDirective } from './numbers-decimal.directive';
 
 @NgModule({
   declarations: [
@@ -17,6 +21,10 @@ import { SearchWorkspaceComponent } from './search-workspace/search-workspace.co
     OperatorAssignmentComponent,
     WorkspaceActiveComponent,
     SearchWorkspaceComponent,
+    WorkspaceRefuseComponent,
+    SuppliesDeliveryComponent,
+    NumberDirective,
+    TwoDigitDecimaNumberDirective,
   ],
   imports: [
     CommonModule,

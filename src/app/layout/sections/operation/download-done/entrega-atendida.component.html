@@ -24,7 +24,7 @@
           >
             <thead class="thead-inverse">
               <tr>
-                <th>Código</th>
+                <th>Entrega</th>
                 <th>Gestor</th>
                 <th>Municipio</th>
                 <th>Código Municipio</th>
@@ -101,6 +101,16 @@
                         : ""
                     }})</span
                   >
+                  <div
+                    *ngIf="
+                      item.hasGeometryValidation !== null &&
+                      !item.hasGeometryValidation
+                    "
+                  >
+                    <span class="badge badge-warning">
+                      Sin validación geometríca
+                    </span>
+                  </div>
                 </td>
                 <td scope="row">
                   <textarea

@@ -9,7 +9,11 @@ import { RoleModel } from 'src/app/helpers/role.model';
 import { saveAs } from 'file-saver';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
-import { SuppliesService } from 'src/app/services/supplies/supplies.service';
+import { CadastralAuthorityService } from 'src/app/services/v2/cadastral-authority/cadastral-authority.service';
+import { UpdateInformationByWorkspace } from 'src/app/models/updateInformationByWorkspace.interface';
+import { ManagerService } from 'src/app/services/v2/manager/manager.service';
+import { ViewportScroller } from '@angular/common';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 const moment = _moment;
 @Component({
@@ -32,23 +36,23 @@ export class OperatorAssignmentComponent implements OnInit {
   dataOperatorsWorkSpace: any;
   supportFileOperator: any;
   updateInfoBasic: boolean;
-  replaceOperator: boolean;
-  @ViewChild('myInput')
+  @ViewChild('myInputdocSoport')
   myInputVariable: ElementRef;
   assingOperator: boolean;
-  dataAttachmentsTypes: any;
-  selectAttachments: number;
-  observationsAttachmentsTypes: string;
-  ftpAttachmentsTypes: string;
-  validInputAttachmentsTypes: boolean;
-  fileAttachmentsTypes: any;
   suppliesAttachmentsData: any;
-  idSupplieDelete: number;
   idWorkSpaceMunicipality: number;
   isChangeDataOperator: boolean;
-  nameAttachmentsTypes: string;
-  passftpAttachments: string;
   isActiveAssignOperator: boolean;
+  idOperator: number;
+  idManagerUpdate: number;
+  onlyOperatorAssignByWorkspace: any;
+  formGroup1 = new FormGroup({
+    number: new FormControl(0, Validators.minLength(1)),
+  });
+  formGroup2 = new FormGroup({
+    number: new FormControl(0, Validators.minLength(1)),
+  });
+  isUpdate: boolean;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -57,7 +61,9 @@ export class OperatorAssignmentComponent implements OnInit {
     private serviceOperators: OperatorsService,
     private roles: RoleModel,
     private modalService: NgbModal,
-    private insumosService: SuppliesService
+    private cadastralAuthorityService: CadastralAuthorityService,
+    private managerService: ManagerService,
+    private scroll: ViewportScroller
   ) {
     this.dataWorkSpace = {
       manager: {},
@@ -71,36 +77,28 @@ export class OperatorAssignmentComponent implements OnInit {
     this.munucipalities = [];
     this.selectDepartment = 0;
     this.selectMunicipality = 0;
-    this.editForm = {
-      municipalityArea: true,
-      numberAlphanumericParcels: true,
-      startDate: true,
-      observations: true,
-    };
+    this.editForm = [];
     this.dataSoports = [];
     this.operators = [];
     this.selectOperator = 0;
     this.dataOperatorsWorkSpace = {
       startDate: '',
       endDate: '',
-      numberParcelsExpected: 0,
-      workArea: 0,
+      numberParcelsExpected: '0',
+      workArea: '0',
       observations: '',
       operatorCode: 0,
     };
     this.updateInfoBasic = false;
     this.assingOperator = false;
-    this.replaceOperator = false;
-    this.dataAttachmentsTypes = [];
-    this.selectAttachments = 0;
-    this.observationsAttachmentsTypes = '';
-    this.ftpAttachmentsTypes = '';
-    this.validInputAttachmentsTypes = false;
     this.suppliesAttachmentsData = [];
     this.isChangeDataOperator = false;
-    this.nameAttachmentsTypes = '';
-    this.passftpAttachments = '';
     this.isActiveAssignOperator = false;
+    this.idOperator = 0;
+    this.idManagerUpdate = 0;
+    this.onlyOperatorAssignByWorkspace = [];
+    this.supportFileOperator = undefined;
+    this.isUpdate = false;
   }
 
   ngOnInit() {
@@ -140,57 +138,18 @@ export class OperatorAssignmentComponent implements OnInit {
         .getWorkSpace(this.idWorkspace)
         .subscribe((response: any) => {
           this.dataWorkSpace = response;
-          this.selectDepartment = this.dataWorkSpace.municipality.department.id;
-          if (this.dataWorkSpace.operators.length > 0) {
-            this.replaceOperator = true;
-            this.dataOperatorsWorkSpace = this.clone(
-              this.dataWorkSpace.operators[0]
-            );
-            const startDate = this.dataWorkSpace.operators[0].startDate.split(
-              'T'
-            )[0];
-            const endDate = this.dataWorkSpace.operators[0].endDate.split(
-              'T'
-            )[0];
-            this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(
-              startDate
-            );
-            this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(
-              endDate
-            );
-          }
-        });
-      if (this.tab === 2) {
-        this.serviceWorkspaces
-          .getSupportsByWorkSpace(this.idWorkspace)
-          .subscribe((response) => {
-            this.dataSoports = response;
+          this.dataWorkSpace.managers.forEach((_) => {
+            this.editForm.push({
+              startDate: false,
+              observations: false,
+            });
           });
-      }
+          this.selectDepartment = this.dataWorkSpace.municipality.department.id;
+        });
       if (this.tab === 3) {
         this.serviceOperators.getOperatorsByFilters().subscribe((response) => {
           this.operators = response;
         });
-      }
-      if (this.tab === 4) {
-        this.insumosService.GetAttachmentsTypes().subscribe((data) => {
-          this.dataAttachmentsTypes = data;
-        });
-        this.serviceWorkspaces
-          .getSuppliesAttachments(this.selectMunicipality)
-          .subscribe((response) => {
-            this.suppliesAttachmentsData = response;
-            this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(
-              (element) => {
-                const isCadastral = element.owners.find(
-                  (data) => data.ownerType === 'CADASTRAL_AUTHORITY'
-                );
-                if (isCadastral) {
-                  return element;
-                }
-              }
-            );
-          });
       }
       if (this.tab === 5) {
         this.serviceWorkspaces
@@ -209,7 +168,17 @@ export class OperatorAssignmentComponent implements OnInit {
             );
           });
       }
+      this.getOnlyOperatorByWorkspace();
     });
+  }
+
+  getOnlyOperatorByWorkspace(): void {
+    this.serviceWorkspaces
+      .getOnlyOperatorAssignByWorkspace(this.idWorkspace)
+      .subscribe((element) => {
+        this.onlyOperatorAssignByWorkspace = element;
+        this.onlyOperatorAssignByWorkspace.sort((a, b) => a.id - b.id);
+      });
   }
   clone(obj: any) {
     return JSON.parse(JSON.stringify(obj));
@@ -251,32 +220,7 @@ export class OperatorAssignmentComponent implements OnInit {
         .getWorkSpace(this.idWorkspace)
         .subscribe((response: any) => {
           this.dataWorkSpace = response;
-          if (this.dataWorkSpace.operators.length > 0) {
-            this.replaceOperator = true;
-            this.dataOperatorsWorkSpace = this.clone(
-              this.dataWorkSpace.operators[0]
-            );
-            const startDate = this.dataWorkSpace.operators[0].startDate.split(
-              'T'
-            )[0];
-            const endDate = this.dataWorkSpace.operators[0].endDate.split(
-              'T'
-            )[0];
-            this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(
-              startDate
-            );
-            this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(
-              endDate
-            );
-          }
         });
-      if (this.tab === 2) {
-        this.serviceWorkspaces
-          .getSupportsByWorkSpace(this.idWorkspace)
-          .subscribe((response) => {
-            this.dataSoports = response;
-          });
-      }
       if (this.tab === 3) {
         this.serviceOperators.getOperatorsByFilters().subscribe((response) => {
           this.operators = response;
@@ -352,33 +296,31 @@ export class OperatorAssignmentComponent implements OnInit {
       ]);
     }
   }
-  changeUpdate() {
-    this.editForm = {
-      municipalityArea: false,
-      numberAlphanumericParcels: false,
-      startDate: false,
-      observations: false,
-    };
+  changeUpdate(index: number, idManager: number) {
+    this.editForm.forEach((element) => {
+      element.startDate = false;
+      element.observations = false;
+    });
+    this.idManagerUpdate = idManager;
+    this.editForm[index].startDate = true;
+    this.editForm[index].observations = true;
   }
-  update() {
-    const dataUpdate = new FormData();
-    dataUpdate.append('startDate', this.dataWorkSpace.startDate);
-    dataUpdate.append('observations', this.dataWorkSpace.observations);
-    dataUpdate.append(
-      'numberAlphanumericParcels',
-      this.dataWorkSpace.numberAlphanumericParcels
-    );
-    dataUpdate.append('municipalityArea', this.dataWorkSpace.municipalityArea);
-    this.serviceWorkspaces
-      .updateWorkSpace(this.idWorkspace, dataUpdate)
+  update(index: number) {
+    const dataUpdate: UpdateInformationByWorkspace = {
+      startDate: this.dataWorkSpace.managers[index].startDate,
+      observations: this.dataWorkSpace.managers[index].observations,
+    };
+    this.cadastralAuthorityService
+      .updateManagerInformationFromWorkspace(
+        this.idWorkspace,
+        this.dataWorkSpace.managers[index].managerCode,
+        dataUpdate
+      )
       .subscribe((_) => {
-        this.editForm = {
-          municipalityArea: true,
-          numberAlphanumericParcels: true,
-          startDate: true,
-          observations: true,
-        };
+        this.editForm[index].startDate = false;
+        this.editForm[index].observations = false;
         this.toastr.success('Información Actualizada');
+        this.idManagerUpdate = 0;
       });
   }
   tab1() {
@@ -387,14 +329,6 @@ export class OperatorAssignmentComponent implements OnInit {
       'gestion/workspace/' + this.selectMunicipality + '/operador',
       { tab: 1 },
     ]);
-  }
-  getSopports() {
-    this.tab = 2;
-    this.router.navigate([
-      'gestion/workspace/' + this.selectMunicipality + '/operador',
-      { tab: 2 },
-    ]);
-    this.init();
   }
   getOperator() {
     this.tab = 3;
@@ -411,89 +345,114 @@ export class OperatorAssignmentComponent implements OnInit {
     dataOperator.append('endDate', this.dataOperatorsWorkSpace.endDate);
     dataOperator.append(
       'numberParcelsExpected',
-      this.dataOperatorsWorkSpace.numberParcelsExpected
+      parseFloat(this.dataOperatorsWorkSpace.numberParcelsExpected).toString()
     );
     dataOperator.append(
       'operatorCode',
       this.dataOperatorsWorkSpace.operatorCode
     );
-    dataOperator.append('workArea', this.dataOperatorsWorkSpace.workArea);
+    let twoPlacedFloat = this.dataOperatorsWorkSpace.workArea.replace(',', '.');
+    dataOperator.append('workArea', twoPlacedFloat);
     dataOperator.append(
       'observations',
       this.dataOperatorsWorkSpace.observations
     );
-    const numberAlphanumericParcels = Number.isInteger(
-      this.dataOperatorsWorkSpace.numberParcelsExpected
-    );
-    const workArea = Number.isInteger(this.dataOperatorsWorkSpace.workArea);
     if (this.supportFileOperator === undefined) {
       this.toastr.error('No se ha cargado ningún soporte.');
     } else if (this.dataOperatorsWorkSpace.observations === '') {
       this.toastr.error('Las observaciones son obligatorias.');
-    } else if (!numberAlphanumericParcels) {
-      this.toastr.error(
-        'El número de predios a intervenir debe ser de tipo numérico.'
-      );
     } else if (this.dataOperatorsWorkSpace.numberParcelsExpected < 0) {
       this.toastr.error('El número de predios no es correcto.');
-    } else if (!workArea) {
-      this.toastr.error('El área de trabajo debe ser de tipo numérico.');
     } else if (this.dataOperatorsWorkSpace.workArea < 0) {
       this.toastr.error('El área de trabajo no es correcta.');
     } else {
-      this.serviceWorkspaces
-        .assingOperatorToWorkSpace(this.idWorkspace, dataOperator)
-        .subscribe((_) => {
+      this.managerService
+        .assignOperatorToMunicipality(this.idWorkspace, dataOperator)
+        .subscribe((element) => {
+          this.dataWorkSpace = element;
+          this.getOnlyOperatorByWorkspace();
           this.toastr.success('Operador asignado satisfactoriamente');
+          this.supportFileOperator = undefined;
           this.isChangeDataOperator = false;
-          this.serviceWorkspaces
-            .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
-            .subscribe((data: any) => {
-              this.idWorkspace = data.id;
-              this.serviceWorkspaces
-                .getWorkSpace(this.idWorkspace)
-                .subscribe((response) => {
-                  this.dataWorkSpace = response;
-                  if (this.dataWorkSpace.operators.length > 0) {
-                    this.replaceOperator = true;
-                    this.dataOperatorsWorkSpace = this.clone(
-                      this.dataWorkSpace.operators[0]
-                    );
-                    const startDate = this.dataWorkSpace.operators[0].startDate.split(
-                      'T'
-                    )[0];
-                    const endDate = this.dataWorkSpace.operators[0].endDate.split(
-                      'T'
-                    )[0];
-                    this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(
-                      startDate
-                    );
-                    this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(
-                      endDate
-                    );
-                  }
-                });
-            });
+          this.dataOperatorsWorkSpace = {
+            startDate: '',
+            endDate: '',
+            numberParcelsExpected: 0,
+            workArea: 0,
+            observations: '',
+            operatorCode: 0,
+          };
+          this.myInputVariable.nativeElement.value = '';
+          this.isActiveAssignOperator = false;
         });
     }
   }
-  closeModal(option: boolean) {
-    if (option) {
-      this.assingOperatorInWorkSpace();
+  updateOperatorInWorkSpace() {
+    const dataOperator = new FormData();
+    dataOperator.append('supportFile', this.supportFileOperator);
+    dataOperator.append('startDate', this.dataOperatorsWorkSpace.startDate);
+    dataOperator.append('endDate', this.dataOperatorsWorkSpace.endDate);
+    dataOperator.append(
+      'numberParcelsExpected',
+      parseFloat(this.dataOperatorsWorkSpace.numberParcelsExpected).toString()
+    );
+    dataOperator.append(
+      'operatorCode',
+      this.dataOperatorsWorkSpace.operatorCode
+    );
+    let twoPlacedFloat = this.dataOperatorsWorkSpace.workArea.replace(',', '.');
+    dataOperator.append('workArea', twoPlacedFloat);
+    dataOperator.append(
+      'observations',
+      this.dataOperatorsWorkSpace.observations
+    );
+    if (this.supportFileOperator === undefined) {
+      this.toastr.error('No se ha cargado ningún soporte.');
+    } else if (this.dataOperatorsWorkSpace.observations === '') {
+      this.toastr.error('Las observaciones son obligatorias.');
+    } else if (this.dataOperatorsWorkSpace.numberParcelsExpected < 0) {
+      this.toastr.error('El número de predios no es correcto.');
+    } else if (this.dataOperatorsWorkSpace.workArea < 0) {
+      this.toastr.error('El área de trabajo no es correcta.');
+    } else {
+      this.managerService
+        .updateOperatorInformationFromWorkspace(
+          this.idWorkspace,
+          this.dataOperatorsWorkSpace.operatorCode,
+          dataOperator
+        )
+        .subscribe((_) => {
+          this.getOnlyOperatorByWorkspace();
+          this.toastr.success('Operador Actualizado satisfactoriamente');
+          this.supportFileOperator = undefined;
+          this.dataOperatorsWorkSpace = {
+            startDate: '',
+            endDate: '',
+            numberParcelsExpected: 0,
+            workArea: 0,
+            observations: '',
+            operatorCode: 0,
+          };
+          this.myInputVariable.nativeElement.value = '';
+          this.idOperator = 0;
+          this.isActiveAssignOperator = false;
+          this.isChangeDataOperator = false;
+          this.isUpdate = false;
+        });
     }
+  }
+  closeModalUpdateOperator(option: boolean) {
     this.modalService.dismissAll();
+    if (option) {
+      this.updateOperatorInWorkSpace();
+    }
   }
   openModal(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  public onKey(event: any) {
-    if (event.key === 'Enter') {
-      this.update();
-    }
-  }
-  previewSupplies(idSupport: number, item: any) {
-    this.serviceWorkspaces
-      .downloadSupport(this.idWorkspace, idSupport)
+  previewSupplies(managerCode: number, index: number) {
+    this.cadastralAuthorityService
+      .downloadSupportFromManager(this.idWorkspace, managerCode)
       .subscribe((data: any) => {
         const contentType = data.headers.get('content-type');
         const type = contentType.split(',')[0];
@@ -501,54 +460,22 @@ export class OperatorAssignmentComponent implements OnInit {
         const blob = new Blob([dataFile], { type });
         const url = window.URL.createObjectURL(blob);
         const preview = window.open(url, 'soporte');
-        if (item.milestone.id === 1) {
-          setTimeout(() => {
-            preview.document.title = 'Soporte Autoridad Catastral';
-          }, 500);
-        }
-        if (item.milestone.id === 3) {
-          setTimeout(() => {
-            preview.document.title =
-              'Soporte Gestor ' + this.dataWorkSpace.manager.alias;
-          }, 500);
-        }
+        setTimeout(() => {
+          preview.document.title =
+            'Soporte Gestor ' + this.dataWorkSpace.managers[index].alias;
+        }, 500);
       });
   }
   openModalUpdate(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });
   }
-  closeModalUpdate(option: boolean) {
+  closeModalUpdate(option: boolean, index?: number) {
     if (option) {
-      this.update();
+      this.update(index);
       this.modalService.dismissAll();
     } else {
       this.modalService.dismissAll();
     }
-  }
-  tab4() {
-    this.tab = 4;
-    this.router.navigate([
-      'gestion/workspace/' + this.selectMunicipality + '/operador',
-      { tab: 4 },
-    ]);
-    this.insumosService.GetAttachmentsTypes().subscribe((data) => {
-      this.dataAttachmentsTypes = data;
-    });
-    this.serviceWorkspaces
-      .getSuppliesAttachments(this.selectMunicipality)
-      .subscribe((response) => {
-        this.suppliesAttachmentsData = response;
-        this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(
-          (element) => {
-            const isCadastral = element.owners.find(
-              (data) => data.ownerType === 'CADASTRAL_AUTHORITY'
-            );
-            if (isCadastral) {
-              return element;
-            }
-          }
-        );
-      });
   }
   tab5() {
     this.tab = 5;
@@ -572,99 +499,6 @@ export class OperatorAssignmentComponent implements OnInit {
         );
       });
   }
-  docSoportAttachmentsTypes(files: FileList) {
-    if (this.selectAttachments === 1 || this.selectAttachments === 3) {
-      this.ftpAttachmentsTypes = '';
-    }
-    this.ftpAttachmentsTypes = '';
-    if (files[0].size / 1024 / 1024 <= environment.sizeFile) {
-      var re = /zip*/;
-      if (files[0].type.match(re)) {
-        this.fileAttachmentsTypes = files[0];
-      } else {
-        if (files[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
-          this.fileAttachmentsTypes = undefined;
-          this.toastr.error(
-            'Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.'
-          );
-        } else {
-          this.fileAttachmentsTypes = files[0];
-          this.validInputAttachmentsTypes = false;
-          if (
-            this.selectAttachments !== 0 &&
-            this.observationsAttachmentsTypes !== '' &&
-            (this.fileAttachmentsTypes !== undefined ||
-              this.ftpAttachmentsTypes !== '')
-          ) {
-            this.validInputAttachmentsTypes = true;
-          }
-        }
-      }
-    } else {
-      this.toastr.error(
-        'No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.'
-      );
-    }
-  }
-  validAttachmentsTypes() {
-    this.validInputAttachmentsTypes = false;
-    if (this.selectAttachments === 2) {
-      this.fileAttachmentsTypes = undefined;
-    }
-    if (this.selectAttachments === 1 || this.selectAttachments === 3) {
-      this.ftpAttachmentsTypes = '';
-    }
-    if (
-      this.selectAttachments !== 0 &&
-      this.observationsAttachmentsTypes !== '' &&
-      this.nameAttachmentsTypes !== '' &&
-      (this.fileAttachmentsTypes !== undefined ||
-        this.ftpAttachmentsTypes !== '')
-    ) {
-      this.validInputAttachmentsTypes = true;
-    }
-  }
-  createAttachmentsTypes() {
-    const form = new FormData();
-    form.append('attachmentTypeId', this.selectAttachments.toString());
-    if (this.selectAttachments === 2) {
-      form.append(
-        'ftp',
-        this.ftpAttachmentsTypes + ' ' + this.passftpAttachments
-      );
-    }
-    if (this.selectAttachments === 1 || this.selectAttachments === 3) {
-      form.append('file', this.fileAttachmentsTypes);
-    }
-    form.append('name', this.nameAttachmentsTypes);
-    form.append('observations', this.observationsAttachmentsTypes);
-    this.serviceWorkspaces
-      .createAttachmentsSupply(this.selectMunicipality, form)
-      .subscribe((_) => {
-        this.toastr.success('Ha agregado correctamente el registro.');
-        this.validInputAttachmentsTypes = false;
-        this.serviceWorkspaces
-          .getSuppliesAttachments(this.selectMunicipality)
-          .subscribe((response) => {
-            this.suppliesAttachmentsData = response;
-            this.selectAttachments = 0;
-            this.nameAttachmentsTypes = '';
-            this.ftpAttachmentsTypes = '';
-            this.observationsAttachmentsTypes = '';
-            this.fileAttachmentsTypes = undefined;
-            this.suppliesAttachmentsData = this.suppliesAttachmentsData.filter(
-              (element) => {
-                const isCadastral = element.owners.find(
-                  (data) => data.ownerType === 'CADASTRAL_AUTHORITY'
-                );
-                if (isCadastral) {
-                  return element;
-                }
-              }
-            );
-          });
-      });
-  }
   deleteSupplies(idSupplie: number, index?: number) {
     this.serviceWorkspaces
       .deleteSupplies(this.idWorkspace, idSupplie)
@@ -673,29 +507,16 @@ export class OperatorAssignmentComponent implements OnInit {
         this.toastr.success('Se ha eliminado el insumo');
       });
   }
-  closeModalDelete(option: boolean, index?: number) {
-    this.modalService.dismissAll();
-    if (option) {
-      this.deleteSupplies(this.idSupplieDelete, index);
-    }
-  }
-  openModalDelete(idSupplieDelete: number, modal: any) {
-    this.idSupplieDelete = idSupplieDelete;
-    this.modalService.open(modal, { centered: true, scrollable: true });
-  }
   changeDataOperator() {
-    this.isChangeDataOperator = false;
     this.isActiveAssignOperator = false;
     if (
       this.dataOperatorsWorkSpace.startDate !== '' &&
       this.dataOperatorsWorkSpace.endDate !== '' &&
-      this.dataOperatorsWorkSpace.numberParcelsExpected !== 0 &&
-      this.dataOperatorsWorkSpace.workArea !== 0 &&
       this.dataOperatorsWorkSpace.observations !== '' &&
-      this.dataOperatorsWorkSpace.operatorCode !== 0
+      this.dataOperatorsWorkSpace.operatorCode !== 0 &&
+      this.supportFileOperator !== undefined
     ) {
       this.isActiveAssignOperator = true;
-      this.isChangeDataOperator = true;
     }
   }
   downloadSuppliesAutoridad(idSupplie: number, nameSupplie: string) {
@@ -705,28 +526,84 @@ export class OperatorAssignmentComponent implements OnInit {
       const dataFile = data.body;
       const blob = new Blob([dataFile], { type });
       const url = window.URL.createObjectURL(blob);
-      saveAs(blob, nameSupplie + '.zip');
+      saveAs(
+        blob,
+        nameSupplie + '_' + this.dataWorkSpace.municipality.code + '.zip'
+      );
     });
   }
-  downloadGetReportAuthority() {
-    this.serviceWorkspaces
-      .getReportAuthority(this.selectMunicipality)
+  openModalCreateOperator(modal: any) {
+    this.modalService.open(modal, { centered: true, scrollable: true });
+  }
+  closeModalCreateOperator(option: boolean) {
+    this.modalService.dismissAll();
+    if (option) {
+      this.assingOperatorInWorkSpace();
+    }
+  }
+  previewSupportOperator(operatorCode: number, index: number) {
+    this.managerService
+      .downloadOperatorSupport(this.idWorkspace, operatorCode)
       .subscribe((data: any) => {
         const contentType = data.headers.get('content-type');
         const type = contentType.split(',')[0];
         const dataFile = data.body;
         const blob = new Blob([dataFile], { type });
         const url = window.URL.createObjectURL(blob);
-        saveAs(blob, 'reporte-autoridad.pdf');
+        const preview = window.open(url, 'soporte');
+        setTimeout(() => {
+          preview.document.title =
+            'Soporte Operador ' +
+            this.dataWorkSpace.operators[index].operator.alias;
+        }, 500);
       });
   }
-  openModalDeliveryInfo(modal: any) {
-    this.modalService.open(modal, { centered: true, scrollable: true });
+  updateOperator(item: any) {
+    this.isUpdate = true;
+    item.workArea = this.replacePointByComma(item.workArea);
+    this.dataOperatorsWorkSpace = item;
+    const startDate = this.dataWorkSpace.operators[0].startDate.split('T')[0];
+    const endDate = this.dataWorkSpace.operators[0].endDate.split('T')[0];
+    this.dataOperatorsWorkSpace.startDate = this.formatDateOperator(startDate);
+    this.dataOperatorsWorkSpace.endDate = this.formatDateOperator(endDate);
+    this.isChangeDataOperator = true;
+    this.idOperator = item.id;
+    this.scroll.scrollToAnchor('actionFormOperator');
   }
-  closeModalDeliveryInfo(option: boolean) {
-    this.modalService.dismissAll();
-    if (option) {
-      this.createAttachmentsTypes();
-    }
+  cancel() {
+    this.isUpdate = false;
+    this.idOperator = 0;
+    this.dataOperatorsWorkSpace = {
+      startDate: '',
+      endDate: '',
+      numberParcelsExpected: 0,
+      workArea: 0,
+      observations: '',
+      operatorCode: 0,
+    };
+    this.supportFileOperator = undefined;
+    this.myInputVariable.nativeElement.value = '';
+    this.isActiveAssignOperator = false;
+    this.isChangeDataOperator = false;
+  }
+  cancelarUpdate(index: number) {
+    this.idManagerUpdate = 0;
+    this.editForm[index].startDate = false;
+    this.editForm[index].observations = false;
+    this.serviceWorkspaces
+      .getWorkSpace(this.idWorkspace)
+      .subscribe((response: any) => {
+        this.dataWorkSpace = response;
+        this.dataWorkSpace.managers.forEach((_) => {
+          this.editForm.push({
+            startDate: false,
+            observations: false,
+          });
+        });
+        this.selectDepartment = this.dataWorkSpace.municipality.department.id;
+      });
+  }
+  replacePointByComma(item: string) {
+    return item.toString().replace('.', ',');
   }
 }

@@ -51,6 +51,30 @@
               </select>
             </div>
           </div>
+          <div class="col-12 col-sm-6">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true"
+                  >* Operador</label
+                >
+              </div>
+              <select
+                (change)="changeOperator()"
+                class="custom-select"
+                name="operators"
+                id="operators"
+                [(ngModel)]="selectOperatorId"
+              >
+                <option value="0" selected>Seleccione el Operador</option>
+                <option
+                  [ngValue]="item.operator.id"
+                  *ngFor="let item of operators"
+                >
+                  {{ item.operator.alias }}
+                </option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="row mt-3">
           <div class="col-12">
@@ -65,14 +89,14 @@
       <button
         type="button"
         class="btn btn-dark"
-        (click)="getPage(1)"
+        (click)="search(1)"
         [disabled]="sendSuppliesFilter"
       >
         Buscar
       </button>
     </div>
   </div>
-  <div *ngIf="allSupplies.length > 0">
+  <div *ngIf="allSupplies?.length > 0 && !sendSuppliesFilter">
     <div class="row justify-content-md-center">
       <div class="card text-center">
         <div class="card-header text-center">
@@ -88,7 +112,7 @@
             [rotate]="true"
             [ellipses]="false"
             [boundaryLinks]="true"
-            (pageChange)="getPage($event)"
+            (pageChange)="search($event)"
           >
           </ngb-pagination>
           <div class="search-hero">
@@ -130,6 +154,16 @@
                         item.typeSupply.provider.name
                       }})</span
                     >
+                    <div
+                      *ngIf="
+                        item.hasGeometryValidation !== null &&
+                        !item.hasGeometryValidation
+                      "
+                    >
+                      <span class="badge badge-warning">
+                        Sin validación geometríca
+                      </span>
+                    </div>
                   </td>
                   <td scope="row">
                     {{ globalFuntionDate(item.createdAt) }}
@@ -224,7 +258,7 @@
       </button>
     </div>
   </div>
-  <div *ngIf="allSupplies.length === 0 && firstSearch">
+  <div *ngIf="allSupplies?.length === 0 && firstSearch">
     <div class="col-12 mt-2">
       <div class="alert alert-primary text-center" role="alert">
         No cuenta con insumos para entregar.
@@ -245,7 +279,7 @@
     </div>
     <div class="modal-body">
       <h5 class="alert alert-warning text-center">
-        Advertencia: Va a realizar una entrega de
+        Advertencia: Va a realizar la entrega de
         {{ deliverySupplies.supplies.length }} insumos.
       </h5>
     </div>

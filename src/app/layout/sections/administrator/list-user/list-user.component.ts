@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelper } from 'src/app/helpers/jwt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AdministrationService } from 'src/app/services/administration/administration.service';
+import { ManagersService } from 'src/app/services/managers/managers.service';
+import { OperatorsService } from 'src/app/services/operators/operators.service';
+import { ProvidersService } from 'src/app/services/providers/providers.service';
 
 @Component({
   selector: 'app-list-user',
@@ -12,8 +16,14 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ListUserComponent implements OnInit {
   dataListUser: any;
-  page: number;
-  pageSize: number;
+  page1: number;
+  pageSize1: number;
+  page2: number;
+  pageSize2: number;
+  page3: number;
+  pageSize3: number;
+  page4: number;
+  pageSize4: number;
   searchText: string;
   idUserEnabled: number;
   idUserDisabled: number;
@@ -22,14 +32,27 @@ export class ListUserComponent implements OnInit {
   roleConnectAdmin: any;
   roleConnectManager: any;
   roleConnectProvider: any;
+  tab: number;
+  managers: any;
+  operators: any;
+  providers: any;
+  usersManagers: any;
+  usersOperators: any;
+  usersProviders: any;
+  managerId: number;
+  operatorId: number;
+  providerId: number;
   constructor(
     private serviceWorkspace: WorkspacesService,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private administrationService: AdministrationService,
+    private managersService: ManagersService,
+    private operatorsService: OperatorsService,
+    private providersService: ProvidersService,
+    private activedRoute: ActivatedRoute
   ) {
     this.dataListUser = [];
-    this.page = 1;
-    this.pageSize = 10;
     this.idUserDisabled = 0;
     this.idUserEnabled = 0;
     this.dataUserLogger = {};
@@ -37,6 +60,24 @@ export class ListUserComponent implements OnInit {
     this.roleConnectAdmin = {};
     this.roleConnectManager = {};
     this.roleConnectProvider = {};
+    this.tab = 1;
+    this.managers = [];
+    this.operators = [];
+    this.providers = [];
+    this.managerId = 0;
+    this.operatorId = 0;
+    this.providerId = 0;
+    this.usersManagers = [];
+    this.usersOperators = [];
+    this.usersProviders = [];
+    this.page1 = 1;
+    this.pageSize1 = 10;
+    this.page2 = 1;
+    this.pageSize2 = 10;
+    this.page3 = 1;
+    this.pageSize3 = 10;
+    this.page4 = 1;
+    this.pageSize4 = 10;
   }
 
   ngOnInit() {
@@ -54,22 +95,32 @@ export class ListUserComponent implements OnInit {
     this.roleConnectProvider = this.dataUserLogger.roles.find((elem) => {
       return elem.id === 4;
     });
-
-    this.serviceWorkspace.GetUsers().subscribe((arg: any) => {
+    this.serviceWorkspace.getUsers().subscribe((arg: any) => {
       this.dataListUser = arg;
       this.dataListUser = this.dataListUser.filter((element: any) => {
         return element.username !== this.dataUserLogger.user_name;
       });
       if (this.roleConnectAdmin) {
-        this.dataListUser.sort(function (a: any, b: any) {
-          if (a.entity.name > b.entity.name) {
-            return 1;
+        this.managersService.getManagers().subscribe((data) => {
+          this.managers = data;
+        });
+        this.operatorsService.getOperatorsByFilters().subscribe((response) => {
+          this.operators = response;
+        });
+        this.providersService.getProvidersActive().subscribe((data) => {
+          this.providers = data;
+        });
+        this.activedRoute.params.subscribe((response) => {
+          this.tab = parseInt(response.tab);
+          if (this.tab === 1) {
+            this.tab1();
           }
-          if (a.entity.name < b.entity.name) {
-            return -1;
+          if (this.tab === 2) {
+            this.tab2();
           }
-          //a must be equal to b
-          return 0;
+          if (this.tab === 3) {
+            this.tab3();
+          }
         });
       }
     });
@@ -89,7 +140,7 @@ export class ListUserComponent implements OnInit {
     this.modalService.open(modal, { centered: true, scrollable: true });
     this.idUserDisabled = idUser;
   }
-  closeModalEnabled(option: boolean) {
+  closeModalEnabled(option: boolean): void {
     if (option) {
       this.serviceWorkspace
         .EnableUser(this.idUserEnabled, {})
@@ -122,7 +173,9 @@ export class ListUserComponent implements OnInit {
     }
   }
   updateUser(idUser: number) {
-    this.router.navigate(['/administrador/usuario/' + idUser + '/modificar']);
+    this.router.navigate([
+      '/administrador/usuario/' + idUser + '/modificar/' + this.tab,
+    ]);
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
@@ -140,6 +193,18 @@ export class ListUserComponent implements OnInit {
     });
     return data || data2 || data3 ? true : false;
   }
+  isDirectorManager(item) {
+    let data = item.profiles.find((element) => {
+      return element.id === 1;
+    });
+    return data ? true : false;
+  }
+  isDirectorProvider(item) {
+    let data = item.roles.find((element) => {
+      return element.id === 1;
+    });
+    return data ? true : false;
+  }
   isProvider(item) {
     let data = item.roles.find((element) => {
       return element.id === 4;
@@ -151,5 +216,68 @@ export class ListUserComponent implements OnInit {
       return element.id === 2;
     });
     return data ? true : false;
+  }
+  tab1() {
+    this.tab = 1;
+    this.searchText = '';
+    this.page1 = 1;
+    this.pageSize1 = 10;
+    this.administrationService
+      .getManagerUser(this.managerId)
+      .subscribe((response) => {
+        this.usersManagers = response;
+        this.usersManagers.sort(function (a, b) {
+          if (a.manager.name > b.manager.name) {
+            return 1;
+          }
+          if (a.manager.name < b.manager.name) {
+            return -1;
+          }
+          return 0;
+        });
+      });
+  }
+  tab2() {
+    this.tab = 2;
+    this.searchText = '';
+    this.page2 = 1;
+    this.pageSize2 = 10;
+    this.administrationService
+      .getOperatorUser(this.operatorId)
+      .subscribe((response) => {
+        this.usersOperators = response;
+        this.usersOperators.sort(function (a, b) {
+          if (a.operator.name > b.operator.name) {
+            return 1;
+          }
+          if (a.operator.name < b.operator.name) {
+            return -1;
+          }
+          return 0;
+        });
+      });
+  }
+  tab3() {
+    this.tab = 3;
+    this.searchText = '';
+    this.page3 = 1;
+    this.pageSize3 = 10;
+    this.administrationService
+      .getProviderUser(this.providerId)
+      .subscribe((response) => {
+        this.usersProviders = response;
+        this.usersProviders.sort(function (a, b) {
+          if (a.provider.name > b.provider.name) {
+            return 1;
+          }
+          if (a.provider.name < b.provider.name) {
+            return -1;
+          }
+          return 0;
+        });
+      });
+  }
+  cleanPagination() {
+    this.searchText = '';
   }
 }
