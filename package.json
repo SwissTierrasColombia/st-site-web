@@ -1,6 +1,6 @@
 {
   "name": "st-site-web",
-  "version": "2.9.15",
+  "version": "3.7.10",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
