@@ -215,87 +215,6 @@
           role="tabpanel"
         >
           <br />
-          <ng-template #modalUpdateOperator let-modal>
-            <div class="modal-header">
-              <h4 class="modal-title">
-                ¿Está seguro de modificar los datos del Operador?
-              </h4>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                (click)="modal.dismiss('Cross click')"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <h5 class="alert alert-warning text-center">
-                Advertencia: Esta acción actualizará la información del
-                municipio.
-              </h5>
-            </div>
-            <div class="modal-footer">
-              <div class="col-6">
-                <button
-                  type="button"
-                  class="btn btn-dark btn-block"
-                  (click)="closeModalUpdateOperator(false)"
-                >
-                  No
-                </button>
-              </div>
-              <div class="col-6 text-right">
-                <button
-                  type="button"
-                  ngbAutofocus
-                  class="btn btn-success btn-block"
-                  (click)="closeModalUpdateOperator(true)"
-                >
-                  Si
-                </button>
-              </div>
-            </div>
-          </ng-template>
-          <ng-template #modalCreateOperator let-modal>
-            <div class="modal-header">
-              <h4 class="modal-title">¿Está seguro de asignar el Operador?</h4>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                (click)="modal.dismiss('Cross click')"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <h5 class="alert alert-warning text-center">
-                Advertencia: Esta acción asignará un operador al municipio.
-              </h5>
-            </div>
-            <div class="modal-footer">
-              <div class="col-6">
-                <button
-                  type="button"
-                  class="btn btn-dark btn-block"
-                  (click)="closeModalCreateOperator(false)"
-                >
-                  No
-                </button>
-              </div>
-              <div class="col-6 text-right">
-                <button
-                  type="button"
-                  ngbAutofocus
-                  class="btn btn-success btn-block"
-                  (click)="closeModalCreateOperator(true)"
-                >
-                  Si
-                </button>
-              </div>
-            </div>
-          </ng-template>
           <div class="card" *ngIf="assingOperator">
             <div class="card-header text-center">
               <h3>
@@ -383,9 +302,9 @@
                           formControlName="number"
                           disabled="{{ !assingOperator }}"
                           class="form-control"
-                          type="number"
+                          type="text"
                           name="numberParcelsExpected"
-                          [ngModel]="
+                          [(ngModel)]="
                             dataOperatorsWorkSpace.numberParcelsExpected
                           "
                           (change)="changeDataOperator()"
@@ -492,6 +411,87 @@
               </button>
             </div>
           </div>
+          <ng-template #modalUpdateOperator let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title">
+                ¿Está seguro de modificar los datos del Operador?
+              </h4>
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción actualizará la información del
+                municipio.
+              </h5>
+            </div>
+            <div class="modal-footer">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-dark btn-block"
+                  (click)="closeModalUpdateOperator(false)"
+                >
+                  No
+                </button>
+              </div>
+              <div class="col-6 text-right">
+                <button
+                  type="button"
+                  ngbAutofocus
+                  class="btn btn-success btn-block"
+                  (click)="closeModalUpdateOperator(true)"
+                >
+                  Si
+                </button>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template #modalCreateOperator let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title">¿Está seguro de asignar el Operador?</h4>
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h5 class="alert alert-warning text-center">
+                Advertencia: Esta acción asignará un operador al municipio.
+              </h5>
+            </div>
+            <div class="modal-footer">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-dark btn-block"
+                  (click)="closeModalCreateOperator(false)"
+                >
+                  No
+                </button>
+              </div>
+              <div class="col-6 text-right">
+                <button
+                  type="button"
+                  ngbAutofocus
+                  class="btn btn-success btn-block"
+                  (click)="closeModalCreateOperator(true)"
+                >
+                  Si
+                </button>
+              </div>
+            </div>
+          </ng-template>
           <div
             class="card mt-1"
             *ngIf="onlyOperatorAssignByWorkspace?.length > 0"
@@ -533,7 +533,9 @@
                       <td scope="row">{{ formatDate(item.createdAt) }}</td>
                       <td scope="row">{{ formatDate(item.endDate) }}</td>
                       <td scope="row">{{ item.numberParcelsExpected }}</td>
-                      <td scope="row">{{ item.workArea }}</td>
+                      <td scope="row">
+                        {{ replacePointByComma(item.workArea) }}
+                      </td>
                       <td scope="row">
                         <textarea
                           maxlength="255"

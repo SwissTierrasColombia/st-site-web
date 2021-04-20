@@ -345,13 +345,14 @@ export class OperatorAssignmentComponent implements OnInit {
     dataOperator.append('endDate', this.dataOperatorsWorkSpace.endDate);
     dataOperator.append(
       'numberParcelsExpected',
-      this.dataOperatorsWorkSpace.numberParcelsExpected
+      parseFloat(this.dataOperatorsWorkSpace.numberParcelsExpected).toString()
     );
     dataOperator.append(
       'operatorCode',
       this.dataOperatorsWorkSpace.operatorCode
     );
-    dataOperator.append('workArea', this.dataOperatorsWorkSpace.workArea);
+    let twoPlacedFloat = this.dataOperatorsWorkSpace.workArea.replace(',', '.');
+    dataOperator.append('workArea', twoPlacedFloat);
     dataOperator.append(
       'observations',
       this.dataOperatorsWorkSpace.observations
@@ -393,13 +394,14 @@ export class OperatorAssignmentComponent implements OnInit {
     dataOperator.append('endDate', this.dataOperatorsWorkSpace.endDate);
     dataOperator.append(
       'numberParcelsExpected',
-      this.dataOperatorsWorkSpace.numberParcelsExpected
+      parseFloat(this.dataOperatorsWorkSpace.numberParcelsExpected).toString()
     );
     dataOperator.append(
       'operatorCode',
       this.dataOperatorsWorkSpace.operatorCode
     );
-    dataOperator.append('workArea', this.dataOperatorsWorkSpace.workArea);
+    let twoPlacedFloat = this.dataOperatorsWorkSpace.workArea.replace(',', '.');
+    dataOperator.append('workArea', twoPlacedFloat);
     dataOperator.append(
       'observations',
       this.dataOperatorsWorkSpace.observations
@@ -558,6 +560,7 @@ export class OperatorAssignmentComponent implements OnInit {
   }
   updateOperator(item: any) {
     this.isUpdate = true;
+    item.workArea = this.replacePointByComma(item.workArea);
     this.dataOperatorsWorkSpace = item;
     const startDate = this.dataWorkSpace.operators[0].startDate.split('T')[0];
     const endDate = this.dataWorkSpace.operators[0].endDate.split('T')[0];
@@ -599,5 +602,8 @@ export class OperatorAssignmentComponent implements OnInit {
         });
         this.selectDepartment = this.dataWorkSpace.municipality.department.id;
       });
+  }
+  replacePointByComma(item: string) {
+    return item.toString().replace('.', ',');
   }
 }
