@@ -154,7 +154,12 @@
                         item.typeSupply.provider.name
                       }})</span
                     >
-                    <div *ngIf="!item.hasGeometryValidation">
+                    <div
+                      *ngIf="
+                        item.hasGeometryValidation !== null &&
+                        !item.hasGeometryValidation
+                      "
+                    >
                       <span class="badge badge-warning">
                         Sin validación geometríca
                       </span>

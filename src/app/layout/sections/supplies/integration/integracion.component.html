@@ -152,7 +152,12 @@
                   >
                     <!-- <strong>Modelo {{item.modelVersion}}</strong> -->
                     <strong>Submodelo Insumos V1.0</strong>
-                    <div *ngIf="!item.hasGeometryValidation">
+                    <div
+                      *ngIf="
+                        item.hasGeometryValidation !== null &&
+                        !item.hasGeometryValidation
+                      "
+                    >
                       <span class="badge badge-warning">
                         Sin validación geometríca
                       </span>

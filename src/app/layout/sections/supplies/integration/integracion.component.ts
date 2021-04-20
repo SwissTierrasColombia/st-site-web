@@ -257,7 +257,7 @@ export class IntegracionComponent implements OnInit {
   }
   comprobar(modalskipValidated?: any, item?: any) {
     if (modalskipValidated && item) {
-      if (!item.hasGeometryValidation) {
+      if (item.hasGeometryValidation !== null && !item.hasGeometryValidation) {
         this.modalService.open(modalskipValidated, {
           centered: true,
           scrollable: true,
