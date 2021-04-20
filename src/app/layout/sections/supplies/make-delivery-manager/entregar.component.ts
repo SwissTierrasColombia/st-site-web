@@ -77,6 +77,16 @@ export class EntregarComponent implements OnInit {
     }
     this.serviceWorkspaces.getDepartments().subscribe((response) => {
       this.departments = response;
+      this.departments.sort(function (a, b) {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        //a must be equal to b
+        return 0;
+      });
     });
   }
   globalFuntionDate(date: any) {
@@ -87,6 +97,16 @@ export class EntregarComponent implements OnInit {
       .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
       .subscribe((data) => {
         this.munucipalities = data;
+        this.munucipalities.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
         this.changeSelects();
       });
   }

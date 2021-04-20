@@ -143,6 +143,16 @@ export class IntegracionComponent implements OnInit {
     const promise2 = new Promise((resolve) => {
       this.serviceWorkspaces.getDepartments().subscribe((response) => {
         this.departments = response;
+        this.departments.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
         resolve(response);
       });
     });
@@ -161,6 +171,16 @@ export class IntegracionComponent implements OnInit {
       .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
       .subscribe((data) => {
         this.munucipalities = data;
+        this.munucipalities.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
         if (this.SelectIntegrationPossible.municipio) {
           let idMunicipio = this.munucipalities.find((item) => {
             return item.code === this.SelectIntegrationPossible.municipio;
@@ -367,7 +387,11 @@ export class IntegracionComponent implements OnInit {
   }
   openModalErrorXTF(modalError: any, supp: any) {
     this.errorXTF = supp.errors;
-    this.modalService.open(modalError, { centered: true, scrollable: true });
+    this.modalService.open(modalError, {
+      centered: true,
+      scrollable: true,
+      size: 'lg',
+    });
   }
   closeModalSkipValidation(option: boolean) {
     this.modalService.dismissAll();
