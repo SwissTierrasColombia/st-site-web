@@ -119,7 +119,7 @@
                             {{ profile.name }}
                           </div>
                         </div>
-                        <div *ngIf="item.profiles.length === 0">--</div>
+                        <div *ngIf="item.profiles.length === 0">TÉCNICO</div>
                       </td>
                       <td scope="row">{{ item.firstName }}</td>
                       <td scope="row">{{ item.lastName }}</td>
@@ -585,8 +585,8 @@
                         <div *ngIf="item.profiles.length === 0">--</div>
                       </td>
                       <td scope="row" *ngIf="roleConnectProvider">
-                        <div *ngIf="isDelegado(item)">Revisor</div>
-                        <div *ngIf="!isDelegado(item)">Técnico</div>
+                        <div *ngIf="isDelegado(item)">REVISOR</div>
+                        <div *ngIf="!isDelegado(item)">TÉCNICO</div>
                       </td>
                       <td scope="row">{{ item.username }}</td>
                       <td scope="row">
@@ -595,7 +595,7 @@
                             {{ roles.name }}
                           </div>
                         </div>
-                        <div *ngIf="item.roles.length === 0">--</div>
+                        <div *ngIf="item.roles.length === 0">TÉCNICO</div>
                       </td>
                       <td scope="row">{{ item.firstName }}</td>
                       <td scope="row">{{ item.lastName }}</td>
@@ -871,8 +871,8 @@
                   <div *ngIf="item.profilesProvider.length === 0">--</div>
                 </td>
                 <td scope="row" *ngIf="roleConnectProvider">
-                  <div *ngIf="isDelegado(item)">Revisor</div>
-                  <div *ngIf="!isDelegado(item)">Técnico</div>
+                  <div *ngIf="isDelegado(item)">REVISOR</div>
+                  <div *ngIf="!isDelegado(item)">TÉCNICO</div>
                 </td>
                 <td scope="row">{{ item.username }}</td>
                 <td scope="row">{{ item.firstName }}</td>

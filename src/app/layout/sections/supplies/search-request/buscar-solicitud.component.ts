@@ -148,8 +148,10 @@ export class BuscarSolicitudComponent implements OnInit {
       .searchSuppliesOrder(this.selectPackage)
       .subscribe((response: any) => {
         this.infoTabOrder = response;
-        this.search3 = true;
+        this.number = 1;
+        this.size = 10;
         this.totalElements = this.infoTabOrder.length;
+        this.search3 = true;
       });
   }
   activebuttontab1() {
@@ -178,7 +180,7 @@ export class BuscarSolicitudComponent implements OnInit {
     this.modalService.open(modal, {
       centered: true,
       scrollable: true,
-      size: 'lg',
+      size: 'xl',
     });
   }
 }

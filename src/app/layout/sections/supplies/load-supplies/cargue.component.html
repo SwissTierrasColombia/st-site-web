@@ -18,22 +18,24 @@
           <table class="table table-striped text-center">
             <thead class="thead-inverse">
               <tr>
+                <th>Código de Orden</th>
+                <th>Nº de Solicitud</th>
                 <th>Departamento</th>
                 <th>Municipio</th>
                 <th>Gestor</th>
-                <th>Número de Solicitud</th>
                 <th>Fecha de Solicitud</th>
                 <th>Fecha Límite</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of dataRequestPending; let i = index">
+                <td scope="row">
+                  {{ item.packageLabel }}
+                </td>
+                <td scope="row">{{ item.id }}</td>
                 <td scope="row">{{ item.municipality.department.name }}</td>
                 <td scope="row">{{ item.municipality.name }}</td>
                 <td scope="row">{{ getEntity(item) }}</td>
-                <td scope="row">
-                  <strong>{{ item.id }}</strong>
-                </td>
                 <td scope="row">{{ formatDate(item.createdAt) }}</td>
                 <td scope="row">{{ formatDate(item.deadline) }}</td>
               </tr>
@@ -452,7 +454,18 @@
   </ng-template>
   <ng-template #modalError let-modal>
     <div class="modal-header">
-      <h4 class="modal-title">Logs</h4>
+      <h4 class="modal-title">
+        Log de validación
+        <span
+          ngbTooltip="Copiar"
+          placement="top"
+          show-delay="500"
+        >
+          <span class="material-icons ml-2" (click)="myFunctionCopyOrder()">
+            content_copy
+          </span>
+        </span>
+      </h4>
       <button
         type="button"
         class="close"

@@ -476,7 +476,11 @@ export class CargueComponent implements OnInit, AfterViewInit {
   }
   openModalErrorXTF(modalError: any, supp: any) {
     this.errorXTF = supp.errors;
-    this.modalService.open(modalError, { centered: true, scrollable: true });
+    this.modalService.open(modalError, {
+      centered: true,
+      scrollable: true,
+      size: 'lg',
+    });
   }
   openModalSkipValidated(modal: any): void {
     if (this.skipGeometryValidation) {
@@ -494,5 +498,18 @@ export class CargueComponent implements OnInit, AfterViewInit {
     if (option) {
       this.skipGeometryValidation = true;
     }
+  }
+  myFunctionCopyOrder() {
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = this.errorXTF;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
   }
 }
