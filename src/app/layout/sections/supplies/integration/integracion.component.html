@@ -592,7 +592,14 @@
 </div>
 <ng-template #modalError let-modal>
   <div class="modal-header">
-    <h4 class="modal-title">Logs</h4>
+    <h4 class="modal-title">
+      Log de Integración
+      <span ngbTooltip="Copiar" placement="top" show-delay="500">
+        <span class="material-icons ml-2" (click)="myFunctionCopyOrder()">
+          content_copy
+        </span>
+      </span>
+    </h4>
     <button
       type="button"
       class="close"
