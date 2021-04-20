@@ -261,6 +261,8 @@ export class IntegracionComponent implements OnInit {
         this.modalService.open(modalskipValidated, {
           centered: true,
           scrollable: true,
+          backdrop: 'static',
+          keyboard: false,
         });
       }
     }
