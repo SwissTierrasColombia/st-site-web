@@ -32,10 +32,11 @@ export class CargueComponent implements OnInit, AfterViewInit {
   closeRequestButtonArray: any;
   @ViewChild('myInput')
   myInputVariable: ElementRef;
+  myInputFileExtra: ElementRef;
   previewData: FileList;
   fileUrl = '';
   errorXTF: string;
-  skipGeometryValidation: boolean;
+  skipValidation: boolean;
   constructor(
     private toastr: ToastrService,
     private router: Router,
@@ -71,7 +72,7 @@ export class CargueComponent implements OnInit, AfterViewInit {
     this.closeRequestButton = true;
     this.closeRequestButtonArray = [];
     this.errorXTF = '';
-    this.skipGeometryValidation = false;
+    this.skipValidation = false;
   }
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
@@ -193,6 +194,32 @@ export class CargueComponent implements OnInit, AfterViewInit {
   clone(obj: any) {
     return JSON.parse(JSON.stringify(obj));
   }
+  documentsExtra(file: FileList, idOut: number, idInt: number) {
+    if (file[0].size / 1024 / 1024 <= environment.sizeFile) {
+      let re = /zip*/;
+      if (file[0].type.match(re)) {
+        this.dataRequestPending[idOut].suppliesRequested[idInt].extra = file[0];
+      } else {
+        if (file[0].size / 1024 / 1024 > environment.sizeFileUnZip) {
+          this.toastr.error(
+            'Por favor convierta el archivo en .zip antes de subirlo, ya que supera el tamaño de cargue permitido.'
+          );
+          this.dataRequestPending[idOut].suppliesRequested[idInt].extra = '';
+          this.myInputFileExtra.nativeElement.value = '';
+        } else {
+          this.dataRequestPending[idOut].suppliesRequested[idInt].extra =
+            file[0];
+        }
+      }
+    } else {
+      this.dataRequestPending[idOut].suppliesRequested[idInt].extra = '';
+      this.myInputFileExtra.nativeElement.value = '';
+      this.toastr.error(
+        'No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.'
+      );
+    }
+  }
+
   docSoport(files: FileList, idOut: number, idInt: number) {
     this.previewData = files;
     if (files[0].size / 1024 / 1024 <= environment.sizeFile) {
@@ -341,11 +368,11 @@ export class CargueComponent implements OnInit, AfterViewInit {
       form.append('url', item.url);
       form.append('observations', item.observations);
     }
+    if (item.typeSupply.id === 2) {
+      form.append('extra', item.extra);
+    }
     if (item.typeSupply.id === 2 || item.typeSupply.id === 12) {
-      form.append(
-        'skipGeometryValidation',
-        new Boolean(this.skipGeometryValidation).toString()
-      );
+      form.append('skipErrors', new Boolean(this.skipValidation).toString());
     }
     this.serviceWorkspaces
       .loadSupplyFromRequest(idSolicitud, form)
@@ -483,7 +510,7 @@ export class CargueComponent implements OnInit, AfterViewInit {
     });
   }
   openModalSkipValidated(modal: any): void {
-    if (this.skipGeometryValidation) {
+    if (this.skipValidation) {
       this.modalService.open(modal, {
         centered: true,
         scrollable: true,
@@ -494,9 +521,9 @@ export class CargueComponent implements OnInit, AfterViewInit {
   }
   closeModalSkipValidation(option: boolean) {
     this.modalService.dismissAll();
-    this.skipGeometryValidation = false;
+    this.skipValidation = false;
     if (option) {
-      this.skipGeometryValidation = true;
+      this.skipValidation = true;
     }
   }
   myFunctionCopyOrder() {

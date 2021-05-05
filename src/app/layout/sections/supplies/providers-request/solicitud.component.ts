@@ -127,8 +127,6 @@ export class SolicitudComponent implements OnInit {
       .GetMunicipalitiesByDeparment(this.selectDepartment)
       .subscribe((data) => {
         this.municipalities = data;
-        console.log(this.municipalities);
-
         this.municipalities.sort(function (a, b) {
           if (a.name > b.name) {
             return 1;

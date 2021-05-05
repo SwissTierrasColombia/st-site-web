@@ -156,12 +156,12 @@
                     >
                     <div
                       *ngIf="
-                        item.hasGeometryValidation !== null &&
-                        !item.hasGeometryValidation
+                        item.valid !== null &&
+                        !item.valid
                       "
                     >
                       <span class="badge badge-warning">
-                        Sin validación geometríca
+                        Sin validación
                       </span>
                     </div>
                   </td>

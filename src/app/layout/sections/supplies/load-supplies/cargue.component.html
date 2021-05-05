@@ -130,20 +130,33 @@
                         <!-- <strong>Modelo {{supp.modelVersion}}</strong> -->
                         <strong>Submodelo Insumos V1.0</strong>
                       </div>
-                      <div class="form-check" *ngIf="supp.typeSupply.id === 2">
+                      <div *ngIf="supp.typeSupply.id === 2">
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          id="skipGeometryValidation"
-                          [(ngModel)]="skipGeometryValidation"
+                          id="skipValidation"
+                          [(ngModel)]="skipValidation"
                           (change)="openModalSkipValidated(modalskipValidated)"
                         />
-                        <label
-                          class="form-check-label"
-                          for="skipGeometryValidation"
-                        >
-                          Omitir validación geométrica
+                        <label class="form-check-label" for="skipValidation">
+                          Omitir validación
                         </label>
+                        <div class="input-group">
+                          <div class="input-group-prepend input-group-text">
+                            <div>Reporte</div>
+                          </div>
+                          <input
+                            #myInputFileExtra
+                            accept=".zip"
+                            id="file{{ idOut }}{{ idInt }}-extra"
+                            name="file{{ idOut }}{{ idInt }}-extra"
+                            class="form-control"
+                            type="file"
+                            (change)="
+                              documentsExtra($event.target.files, idOut, idInt)
+                            "
+                          />
+                        </div>
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend input-group-text">
@@ -456,11 +469,7 @@
     <div class="modal-header">
       <h4 class="modal-title">
         Log de validación
-        <span
-          ngbTooltip="Copiar"
-          placement="top"
-          show-delay="500"
-        >
+        <span ngbTooltip="Copiar" placement="top" show-delay="500">
           <span class="material-icons ml-2" (click)="myFunctionCopyOrder()">
             content_copy
           </span>
@@ -483,7 +492,7 @@
   <ng-template #modalskipValidated let-modal>
     <div class="modal-header">
       <h4 class="modal-title">
-        ¿Está seguro de omitir la validación geométrica?
+        ¿Está seguro de omitir la validación?
       </h4>
       <button
         type="button"

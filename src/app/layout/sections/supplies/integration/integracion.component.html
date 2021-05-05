@@ -154,12 +154,12 @@
                     <strong>Submodelo Insumos V1.0</strong>
                     <div
                       *ngIf="
-                        item.hasGeometryValidation !== null &&
-                        !item.hasGeometryValidation
+                        item.valid !== null &&
+                        !item.valid
                       "
                     >
                       <span class="badge badge-warning">
-                        Sin validación geometríca
+                        Sin validación
                       </span>
                     </div>
                   </div>
@@ -622,7 +622,7 @@
 <ng-template #modalskipValidated let-modal>
   <div class="modal-header">
     <h4 class="modal-title">
-      ¿Está seguro de seleccionar un XTF sin validación geometríca?
+      ¿Está seguro de seleccionar un XTF Sin validación?
     </h4>
     <button
       type="button"
@@ -635,7 +635,7 @@
   </div>
   <div class="modal-body">
     <h5 class="alert alert-warning text-center">
-      Advertencia: Ha escogido un XTF sin validación geométrica, esta
+      Advertencia: Ha escogido un XTF sin validación, esta
       integración puede fallar.
     </h5>
   </div>
