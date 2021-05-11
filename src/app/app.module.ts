@@ -17,7 +17,8 @@ import { MomentModule } from 'ngx-moment';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 import { NgSelect2Module } from 'ng-select2';
-
+import { FormsModule } from '@angular/forms';
+import { ComponentsModule } from './shared/components/components.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,16 +34,25 @@ import { NgSelect2Module } from 'ng-select2';
     NgbModule,
     NgxPaginationModule,
     NgSelect2Module,
+    FormsModule,
+    ComponentsModule,
   ],
-  declarations: [
-    AppComponent
-  ],
-  providers: [AuthGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
+  declarations: [AppComponent],
+  providers: [
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptorService,
+      multi: true,
+    },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ResponseInterceptorService, multi: true }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptorService,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}

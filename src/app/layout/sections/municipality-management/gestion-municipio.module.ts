@@ -1,3 +1,4 @@
+import { ComponentsModule } from './../../../shared/components/components.module';
 import { WorkspaceRefuseComponent } from './workspace-refuse/workspace-refuse.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -31,6 +32,7 @@ import { TwoDigitDecimaNumberDirective } from './numbers-decimal.directive';
     GestionMunicipioRoutingModule,
     PageHeaderModule,
     NgSelect2Module,
+    ComponentsModule,
   ],
 })
 export class GestionMunicipioModule {}
