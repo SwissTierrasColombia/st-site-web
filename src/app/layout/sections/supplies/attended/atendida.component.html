@@ -61,7 +61,7 @@
                 <td scope="row">
                   {{ item.typeSupply.name }}
                   <div *ngIf="item.valid !== null && !item.valid">
-                    <span class="badge badge-warning"> Sin validación </span>
+                    <span class="badge badge-warning"> Validado con errores </span>
                   </div>
                 </td>
                 <td scope="row">{{ item.state.name }}</td>

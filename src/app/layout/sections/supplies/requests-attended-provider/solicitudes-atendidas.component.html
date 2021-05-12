@@ -27,7 +27,9 @@
           >
             <thead class="thead-inverse">
               <tr>
-                <th>Número de Solicitud</th>
+                <th>Código de Orden</th>
+                <th>Nº de Solicitud</th>
+                <th>Área</th>
                 <th>Departamento</th>
                 <th>Municipio</th>
                 <th>Gestor</th>
@@ -38,7 +40,11 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of dataRequestPending | filter: searchText">
+                <td scope="row">
+                  {{ item.packageLabel }}
+                </td>
                 <td scope="row">{{ item.id }}</td>
+                <td scope="row">{{ item.suppliesRequested[0].typeSupply.providerProfile.name }}</td>
                 <td scope="row">{{ item.municipality.department.name }}</td>
                 <td scope="row">{{ item.municipality.name }}</td>
                 <td scope="row">{{ getEntity(item) }}</td>

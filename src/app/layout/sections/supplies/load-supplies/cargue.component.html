@@ -139,7 +139,7 @@
                           (change)="openModalSkipValidated(modalskipValidated)"
                         />
                         <label class="form-check-label" for="skipValidation">
-                          Omitir validación
+                          Omitir errores
                         </label>
                         <div class="input-group">
                           <div class="input-group-prepend input-group-text">
@@ -250,6 +250,9 @@
                 >
                   {{ supp.button.status ? "Insumo Cargado" : "Reenviar" }}
                 </button>
+                <div *ngIf="supp.valid !== null && !supp.valid">
+                  <span class="badge badge-warning"> Validado con errores </span>
+                </div>
                 <!-- <app-preview *ngIf="supp.preview" [url]="supp.url" [version]="supp.modelVersion?supp.modelVersion:''">
                 </app-preview> -->
               </div>
@@ -491,9 +494,7 @@
   </ng-template>
   <ng-template #modalskipValidated let-modal>
     <div class="modal-header">
-      <h4 class="modal-title">
-        ¿Está seguro de omitir la validación?
-      </h4>
+      <h4 class="modal-title">¿Está seguro de omitir la validación?</h4>
       <button
         type="button"
         class="close"
