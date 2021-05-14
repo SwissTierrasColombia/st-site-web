@@ -184,6 +184,7 @@ export class WorkspaceComponent implements OnInit {
           observations: '',
           startDate: '',
         };
+        console.log(this.dataCreateWorkSpace);
         this.createActive = false;
         this.createActive2 = false;
         this.viewBotton = false;

@@ -22,6 +22,7 @@ export class SelectComponent implements OnInit {
 
   ngOnInit(): void {}
   _eventAction(): void {
+    console.log(this.optionSelect);
     this.eventAction.emit({
       id: this.idSelect,
       select: this.optionSelect,
