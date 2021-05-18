@@ -1,5 +1,4 @@
-import { selectInterface } from './../../../../shared/models/select.interface';
-import { ValidateMunicipalitiesInterface } from './../../../../models/validateMunicipalities.interface';
+import { ValidateMunicipalitiesInterface } from './../../../models/validateMunicipalities.interface';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';

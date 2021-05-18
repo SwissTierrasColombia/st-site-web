@@ -21,7 +21,7 @@ const routes: Routes = [
       {
         path: 'insumos',
         loadChildren: () =>
-          import('./sections/supplies/insumos.module').then(
+          import('../sections/supplies/insumos.module').then(
             (m) => m.InsumosModule
           ),
       },
@@ -29,14 +29,14 @@ const routes: Routes = [
         path: 'gestion',
         loadChildren: () =>
           import(
-            './sections/municipality-management/gestion-municipio.module'
+            '../sections/municipality-management/gestion-municipio.module'
           ).then((m) => m.GestionMunicipioModule),
         canActivate: [RoleAdminManagerGuard],
       },
       {
         path: 'administrador',
         loadChildren: () =>
-          import('./sections/administrator/administrador.module').then(
+          import('../sections/administrator/administrador.module').then(
             (m) => m.AdministradorModule
           ),
         canActivate: [AdministrationGuard],
@@ -44,14 +44,14 @@ const routes: Routes = [
       {
         path: 'cuenta',
         loadChildren: () =>
-          import('./sections/account/account.module').then(
+          import('../sections/account/account.module').then(
             (m) => m.AccountModule
           ),
       },
       {
         path: 'operador',
         loadChildren: () =>
-          import('./sections/operation/operacion.module').then(
+          import('../sections/operation/operacion.module').then(
             (m) => m.OperacionModule
           ),
         canActivate: [RoleOperatorGuard],
