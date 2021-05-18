@@ -12,23 +12,16 @@
       <form action="" method="post">
         <div class="row mb-2">
           <div class="col-12 col-sm-6 mb-2">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label class="input-group-text">* Gestor</label>
-              </div>
-              <select
-                class="custom-select"
-                name="managers"
-                id="managers"
-                [(ngModel)]="dataCreateWorkSpace.managerCode"
-                (change)="changeDepartament()"
-              >
-                <option value="0" selected>Seleccione el Gestor</option>
-                <option [ngValue]="item.id" *ngFor="let item of activeManagers">
-                  {{ item.alias }}
-                </option>
-              </select>
-            </div>
+            <app-select
+              [labelSelect]="'* Gestor'"
+              [nameSelect]="'managers'"
+              [idSelect]="'managers'"
+              [optionZero]="'Seleccione el Gestor'"
+              [listSelect]="activeManagers"
+              [key]="'alias'"
+              [(inputModel)]="dataCreateWorkSpace.managerCode"
+              (change)="changeDepartament()"
+            ></app-select>
           </div>
           <div class="col-12 col-sm-6 mb-2">
             <div class="input-group">
@@ -45,25 +38,16 @@
             </div>
           </div>
           <div class="col-12 col-sm-6 mb-1">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label class="input-group-text" aria-required="true"
-                  >* Departamento</label
-                >
-              </div>
-              <select
-                (change)="changeDepartament()"
-                class="custom-select"
-                name="departments"
-                id="departments"
-                [(ngModel)]="dataCreateWorkSpace.selectDepartment"
-              >
-                <option value="0" selected>Seleccione el Departamento</option>
-                <option [ngValue]="item.id" *ngFor="let item of departments">
-                  {{ item.name }}
-                </option>
-              </select>
-            </div>
+            <app-select
+              [labelSelect]="'* Departamento'"
+              [nameSelect]="'departments'"
+              [idSelect]="'departments'"
+              [optionZero]="'Seleccione el Departamento'"
+              [listSelect]="departments"
+              [key]="'name'"
+              [(inputModel)]="dataCreateWorkSpace.selectDepartment"
+              (change)="changeDepartament()"
+            ></app-select>
           </div>
           <div class="col-12 col-md-5 mb-1">
             <div class="input-group">

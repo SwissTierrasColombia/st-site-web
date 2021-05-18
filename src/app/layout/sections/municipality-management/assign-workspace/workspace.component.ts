@@ -1,3 +1,4 @@
+import { selectInterface } from './../../../../shared/models/select.interface';
 import { ValidateMunicipalitiesInterface } from './../../../../models/validateMunicipalities.interface';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
@@ -186,7 +187,8 @@ export class WorkspaceComponent implements OnInit {
     }
   }
   validateMunicipalities(modal: any) {
-    const validateMunicipalities = this.dataCreateWorkSpace.municipalityId.join();
+    const validateMunicipalities =
+      this.dataCreateWorkSpace.municipalityId.join();
     this.cadastralAuthorityService
       .validateMunicipalities(validateMunicipalities)
       .subscribe((element: ValidateMunicipalitiesInterface[]) => {

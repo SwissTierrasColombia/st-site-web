@@ -1,0 +1,19 @@
+<div class="input-group">
+  <div class="input-group-prepend">
+    <label class="input-group-text" aria-required="true">{{
+      labelSelect
+    }}</label>
+  </div>
+  <select
+    class="custom-select"
+    [name]="nameSelect"
+    [id]="idSelect"
+    [(ngModel)]="inputModel"
+    (ngModelChange)="inputModelChange.emit(inputModel)"
+  >
+    <option value="0" selected>{{ optionZero }}</option>
+    <option [ngValue]="item.id" *ngFor="let item of listSelect">
+      {{ item[key] }}
+    </option>
+  </select>
+</div>

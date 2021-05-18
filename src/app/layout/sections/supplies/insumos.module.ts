@@ -8,7 +8,6 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { BsComponentModule } from '../../bs-component/bs-component.module';
 import { NgSelect2Module } from 'ng-select2';
 import { PreviewComponent } from '../../components/preview/preview.component';
 import { AtendidaComponent } from './attended/atendida.component';
@@ -61,7 +60,6 @@ import { DeliveryManagerComponent } from './delivery-manager/delivery-manager.co
     NgxPaginationModule,
     NgbModule,
     Ng2SearchPipeModule,
-    BsComponentModule,
     NgSelect2Module,
   ],
   bootstrap: [IntegracionComponent],

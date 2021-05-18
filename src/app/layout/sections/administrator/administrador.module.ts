@@ -9,7 +9,6 @@ import { PageHeaderModule } from 'src/app/shared';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { BsComponentModule } from '../../bs-component/bs-component.module';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { ProfilesComponent } from './profiles/profiles.component';
 import { GestorComponent } from './manager/gestor.component';
@@ -36,7 +35,6 @@ import { NgSelect2Module } from 'ng-select2';
     NgbModule,
     NgxPaginationModule,
     Ng2SearchPipeModule,
-    BsComponentModule,
     NgSelect2Module,
   ],
   providers: [FuntionsGlobalsHelper],

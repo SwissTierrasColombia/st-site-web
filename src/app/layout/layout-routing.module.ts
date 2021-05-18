@@ -19,13 +19,6 @@ const routes: Routes = [
           import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
       {
-        path: 'components',
-        loadChildren: () =>
-          import('./bs-component/bs-component.module').then(
-            (m) => m.BsComponentModule
-          ),
-      },
-      {
         path: 'insumos',
         loadChildren: () =>
           import('./sections/supplies/insumos.module').then(
