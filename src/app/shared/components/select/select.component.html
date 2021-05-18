@@ -5,11 +5,11 @@
     }}</label>
   </div>
   <select
-    (change)="_eventAction()"
     class="custom-select"
     [name]="nameSelect"
     [id]="idSelect"
-    [(ngModel)]="optionSelect"
+    [(ngModel)]="inputModel"
+    (ngModelChange)="inputModelChange.emit(inputModel)"
   >
     <option value="0" selected>{{ optionZero }}</option>
     <option [ngValue]="item.id" *ngFor="let item of listSelect">

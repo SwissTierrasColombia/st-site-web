@@ -16,10 +16,10 @@
               [labelSelect]="'* Gestor'"
               [nameSelect]="'managers'"
               [idSelect]="'managers'"
-              (eventAction)="select($event)"
               [optionZero]="'Seleccione el Gestor'"
               [listSelect]="activeManagers"
               [key]="'alias'"
+              [(inputModel)]="dataCreateWorkSpace.managerCode"
               (change)="changeDepartament()"
             ></app-select>
           </div>
@@ -42,10 +42,10 @@
               [labelSelect]="'* Departamento'"
               [nameSelect]="'departments'"
               [idSelect]="'departments'"
-              (eventAction)="select($event)"
               [optionZero]="'Seleccione el Departamento'"
               [listSelect]="departments"
               [key]="'name'"
+              [(inputModel)]="dataCreateWorkSpace.selectDepartment"
               (change)="changeDepartament()"
             ></app-select>
           </div>

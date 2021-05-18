@@ -90,14 +90,6 @@ export class WorkspaceComponent implements OnInit {
       this.departments = response;
     });
   }
-  select($event: selectInterface) {
-    if ($event.id === 'managers') {
-      this.dataCreateWorkSpace.managerCode = $event.select;
-    }
-    if ($event.id === 'departments') {
-      this.dataCreateWorkSpace.selectDepartment = $event.select;
-    }
-  }
   docSoport(file: File) {
     this.changeData();
     if (file[0].size / 1024 / 1024 <= environment.sizeFile) {
@@ -184,7 +176,6 @@ export class WorkspaceComponent implements OnInit {
           observations: '',
           startDate: '',
         };
-        console.log(this.dataCreateWorkSpace);
         this.createActive = false;
         this.createActive2 = false;
         this.viewBotton = false;

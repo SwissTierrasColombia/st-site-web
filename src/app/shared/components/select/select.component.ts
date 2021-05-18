@@ -13,19 +13,8 @@ export class SelectComponent implements OnInit {
   @Input() optionZero: string;
   @Input() listSelect: any;
   @Input() key: any;
-  @Output() eventAction = new EventEmitter();
-  optionSelect: number;
-  constructor() {
-    this.listSelect = [];
-    this.optionSelect = 0;
-  }
-
+  @Input() inputModel: string;
+  @Output() inputModelChange = new EventEmitter<string>();
+  constructor() {}
   ngOnInit(): void {}
-  _eventAction(): void {
-    console.log(this.optionSelect);
-    this.eventAction.emit({
-      id: this.idSelect,
-      select: this.optionSelect,
-    } as selectInterface);
-  }
 }
