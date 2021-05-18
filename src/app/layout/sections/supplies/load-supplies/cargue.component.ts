@@ -98,13 +98,12 @@ export class CargueComponent implements OnInit, AfterViewInit {
           }
         }
       );
-      this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter(
-        (item: any) => {
+      this.closeRequestButtonArray =
+        this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
           if (item.state.id === 1 || item.state.id === 5) {
             return item.state;
           }
-        }
-      );
+        });
       if (
         this.dataRequestPending[0].suppliesRequested.length ===
         this.closeRequestButtonArray.length
@@ -119,15 +118,12 @@ export class CargueComponent implements OnInit, AfterViewInit {
           index2 < this.dataRequestPending[index].suppliesRequested.length;
           index2++
         ) {
-          this.dataRequestPending[index].suppliesRequested[
-            index2
-          ].type = this.clone(this.type);
-          this.dataRequestPending[index].suppliesRequested[
-            index2
-          ].button = this.clone(this.button);
-          this.dataRequestPending[index].suppliesRequested[
-            index2
-          ].preview = false;
+          this.dataRequestPending[index].suppliesRequested[index2].type =
+            this.clone(this.type);
+          this.dataRequestPending[index].suppliesRequested[index2].button =
+            this.clone(this.button);
+          this.dataRequestPending[index].suppliesRequested[index2].preview =
+            false;
           // tslint:disable-next-line:prefer-for-of
           for (
             let index3 = 0;
@@ -136,18 +132,17 @@ export class CargueComponent implements OnInit, AfterViewInit {
               .extensions.length;
             index3++
           ) {
-            this.dataRequestPending[index].suppliesRequested[
-              index2
-            ].format = this.dataRequestPending[index].suppliesRequested[
-              index2
-            ].typeSupply.extensions
-              .map(
-                // tslint:disable-next-line:only-arrow-functions
-                function (elem: any) {
-                  return '.' + elem.name;
-                }
-              )
-              .join(',');
+            this.dataRequestPending[index].suppliesRequested[index2].format =
+              this.dataRequestPending[index].suppliesRequested[
+                index2
+              ].typeSupply.extensions
+                .map(
+                  // tslint:disable-next-line:only-arrow-functions
+                  function (elem: any) {
+                    return '.' + elem.name;
+                  }
+                )
+                .join(',');
             this.dataRequestPending[index].suppliesRequested[index2].format =
               this.dataRequestPending[index].suppliesRequested[index2].format +
               ',.zip';
@@ -156,9 +151,8 @@ export class CargueComponent implements OnInit, AfterViewInit {
               this.dataRequestPending[index].suppliesRequested[index2]
                 .typeSupply.extensions[index3].name === 'xtf'
             ) {
-              this.dataRequestPending[index].suppliesRequested[
-                index2
-              ].xtf = this.clone(this.xtf);
+              this.dataRequestPending[index].suppliesRequested[index2].xtf =
+                this.clone(this.xtf);
               this.dataRequestPending[index].suppliesRequested[index2].type = [
                 {
                   name: 'Archivo',
@@ -175,16 +169,16 @@ export class CargueComponent implements OnInit, AfterViewInit {
               this.dataRequestPending[index].suppliesRequested[index2].state
                 .id === 1
             ) {
-              this.dataRequestPending[index].suppliesRequested[
-                index2
-              ].preview = true;
+              this.dataRequestPending[index].suppliesRequested[index2].preview =
+                true;
             }
           }
         }
       }
-      this.dataRequestPending[0].suppliesRequested = this.dataRequestPending[0].suppliesRequested.sort(
-        (a, b) => a.id - b.id
-      );
+      this.dataRequestPending[0].suppliesRequested =
+        this.dataRequestPending[0].suppliesRequested.sort(
+          (a, b) => a.id - b.id
+        );
     });
   }
   formatDate(date: string) {
@@ -226,9 +220,10 @@ export class CargueComponent implements OnInit, AfterViewInit {
       let re = /zip*/;
       if (files[0].type.match(re)) {
         const formato = files[0].name.split('.').pop();
-        let formatoPermitido = this.dataRequestPending[idOut].suppliesRequested[
-          idInt
-        ].format.split(',');
+        let formatoPermitido =
+          this.dataRequestPending[idOut].suppliesRequested[idInt].format.split(
+            ','
+          );
         formatoPermitido = formatoPermitido.map(
           // tslint:disable-next-line:only-arrow-functions
           function (elem: any) {
@@ -261,9 +256,10 @@ export class CargueComponent implements OnInit, AfterViewInit {
           this.myInputVariable.nativeElement.value = '';
         } else {
           const formato = files[0].name.split('.').pop();
-          let formatoPermitido = this.dataRequestPending[
-            idOut
-          ].suppliesRequested[idInt].format.split(',');
+          let formatoPermitido =
+            this.dataRequestPending[idOut].suppliesRequested[
+              idInt
+            ].format.split(',');
           formatoPermitido = formatoPermitido.map(
             // tslint:disable-next-line:only-arrow-functions
             function (elem: any) {
@@ -299,9 +295,8 @@ export class CargueComponent implements OnInit, AfterViewInit {
   validsendFile(idOut: number, idInt: number) {
     if (this.dataRequestPending[idOut].suppliesRequested[idInt].observations) {
       if (this.dataRequestPending[idOut].suppliesRequested[idInt].file) {
-        this.dataRequestPending[idOut].suppliesRequested[
-          idInt
-        ].button.status = false;
+        this.dataRequestPending[idOut].suppliesRequested[idInt].button.status =
+          false;
       } else {
         this.toastr.error(
           'Por favor sube el archivo en alguno de los siguientes formatos: ' +
@@ -326,29 +321,25 @@ export class CargueComponent implements OnInit, AfterViewInit {
       if (
         this.dataRequestPending[idOut].suppliesRequested[idInt].observations
       ) {
-        this.dataRequestPending[idOut].suppliesRequested[
-          idInt
-        ].button.status = false;
+        this.dataRequestPending[idOut].suppliesRequested[idInt].button.status =
+          false;
       } else {
         this.toastr.info('La observación es obligatoria');
       }
     } else {
-      this.dataRequestPending[idOut].suppliesRequested[
-        idInt
-      ].button.status = true;
+      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status =
+        true;
       this.toastr.error('La URL no es correcta.');
     }
   }
 
   intoValidJustification(idOut: number, idInt: number) {
     if (this.dataRequestPending[idOut].suppliesRequested[idInt].justification) {
-      this.dataRequestPending[idOut].suppliesRequested[
-        idInt
-      ].button.status = false;
+      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status =
+        false;
     } else {
-      this.dataRequestPending[idOut].suppliesRequested[
-        idInt
-      ].button.status = true;
+      this.dataRequestPending[idOut].suppliesRequested[idInt].button.status =
+        true;
     }
   }
   send(idSolicitud: string, item: any, idOut: number, idInt: number) {
@@ -420,22 +411,19 @@ export class CargueComponent implements OnInit, AfterViewInit {
             ];
           }
         }
-        this.dataRequestPending[idOut].suppliesRequested[idInt] = this.clone(
-          response
-        );
+        this.dataRequestPending[idOut].suppliesRequested[idInt] =
+          this.clone(response);
         for (let sr of this.dataRequestPending[idOut].suppliesRequested) {
           this.dataRequestPending[0].suppliesRequested[idInt].preview = true;
-          this.fileUrl = this.dataRequestPending[0].suppliesRequested[
-            idInt
-          ].url;
+          this.fileUrl =
+            this.dataRequestPending[0].suppliesRequested[idInt].url;
         }
-        this.closeRequestButtonArray = this.dataRequestPending[0].suppliesRequested.filter(
-          (item: any) => {
+        this.closeRequestButtonArray =
+          this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
             if (item.state.id === 1 || item.state.id === 5) {
               return item.state;
             }
-          }
-        );
+          });
         if (
           this.dataRequestPending[0].suppliesRequested.length ===
           this.closeRequestButtonArray.length
@@ -458,19 +446,16 @@ export class CargueComponent implements OnInit, AfterViewInit {
     delete this.dataRequestPending[idOut].suppliesRequested[idInt]
       .justification;
     if (item.type.file === this.typeDataFieldModel.typeDataFile) {
-      this.dataRequestPending[idOut].suppliesRequested[
-        idInt
-      ].typeData = this.typeDataFieldModel.typeDataFile;
+      this.dataRequestPending[idOut].suppliesRequested[idInt].typeData =
+        this.typeDataFieldModel.typeDataFile;
     }
     if (item.type.file === this.typeDataFieldModel.typeDataUrl) {
-      this.dataRequestPending[idOut].suppliesRequested[
-        idInt
-      ].typeData = this.typeDataFieldModel.typeDataUrl;
+      this.dataRequestPending[idOut].suppliesRequested[idInt].typeData =
+        this.typeDataFieldModel.typeDataUrl;
     }
     if (item.type.file === this.typeDataFieldModel.typeDataNone) {
-      this.dataRequestPending[idOut].suppliesRequested[
-        idInt
-      ].typeData = this.typeDataFieldModel.typeDataNone;
+      this.dataRequestPending[idOut].suppliesRequested[idInt].typeData =
+        this.typeDataFieldModel.typeDataNone;
     }
   }
   getEntity(item: any) {
