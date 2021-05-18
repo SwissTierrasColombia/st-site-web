@@ -2,8 +2,8 @@ import { ValidateMunicipalitiesInterface } from './../../../models/validateMunic
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
-import { JwtHelper } from 'src/app/helpers/jwt';
-import { RoleModel } from 'src/app/helpers/role.model';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
+import { RoleModel } from 'src/app/shared/helpers/role.model';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';

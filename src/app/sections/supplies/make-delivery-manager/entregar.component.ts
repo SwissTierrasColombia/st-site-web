@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { JwtHelper } from 'src/app/helpers/jwt';
-import { RoleModel } from 'src/app/helpers/role.model';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
+import { RoleModel } from 'src/app/shared/helpers/role.model';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
+import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({

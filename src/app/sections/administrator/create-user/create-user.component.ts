@@ -3,9 +3,9 @@ import { ManagersService } from 'src/app/services/managers/managers.service';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ToastrService } from 'ngx-toastr';
-import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
+import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
-import { JwtHelper } from 'src/app/helpers/jwt';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-create-user',

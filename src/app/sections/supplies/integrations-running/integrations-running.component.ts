@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
+import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 

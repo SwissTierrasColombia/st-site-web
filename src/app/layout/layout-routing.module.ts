@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { AuthGuard } from '../shared/guard/auth.guard';
-import { RoleAdminManagerGuard } from '../guards/role-admin-manager-guard.service';
-import { RoleOperatorGuard } from '../guards/role-operator-guard.service';
-import { AdministrationGuard } from '../guards/administration-guard.service';
+import { RoleAdminManagerGuard } from '../shared/guard/role-admin-manager-guard.service';
+import { RoleOperatorGuard } from '../shared/guard/role-operator-guard.service';
+import { AdministrationGuard } from '../shared/guard/administration-guard.service';
 
 const routes: Routes = [
   {

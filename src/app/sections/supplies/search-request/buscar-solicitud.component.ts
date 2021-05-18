@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
+import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { JwtHelper } from 'src/app/helpers/jwt';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

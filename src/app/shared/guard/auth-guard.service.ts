@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { LoginService } from '../services/auth/login.service';
+import { LoginService } from '../../services/auth/login.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable({
   providedIn: 'root',

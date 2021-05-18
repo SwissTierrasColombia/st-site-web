@@ -4,11 +4,11 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { ListUserComponent } from './list-user/list-user.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { ProfilesComponent } from './profiles/profiles.component';
-import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-guard.service';
+import { RoleProviderDirectorGuard } from 'src/app/shared/guard/role-providerDirector-guard.service';
 import { GestorComponent } from './manager/gestor.component';
 import { OperadorComponent } from './operator/operador.component';
 import { ProveedorComponent } from './provider/proveedor.component';
-import { RoleAdminGuard } from 'src/app/guards/role-admin-guard.service';
+import { RoleAdminGuard } from 'src/app/shared/guard/role-admin-guard.service';
 
 const routes: Routes = [
   {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { JwtHelper } from 'src/app/helpers/jwt';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ToastrService } from 'ngx-toastr';
 

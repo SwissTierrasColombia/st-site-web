@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FuntionsGlobalsHelper } from 'src/app/helpers/funtionsGlobals';
+import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { JwtHelper } from 'src/app/helpers/jwt';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationService } from 'src/app/services/administration/administration.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';

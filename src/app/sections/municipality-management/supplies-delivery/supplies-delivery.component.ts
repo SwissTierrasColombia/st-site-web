@@ -6,8 +6,8 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import { SuppliesService } from 'src/app/services/supplies/supplies.service';
 import * as _moment from 'moment';
 import { ManagersService } from 'src/app/services/managers/managers.service';
-import { JwtHelper } from 'src/app/helpers/jwt';
-import { RoleModel } from 'src/app/helpers/role.model';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
+import { RoleModel } from 'src/app/shared/helpers/role.model';
 
 const moment = _moment;
 

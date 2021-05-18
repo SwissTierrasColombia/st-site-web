@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ToastrService } from 'ngx-toastr';
-import { JwtHelper } from 'src/app/helpers/jwt';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmailValidator } from '@angular/forms';

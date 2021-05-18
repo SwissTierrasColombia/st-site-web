@@ -4,8 +4,8 @@ import { WorkspacesService } from 'src/app/services/workspaces/workspaces.servic
 import * as _moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
-import { JwtHelper } from 'src/app/helpers/jwt';
-import { RoleModel } from 'src/app/helpers/role.model';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
+import { RoleModel } from 'src/app/shared/helpers/role.model';
 import { saveAs } from 'file-saver';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';

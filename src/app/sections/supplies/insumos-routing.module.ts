@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RoleManagerGuard } from 'src/app/guards/role-manager-guard.service';
-import { RoleProviderGuard } from 'src/app/guards/role-provider-guard.service';
-import { RoleProviderDirectorGuard } from 'src/app/guards/role-providerDirector-guard.service';
-import { RoleRevisorGuard } from 'src/app/guards/role-revisor-guard.service';
+import { RoleManagerGuard } from 'src/app/shared/guard/role-manager-guard.service';
+import { RoleProviderGuard } from 'src/app/shared/guard/role-provider-guard.service';
+import { RoleProviderDirectorGuard } from 'src/app/shared/guard/role-providerDirector-guard.service';
+import { RoleRevisorGuard } from 'src/app/shared/guard/role-revisor-guard.service';
 import { AtendidaComponent } from './attended/atendida.component';
 import { CrearTipoInsumoComponent } from './create-supplie-type/crear-tipo-insumo.component';
 import { EntregarComponent } from './make-delivery-manager/entregar.component';
