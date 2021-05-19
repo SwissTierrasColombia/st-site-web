@@ -3,6 +3,7 @@ import { makeDeliveryToManagerInterface } from './../../sections/quality-module/
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { findProductsFromManagerInterface } from 'src/app/sections/quality-module/models/find-products-from-manager.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,8 @@ export class QualityService {
   /**
    * findProductsFromManager
    */
-  public findProductsFromManager(manager: number) {
-    return this.httpClient.get(
+  public findProductsFromManager(manager: string) {
+    return this.httpClient.get<findProductsFromManagerInterface[]>(
       this.url + '/quality/v1/products?manager=' + manager
     );
   }
@@ -56,7 +57,7 @@ export class QualityService {
     deliveryId: number,
     productId: addProductToDeliveryInterface
   ) {
-    return this.httpClient.put(
+    return this.httpClient.post(
       this.url + '/quality/v1/deliveries/' + deliveryId + '/products',
       productId
     );

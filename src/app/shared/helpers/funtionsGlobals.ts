@@ -5,7 +5,6 @@ const moment = _moment;
 
 @Injectable()
 export class FuntionsGlobalsHelper {
-
   static clone(obj: any) {
     return JSON.parse(JSON.stringify(obj));
   }

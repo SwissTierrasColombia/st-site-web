@@ -11,7 +11,9 @@
     [(ngModel)]="inputModel"
     (ngModelChange)="inputModelChange.emit(inputModel)"
   >
-    <option value="0" selected>{{ optionZero }}</option>
+    <option value="0" selected [disabled]="disableOptionZero">
+      {{ optionZero }}
+    </option>
     <option [ngValue]="item.id" *ngFor="let item of listSelect">
       {{ item[key] }}
     </option>

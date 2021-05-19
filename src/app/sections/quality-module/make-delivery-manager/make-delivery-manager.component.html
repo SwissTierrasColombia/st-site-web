@@ -1,4 +1,4 @@
-<app-page-header [heading]="'Hacer entrega al gestor'" [icon]="'fa-star'">
+<app-page-header [heading]="'Crear entrega'" [icon]="'fa-star'">
 </app-page-header>
 <div class="card">
   <div class="card-header"></div>
@@ -7,20 +7,85 @@
       <div class="col-12 mb-1">
         <app-select
           [labelSelect]="'* Gestor - Municipio'"
-          [nameSelect]="'managers'"
-          [idSelect]="'managers'"
+          [nameSelect]="'managersAndMunicipality'"
+          [idSelect]="'managersAndMunicipality'"
           [optionZero]="'Seleccione el Gestor - Municipio'"
           [listSelect]="listManagerWithMunicipality"
           [key]="'option'"
           [(inputModel)]="managerCodeAndMunicipality"
+          (change)="managersAndMunicipality()"
         ></app-select>
       </div>
-      <div class="col-12">
+      <div class="col-12 mb-1" *ngIf="dataProductsFromManager.length > 0">
         <app-observation
           [title]="'* Observaciones'"
           [id]="'observation'"
           [(inputModel)]="dataMakeDeliveryToManager.observations"
+          (change)="change()"
         ></app-observation>
+      </div>
+      <div
+        class="col-12 col-md-12 mb-1"
+        *ngIf="dataProductsFromManager.length > 0"
+      >
+        <div class="table-inverse table-responsive">
+          <table class="table table-striped text-center">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Nº</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>XTF</th>
+                <th>Fecha</th>
+                <th>Selección</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let item of dataProductsFromManager; let index = index"
+              >
+                <td scope="row">{{ index + 1 }}</td>
+                <td scope="row">{{ item.name }}</td>
+                <td scope="row">{{ item.description }}</td>
+                <td scope="row">{{ item.isXTF }}</td>
+                <td scope="row">
+                  {{ formatDate(item.createdAt) }}
+                </td>
+                <td scope="row">
+                  <app-input
+                    [id]="'selectProduct'"
+                    [type]="'checkbox'"
+                    (change)="buildDeliveredProducts(item)"
+                  ></app-input>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div
+        *ngIf="
+          dataProductsFromManager.length === 0 &&
+          dataMakeDeliveryToManager.managerCode != '0'
+        "
+        class="col-12"
+      >
+        <div class="alert alert-primary text-center" role="alert">
+          No existen productos.
+        </div>
+      </div>
+      <div
+        class="col-12 text-center"
+        *ngIf="dataProductsFromManager.length > 0"
+      >
+        <button
+          type="button"
+          class="btn btn-dark"
+          (click)="openModalCreateDelivery()"
+          [disabled]="!createActive"
+        >
+          Crear entrega
+        </button>
       </div>
     </div>
   </div>

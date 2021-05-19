@@ -11,6 +11,7 @@ export class SelectComponent implements OnInit {
   @Input() nameSelect: string;
   @Input() idSelect: string;
   @Input() optionZero: string;
+  @Input() disableOptionZero: boolean = true;
   @Input() listSelect: any;
   @Input() key: any;
   @Input() inputModel: string;

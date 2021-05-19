@@ -1,0 +1,13 @@
+<div class="input-group">
+  <div class="input-group-prepend" *ngIf="title">
+    <label class="input-group-text">{{ title }}</label>
+  </div>
+  <input
+    [id]="id"
+    [type]="type"
+    [min]="min"
+    [max]="max"
+    [(ngModel)]="inputModel"
+    (ngModelChange)="inputModelChange.emit(inputModel)"
+  />
+</div>
