@@ -132,6 +132,7 @@
                     name="insumos"
                     id="insumos"
                     [(ngModel)]="selectSupplies"
+                    (change)="change()"
                   >
                     <option value="0" selected>Seleccione el insumo</option>
                     <option
@@ -155,6 +156,7 @@
                     rows="3"
                     name="observaciones"
                     [(ngModel)]="observations"
+                    (change)="change()"
                   ></textarea>
                 </div>
               </div>
@@ -163,7 +165,8 @@
                   type="button"
                   name="agregar"
                   id="agregar"
-                  class="btn btn-primary btn-sm btn-block"
+                  class="btn btn-dark btn-sm btn-block"
+                  [disabled]="!isActiveButtonAdd"
                   (click)="agregar()"
                 >
                   Agregar
@@ -342,11 +345,7 @@
                   id="OrderPackageLabel"
                   ><strong>{{ dataOrder[0].packageLabel }}</strong></span
                 >
-                <span
-                  ngbTooltip="Copiar"
-                  placement="top"
-                  show-delay="500"
-                >
+                <span ngbTooltip="Copiar" placement="top" show-delay="500">
                   <span
                     class="material-icons ml-2"
                     (click)="myFunctionCopyOrder(dataOrder[0].packageLabel)"

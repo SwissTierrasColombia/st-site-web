@@ -1,0 +1,14 @@
+<div class="input-group">
+  <div class="input-group-prepend input-group-text">
+    <div class="">{{ title }}</div>
+  </div>
+  <textarea
+    [maxlength]="maxLength"
+    class="form-control"
+    [id]="id"
+    [rows]="rows"
+    [name]="name"
+    [(ngModel)]="inputModel"
+    (ngModelChange)="inputModelChange.emit(inputModel)"
+  ></textarea>
+</div>

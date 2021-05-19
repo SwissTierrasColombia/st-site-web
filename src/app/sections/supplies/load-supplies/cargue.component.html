@@ -251,7 +251,17 @@
                   {{ supp.button.status ? "Insumo Cargado" : "Reenviar" }}
                 </button>
                 <div *ngIf="supp.valid !== null && !supp.valid">
-                  <span class="badge badge-warning"> Validado con errores </span>
+                  <span class="badge badge-warning">
+                    Validado con errores
+                  </span>
+                </div>
+                <div
+                  *ngIf="supp.errors !== null"
+                  id="logsXTF{{ idOut }}{{ idInt }}"
+                  class="logsXTF"
+                  (click)="openModalErrorXTF(modalError, supp)"
+                >
+                  <small><u> Ver log </u></small>
                 </div>
                 <!-- <app-preview *ngIf="supp.preview" [url]="supp.url" [version]="supp.modelVersion?supp.modelVersion:''">
                 </app-preview> -->

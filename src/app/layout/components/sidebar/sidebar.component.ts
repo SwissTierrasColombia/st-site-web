@@ -43,6 +43,7 @@ export class SidebarComponent implements OnInit {
     this.listMenu = {
       gestion: 'gestion',
       insumos: 'insumos',
+      quality: 'quality',
       administrador: 'administrador',
     };
     this.allroles = {};

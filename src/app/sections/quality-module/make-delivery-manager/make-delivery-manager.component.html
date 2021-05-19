@@ -1,0 +1,28 @@
+<app-page-header [heading]="'Hacer entrega al gestor'" [icon]="'fa-star'">
+</app-page-header>
+<div class="card">
+  <div class="card-header"></div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 mb-1">
+        <app-select
+          [labelSelect]="'* Gestor - Municipio'"
+          [nameSelect]="'managers'"
+          [idSelect]="'managers'"
+          [optionZero]="'Seleccione el Gestor - Municipio'"
+          [listSelect]="listManagerWithMunicipality"
+          [key]="'option'"
+          [(inputModel)]="managerCodeAndMunicipality"
+        ></app-select>
+      </div>
+      <div class="col-12">
+        <app-observation
+          [title]="'* Observaciones'"
+          [id]="'observation'"
+          [(inputModel)]="dataMakeDeliveryToManager.observations"
+        ></app-observation>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"></div>
+</div>

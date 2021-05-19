@@ -38,6 +38,7 @@ export class SolicitudComponent implements OnInit {
   dataOrder: any;
   petitionsForManager: any;
   providerIdPetition: string;
+  isActiveButtonAdd: boolean;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private serviceProviders: ProvidersService,
@@ -82,6 +83,7 @@ export class SolicitudComponent implements OnInit {
     this.dataOrder = [];
     this.petitionsForManager = [];
     this.providerIdPetition = '0';
+    this.isActiveButtonAdd = false;
   }
   ngOnInit() {
     this.activedRoute.params.subscribe((response) => {
@@ -118,6 +120,16 @@ export class SolicitudComponent implements OnInit {
     this.serviceWorkspaces.GetTypesModels().subscribe((response) => {
       this.listModels = response;
     });
+  }
+  change() {
+    this.isActiveButtonAdd = false;
+    if (
+      this.selectProvider != 0 &&
+      this.selectSupplies != 0 &&
+      this.observations != ''
+    ) {
+      this.isActiveButtonAdd = true;
+    }
   }
   clone(obj: any) {
     return JSON.parse(JSON.stringify(obj));
@@ -164,6 +176,7 @@ export class SolicitudComponent implements OnInit {
       .getTypeSuppliesByProvider(this.selectProvider.id.toString())
       .subscribe((response) => {
         this.dataSuppliesProvider = response;
+        this.change();
       });
   }
   agregar() {
@@ -231,6 +244,7 @@ export class SolicitudComponent implements OnInit {
     } else {
       this.toastr.error('No ha seleccionado ningún insumo.');
     }
+    this.change();
   }
   delete(item: any) {
     this.tablesupplies = this.tablesupplies.filter((element: any) => {

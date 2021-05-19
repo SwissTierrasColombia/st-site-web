@@ -240,6 +240,32 @@
           </li>
         </ul>
       </li>
+      <a
+        class="list-group-item"
+        (click)="addExpandClass(listMenu.quality)"
+        *ngIf="roleoperador ? roleoperador.id : 0 === allroles.operador"
+      >
+        <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
+        <span>Calidad</span>
+      </a>
+      <li
+        class="nested"
+        [class.expand]="showMenu === listMenu.quality"
+        *ngIf="roleoperador ? roleoperador.id : 0 === allroles.operador"
+      >
+        <ul class="submenu">
+          <li
+            *ngIf="roleoperador ? roleoperador.id : 0 === allroles.operador"
+            (click)="isCollapsed(listMenu.quality)"
+          >
+            <a [routerLink]="['/operador/hacer-entrega-gestor']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Crear</span><br />
+              <span class="ml-4">entrega</span>
+            </a>
+          </li>
+        </ul>
+      </li>
     </div>
     <div class="nested-menu" *ngIf="administration">
       <a

@@ -1,3 +1,4 @@
+import { getWorkspacesByOperatorInterface } from './../../sections/quality-module/models/get-workspaces-by-operator.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -841,6 +842,14 @@ export class WorkspacesService {
   public getOnlyOperatorAssignByWorkspace(workspaceId: number) {
     return this.httpClient.get(
       this.url + '/workspaces/v1/workspaces/' + workspaceId + '/operators'
+    );
+  }
+  /**
+   * getWorkspacesByOperator
+   */
+  public getWorkspacesByOperator() {
+    return this.httpClient.get<getWorkspacesByOperatorInterface[]>(
+      this.url + '/workspaces/v1/workspaces/operators'
     );
   }
 }

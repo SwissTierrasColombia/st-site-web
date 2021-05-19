@@ -56,6 +56,14 @@ const routes: Routes = [
           ),
         canActivate: [RoleOperatorGuard],
       },
+      {
+        path: 'operador',
+        loadChildren: () =>
+          import('../sections/quality-module/quality-module.module').then(
+            (m) => m.QualityModuleModule
+          ),
+        canActivate: [RoleOperatorGuard],
+      },
     ],
   },
 ];
