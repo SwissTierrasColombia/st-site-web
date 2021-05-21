@@ -64,7 +64,10 @@ export class MakeDeliveryManagerComponent implements OnInit {
   }
   change() {
     this.createActive = false;
-    if (this.dataMakeDeliveryToManager.observations) {
+    if (
+      this.managerCodeAndMunicipality != '0' &&
+      this.dataMakeDeliveryToManager.observations
+    ) {
       this.createActive = true;
     }
   }
@@ -104,6 +107,14 @@ export class MakeDeliveryManagerComponent implements OnInit {
       .makeDeliveryToManager(this.dataMakeDeliveryToManager)
       .subscribe((_) => {
         this.toastr.success('Ha creado una entrega');
+        this.managerCodeAndMunicipality = '0';
+        this.dataMakeDeliveryToManager = {
+          deliveredProducts: [],
+          managerCode: '0',
+          municipalityCode: '0',
+          observations: '',
+        };
+        this.change();
       });
   }
 }

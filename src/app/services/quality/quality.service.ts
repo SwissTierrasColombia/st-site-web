@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { findProductsFromManagerInterface } from 'src/app/sections/quality-module/models/find-products-from-manager.interface';
+import { findDeliveriesInterface } from 'src/app/sections/quality-module/models/find-deliveries.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -31,16 +32,36 @@ export class QualityService {
   /**
    * findDeliveries
    */
-  public findDeliveries(states: number, page: number, limit: number) {
-    return this.httpClient.get(
+  public findDeliveries(
+    states: number,
+    page: number,
+    limit: number,
+    municipality?: string,
+    manager?: string,
+    operator?: string,
+    code?: string
+  ) {
+    let url =
       this.url +
-        '/quality/v1/deliveries?states=' +
-        states +
-        '&page=' +
-        page +
-        '&limit=' +
-        limit
-    );
+      '/quality/v1/deliveries?states=' +
+      states +
+      '&page=' +
+      page +
+      '&limit=' +
+      limit;
+    if (code) {
+      url = url + '&code=' + code;
+    }
+    if (municipality) {
+      url = url + '&municipality=' + municipality;
+    }
+    if (operator) {
+      url = url + '&operator=' + operator;
+    }
+    if (manager) {
+      url = url + '&manager=' + manager;
+    }
+    return this.httpClient.get<findDeliveriesInterface>(url);
   }
   /**
    * searchDelivery

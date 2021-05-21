@@ -4,11 +4,14 @@ import { MakeDeliveryManagerComponent } from './make-delivery-manager/make-deliv
 import { QualityModuleRoutingModule } from './quality-module-routing.module';
 import { PageHeaderModule } from 'src/app/shared';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { ViewDeliveriesComponent } from './view-deliveries/view-deliveries.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [MakeDeliveryManagerComponent],
+  declarations: [MakeDeliveryManagerComponent, ViewDeliveriesComponent],
   imports: [
     CommonModule,
+    NgbModule,
     QualityModuleRoutingModule,
     PageHeaderModule,
     ComponentsModule,

@@ -1,7 +1,9 @@
 <app-page-header [heading]="'Crear entrega'" [icon]="'fa-star'">
 </app-page-header>
 <div class="card">
-  <div class="card-header"></div>
+  <div class="card-header text-center">
+    <h3>Crear entrega</h3>
+  </div>
   <div class="card-body">
     <div class="row">
       <div class="col-12 mb-1">
@@ -28,8 +30,8 @@
         class="col-12 col-md-12 mb-1"
         *ngIf="dataProductsFromManager.length > 0"
       >
-        <div class="table-inverse table-responsive">
-          <table class="table table-striped text-center">
+        <div class="table-inverse table-responsive text-center">
+          <table class="table table-striped">
             <thead class="thead-inverse">
               <tr>
                 <th>Nº</th>
@@ -47,12 +49,13 @@
                 <td scope="row">{{ index + 1 }}</td>
                 <td scope="row">{{ item.name }}</td>
                 <td scope="row">{{ item.description }}</td>
-                <td scope="row">{{ item.isXTF }}</td>
+                <td scope="row">{{ item.isXTF ? "Si" : "No" }}</td>
                 <td scope="row">
                   {{ formatDate(item.createdAt) }}
                 </td>
                 <td scope="row">
                   <app-input
+                    [classStyle]="'selectProduct'"
                     [id]="'selectProduct'"
                     [type]="'checkbox'"
                     (change)="buildDeliveredProducts(item)"

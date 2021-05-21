@@ -264,6 +264,16 @@
               <span class="ml-4">entrega</span>
             </a>
           </li>
+          <li
+            *ngIf="roleoperador ? roleoperador.id : 0 === allroles.operador"
+            (click)="isCollapsed(listMenu.quality)"
+          >
+            <a [routerLink]="['/operador/buscar-entregas']">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Buscar</span><br />
+              <span class="ml-4">entregas</span>
+            </a>
+          </li>
         </ul>
       </li>
     </div>

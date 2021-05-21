@@ -11,6 +11,7 @@ export class InputComponent implements OnInit {
   @Input() type: string;
   @Input() min: string;
   @Input() max: string;
+  @Input() classStyle: string;
   @Input() inputModel: number;
   @Output() inputModelChange = new EventEmitter<number>();
   constructor() {}
