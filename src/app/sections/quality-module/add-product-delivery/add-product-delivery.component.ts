@@ -22,6 +22,8 @@ export class AddProductDeliveryComponent implements OnInit {
   dataDelivery: itemDelivery;
   productsFromDelivery: findProductsFromDeliveryInterface[] = [];
   listManagerWithMunicipality: selectInterface[] = [];
+  listProductsDelivery: selectInterface[] = [];
+  selecProductsDelivery: string = '0';
   managerCodeAndMunicipality: string = '0';
   dataProductsFromManager: findProductsFromManagerInterface[] = [];
   optionModalRef: NgbModalRef;
@@ -59,14 +61,17 @@ export class AddProductDeliveryComponent implements OnInit {
           this.dataDelivery.deliveryDate = this.formatDate(
             this.dataDelivery.deliveryDate
           );
+          this.findProductsFromDelivery(params.deliveryId);
           this.qualityService
             .findProductsFromManager(this.dataDelivery.managerCode)
             .subscribe((response) => {
               this.dataProductsFromManager = response;
               this.dataProductsFromManager.forEach((element) => {
-                element.isSelect = false;
+                this.listProductsDelivery.push({
+                  id: element.id.toString(),
+                  option: element.name,
+                });
               });
-              this.findProductsFromDelivery(params.deliveryId);
             });
         });
     });
@@ -76,11 +81,6 @@ export class AddProductDeliveryComponent implements OnInit {
       .findProductsFromDelivery(deliveryId)
       .subscribe((response) => {
         this.productsFromDelivery = response;
-        this.dataProductsFromManager.forEach((element) => {
-          element.isSelect = !!this.productsFromDelivery.find((item) => {
-            return item.productId === element.id ? true : false;
-          });
-        });
       });
   }
   changeIdProduct(item: number, key: string): string {
@@ -110,15 +110,18 @@ export class AddProductDeliveryComponent implements OnInit {
       if (result) {
         if (result.option) {
           this.qualityService
-            .removeProductFromDelivery(this.deliveryId, item.productId)
+            .removeProductFromDelivery(this.deliveryId, item.id)
             .subscribe((_) => {
               this.toastr.success('Ha eliminado un producto');
+              this.productsFromDelivery = this.productsFromDelivery.filter(
+                (element) => element.id != item.id
+              );
             });
         }
       }
     });
   }
-  openAddProductToDelivery(item: findProductsFromManagerInterface) {
+  openAddProductToDelivery() {
     this.optionModalRef = this.modalService.open(ModalComponent, {
       centered: true,
       scrollable: true,
@@ -133,7 +136,7 @@ export class AddProductDeliveryComponent implements OnInit {
       if (result) {
         if (result.option) {
           let product: addProductToDeliveryInterface = {
-            productId: item.id,
+            productId: parseInt(this.selecProductsDelivery),
           };
           this.qualityService
             .addProductToDelivery(this.deliveryId, product)
@@ -141,8 +144,6 @@ export class AddProductDeliveryComponent implements OnInit {
               this.toastr.success('Ha agregado un producto a la entrega');
               this.findProductsFromDelivery(this.deliveryId);
             });
-        } else {
-          item.isSelect = false;
         }
       }
     });

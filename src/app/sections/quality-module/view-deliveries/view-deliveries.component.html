@@ -42,7 +42,7 @@
               <th>código</th>
               <th>Observación</th>
               <th>Fecha</th>
-              <th>Ver Entrega</th>
+              <th>Opciones</th>
             </tr>
           </thead>
           <tbody>
@@ -53,12 +53,20 @@
                 {{ formatDate(item.deliveryDate) }}
               </td>
               <td scope="row">
-                <span ngbTooltip="Ver detalle" placement="top" show-delay="500">
+                <span ngbTooltip="Ver entrega" placement="top" show-delay="500">
                   <i
                     class="material-icons cursor"
                     (click)="viewDetailDelivery(item)"
                   >
                     pageview
+                  </i>
+                </span>
+                <span ngbTooltip="Eliminar" placement="top" show-delay="500">
+                  <i
+                    class="material-icons cursor"
+                    (click)="openModalDeleteDelivery(item)"
+                  >
+                    delete
                   </i>
                 </span>
               </td>

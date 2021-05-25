@@ -1,7 +1,8 @@
 export const statesDeliveriesEnum = {
   BORRADOR: 1,
   ENTREGADO: 2,
-  EN_VALIDACION: 3,
-  ACEPTADO: 4,
-  RECHAZADO: 5,
+  EN_REVISION: 3,
+  EN_CORRECCION: 4,
+  ACEPTADO: 5,
+  RECHAZADO: 6,
 };

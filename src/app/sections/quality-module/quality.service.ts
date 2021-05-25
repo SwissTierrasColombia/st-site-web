@@ -180,4 +180,12 @@ export class QualityService {
         deliveryProductId
     );
   }
+  /**
+   * Remove delivery
+   */
+  public removeDelivery(deliveryId: number) {
+    return this.httpClient.delete(
+      this.url + '/quality/v1/deliveries/' + deliveryId
+    );
+  }
 }

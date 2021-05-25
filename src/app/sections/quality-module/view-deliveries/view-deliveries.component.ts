@@ -10,6 +10,9 @@ import { getWorkspacesByOperatorInterface } from '../models/get-workspaces-by-op
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { Router } from '@angular/router';
 import { QualityService } from './../quality.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-view-deliveries',
@@ -25,10 +28,13 @@ export class ViewDeliveriesComponent implements OnInit {
   page: number = 1;
   totalElements: number = 0;
   pageSize: number = 10;
+  optionModalRef: NgbModalRef;
   constructor(
     private workspacesService: WorkspacesService,
     private qualityService: QualityService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -73,5 +79,26 @@ export class ViewDeliveriesComponent implements OnInit {
   }
   viewDetailDelivery(item: itemDelivery) {
     this.router.navigate(['/operador/entrega/' + item.id]);
+  }
+  openModalDeleteDelivery(item: itemDelivery) {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title = 'Borrar entrega';
+    this.optionModalRef.componentInstance.description =
+      'Va eliminar la entrega.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.qualityService.removeDelivery(item.id).subscribe((_) => {
+            this.toastr.success('Ha eliminado la entrega');
+            this.itemsDelivery = this.itemsDelivery.filter(
+              (element) => element.id !== item.id
+            );
+          });
+        }
+      }
+    });
   }
 }
