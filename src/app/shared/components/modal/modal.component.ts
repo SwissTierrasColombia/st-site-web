@@ -9,7 +9,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ModalComponent implements OnInit {
   @Input() title: String;
   @Input() description: String;
-  @Input() option: boolean;
+  @Input() option: boolean = false;
+  @Input() disableButtonClose: boolean = false;
   constructor(public activeModal: NgbActiveModal) {}
   ngOnInit(): void {}
   closeModal(value: boolean) {

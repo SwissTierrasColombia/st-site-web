@@ -3,6 +3,7 @@
     <span [innerHTML]="title"></span>
   </h4>
   <button
+    *ngIf="!disableButtonClose"
     type="button"
     class="close"
     aria-label="Close"

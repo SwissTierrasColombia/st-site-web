@@ -3,12 +3,14 @@ import {
   itemDelivery,
 } from './../models/find-deliveries.interface';
 import { Component, OnInit } from '@angular/core';
-import { QualityService } from 'src/app/services/quality/quality.service';
 import { statesDeliveriesEnum } from '../models/states-deliveries.enum';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { selectInterface } from 'src/app/shared/models/select.interface';
 import { getWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
+import { Router } from '@angular/router';
+import { QualityService } from './../quality.service';
+
 @Component({
   selector: 'app-view-deliveries',
   templateUrl: './view-deliveries.component.html',
@@ -25,7 +27,8 @@ export class ViewDeliveriesComponent implements OnInit {
   pageSize: number = 10;
   constructor(
     private workspacesService: WorkspacesService,
-    private qualityService: QualityService
+    private qualityService: QualityService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -67,5 +70,8 @@ export class ViewDeliveriesComponent implements OnInit {
   }
   formatDate(date: string) {
     return FuntionsGlobalsHelper.formatDate(date);
+  }
+  viewDetailDelivery(item: itemDelivery) {
+    this.router.navigate(['/operador/entrega/' + item.id]);
   }
 }

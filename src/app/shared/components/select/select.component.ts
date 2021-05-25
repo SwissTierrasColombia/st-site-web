@@ -13,6 +13,7 @@ export class SelectComponent implements OnInit {
   @Input() optionZero: string;
   @Input() disableOptionZero: boolean = true;
   @Input() listSelect: any;
+  @Input() disable: boolean = false;
   @Input() key: any;
   @Input() inputModel: string;
   @Output() inputModelChange = new EventEmitter<string>();

@@ -10,8 +10,8 @@ export interface findDeliveriesInterface {
 export interface itemDelivery {
   id: number;
   code: string;
-  deliveryDate: number;
-  managerCode: number;
+  deliveryDate: string;
+  managerCode: string;
   municipalityCode: string;
   observations: string;
   operatorCode: number;

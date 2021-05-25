@@ -10,6 +10,7 @@
     [id]="idSelect"
     [(ngModel)]="inputModel"
     (ngModelChange)="inputModelChange.emit(inputModel)"
+    [disabled]="disable"
   >
     <option value="0" selected [disabled]="disableOptionZero">
       {{ optionZero }}

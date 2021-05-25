@@ -5,4 +5,5 @@ export interface findProductsFromManagerInterface {
   managerCode: number;
   isXTF: boolean;
   createdAt: number;
+  isSelect: boolean;
 }

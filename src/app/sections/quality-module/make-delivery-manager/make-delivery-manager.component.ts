@@ -1,4 +1,3 @@
-import { QualityService } from './../../../services/quality/quality.service';
 import { makeDeliveryToManagerInterface } from './../models/make-delivery-to-manager.interface';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { Component, OnInit } from '@angular/core';
@@ -9,6 +8,7 @@ import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { ToastrService } from 'ngx-toastr';
+import { QualityService } from './../quality.service';
 
 @Component({
   selector: 'app-make-delivery-manager',

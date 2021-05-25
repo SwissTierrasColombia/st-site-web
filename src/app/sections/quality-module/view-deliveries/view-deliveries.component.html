@@ -40,7 +40,7 @@
           <thead class="thead-inverse">
             <tr>
               <th>código</th>
-              <th>Descripción</th>
+              <th>Observación</th>
               <th>Fecha</th>
               <th>Ver Entrega</th>
             </tr>
@@ -54,7 +54,12 @@
               </td>
               <td scope="row">
                 <span ngbTooltip="Ver detalle" placement="top" show-delay="500">
-                  <i class="material-icons cursor"> pageview </i>
+                  <i
+                    class="material-icons cursor"
+                    (click)="viewDetailDelivery(item)"
+                  >
+                    pageview
+                  </i>
                 </span>
               </td>
             </tr>

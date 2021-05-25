@@ -1,0 +1,150 @@
+import { QualityService } from './../quality.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
+import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
+import { selectInterface } from 'src/app/shared/models/select.interface';
+import { itemDelivery } from '../models/find-deliveries.interface';
+import { findProductsFromDeliveryInterface } from '../models/find-products-from-delivery.interface';
+import { findProductsFromManagerInterface } from '../models/find-products-from-manager.interface';
+import { getWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
+import { addProductToDeliveryInterface } from '../models/add-product-to-delivery.interface';
+import { ToastrService } from 'ngx-toastr';
+
+@Component({
+  selector: 'app-add-product-delivery',
+  templateUrl: './add-product-delivery.component.html',
+  styleUrls: ['./add-product-delivery.component.scss'],
+})
+export class AddProductDeliveryComponent implements OnInit {
+  dataDelivery: itemDelivery;
+  productsFromDelivery: findProductsFromDeliveryInterface[] = [];
+  listManagerWithMunicipality: selectInterface[] = [];
+  managerCodeAndMunicipality: string = '0';
+  dataProductsFromManager: findProductsFromManagerInterface[] = [];
+  optionModalRef: NgbModalRef;
+  deliveryId: number;
+  constructor(
+    private router: Router,
+    private activedRoute: ActivatedRoute,
+    private qualityService: QualityService,
+    private workspacesService: WorkspacesService,
+    private modalService: NgbModal,
+    private toastr: ToastrService
+  ) {}
+
+  ngOnInit(): void {
+    this.workspacesService
+      .getWorkspacesByOperator()
+      .subscribe((response: getWorkspacesByOperatorInterface[]) => {
+        response.forEach((element) => {
+          this.listManagerWithMunicipality.push({
+            id: element.managerCode + ' - ' + element.municipality.code,
+            option: element.manager.alias + ' - ' + element.municipality.name,
+          });
+        });
+      });
+    this.activedRoute.params.subscribe((params: Params) => {
+      this.deliveryId = params.deliveryId;
+      this.qualityService
+        .searchDelivery(params.deliveryId)
+        .subscribe((response) => {
+          this.dataDelivery = response;
+          this.managerCodeAndMunicipality =
+            this.dataDelivery.managerCode +
+            ' - ' +
+            this.dataDelivery.municipalityCode;
+          this.dataDelivery.deliveryDate = this.formatDate(
+            this.dataDelivery.deliveryDate
+          );
+          this.qualityService
+            .findProductsFromManager(this.dataDelivery.managerCode)
+            .subscribe((response) => {
+              this.dataProductsFromManager = response;
+              this.dataProductsFromManager.forEach((element) => {
+                element.isSelect = false;
+              });
+              this.findProductsFromDelivery(params.deliveryId);
+            });
+        });
+    });
+  }
+  findProductsFromDelivery(deliveryId: number) {
+    this.qualityService
+      .findProductsFromDelivery(deliveryId)
+      .subscribe((response) => {
+        this.productsFromDelivery = response;
+        this.dataProductsFromManager.forEach((element) => {
+          element.isSelect = !!this.productsFromDelivery.find((item) => {
+            return item.productId === element.id ? true : false;
+          });
+        });
+      });
+  }
+  changeIdProduct(item: number, key: string): string {
+    if (this.dataProductsFromManager.length > 0) {
+      let product = this.dataProductsFromManager.find(
+        (element) => element.id === item
+      );
+      return product[key];
+    }
+    return '';
+  }
+  goBack() {
+    this.router.navigate(['/operador/buscar-entregas']);
+  }
+  formatDate(date: string) {
+    return FuntionsGlobalsHelper.formatDate(date);
+  }
+  openModaldeleteProduct(item: findProductsFromDeliveryInterface) {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title = 'Borrar producto';
+    this.optionModalRef.componentInstance.description =
+      'Va eliminar un producto de entrega.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.qualityService
+            .removeProductFromDelivery(this.deliveryId, item.productId)
+            .subscribe((_) => {
+              this.toastr.success('Ha eliminado un producto');
+            });
+        }
+      }
+    });
+  }
+  openAddProductToDelivery(item: findProductsFromManagerInterface) {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+      backdrop: 'static',
+      keyboard: false,
+    });
+    this.optionModalRef.componentInstance.title = 'Agregar producto';
+    this.optionModalRef.componentInstance.description =
+      'Va agregar un producto a la entrega.';
+    this.optionModalRef.componentInstance.disableButtonClose = true;
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          let product: addProductToDeliveryInterface = {
+            productId: item.id,
+          };
+          this.qualityService
+            .addProductToDelivery(this.deliveryId, product)
+            .subscribe((_) => {
+              this.toastr.success('Ha agregado un producto a la entrega');
+              this.findProductsFromDelivery(this.deliveryId);
+            });
+        } else {
+          item.isSelect = false;
+        }
+      }
+    });
+  }
+}

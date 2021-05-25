@@ -12,6 +12,7 @@ export class ObservationComponent implements OnInit {
   @Input() rows: number = 3;
   @Input() name: string;
   @Input() inputModel: string;
+  @Input() disabled: boolean = false;
   @Output() inputModelChange = new EventEmitter<string>();
   constructor() {}
 

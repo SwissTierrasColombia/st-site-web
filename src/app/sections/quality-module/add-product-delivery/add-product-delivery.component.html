@@ -1,0 +1,169 @@
+<app-page-header [heading]="'Entrega'" [icon]="'fa-star'"> </app-page-header>
+<div class="card">
+  <div class="card-header">
+    <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+      <i class="material-icons cursor m-2" (click)="goBack()">backspace</i>
+    </span>
+    <div class="text-center">
+      <h3>Entrega</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row" *ngIf="dataDelivery">
+      <div class="col-12 col-md-6 mb-1">
+        <app-input
+          [title]="'Código'"
+          [id]="'code'"
+          [disabled]="true"
+          [(inputModel)]="dataDelivery.code"
+        ></app-input>
+      </div>
+      <div class="col-12 col-md-6 mb-1">
+        <app-input
+          [title]="'Fecha'"
+          [id]="'date'"
+          [disabled]="true"
+          [type]="'text'"
+          [(inputModel)]="dataDelivery.deliveryDate"
+        ></app-input>
+      </div>
+      <div class="col-12 mb-1">
+        <app-select
+          [disableOptionZero]="false"
+          [labelSelect]="'Gestor - Municipio'"
+          [nameSelect]="'managersAndMunicipality'"
+          [idSelect]="'managersAndMunicipality'"
+          [optionZero]="'Seleccione el Gestor - Municipio'"
+          [listSelect]="listManagerWithMunicipality"
+          [key]="'option'"
+          [(inputModel)]="managerCodeAndMunicipality"
+          [disable]="true"
+        ></app-select>
+      </div>
+      <div class="col-12 mb-1">
+        <app-observation
+          [title]="'Observación'"
+          [id]="'observations'"
+          [disabled]="true"
+          [(inputModel)]="dataDelivery.observations"
+        ></app-observation>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="card-header">
+        <div class="text-center">
+          <h3>Productos agregados a la entrega</h3>
+        </div>
+      </div>
+      <div
+        class="col-12 mb-1"
+        *ngIf="dataDelivery && productsFromDelivery.length > 0"
+      >
+        <div class="table-inverse table-responsive text-center">
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Nº</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>XTF</th>
+                <th>Fecha</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of productsFromDelivery; let index = index">
+                <td scope="row">{{ index + 1 }}</td>
+                <td scope="row">
+                  {{ changeIdProduct(item.productId, "name") }}
+                </td>
+                <td scope="row">
+                  {{ changeIdProduct(item.productId, "description") }}
+                </td>
+                <td scope="row">
+                  {{ changeIdProduct(item.productId, "isXTF") ? "Si" : "No" }}
+                </td>
+                <td scope="row">
+                  {{ formatDate(item.createdAt) }}
+                </td>
+                <td scope="row">
+                  <span ngbTooltip="Eliminar" placement="top" show-delay="500">
+                    <i
+                      class="material-icons cursor"
+                      (click)="openModaldeleteProduct(item)"
+                    >
+                      delete
+                    </i>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-12 mb-1" *ngIf="productsFromDelivery.length === 0">
+        <div class="alert alert-primary text-center" role="alert">
+          No existen productos asociados a la entrega.
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="card-header">
+        <div class="text-center">
+          <h3>Agregar productos a la entrega</h3>
+        </div>
+      </div>
+      <div
+        class="col-12 col-md-12 mb-1"
+        *ngIf="dataProductsFromManager.length > 0"
+      >
+        <div class="table-inverse table-responsive text-center">
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Nº</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>XTF</th>
+                <th>Fecha</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let item of dataProductsFromManager; let index = index"
+              >
+                <td scope="row">{{ index + 1 }}</td>
+                <td scope="row">{{ item.name }}</td>
+                <td scope="row">{{ item.description }}</td>
+                <td scope="row">{{ item.isXTF ? "Si" : "No" }}</td>
+                <td scope="row">
+                  {{ formatDate(item.createdAt) }}
+                </td>
+                <td scope="row">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="selectProduct2"
+                    name="selectProduct2"
+                    [(ngModel)]="item.isSelect"
+                    [disabled]="item.isSelect"
+                    (change)="openAddProductToDelivery(item)"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="dataProductsFromManager.length === 0" class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          No existen productos.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"></div>
+</div>

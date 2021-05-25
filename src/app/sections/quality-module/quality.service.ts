@@ -1,11 +1,14 @@
-import { addProductToDeliveryInterface } from './../../sections/quality-module/models/add-product-to-delivery.interface';
-import { makeDeliveryToManagerInterface } from './../../sections/quality-module/models/make-delivery-to-manager.interface';
+import { addProductToDeliveryInterface } from './models/add-product-to-delivery.interface';
+import { makeDeliveryToManagerInterface } from './models/make-delivery-to-manager.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { findProductsFromManagerInterface } from 'src/app/sections/quality-module/models/find-products-from-manager.interface';
-import { findDeliveriesInterface } from 'src/app/sections/quality-module/models/find-deliveries.interface';
-
+import { findProductsFromManagerInterface } from './models/find-products-from-manager.interface';
+import {
+  findDeliveriesInterface,
+  itemDelivery,
+} from './models/find-deliveries.interface';
+import { findProductsFromDeliveryInterface } from './models/find-products-from-delivery.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -67,7 +70,7 @@ export class QualityService {
    * searchDelivery
    */
   public searchDelivery(deliveryId: number) {
-    return this.httpClient.get(
+    return this.httpClient.get<itemDelivery>(
       this.url + '/quality/v1/deliveries/' + deliveryId
     );
   }
@@ -87,7 +90,7 @@ export class QualityService {
    * findProductsFromDelivery
    */
   public findProductsFromDelivery(deliveryId: number) {
-    return this.httpClient.get(
+    return this.httpClient.get<findProductsFromDeliveryInterface[]>(
       this.url + '/quality/v1/deliveries/' + deliveryId + '/products'
     );
   }
@@ -160,6 +163,21 @@ export class QualityService {
         '/attachments/' +
         attachmentId +
         '/download'
+    );
+  }
+  /**
+   * Remove product from delivery
+   */
+  public removeProductFromDelivery(
+    deliveryId: number,
+    deliveryProductId: number
+  ) {
+    return this.httpClient.delete(
+      this.url +
+        '/quality/v1/deliveries/' +
+        deliveryId +
+        '/products/' +
+        deliveryProductId
     );
   }
 }
