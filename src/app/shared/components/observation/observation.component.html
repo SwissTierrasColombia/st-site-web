@@ -1,7 +1,19 @@
-<div class="input-group">
+<div class="input-group" *ngIf="title">
   <div class="input-group-prepend input-group-text">
     <div class="">{{ title }}</div>
   </div>
+  <textarea
+    [maxlength]="maxLength"
+    class="form-control"
+    [id]="id"
+    [rows]="rows"
+    [name]="name"
+    [(ngModel)]="inputModel"
+    [disabled]="disabled"
+    (ngModelChange)="inputModelChange.emit(inputModel)"
+  ></textarea>
+</div>
+<div class="input-group" *ngIf="!title">
   <textarea
     [maxlength]="maxLength"
     class="form-control"

@@ -36,17 +36,29 @@
             <th>Municipio</th>
             <th>Gestor</th>
             <th>Observación</th>
+            <th>Estado</th>
             <th>Fecha</th>
             <th>Opciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of itemsDelivery">
+          <tr *ngFor="let item of itemsDelivery; let index = index">
             <td scope="row">{{ item.code }}</td>
             <td scope="row">Departamento</td>
             <td scope="row">Municipio</td>
             <td scope="row">Gestor</td>
-            <td scope="row">{{ item.observations }}</td>
+            <td scope="row">
+              <app-observation
+                [name]="'observation' + index"
+                [(inputModel)]="item.observations"
+                [disabled]="true"
+              ></app-observation>
+            </td>
+            <td scope="row">
+              <span
+                [innerHTML]="nameStateDelivery(item.deliveryStatusId)"
+              ></span>
+            </td>
             <td scope="row">
               {{ formatDate(item.deliveryDate) }}
             </td>

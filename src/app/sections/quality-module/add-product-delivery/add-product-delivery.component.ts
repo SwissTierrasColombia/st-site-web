@@ -142,6 +142,7 @@ export class AddProductDeliveryComponent implements OnInit {
             .addProductToDelivery(this.deliveryId, product)
             .subscribe((_) => {
               this.toastr.success('Ha agregado un producto a la entrega');
+              this.selecProductsDelivery = '0';
               this.findProductsFromDelivery(this.deliveryId);
             });
         }
