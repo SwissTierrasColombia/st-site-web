@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class RoleModel {
-
   superAdministrador: number;
   administrador: number;
   gestor: number;
@@ -20,5 +19,4 @@ export class RoleModel {
     this.gestorDirector = true;
     this.proveedorDirector = true;
   }
-
 }

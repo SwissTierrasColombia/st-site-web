@@ -26,7 +26,8 @@ import { ModalComponent } from 'src/app/shared/components/modal/modal.component'
   styleUrls: ['./view-deliveries.component.scss'],
 })
 export class ViewDeliveriesComponent implements OnInit, OnChanges {
-  @Input() tab: number = 1;
+  @Input() tab: number;
+  @Input() isOperator: boolean = false;
   findDeliveries: findDeliveriesInterface;
   itemsDelivery: itemDelivery[] = [];
   dataWorkspacesByOperator: getWorkspacesByOperatorInterface[] = [];
@@ -45,15 +46,29 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     private toastr: ToastrService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.isOperator) {
+      this.isOperator = changes.isOperator.currentValue;
+    }
     if (changes.tab.currentValue === 1) {
       this.status = statesDeliveriesEnum.BORRADOR;
       this.changePage();
     }
     if (changes.tab.currentValue === 2) {
-      this.status = statesDeliveriesEnum.EN_CORRECCION;
+      this.status = statesDeliveriesEnum.ENTREGADO;
       this.changePage();
     }
     if (changes.tab.currentValue === 3) {
+      this.status =
+        statesDeliveriesEnum.EN_REVISION +
+        ',' +
+        statesDeliveriesEnum.EN_CORRECCION;
+      this.changePage();
+    }
+    if (changes.tab.currentValue === 4) {
+      this.status = statesDeliveriesEnum.EN_CORRECCION;
+      this.changePage();
+    }
+    if (changes.tab.currentValue === 5) {
       this.status =
         statesDeliveriesEnum.ACEPTADO + ',' + statesDeliveriesEnum.RECHAZADO;
       this.changePage();
@@ -61,17 +76,19 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.workspacesService
-      .getWorkspacesByOperator()
-      .subscribe((response: getWorkspacesByOperatorInterface[]) => {
-        this.dataWorkspacesByOperator = response;
-        this.dataWorkspacesByOperator.forEach((element) => {
-          this.listManagerWithMunicipality.push({
-            id: element.managerCode + ' - ' + element.municipality.code,
-            option: element.manager.alias + ' - ' + element.municipality.name,
+    if (this.isOperator) {
+      this.workspacesService
+        .getWorkspacesByOperator()
+        .subscribe((response: getWorkspacesByOperatorInterface[]) => {
+          this.dataWorkspacesByOperator = response;
+          this.dataWorkspacesByOperator.forEach((element) => {
+            this.listManagerWithMunicipality.push({
+              id: element.managerCode + ' - ' + element.municipality.code,
+              option: element.manager.alias + ' - ' + element.municipality.name,
+            });
           });
         });
-      });
+    }
   }
   changePage(event?: number) {
     if (event) {
@@ -100,7 +117,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     return FuntionsGlobalsHelper.formatDate(date);
   }
   viewDetailDelivery(item: itemDelivery) {
-    this.router.navigate(['/operador/entrega/' + item.id]);
+    this.router.navigate(['/calidad/entrega/' + item.id]);
   }
   openModalDeleteDelivery(item: itemDelivery) {
     this.optionModalRef = this.modalService.open(ModalComponent, {

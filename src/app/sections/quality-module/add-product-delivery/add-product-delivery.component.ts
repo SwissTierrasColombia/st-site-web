@@ -93,7 +93,7 @@ export class AddProductDeliveryComponent implements OnInit {
     return '';
   }
   goBack() {
-    this.router.navigate(['/operador/buscar-entregas']);
+    this.router.navigate(['/calidad/buscar-entregas']);
   }
   formatDate(date: string) {
     return FuntionsGlobalsHelper.formatDate(date);

@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { AuthGuard } from '../shared/guard/auth.guard';
-import { RoleAdminManagerGuard } from '../shared/guard/role-admin-manager-guard.service';
+import { RoleManagerOperatorGuard } from '../shared/guard/role-manager-operator-guard.service';
 import { RoleOperatorGuard } from '../shared/guard/role-operator-guard.service';
 import { AdministrationGuard } from '../shared/guard/administration-guard.service';
+import { RoleAdminManagerGuard } from '../shared/guard/role-admin-manager-guard.service';
 
 const routes: Routes = [
   {
@@ -57,12 +58,12 @@ const routes: Routes = [
         canActivate: [RoleOperatorGuard],
       },
       {
-        path: 'operador',
+        path: 'calidad',
         loadChildren: () =>
           import('../sections/quality-module/quality-module.module').then(
             (m) => m.QualityModuleModule
           ),
-        canActivate: [RoleOperatorGuard],
+        canActivate: [RoleManagerOperatorGuard],
       },
     ],
   },

@@ -3,11 +3,9 @@ import { CommonModule } from '@angular/common';
 import { NgbCarouselModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
-import { TimelineComponent, NotificationComponent, ChatComponent } from './components';
 import { StatModule } from '../../shared';
-import { AboutComponent } from './about/about.component';
+import { AboutComponent } from '../../sections/about/about.component';
 import { TooltipModule } from 'ng2-tooltip-directive';
-
 
 @NgModule({
   imports: [
@@ -16,14 +14,8 @@ import { TooltipModule } from 'ng2-tooltip-directive';
     NgbAlertModule,
     DashboardRoutingModule,
     StatModule,
-    TooltipModule
+    TooltipModule,
   ],
-  declarations: [
-    DashboardComponent,
-    TimelineComponent,
-    NotificationComponent,
-    ChatComponent,
-    AboutComponent
-  ]
+  declarations: [DashboardComponent, AboutComponent],
 })
-export class DashboardModule { }
+export class DashboardModule {}

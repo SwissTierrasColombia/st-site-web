@@ -1,3 +1,5 @@
+import { RoleManagerOperatorGuard } from './../shared/guard/role-manager-operator-guard.service';
+import { RoleAdminManagerGuard } from './../shared/guard/role-admin-manager-guard.service';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -13,7 +15,6 @@ import { RoleModel } from '../shared/helpers/role.model';
 import { RoleManagerGuard } from '../shared/guard/role-manager-guard.service';
 import { RoleProviderGuard } from '../shared/guard/role-provider-guard.service';
 import { RoleOperatorGuard } from '../shared/guard/role-operator-guard.service';
-import { RoleAdminManagerGuard } from '../shared/guard/role-admin-manager-guard.service';
 import { AdministrationGuard } from '../shared/guard/administration-guard.service';
 import { RoleProviderDirectorGuard } from '../shared/guard/role-providerDirector-guard.service';
 import { RoleRevisorGuard } from '../shared/guard/role-revisor-guard.service';
@@ -44,6 +45,7 @@ import { RoleRevisorGuard } from '../shared/guard/role-revisor-guard.service';
     AdministrationGuard,
     RoleProviderDirectorGuard,
     RoleRevisorGuard,
+    RoleManagerOperatorGuard,
   ],
 })
 export class LayoutModule {}

@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AddProductDeliveryComponent } from './add-product-delivery/add-product-delivery.component';
 import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.component';
+import { RoleOperatorGuard } from 'src/app/shared/guard/role-operator-guard.service';
 
 const routes: Routes = [
   {
     path: 'hacer-entrega-gestor',
     component: MakeDeliveryManagerComponent,
+    canActivate: [RoleOperatorGuard],
   },
   {
     path: 'buscar-entregas',
