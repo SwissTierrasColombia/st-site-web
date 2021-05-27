@@ -2,7 +2,13 @@ import {
   findDeliveriesInterface,
   itemDelivery,
 } from './../models/find-deliveries.interface';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { statesDeliveriesEnum } from '../models/states-deliveries.enum';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { selectInterface } from 'src/app/shared/models/select.interface';
@@ -19,7 +25,8 @@ import { ModalComponent } from 'src/app/shared/components/modal/modal.component'
   templateUrl: './view-deliveries.component.html',
   styleUrls: ['./view-deliveries.component.scss'],
 })
-export class ViewDeliveriesComponent implements OnInit {
+export class ViewDeliveriesComponent implements OnInit, OnChanges {
+  @Input() tab: number = 1;
   findDeliveries: findDeliveriesInterface;
   itemsDelivery: itemDelivery[] = [];
   dataWorkspacesByOperator: getWorkspacesByOperatorInterface[] = [];
@@ -29,6 +36,7 @@ export class ViewDeliveriesComponent implements OnInit {
   totalElements: number = 0;
   pageSize: number = 10;
   optionModalRef: NgbModalRef;
+  status: string | number;
   constructor(
     private workspacesService: WorkspacesService,
     private qualityService: QualityService,
@@ -36,6 +44,21 @@ export class ViewDeliveriesComponent implements OnInit {
     private modalService: NgbModal,
     private toastr: ToastrService
   ) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.tab.currentValue === 1) {
+      this.status = statesDeliveriesEnum.BORRADOR;
+      this.changePage();
+    }
+    if (changes.tab.currentValue === 2) {
+      this.status = statesDeliveriesEnum.EN_CORRECCION;
+      this.changePage();
+    }
+    if (changes.tab.currentValue === 3) {
+      this.status =
+        statesDeliveriesEnum.ACEPTADO + ',' + statesDeliveriesEnum.RECHAZADO;
+      this.changePage();
+    }
+  }
 
   ngOnInit(): void {
     this.workspacesService
@@ -49,7 +72,6 @@ export class ViewDeliveriesComponent implements OnInit {
           });
         });
       });
-    this.changePage();
   }
   changePage(event?: number) {
     if (event) {
@@ -60,7 +82,7 @@ export class ViewDeliveriesComponent implements OnInit {
     let codes = this.managerCodeAndMunicipality.split(' - ');
     this.qualityService
       .findDeliveries(
-        statesDeliveriesEnum.BORRADOR,
+        this.status,
         this.page,
         this.pageSize,
         codes.length == 2 ? codes[1] : undefined,

@@ -1,8 +1,8 @@
 import { MakeDeliveryManagerComponent } from './make-delivery-manager/make-delivery-manager.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ViewDeliveriesComponent } from './view-deliveries/view-deliveries.component';
 import { AddProductDeliveryComponent } from './add-product-delivery/add-product-delivery.component';
+import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.component';
 
 const routes: Routes = [
   {
@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'buscar-entregas',
-    component: ViewDeliveriesComponent,
+    component: TabsDeliveriesComponent,
   },
   {
     path: 'entrega/:deliveryId',

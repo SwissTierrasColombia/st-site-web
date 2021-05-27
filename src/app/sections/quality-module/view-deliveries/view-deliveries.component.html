@@ -1,80 +1,70 @@
-<app-page-header [heading]="'Buscar entregas'" [icon]="'fa-star'">
-</app-page-header>
-<div class="card">
-  <div class="card-header text-center">
-    <h3>Buscar entregas</h3>
+<div class="row">
+  <div class="col-12 mb-1">
+    <app-select
+      [disableOptionZero]="false"
+      [labelSelect]="'* Gestor - Municipio'"
+      [nameSelect]="'managersAndMunicipality'"
+      [idSelect]="'managersAndMunicipality'"
+      [optionZero]="'Seleccione el Gestor - Municipio'"
+      [listSelect]="listManagerWithMunicipality"
+      [key]="'option'"
+      [(inputModel)]="managerCodeAndMunicipality"
+      (change)="changePage()"
+    ></app-select>
   </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-12 mb-1">
-        <app-select
-          [disableOptionZero]="false"
-          [labelSelect]="'* Gestor - Municipio'"
-          [nameSelect]="'managersAndMunicipality'"
-          [idSelect]="'managersAndMunicipality'"
-          [optionZero]="'Seleccione el Gestor - Municipio'"
-          [listSelect]="listManagerWithMunicipality"
-          [key]="'option'"
-          [(inputModel)]="managerCodeAndMunicipality"
-          (change)="changePage()"
-        ></app-select>
-      </div>
-    </div>
-    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
-      <ngb-pagination
-        class="d-flex justify-content-center"
-        id="serverSupplies"
-        [(page)]="page"
-        [pageSize]="pageSize"
-        [collectionSize]="totalElements"
-        [rotate]="true"
-        [ellipses]="false"
-        [boundaryLinks]="true"
-        (pageChange)="changePage($event)"
-      >
-      </ngb-pagination>
-    </div>
-    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
-      <div class="table-inverse table-responsive text-center">
-        <table class="table table-striped">
-          <thead class="thead-inverse">
-            <tr>
-              <th>código</th>
-              <th>Observación</th>
-              <th>Fecha</th>
-              <th>Opciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of itemsDelivery">
-              <td scope="row">{{ item.code }}</td>
-              <td scope="row">{{ item.observations }}</td>
-              <td scope="row">
-                {{ formatDate(item.deliveryDate) }}
-              </td>
-              <td scope="row">
-                <span ngbTooltip="Ver entrega" placement="top" show-delay="500">
-                  <i
-                    class="material-icons cursor"
-                    (click)="viewDetailDelivery(item)"
-                  >
-                    pageview
-                  </i>
-                </span>
-                <span ngbTooltip="Eliminar" placement="top" show-delay="500">
-                  <i
-                    class="material-icons cursor"
-                    (click)="openModalDeleteDelivery(item)"
-                  >
-                    delete
-                  </i>
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+</div>
+<div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
+  <ngb-pagination
+    class="d-flex justify-content-center"
+    id="serverSupplies"
+    [(page)]="page"
+    [pageSize]="pageSize"
+    [collectionSize]="totalElements"
+    [rotate]="true"
+    [ellipses]="false"
+    [boundaryLinks]="true"
+    (pageChange)="changePage($event)"
+  >
+  </ngb-pagination>
+</div>
+<div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
+  <div class="table-inverse table-responsive text-center">
+    <table class="table table-striped">
+      <thead class="thead-inverse">
+        <tr>
+          <th>código</th>
+          <th>Observación</th>
+          <th>Fecha</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of itemsDelivery">
+          <td scope="row">{{ item.code }}</td>
+          <td scope="row">{{ item.observations }}</td>
+          <td scope="row">
+            {{ formatDate(item.deliveryDate) }}
+          </td>
+          <td scope="row">
+            <span ngbTooltip="Ver entrega" placement="top" show-delay="500">
+              <i
+                class="material-icons cursor"
+                (click)="viewDetailDelivery(item)"
+              >
+                pageview
+              </i>
+            </span>
+            <span ngbTooltip="Eliminar" placement="top" show-delay="500">
+              <i
+                class="material-icons cursor"
+                (click)="openModalDeleteDelivery(item)"
+              >
+                delete
+              </i>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="card-footer"></div>
 </div>

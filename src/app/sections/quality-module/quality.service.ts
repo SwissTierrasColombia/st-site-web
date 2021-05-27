@@ -36,7 +36,7 @@ export class QualityService {
    * findDeliveries
    */
   public findDeliveries(
-    states: number,
+    states: number | string,
     page: number,
     limit: number,
     municipality?: string,

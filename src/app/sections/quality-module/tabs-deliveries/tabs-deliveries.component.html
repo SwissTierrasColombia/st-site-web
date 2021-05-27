@@ -1,0 +1,63 @@
+<app-page-header [heading]="'Buscar entregas'" [icon]="'fa-star'">
+</app-page-header>
+<div class="card">
+  <div class="card-header text-center">
+    <h3>Buscar entregas</h3>
+  </div>
+  <div class="card-body">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: tab === 1 }"
+          data-toggle="tab"
+          role="tab"
+          (click)="tab = 1"
+          aria-controls="home"
+        >
+          <i class="material-icons"> toc </i>Entregas Borrador
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: tab === 2 }"
+          data-toggle="tab"
+          role="tab"
+          (click)="tab = 2"
+          aria-controls="messages"
+        >
+          <i class="material-icons"> clear </i>Entregas en Corrección
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: tab === 3 }"
+          data-toggle="tab"
+          role="tab"
+          (click)="tab = 3"
+          aria-controls="messages"
+        >
+          <i class="material-icons"> check_circle_outline </i>Entregas
+          Finalizadas
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel">
+        <br />
+        <app-view-deliveries [tab]="tab"></app-view-deliveries>
+      </div>
+      <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel">
+        <br />
+        <app-view-deliveries [tab]="tab"></app-view-deliveries>
+      </div>
+      <div class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel">
+        <br />
+        <app-view-deliveries [tab]="tab"></app-view-deliveries>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"></div>
+</div>

@@ -8,12 +8,14 @@ import { ViewDeliveriesComponent } from './view-deliveries/view-deliveries.compo
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddProductDeliveryComponent } from './add-product-delivery/add-product-delivery.component';
 import { FormsModule } from '@angular/forms';
+import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.component';
 
 @NgModule({
   declarations: [
     MakeDeliveryManagerComponent,
     ViewDeliveriesComponent,
     AddProductDeliveryComponent,
+    TabsDeliveriesComponent,
   ],
   imports: [
     CommonModule,

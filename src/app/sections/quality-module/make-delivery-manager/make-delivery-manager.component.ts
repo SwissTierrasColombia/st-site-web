@@ -20,7 +20,6 @@ export class MakeDeliveryManagerComponent implements OnInit {
   listManagerWithMunicipality: selectInterface[] = [];
   managerCodeAndMunicipality: string = '0';
   dataMakeDeliveryToManager: makeDeliveryToManagerInterface;
-  dataProductsFromManager: findProductsFromManagerInterface[] = [];
   createActive: boolean = false;
   optionModalRef: NgbModalRef;
   constructor(
@@ -53,11 +52,6 @@ export class MakeDeliveryManagerComponent implements OnInit {
     let codes = this.managerCodeAndMunicipality.split(' - ');
     this.dataMakeDeliveryToManager.managerCode = codes[0];
     this.dataMakeDeliveryToManager.municipalityCode = codes[1];
-    this.qualityService
-      .findProductsFromManager(this.dataMakeDeliveryToManager.managerCode)
-      .subscribe((response) => {
-        this.dataProductsFromManager = response;
-      });
   }
   formatDate(date: string) {
     return FuntionsGlobalsHelper.formatDate(date);
