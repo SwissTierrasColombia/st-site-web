@@ -1,3 +1,4 @@
+import { UpdateDelivery } from './models/update-delivery.internace';
 import { addProductToDeliveryInterface } from './models/add-product-to-delivery.interface';
 import { makeDeliveryToManagerInterface } from './models/make-delivery-to-manager.interface';
 import { HttpClient } from '@angular/common/http';
@@ -196,5 +197,14 @@ export class QualityService {
    */
   public createProduct(data: CreateProductInterface) {
     return this.httpClient.post(this.url + '/quality/v1/products', data);
+  }
+  /**
+   * updateDelivery
+   */
+  public updateDelivery(deliveryId: number, data: UpdateDelivery) {
+    return this.httpClient.put(
+      this.url + '/quality/v1/deliveries/' + deliveryId,
+      data
+    );
   }
 }

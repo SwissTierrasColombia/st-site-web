@@ -8,6 +8,7 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
+  TemplateRef,
 } from '@angular/core';
 import { statesDeliveriesEnum } from '../models/states-deliveries.enum';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
@@ -142,5 +143,20 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
   }
   nameStateDelivery(deliveryStatusId: number): string {
     return FuntionsGlobalsHelper.nameStateDelivery(deliveryStatusId);
+  }
+  openModalUpdateDelivery(modal: TemplateRef<any>) {
+    this.optionModalRef = this.modalService.open(modal, {
+      centered: true,
+      scrollable: true,
+    });
+  }
+  closeModalDeleteDelivery(itemDelivery: itemDelivery) {
+    let data = {
+      observations: itemDelivery.observations,
+    };
+    this.qualityService.updateDelivery(itemDelivery.id, data).subscribe((_) => {
+      this.modalService.dismissAll();
+      this.toastr.success('Actualización realizada');
+    });
   }
 }
