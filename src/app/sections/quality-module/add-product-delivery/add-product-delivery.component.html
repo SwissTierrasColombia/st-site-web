@@ -136,7 +136,7 @@
                   >
                     <i
                       class="material-icons cursor"
-                      (click)="openModaldeleteProduct(item)"
+                      (click)="openModalUpdateProduct(modalUpdateProduct)"
                     >
                       edit
                     </i>
@@ -149,6 +149,40 @@
                       delete
                     </i>
                   </span>
+                  <ng-template #modalUpdateProduct let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title">
+                        Actualizar información de la entrega
+                      </h4>
+                      <button
+                        type="button"
+                        class="close"
+                        aria-label="Close"
+                        (click)="modal.dismiss('Cross click')"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <app-observation
+                        [title]="'Observaciones'"
+                        [name]="'observation' + index"
+                        [(inputModel)]="item.observations"
+                      ></app-observation>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-12 text-center">
+                        <button
+                          type="button"
+                          ngbAutofocus
+                          class="btn btn-dark btn-block"
+                          (click)="closeModalProductDelivery(item)"
+                        >
+                          Guardar
+                        </button>
+                      </div>
+                    </div>
+                  </ng-template>
                 </td>
               </tr>
             </tbody>

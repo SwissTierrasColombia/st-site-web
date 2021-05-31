@@ -1,5 +1,5 @@
 import { rolesEnum } from './../../../shared/models/roles.enum';
-import { decodedTokenInterface } from './../../../shared/models/decoded-token.interface';
+import { DecodedTokenInterface } from './../../../shared/models/decoded-token.interface';
 import { Component, OnInit } from '@angular/core';
 import { JwtHelper } from 'src/app/shared/helpers/jwt';
 
@@ -10,7 +10,7 @@ import { JwtHelper } from 'src/app/shared/helpers/jwt';
 })
 export class TabsDeliveriesComponent implements OnInit {
   tab: number;
-  user: decodedTokenInterface;
+  user: DecodedTokenInterface;
   isManager: boolean = false;
   isOperator: boolean = false;
   constructor() {}

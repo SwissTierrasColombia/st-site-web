@@ -1,8 +1,8 @@
-import { makeDeliveryToManagerInterface } from './../models/make-delivery-to-manager.interface';
+import { MakeDeliveryToManagerInterface } from './../models/make-delivery-to-manager.interface';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { Component, OnInit } from '@angular/core';
-import { getWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
-import { findProductsFromManagerInterface } from '../models/find-products-from-manager.interface';
+import { GetWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
+import { FindProductsFromManagerInterface } from '../models/find-products-from-manager.interface';
 import { selectInterface } from 'src/app/shared/models/select.interface';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -16,10 +16,10 @@ import { QualityService } from './../quality.service';
   styleUrls: ['./make-delivery-manager.component.scss'],
 })
 export class MakeDeliveryManagerComponent implements OnInit {
-  dataWorkspacesByOperator: getWorkspacesByOperatorInterface[] = [];
+  dataWorkspacesByOperator: GetWorkspacesByOperatorInterface[] = [];
   listManagerWithMunicipality: selectInterface[] = [];
   managerCodeAndMunicipality: string = '0';
-  dataMakeDeliveryToManager: makeDeliveryToManagerInterface;
+  dataMakeDeliveryToManager: MakeDeliveryToManagerInterface;
   createActive: boolean = false;
   optionModalRef: NgbModalRef;
   constructor(
@@ -38,7 +38,7 @@ export class MakeDeliveryManagerComponent implements OnInit {
   ngOnInit(): void {
     this.workspacesService
       .getWorkspacesByOperator()
-      .subscribe((response: getWorkspacesByOperatorInterface[]) => {
+      .subscribe((response: GetWorkspacesByOperatorInterface[]) => {
         this.dataWorkspacesByOperator = response;
         this.dataWorkspacesByOperator.forEach((element) => {
           this.listManagerWithMunicipality.push({
@@ -81,7 +81,7 @@ export class MakeDeliveryManagerComponent implements OnInit {
       }
     });
   }
-  buildDeliveredProducts(item: findProductsFromManagerInterface) {
+  buildDeliveredProducts(item: FindProductsFromManagerInterface) {
     const isSelect = this.dataMakeDeliveryToManager.deliveredProducts.find(
       (element) => {
         return element == item.id;

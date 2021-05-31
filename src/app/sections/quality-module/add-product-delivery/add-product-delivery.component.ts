@@ -1,16 +1,16 @@
 import { QualityService } from './../quality.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { selectInterface } from 'src/app/shared/models/select.interface';
-import { itemDelivery } from '../models/find-deliveries.interface';
-import { findProductsFromDeliveryInterface } from '../models/find-products-from-delivery.interface';
-import { findProductsFromManagerInterface } from '../models/find-products-from-manager.interface';
-import { getWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
-import { addProductToDeliveryInterface } from '../models/add-product-to-delivery.interface';
+import { ItemDelivery } from '../models/find-deliveries.interface';
+import { FindProductsFromDeliveryInterface } from '../models/find-products-from-delivery.interface';
+import { FindProductsFromManagerInterface } from '../models/find-products-from-manager.interface';
+import { GetWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
+import { AddProductToDeliveryInterface } from '../models/add-product-to-delivery.interface';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -19,13 +19,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./add-product-delivery.component.scss'],
 })
 export class AddProductDeliveryComponent implements OnInit {
-  dataDelivery: itemDelivery;
-  productsFromDelivery: findProductsFromDeliveryInterface[] = [];
+  dataDelivery: ItemDelivery;
+  productsFromDelivery: FindProductsFromDeliveryInterface[] = [];
   listManagerWithMunicipality: selectInterface[] = [];
   listProductsDelivery: selectInterface[] = [];
   selecProductsDelivery: string = '0';
   managerCodeAndMunicipality: string = '0';
-  dataProductsFromManager: findProductsFromManagerInterface[] = [];
+  dataProductsFromManager: FindProductsFromManagerInterface[] = [];
   optionModalRef: NgbModalRef;
   deliveryId: number;
   constructor(
@@ -40,7 +40,7 @@ export class AddProductDeliveryComponent implements OnInit {
   ngOnInit(): void {
     this.workspacesService
       .getWorkspacesByOperator()
-      .subscribe((response: getWorkspacesByOperatorInterface[]) => {
+      .subscribe((response: GetWorkspacesByOperatorInterface[]) => {
         response.forEach((element) => {
           this.listManagerWithMunicipality.push({
             id: element.managerCode + ' - ' + element.municipality.code,
@@ -98,7 +98,7 @@ export class AddProductDeliveryComponent implements OnInit {
   formatDate(date: string) {
     return FuntionsGlobalsHelper.formatDate(date);
   }
-  openModaldeleteProduct(item: findProductsFromDeliveryInterface) {
+  openModaldeleteProduct(item: FindProductsFromDeliveryInterface) {
     this.optionModalRef = this.modalService.open(ModalComponent, {
       centered: true,
       scrollable: true,
@@ -135,7 +135,7 @@ export class AddProductDeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          let product: addProductToDeliveryInterface = {
+          let product: AddProductToDeliveryInterface = {
             productId: parseInt(this.selecProductsDelivery),
           };
           this.qualityService
@@ -156,5 +156,20 @@ export class AddProductDeliveryComponent implements OnInit {
     return FuntionsGlobalsHelper.nameDeliveryProductStatusId(
       deliveryProductStatusId
     );
+  }
+  openModalUpdateProduct(modal: TemplateRef<any>) {
+    this.modalService.open(modal, {
+      centered: true,
+      scrollable: true,
+    });
+  }
+  closeModalProductDelivery(itemDelivery: FindProductsFromDeliveryInterface) {
+    let data = {
+      observations: itemDelivery.observations,
+    };
+    this.qualityService.updateDelivery(itemDelivery.id, data).subscribe((_) => {
+      this.modalService.dismissAll();
+      this.toastr.success('Actualización realizada');
+    });
   }
 }

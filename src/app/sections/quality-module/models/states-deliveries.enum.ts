@@ -1,4 +1,4 @@
-export const statesDeliveriesEnum = {
+export const StatesDeliveriesEnum = {
   BORRADOR: 1,
   ENTREGADO: 2,
   EN_REVISION: 3,

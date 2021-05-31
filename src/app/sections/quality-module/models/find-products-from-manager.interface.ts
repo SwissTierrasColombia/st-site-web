@@ -1,4 +1,4 @@
-export interface findProductsFromManagerInterface {
+export interface FindProductsFromManagerInterface {
   id: number;
   name: string;
   description: string;

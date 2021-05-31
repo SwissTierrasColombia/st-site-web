@@ -1,6 +1,6 @@
 import {
-  findDeliveriesInterface,
-  itemDelivery,
+  FindDeliveriesInterface,
+  ItemDelivery,
 } from './../models/find-deliveries.interface';
 import {
   Component,
@@ -10,10 +10,10 @@ import {
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { statesDeliveriesEnum } from '../models/states-deliveries.enum';
+import { StatesDeliveriesEnum } from '../models/states-deliveries.enum';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { selectInterface } from 'src/app/shared/models/select.interface';
-import { getWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
+import { GetWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { Router } from '@angular/router';
 import { QualityService } from './../quality.service';
@@ -29,9 +29,9 @@ import { ModalComponent } from 'src/app/shared/components/modal/modal.component'
 export class ViewDeliveriesComponent implements OnInit, OnChanges {
   @Input() tab: number;
   @Input() isOperator: boolean = false;
-  findDeliveries: findDeliveriesInterface;
-  itemsDelivery: itemDelivery[] = [];
-  dataWorkspacesByOperator: getWorkspacesByOperatorInterface[] = [];
+  findDeliveries: FindDeliveriesInterface;
+  itemsDelivery: ItemDelivery[] = [];
+  dataWorkspacesByOperator: GetWorkspacesByOperatorInterface[] = [];
   listManagerWithMunicipality: selectInterface[] = [];
   managerCodeAndMunicipality: string = '0';
   page: number = 1;
@@ -51,27 +51,27 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
       this.isOperator = changes.isOperator.currentValue;
     }
     if (changes.tab.currentValue === 1) {
-      this.status = statesDeliveriesEnum.BORRADOR;
+      this.status = StatesDeliveriesEnum.BORRADOR;
       this.changePage();
     }
     if (changes.tab.currentValue === 2) {
-      this.status = statesDeliveriesEnum.ENTREGADO;
+      this.status = StatesDeliveriesEnum.ENTREGADO;
       this.changePage();
     }
     if (changes.tab.currentValue === 3) {
       this.status =
-        statesDeliveriesEnum.EN_REVISION +
+        StatesDeliveriesEnum.EN_REVISION +
         ',' +
-        statesDeliveriesEnum.EN_CORRECCION;
+        StatesDeliveriesEnum.EN_CORRECCION;
       this.changePage();
     }
     if (changes.tab.currentValue === 4) {
-      this.status = statesDeliveriesEnum.EN_CORRECCION;
+      this.status = StatesDeliveriesEnum.EN_CORRECCION;
       this.changePage();
     }
     if (changes.tab.currentValue === 5) {
       this.status =
-        statesDeliveriesEnum.ACEPTADO + ',' + statesDeliveriesEnum.RECHAZADO;
+        StatesDeliveriesEnum.ACEPTADO + ',' + StatesDeliveriesEnum.RECHAZADO;
       this.changePage();
     }
   }
@@ -80,7 +80,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     if (this.isOperator) {
       this.workspacesService
         .getWorkspacesByOperator()
-        .subscribe((response: getWorkspacesByOperatorInterface[]) => {
+        .subscribe((response: GetWorkspacesByOperatorInterface[]) => {
           this.dataWorkspacesByOperator = response;
           this.dataWorkspacesByOperator.forEach((element) => {
             this.listManagerWithMunicipality.push({
@@ -117,10 +117,10 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
   formatDate(date: string) {
     return FuntionsGlobalsHelper.formatDate(date);
   }
-  viewDetailDelivery(item: itemDelivery) {
+  viewDetailDelivery(item: ItemDelivery) {
     this.router.navigate(['/calidad/entrega/' + item.id]);
   }
-  openModalDeleteDelivery(item: itemDelivery) {
+  openModalDeleteDelivery(item: ItemDelivery) {
     this.optionModalRef = this.modalService.open(ModalComponent, {
       centered: true,
       scrollable: true,
@@ -145,12 +145,12 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     return FuntionsGlobalsHelper.nameStateDelivery(deliveryStatusId);
   }
   openModalUpdateDelivery(modal: TemplateRef<any>) {
-    this.optionModalRef = this.modalService.open(modal, {
+    this.modalService.open(modal, {
       centered: true,
       scrollable: true,
     });
   }
-  closeModalDeleteDelivery(itemDelivery: itemDelivery) {
+  closeModalUpdateDelivery(itemDelivery: ItemDelivery) {
     let data = {
       observations: itemDelivery.observations,
     };

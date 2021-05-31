@@ -1,7 +1,7 @@
-import { statesProductsEnum } from './../../sections/quality-module/models/states-products.enum';
+import { StatesProductsEnum } from './../../sections/quality-module/models/states-products.enum';
 import * as _moment from 'moment';
 import { Injectable } from '@angular/core';
-import { statesDeliveriesEnum } from 'src/app/sections/quality-module/models/states-deliveries.enum';
+import { StatesDeliveriesEnum } from 'src/app/sections/quality-module/models/states-deliveries.enum';
 
 const moment = _moment;
 
@@ -27,17 +27,17 @@ export class FuntionsGlobalsHelper {
   }
   static nameStateDelivery(deliveryStatusId: number): string {
     switch (deliveryStatusId) {
-      case statesDeliveriesEnum.BORRADOR:
+      case StatesDeliveriesEnum.BORRADOR:
         return '<span class="badge badge-secondary">BORRADOR</span>';
-      case statesDeliveriesEnum.ENTREGADO:
+      case StatesDeliveriesEnum.ENTREGADO:
         return '<span class="badge badge-primary">ENTREGADO</span>';
-      case statesDeliveriesEnum.EN_REVISION:
+      case StatesDeliveriesEnum.EN_REVISION:
         return '<span class="badge badge-info">EN REVISIÓN</span>';
-      case statesDeliveriesEnum.EN_CORRECCION:
+      case StatesDeliveriesEnum.EN_CORRECCION:
         return '<span class="badge badge-warning">EN CORRECCIÓN</span>';
-      case statesDeliveriesEnum.ACEPTADO:
+      case StatesDeliveriesEnum.ACEPTADO:
         return '<span class="badge badge-success">ACEPTADO</span>';
-      case statesDeliveriesEnum.RECHAZADO:
+      case StatesDeliveriesEnum.RECHAZADO:
         return '<span class="badge badge-danger">RECHAZADO</span>';
       default:
         return '';
@@ -45,11 +45,11 @@ export class FuntionsGlobalsHelper {
   }
   static nameDeliveryProductStatusId(deliveryProductStatusId: number): string {
     switch (deliveryProductStatusId) {
-      case statesProductsEnum.PENDIENTE:
+      case StatesProductsEnum.PENDIENTE:
         return '<span class="badge badge-secondary">PENDIENTE</span>';
-      case statesProductsEnum.ACEPTADO:
+      case StatesProductsEnum.ACEPTADO:
         return '<span class="badge badge-primary">ACEPTADO</span>';
-      case statesProductsEnum.RECHAZADO:
+      case StatesProductsEnum.RECHAZADO:
         return '<span class="badge badge-info">RECHAZADO</span>';
       default:
         return '';

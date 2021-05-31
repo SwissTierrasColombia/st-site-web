@@ -1,7 +1,7 @@
 import { CreateProductInterface } from './../models/create-product.interface';
 import { Component, OnInit } from '@angular/core';
 import { QualityService } from '../quality.service';
-import { findProductsFromManagerInterface } from '../models/find-products-from-manager.interface';
+import { FindProductsFromManagerInterface } from '../models/find-products-from-manager.interface';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 
 @Component({
@@ -14,7 +14,7 @@ export class CreateProductComponent implements OnInit {
   data: CreateProductInterface;
   formOk: boolean = false;
   editMode: boolean = false;
-  listProducts: findProductsFromManagerInterface[] = [];
+  listProducts: FindProductsFromManagerInterface[] = [];
   constructor(private qualityService: QualityService) {
     this.data = {
       name: '',

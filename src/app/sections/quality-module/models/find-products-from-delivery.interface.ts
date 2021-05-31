@@ -1,4 +1,4 @@
-export interface findProductsFromDeliveryInterface {
+export interface FindProductsFromDeliveryInterface {
   id: number;
   deliveryProductDate: string;
   observations: string;

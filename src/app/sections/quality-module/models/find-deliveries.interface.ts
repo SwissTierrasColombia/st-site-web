@@ -1,5 +1,5 @@
-export interface findDeliveriesInterface {
-  items: itemDelivery[];
+export interface FindDeliveriesInterface {
+  items: ItemDelivery[];
   currentPage: number;
   numberOfElements: number;
   totalElements: number;
@@ -7,7 +7,7 @@ export interface findDeliveriesInterface {
   size: number;
 }
 
-export interface itemDelivery {
+export interface ItemDelivery {
   id: number;
   code: string;
   deliveryDate: string;
