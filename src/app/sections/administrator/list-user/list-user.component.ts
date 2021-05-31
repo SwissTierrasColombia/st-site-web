@@ -60,7 +60,6 @@ export class ListUserComponent implements OnInit {
     this.roleConnectAdmin = {};
     this.roleConnectManager = {};
     this.roleConnectProvider = {};
-    this.tab = 1;
     this.managers = [];
     this.operators = [];
     this.providers = [];
@@ -144,11 +143,32 @@ export class ListUserComponent implements OnInit {
     if (option) {
       this.serviceWorkspace
         .EnableUser(this.idUserEnabled, {})
-        .subscribe((data) => {
+        .subscribe((data: any) => {
           this.modalService.dismissAll();
           for (let index = 0; index < this.dataListUser.length; index++) {
             if (this.dataListUser[index].id === this.idUserEnabled) {
               this.dataListUser[index] = data;
+            }
+          }
+          if (this.tab == 1) {
+            for (let index = 0; index < this.usersManagers.length; index++) {
+              if (this.usersManagers[index].id === this.idUserDisabled) {
+                this.tab1();
+              }
+            }
+          }
+          if (this.tab == 2) {
+            for (let index = 0; index < this.usersOperators.length; index++) {
+              if (this.usersOperators[index].id === this.idUserDisabled) {
+                this.tab2();
+              }
+            }
+          }
+          if (this.tab == 3) {
+            for (let index = 0; index < this.usersProviders.length; index++) {
+              if (this.usersProviders[index].id === this.idUserDisabled) {
+                this.tab3();
+              }
             }
           }
         });
@@ -160,11 +180,32 @@ export class ListUserComponent implements OnInit {
     if (option) {
       this.serviceWorkspace
         .DisableUser(this.idUserDisabled, {})
-        .subscribe((data) => {
+        .subscribe((data: any) => {
           this.modalService.dismissAll();
           for (let index = 0; index < this.dataListUser.length; index++) {
             if (this.dataListUser[index].id === this.idUserDisabled) {
               this.dataListUser[index] = data;
+            }
+          }
+          if (this.tab == 1) {
+            for (let index = 0; index < this.usersManagers.length; index++) {
+              if (this.usersManagers[index].id === this.idUserDisabled) {
+                this.tab1();
+              }
+            }
+          }
+          if (this.tab == 2) {
+            for (let index = 0; index < this.usersOperators.length; index++) {
+              if (this.usersOperators[index].id === this.idUserDisabled) {
+                this.tab2();
+              }
+            }
+          }
+          if (this.tab == 3) {
+            for (let index = 0; index < this.usersProviders.length; index++) {
+              if (this.usersProviders[index].id === this.idUserDisabled) {
+                this.tab3();
+              }
             }
           }
         });
