@@ -1,3 +1,4 @@
+import { CheckboxComponent } from './checkbox/checkbox.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +13,7 @@ import { InputComponent } from './input/input.component';
     ObservationComponent,
     ModalComponent,
     InputComponent,
+    CheckboxComponent,
   ],
   imports: [CommonModule, FormsModule],
   exports: [
@@ -19,6 +21,7 @@ import { InputComponent } from './input/input.component';
     ObservationComponent,
     ModalComponent,
     InputComponent,
+    CheckboxComponent,
   ],
 })
 export class ComponentsModule {}

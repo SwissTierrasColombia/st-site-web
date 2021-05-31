@@ -363,8 +363,6 @@ export class CargueComponent implements OnInit, AfterViewInit {
       form.append('extra', item.extra);
     }
     if (item.typeSupply.id === 2 || item.typeSupply.id === 12) {
-      console.log(this.skipValidation);
-
       form.append('skipErrors', new Boolean(this.skipValidation).toString());
     }
     this.serviceWorkspaces

@@ -9,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddProductDeliveryComponent } from './add-product-delivery/add-product-delivery.component';
 import { FormsModule } from '@angular/forms';
 import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.component';
+import { CreateProductComponent } from './create-product/create-product.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.compo
     ViewDeliveriesComponent,
     AddProductDeliveryComponent,
     TabsDeliveriesComponent,
+    CreateProductComponent,
   ],
   imports: [
     CommonModule,

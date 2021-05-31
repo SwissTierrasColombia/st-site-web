@@ -9,13 +9,14 @@ export class InputComponent implements OnInit {
   @Input() title: string;
   @Input() id: string;
   @Input() type: string = 'text';
-  @Input() name: string = 'select';
+  @Input() name: string = 'name';
+  @Input() placeholder: string = '';
   @Input() min: string;
   @Input() max: string;
   @Input() classStyle: string;
-  @Input() inputModel: number;
+  @Input() inputModel: any;
   @Input() disabled: boolean = false;
-  @Output() inputModelChange = new EventEmitter<number>();
+  @Output() inputModelChange = new EventEmitter<any>();
   constructor() {}
   ngOnInit(): void {}
 }

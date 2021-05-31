@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AddProductDeliveryComponent } from './add-product-delivery/add-product-delivery.component';
 import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.component';
 import { RoleOperatorGuard } from 'src/app/shared/guard/role-operator-guard.service';
+import { CreateProductComponent } from './create-product/create-product.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'entrega/:deliveryId',
     component: AddProductDeliveryComponent,
+  },
+  {
+    path: 'crear-producto',
+    component: CreateProductComponent,
   },
 ];
 

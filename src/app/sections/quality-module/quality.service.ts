@@ -9,6 +9,7 @@ import {
   itemDelivery,
 } from './models/find-deliveries.interface';
 import { findProductsFromDeliveryInterface } from './models/find-products-from-delivery.interface';
+import { CreateProductInterface } from './models/create-product.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,10 +22,12 @@ export class QualityService {
   /**
    * findProductsFromManager
    */
-  public findProductsFromManager(manager: string) {
-    return this.httpClient.get<findProductsFromManagerInterface[]>(
-      this.url + '/quality/v1/products?manager=' + manager
-    );
+  public findProductsFromManager(manager?: string) {
+    let url = this.url + '/quality/v1/products';
+    if (manager) {
+      url = url + '?manager=' + manager;
+    }
+    return this.httpClient.get<findProductsFromManagerInterface[]>(url);
   }
   /**
    * makeDeliveryToManager
@@ -187,5 +190,11 @@ export class QualityService {
     return this.httpClient.delete(
       this.url + '/quality/v1/deliveries/' + deliveryId
     );
+  }
+  /**
+   * createProduct
+   */
+  public createProduct(data: CreateProductInterface) {
+    return this.httpClient.post(this.url + '/quality/v1/products', data);
   }
 }

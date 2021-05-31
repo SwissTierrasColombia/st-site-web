@@ -120,8 +120,6 @@ export class WorkspacesService {
    * loadSupplyFromRequest
    */
   public loadSupplyFromRequest(idInsumo: string, data: FormData) {
-    console.log(data);
-
     const headers = new HttpHeaders({ 'Transfer-Encoding': 'chunked' });
     return this.httpClient.put(
       this.url + '/workspaces/v1/providers/requests/' + idInsumo,

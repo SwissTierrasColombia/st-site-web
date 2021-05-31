@@ -111,7 +111,6 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
         this.totalElements = this.findDeliveries.totalElements;
         this.pageSize = this.findDeliveries.size;
         this.itemsDelivery = this.findDeliveries.items;
-        console.log(this.itemsDelivery);
       });
   }
   formatDate(date: string) {
