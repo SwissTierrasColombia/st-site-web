@@ -149,4 +149,12 @@ export class AddProductDeliveryComponent implements OnInit {
       }
     });
   }
+  nameStateDelivery(deliveryStatusId: number): string {
+    return FuntionsGlobalsHelper.nameStateDelivery(deliveryStatusId);
+  }
+  nameStateProduct(deliveryProductStatusId: number): string {
+    return FuntionsGlobalsHelper.nameDeliveryProductStatusId(
+      deliveryProductStatusId
+    );
+  }
 }

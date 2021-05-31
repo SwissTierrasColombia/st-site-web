@@ -6,6 +6,11 @@
     </span>
     <div class="text-center">
       <h3>Entrega</h3>
+      Estado de la entrega:
+      <span
+        *ngIf="dataDelivery"
+        [innerHTML]="nameStateDelivery(dataDelivery.deliveryStatusId)"
+      ></span>
     </div>
   </div>
   <div class="card-body">
@@ -94,6 +99,7 @@
               <tr>
                 <th>Nº</th>
                 <th>Nombre</th>
+                <th>Estado</th>
                 <th>Descripción</th>
                 <th>Observación</th>
                 <th>Opciones</th>
@@ -104,6 +110,11 @@
                 <td scope="row">{{ index + 1 }}</td>
                 <td scope="row">
                   {{ changeIdProduct(item.productId, "name") }}
+                </td>
+                <td scope="row">
+                  <span
+                    [innerHTML]="nameStateProduct(item.deliveryProductStatusId)"
+                  ></span>
                 </td>
                 <td scope="row">
                   {{ changeIdProduct(item.productId, "description") }}

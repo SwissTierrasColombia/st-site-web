@@ -141,21 +141,6 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     });
   }
   nameStateDelivery(deliveryStatusId: number): string {
-    switch (deliveryStatusId) {
-      case statesDeliveriesEnum.BORRADOR:
-        return '<span class="badge badge-secondary">BORRADOR</span>';
-      case statesDeliveriesEnum.ENTREGADO:
-        return '<span class="badge badge-primary">ENTREGADO</span>';
-      case statesDeliveriesEnum.EN_REVISION:
-        return '<span class="badge badge-info">EN REVISIÓN</span>';
-      case statesDeliveriesEnum.EN_CORRECCION:
-        return '<span class="badge badge-warning">EN CORRECCIÓN</span>';
-      case statesDeliveriesEnum.ACEPTADO:
-        return '<span class="badge badge-success">ACEPTADO</span>';
-      case statesDeliveriesEnum.RECHAZADO:
-        return '<span class="badge badge-danger">RECHAZADO</span>';
-      default:
-        return '';
-    }
+    return FuntionsGlobalsHelper.nameStateDelivery(deliveryStatusId);
   }
 }
