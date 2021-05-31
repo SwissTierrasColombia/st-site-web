@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
 
 const moment = _moment;
-
+const subModel = '3.0';
 @Component({
   selector: 'app-solicitud',
   templateUrl: './solicitud.component.html',
@@ -30,8 +30,6 @@ export class SolicitudComponent implements OnInit {
   tablesupplies: any;
   count: number;
   selectModelSupplies: string;
-  listModels: any;
-  enviarsolicitud: boolean;
   tableSolicitudes: any;
   currentDate: any;
   tab: number;
@@ -76,8 +74,6 @@ export class SolicitudComponent implements OnInit {
     };
     this.tablesupplies = [];
     this.selectModelSupplies = '0';
-    this.listModels = [];
-    this.enviarsolicitud = true;
     this.tableSolicitudes = [];
     this.tab = 1;
     this.dataOrder = [];
@@ -116,18 +112,10 @@ export class SolicitudComponent implements OnInit {
         return 0;
       });
     });
-
-    this.serviceWorkspaces.GetTypesModels().subscribe((response) => {
-      this.listModels = response;
-    });
   }
   change() {
     this.isActiveButtonAdd = false;
-    if (
-      this.selectProvider != 0 &&
-      this.selectSupplies != 0 &&
-      this.observations != ''
-    ) {
+    if (this.selectProvider != 0 && this.observations != '') {
       this.isActiveButtonAdd = true;
     }
   }
@@ -193,7 +181,7 @@ export class SolicitudComponent implements OnInit {
               observation: this.observations,
               providerId: this.selectProvider.id,
               typeSupplyId: this.selectSupplies.id,
-              modelVersion: this.selectModelSupplies,
+              modelVersion: subModel,
             });
             this.tablesupplies.push({
               idCount: this.count,
@@ -203,8 +191,7 @@ export class SolicitudComponent implements OnInit {
               insumo: this.selectSupplies.name,
               observacion: this.observations,
               modelRequired: true,
-              modelVersion: this.selectModelSupplies,
-              versions: this.listModels,
+              modelVersion: subModel,
               perfil: this.selectSupplies.providerProfile.name,
             });
             this.count += 1;
@@ -237,7 +224,6 @@ export class SolicitudComponent implements OnInit {
             this.selectSupplies.name
           );
         }
-        this.comprobarEnviarSolicitud();
       } else {
         this.toastr.error('Las observaciones son obligatorias.');
       }
@@ -259,7 +245,6 @@ export class SolicitudComponent implements OnInit {
         }
       }
     );
-    this.comprobarEnviarSolicitud();
     if (this.tablesupplies.length === 0) {
       this.count = 1;
       this.observations = '';
@@ -270,18 +255,7 @@ export class SolicitudComponent implements OnInit {
       };
       this.tablesupplies = [];
       this.selectModelSupplies = '0';
-      this.enviarsolicitud = true;
       this.tableSolicitudes = [];
-    }
-  }
-  comprobarEnviarSolicitud() {
-    const send = this.listsupplies.supplies.find((item) => {
-      return item.modelVersion === '0';
-    });
-    if (send) {
-      this.enviarsolicitud = true;
-    } else {
-      this.enviarsolicitud = false;
     }
   }
   submitInfo(modalconfirmacion: any) {
@@ -303,7 +277,6 @@ export class SolicitudComponent implements OnInit {
         };
         this.tablesupplies = [];
         this.selectModelSupplies = '0';
-        this.enviarsolicitud = true;
         this.tableSolicitudes = [];
         this.selectProvider = 0;
         this.currentDate = new Date();
@@ -314,16 +287,6 @@ export class SolicitudComponent implements OnInit {
         this.currentDate = this.clone(this.listsupplies.deadline);
       });
   }
-  changeModelSupplies(id, itemModelVersion) {
-    this.listsupplies.supplies.find((item: any) => {
-      if (item.idCount === id) {
-        item.modelVersion = itemModelVersion;
-      }
-    });
-    // this.toastr.info('Ha seleccionado la versión del modelo de insumos: ' + itemModelVersion);
-    this.comprobarEnviarSolicitud();
-  }
-
   formatDate(date: string) {
     moment.locale('es');
     return moment(date).format('DD/MM/YYYY');

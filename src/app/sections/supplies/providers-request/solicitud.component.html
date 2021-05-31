@@ -187,7 +187,6 @@
                   <th>#</th>
                   <th>Entidad</th>
                   <th>Insumo</th>
-                  <th>Modelo de Insumo</th>
                   <th>Observación</th>
                   <th>Eliminar</th>
                 </tr>
@@ -201,35 +200,6 @@
                   <td scope="row">
                     {{ item.insumo }} <br />
                     <strong>{{ item.perfil }}</strong>
-                  </td>
-                  <td scope="row">
-                    <div class="input-group" *ngIf="item.modelRequired">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text" aria-required="true"
-                          >*</label
-                        >
-                      </div>
-                      <select
-                        (change)="
-                          changeModelSupplies(item.idCount, item.modelVersion)
-                        "
-                        class="custom-select"
-                        name="modelSupplies{{ item.idCount }}"
-                        id="modelSupplies{{ item.idCount }}"
-                        [(ngModel)]="item.modelVersion"
-                      >
-                        <option value="0" selected>
-                          Seleccione la versión del modelo de insumos LADM-COL
-                        </option>
-                        <option
-                          [ngValue]="item.name"
-                          *ngFor="let item of item.versions"
-                        >
-                          Submodelo Insumos V1.0
-                        </option>
-                      </select>
-                    </div>
-                    <div *ngIf="!item.modelRequired">N/A</div>
                   </td>
                   <td scope="row">
                     <textarea
@@ -276,7 +246,6 @@
               <div class="col-12">
                 <button
                   type="button"
-                  [disabled]="enviarsolicitud"
                   class="btn btn-dark"
                   (click)="openModal(modalRegistrar)"
                 >
