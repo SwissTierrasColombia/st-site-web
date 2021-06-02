@@ -1,6 +1,6 @@
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
-import { decodedTokenInterface } from '../models/decoded-token.interface';
+import { DecodedTokenInterface } from '../models/decoded-token.interface';
 
 export class JwtHelper {
   static closeSession(router) {
@@ -9,7 +9,7 @@ export class JwtHelper {
     router.navigate(['/login']);
   }
 
-  static getUserPublicInformation(): decodedTokenInterface {
+  static getUserPublicInformation(): DecodedTokenInterface {
     const token = localStorage.getItem(environment.nameTokenSession);
     const helper = new JwtHelperService();
     let decodedToken = null;

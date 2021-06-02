@@ -27,9 +27,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err) => {
         this.spinner.hide();
-
         const error = err.error.message || err.statusText;
-
         switch (err.status) {
           case 400:
             if (err.error.error === 'invalid_grant') {
@@ -60,7 +58,13 @@ export class ErrorInterceptorService implements HttpInterceptor {
             }
             break;
           default:
-            // this.toastrService.error('No se ha podido conectar con el servidor, espere unos minutos he intentelo de nuevo.', 'Actualicé la página', { disableTimeOut: true });
+            localStorage.removeItem(environment.nameTokenSession);
+            this.router.navigate(['/login']);
+            this.toastrService.error(
+              'No se ha podido conectar con el servidor, espere unos minutos he intentelo de nuevo.',
+              'Actualicé la página',
+              { disableTimeOut: true }
+            );
             break;
         }
 

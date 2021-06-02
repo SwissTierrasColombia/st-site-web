@@ -1,6 +1,6 @@
 <div class="input-group" [class]="classStyle" *ngIf="min && max">
-  <div class="input-group-prepend" *ngIf="title">
-    <label class="input-group-text">{{ title }}</label>
+  <div class="input-group-prepend">
+    <label class="input-group-text" aria-required="true">{{ title }}</label>
   </div>
   <input
     [id]="id"
@@ -16,7 +16,7 @@
 </div>
 <div class="input-group" [class]="classStyle">
   <div class="input-group-prepend" *ngIf="title">
-    <label class="input-group-text">{{ title }}</label>
+    <label class="input-group-text" aria-required="true">{{ title }}</label>
   </div>
   <input
     [id]="id"

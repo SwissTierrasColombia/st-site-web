@@ -131,4 +131,9 @@
       </table>
     </div>
   </div>
+  <div class="col-12 mb-1" *ngIf="itemsDelivery.length === 0">
+    <div class="alert alert-primary text-center" role="alert">
+      No existen entregas.
+    </div>
+  </div>
 </div>

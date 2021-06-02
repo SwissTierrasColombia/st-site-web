@@ -1,16 +1,18 @@
+import { UpdateProduct } from './models/update-product.internace';
 import { UpdateDelivery } from './models/update-delivery.internace';
-import { addProductToDeliveryInterface } from './models/add-product-to-delivery.interface';
-import { makeDeliveryToManagerInterface } from './models/make-delivery-to-manager.interface';
+import { AddProductToDeliveryInterface } from './models/add-product-to-delivery.interface';
+import { MakeDeliveryToManagerInterface } from './models/make-delivery-to-manager.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { findProductsFromManagerInterface } from './models/find-products-from-manager.interface';
+import { FindProductsFromManagerInterface } from './models/find-products-from-manager.interface';
 import {
-  findDeliveriesInterface,
-  itemDelivery,
+  FindDeliveriesInterface,
+  ItemDelivery,
 } from './models/find-deliveries.interface';
-import { findProductsFromDeliveryInterface } from './models/find-products-from-delivery.interface';
+import { FindProductsFromDeliveryInterface } from './models/find-products-from-delivery.interface';
 import { CreateProductInterface } from './models/create-product.interface';
+import { AttachmentsFromDeliveryProductInterface } from './models/attachments-from-delivery-product.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,12 +30,12 @@ export class QualityService {
     if (manager) {
       url = url + '?manager=' + manager;
     }
-    return this.httpClient.get<findProductsFromManagerInterface[]>(url);
+    return this.httpClient.get<FindProductsFromManagerInterface[]>(url);
   }
   /**
    * makeDeliveryToManager
    */
-  public makeDeliveryToManager(data: makeDeliveryToManagerInterface) {
+  public makeDeliveryToManager(data: MakeDeliveryToManagerInterface) {
     return this.httpClient.post(this.url + '/quality/v1/deliveries', data);
   }
   /**
@@ -68,13 +70,13 @@ export class QualityService {
     if (manager) {
       url = url + '&manager=' + manager;
     }
-    return this.httpClient.get<findDeliveriesInterface>(url);
+    return this.httpClient.get<FindDeliveriesInterface>(url);
   }
   /**
    * searchDelivery
    */
   public searchDelivery(deliveryId: number) {
-    return this.httpClient.get<itemDelivery>(
+    return this.httpClient.get<ItemDelivery>(
       this.url + '/quality/v1/deliveries/' + deliveryId
     );
   }
@@ -83,7 +85,7 @@ export class QualityService {
    */
   public addProductToDelivery(
     deliveryId: number,
-    productId: addProductToDeliveryInterface
+    productId: AddProductToDeliveryInterface
   ) {
     return this.httpClient.post(
       this.url + '/quality/v1/deliveries/' + deliveryId + '/products',
@@ -94,7 +96,7 @@ export class QualityService {
    * findProductsFromDelivery
    */
   public findProductsFromDelivery(deliveryId: number) {
-    return this.httpClient.get<findProductsFromDeliveryInterface[]>(
+    return this.httpClient.get<FindProductsFromDeliveryInterface[]>(
       this.url + '/quality/v1/deliveries/' + deliveryId + '/products'
     );
   }
@@ -123,7 +125,7 @@ export class QualityService {
     deliveryId: number,
     deliveryProductId: number
   ) {
-    return this.httpClient.get(
+    return this.httpClient.get<AttachmentsFromDeliveryProductInterface[]>(
       this.url +
         '/quality/v1/deliveries/' +
         deliveryId +
@@ -205,6 +207,32 @@ export class QualityService {
     return this.httpClient.put(
       this.url + '/quality/v1/deliveries/' + deliveryId,
       data
+    );
+  }
+  /**
+   * Update product from delivery
+   */
+  public updateProductFromDelivery(
+    deliveryId: number,
+    deliveryProductId: number,
+    data: UpdateProduct
+  ) {
+    return this.httpClient.put(
+      this.url +
+        '/quality/v1/deliveries/' +
+        deliveryId +
+        '/products/' +
+        deliveryProductId,
+      data
+    );
+  }
+  /**
+   * Send delivery to manager
+   */
+  public sendDeliveryToManager(deliveryId: number) {
+    return this.httpClient.patch(
+      this.url + '/quality/v1/deliveries/' + deliveryId + '/status/delivered',
+      {}
     );
   }
 }
