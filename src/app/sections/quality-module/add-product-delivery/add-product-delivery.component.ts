@@ -1,3 +1,7 @@
+import { Role } from './../../../shared/models/decoded-token.interface';
+import { rolesEnum } from './../../../shared/models/roles.enum';
+import { JwtHelper } from './../../../shared/helpers/jwt';
+import { StatesDeliveriesEnum } from './../models/states-deliveries.enum';
 import { StatusAttachmentsXTF } from './../models/status-attachment-XTF.enum';
 import { FtpAttachmentProductInterface } from './../models/ftp-attachment-product.interface';
 import { TypeAttachmentsProduct } from './../models/type-attachments-product.enum';
@@ -5,19 +9,17 @@ import { QualityService } from './../quality.service';
 import { Component, ElementRef, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { selectInterface } from 'src/app/shared/models/select.interface';
 import { ItemDelivery } from '../models/find-deliveries.interface';
 import { FindProductsFromDeliveryInterface } from '../models/find-products-from-delivery.interface';
 import { FindProductsFromManagerInterface } from '../models/find-products-from-manager.interface';
-import { GetWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
 import { AddProductToDeliveryInterface } from '../models/add-product-to-delivery.interface';
 import { ToastrService } from 'ngx-toastr';
 import { AttachmentsFromDeliveryProductInterface } from '../models/attachments-from-delivery-product.interface';
 import { environment } from 'src/environments/environment';
-
+import { DecodedTokenInterface } from 'src/app/shared/models/decoded-token.interface';
 @Component({
   selector: 'app-add-product-delivery',
   templateUrl: './add-product-delivery.component.html',
@@ -45,11 +47,13 @@ export class AddProductDeliveryComponent implements OnInit {
   document: File;
   disabledButtonAttachment: boolean = true;
   statusAttachmentsXTF = StatusAttachmentsXTF;
+  StatesDeliveriesEnum = StatesDeliveriesEnum;
+  isOperator: Role;
+  user: DecodedTokenInterface;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
     private qualityService: QualityService,
-    private workspacesService: WorkspacesService,
     private modalService: NgbModal,
     private toastr: ToastrService
   ) {
@@ -59,25 +63,38 @@ export class AddProductDeliveryComponent implements OnInit {
       port: '',
       username: '',
     };
+    this.dataDelivery = {
+      id: 0,
+      code: '',
+      deliveryDate: '',
+      managerCode: '',
+      municipalityCode: '',
+      observations: '',
+      operatorCode: 0,
+      userCode: 0,
+      deliveryStatusId: 0,
+      departmentName: '',
+      municipalityName: '',
+      managerName: '',
+      operatorName: '',
+    };
   }
 
   ngOnInit(): void {
-    this.workspacesService
-      .getWorkspacesByOperator()
-      .subscribe((response: GetWorkspacesByOperatorInterface[]) => {
-        response.forEach((element) => {
-          this.listManagerWithMunicipality.push({
-            id: element.managerCode + ' - ' + element.municipality.code,
-            option: element.manager.alias + ' - ' + element.municipality.name,
-          });
-        });
-      });
+    this.user = JwtHelper.getUserPublicInformation();
+    this.isOperator = this.user.roles.find(
+      (item) => item.id === rolesEnum.operador
+    );
     this.activedRoute.params.subscribe((params: Params) => {
       this.deliveryId = params.deliveryId;
       this.qualityService
         .searchDelivery(params.deliveryId)
         .subscribe((response) => {
           this.dataDelivery = response;
+          this.listManagerWithMunicipality.push({
+            id: response.managerCode + ' - ' + response.municipalityCode,
+            option: response.managerName + ' - ' + response.municipalityName,
+          });
           this.managerCodeAndMunicipality =
             this.dataDelivery.managerCode +
             ' - ' +
@@ -192,7 +209,6 @@ export class AddProductDeliveryComponent implements OnInit {
       .findAttachmentsFromDeliveryProduct(this.deliveryId, deliveryProductId)
       .subscribe((element) => {
         this.listAttachmentsDeliveryProduct = element;
-        console.log(element);
         this.document = null;
         this.dataFTP = {
           domain: '',
@@ -339,8 +355,10 @@ export class AddProductDeliveryComponent implements OnInit {
   sendDeliveryToManager() {
     this.qualityService
       .sendDeliveryToManager(this.deliveryId)
-      .subscribe((element) => {
-        console.log(element);
+      .subscribe((_) => {
+        this.dataDelivery.deliveryStatusId = StatesDeliveriesEnum.ENTREGADO;
+        this.toastr.success('Ha enviado la entrega al gestor');
+        this.goBack();
       });
   }
   changeUpdaateInfoProduct(item: FindProductsFromDeliveryInterface) {
@@ -371,5 +389,12 @@ export class AddProductDeliveryComponent implements OnInit {
         }
       }
     }
+  }
+  downloadAttachment(deliveryProductId: number, attachmentId: number) {
+    this.qualityService
+      .downloadAttachment(this.deliveryId, deliveryProductId, attachmentId)
+      .subscribe((data) => {
+        FuntionsGlobalsHelper.downloadFile(data);
+      });
   }
 }

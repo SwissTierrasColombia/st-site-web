@@ -2,6 +2,8 @@ import { StatesProductsEnum } from './../../sections/quality-module/models/state
 import * as _moment from 'moment';
 import { Injectable } from '@angular/core';
 import { StatesDeliveriesEnum } from 'src/app/sections/quality-module/models/states-deliveries.enum';
+import { HttpResponse } from '@angular/common/http';
+import { saveAs } from 'file-saver';
 
 const moment = _moment;
 
@@ -54,5 +56,12 @@ export class FuntionsGlobalsHelper {
       default:
         return '';
     }
+  }
+  static downloadFile(data: HttpResponse<ArrayBuffer>, nameFile?: string) {
+    const contentType = data.headers.get('content-type');
+    const type = contentType.split(',')[0];
+    const dataFile = data.body;
+    const blob = new Blob([dataFile], { type });
+    saveAs(blob, nameFile);
   }
 }

@@ -168,7 +168,8 @@ export class QualityService {
         deliveryProductId +
         '/attachments/' +
         attachmentId +
-        '/download'
+        '/download',
+      { responseType: 'arraybuffer', observe: 'response' }
     );
   }
   /**

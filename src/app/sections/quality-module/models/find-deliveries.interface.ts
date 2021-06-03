@@ -17,4 +17,8 @@ export interface ItemDelivery {
   operatorCode: number;
   userCode: number;
   deliveryStatusId: number;
+  departmentName: string;
+  municipalityName: string;
+  managerName: string;
+  operatorName: string;
 }

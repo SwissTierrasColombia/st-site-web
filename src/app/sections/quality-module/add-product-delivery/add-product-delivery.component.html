@@ -57,7 +57,7 @@
       </div>
       <div
         class="col-12 col-md-8 mb-1"
-        *ngIf="dataProductsFromManager.length > 0"
+        *ngIf="dataProductsFromManager.length > 0 && isOperator"
       >
         <app-select
           [labelSelect]="'Agregar productos a la entrega'"
@@ -71,7 +71,7 @@
       </div>
       <div
         class="col-12 col-md-4 mb-1"
-        *ngIf="dataProductsFromManager.length > 0"
+        *ngIf="dataProductsFromManager.length > 0 && isOperator"
       >
         <button
           type="button"
@@ -154,7 +154,12 @@
                       edit
                     </i>
                   </span>
-                  <span ngbTooltip="Eliminar" placement="top" show-delay="500">
+                  <span
+                    ngbTooltip="Eliminar"
+                    placement="top"
+                    show-delay="500"
+                    *ngIf="isOperator"
+                  >
                     <i
                       class="material-icons cursor"
                       (click)="openModaldeleteProduct(item)"
@@ -189,7 +194,7 @@
                             (change)="changeUpdaateInfoProduct(item)"
                           ></app-observation>
                         </div>
-                        <div class="col-12 mt-1">
+                        <div class="col-12 mt-1" *ngIf="isOperator">
                           <app-select
                             [labelSelect]="
                               '* Agregar archivo adjunto al producto'
@@ -453,6 +458,25 @@
                                 </td>
                                 <td>
                                   <span
+                                    *ngIf="
+                                      attachments.type !=
+                                      typeAttachmentsProduct.FTPTitle
+                                    "
+                                    ngbTooltip="Descargar adjunto"
+                                    placement="top"
+                                    show-delay="500"
+                                    (click)="
+                                      downloadAttachment(
+                                        attachments.deliveryProductId,
+                                        attachments.attachmentId
+                                      )
+                                    "
+                                  >
+                                    <i class="material-icons cursor">
+                                      download
+                                    </i>
+                                  </span>
+                                  <span
                                     ngbTooltip="Eliminar adjunto"
                                     placement="top"
                                     show-delay="500"
@@ -462,6 +486,7 @@
                                         attachments.attachmentId
                                       )
                                     "
+                                    *ngIf="isOperator"
                                   >
                                     <i class="material-icons cursor">
                                       delete
@@ -517,8 +542,33 @@
       ngbAutofocus
       class="btn btn-dark btn-block"
       (click)="sendDeliveryToManager()"
+      *ngIf="StatesDeliveriesEnum.BORRADOR == dataDelivery.deliveryStatusId"
     >
       Entregar
+    </button>
+    <button
+      type="button"
+      ngbAutofocus
+      class="btn btn-dark btn-block"
+      *ngIf="StatesDeliveriesEnum.ENTREGADO == dataDelivery.deliveryStatusId"
+    >
+      Iniciar revisión
+    </button>
+    <button
+      type="button"
+      ngbAutofocus
+      class="btn btn-dark btn-block"
+      *ngIf="StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId"
+    >
+      Aceptar entrega
+    </button>
+    <button
+      type="button"
+      ngbAutofocus
+      class="btn btn-dark btn-block"
+      *ngIf="StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId"
+    >
+      enviar a corrección
     </button>
   </div>
 </div>
