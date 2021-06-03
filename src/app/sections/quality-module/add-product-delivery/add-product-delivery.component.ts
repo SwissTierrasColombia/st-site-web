@@ -1,3 +1,4 @@
+import { StatusAttachmentsXTF } from './../models/status-attachment-XTF.enum';
 import { FtpAttachmentProductInterface } from './../models/ftp-attachment-product.interface';
 import { TypeAttachmentsProduct } from './../models/type-attachments-product.enum';
 import { QualityService } from './../quality.service';
@@ -38,9 +39,12 @@ export class AddProductDeliveryComponent implements OnInit {
   typeAttachmentsProduct = TypeAttachmentsProduct;
   observationAttachment: string;
   dataFTP: FtpAttachmentProductInterface;
-  attachmentsDeliveryProduct: AttachmentsFromDeliveryProductInterface[] = [];
+  listAttachmentsDeliveryProduct: AttachmentsFromDeliveryProductInterface[] =
+    [];
   documentFileRef: ElementRef;
   document: File;
+  disabledButtonAttachment: boolean = true;
+  statusAttachmentsXTF = StatusAttachmentsXTF;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -187,7 +191,7 @@ export class AddProductDeliveryComponent implements OnInit {
     this.qualityService
       .findAttachmentsFromDeliveryProduct(this.deliveryId, deliveryProductId)
       .subscribe((element) => {
-        this.attachmentsDeliveryProduct = element;
+        this.listAttachmentsDeliveryProduct = element;
         console.log(element);
         this.document = null;
         this.dataFTP = {
@@ -210,21 +214,31 @@ export class AddProductDeliveryComponent implements OnInit {
       productId
     ) as FindProductsFromManagerInterface;
     if (this.selectProduct.isXTF) {
-      for (const key in TypeAttachmentsProduct) {
-        this.listTypeAttachmentProduct.push({
-          id: TypeAttachmentsProduct[key],
-          option: key,
-        });
-      }
+      this.listTypeAttachmentProduct.push(
+        {
+          id: TypeAttachmentsProduct.DOCUMENTO,
+          option: 'DOCUMENTO',
+        },
+        {
+          id: TypeAttachmentsProduct.FTP,
+          option: 'FTP',
+        },
+        {
+          id: TypeAttachmentsProduct.XTF,
+          option: 'XTF',
+        }
+      );
     } else {
-      this.listTypeAttachmentProduct.push({
-        id: TypeAttachmentsProduct.DOCUMENTO,
-        option: 'DOCUMENTO',
-      });
-      this.listTypeAttachmentProduct.push({
-        id: TypeAttachmentsProduct.FTP,
-        option: 'FTP',
-      });
+      this.listTypeAttachmentProduct.push(
+        {
+          id: TypeAttachmentsProduct.DOCUMENTO,
+          option: 'DOCUMENTO',
+        },
+        {
+          id: TypeAttachmentsProduct.FTP,
+          option: 'FTP',
+        }
+      );
     }
     this.findAttachmentFromProduct(deliveryProductId);
     this.modalService.open(modal, {
@@ -240,17 +254,18 @@ export class AddProductDeliveryComponent implements OnInit {
       observations: itemProduct.observations,
     };
     this.qualityService
-      .updateProductFromDelivery(this.deliveryId, itemProduct.productId, data)
+      .updateProductFromDelivery(this.deliveryId, itemProduct.id, data)
       .subscribe((_) => {});
   }
   closeModalProductDelivery() {
     this.modalService.dismissAll();
   }
-  documentProduct(file: FileList) {
+  documentProduct(file: FileList, item: FindProductsFromDeliveryInterface) {
     if (file[0].size / 1024 / 1024 <= environment.sizeFile) {
       let re = /zip*/;
       if (file[0].type.match(re)) {
         this.document = file[0];
+        this.changeUpdaateInfoProduct(item);
       } else {
         this.toastr.error('Por favor comprima el archivo en .zip.');
       }
@@ -310,9 +325,12 @@ export class AddProductDeliveryComponent implements OnInit {
               deliveryProductId,
               attachmentId
             )
-            .subscribe((element) => {
-              console.log(element);
+            .subscribe((_) => {
               this.toastr.success('Ha eliminado un adjunto del producto');
+              this.listAttachmentsDeliveryProduct =
+                this.listAttachmentsDeliveryProduct.filter(
+                  (item) => item.attachmentId != attachmentId
+                );
             });
         }
       }
@@ -324,5 +342,34 @@ export class AddProductDeliveryComponent implements OnInit {
       .subscribe((element) => {
         console.log(element);
       });
+  }
+  changeUpdaateInfoProduct(item: FindProductsFromDeliveryInterface) {
+    this.disabledButtonAttachment = true;
+    if (this.selectTypeAttachment != '0') {
+      if (
+        this.selectTypeAttachment === TypeAttachmentsProduct.DOCUMENTO ||
+        this.selectTypeAttachment === TypeAttachmentsProduct.XTF
+      ) {
+        if (
+          item.observations != '' &&
+          this.document &&
+          this.observationAttachment != ''
+        ) {
+          this.disabledButtonAttachment = false;
+        }
+      }
+      if (this.selectTypeAttachment === TypeAttachmentsProduct.FTP) {
+        if (
+          item.observations != '' &&
+          this.dataFTP.domain != '' &&
+          this.dataFTP.port != '' &&
+          this.dataFTP.password != '' &&
+          this.dataFTP.username != '' &&
+          this.observationAttachment != ''
+        ) {
+          this.disabledButtonAttachment = false;
+        }
+      }
+    }
   }
 }

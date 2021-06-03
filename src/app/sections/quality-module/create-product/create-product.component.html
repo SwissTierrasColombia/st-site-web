@@ -94,12 +94,12 @@
         <table class="table table-striped">
           <thead class="thead-inverse">
             <tr>
-              <th>Nº</th>
+              <th>ID</th>
               <th>Nombre</th>
               <th>XTF</th>
               <th>Fecha</th>
               <th>Descripción</th>
-              <!-- <th>Opciones</th> -->
+              <th>Opciones</th>
             </tr>
           </thead>
           <tbody>
@@ -108,7 +108,7 @@
               [style.font-weight]="item.id == id ? 'bold' : ''"
               *ngFor="let item of listProducts; let index = index"
             >
-              <td scope="row">{{ index + 1 }}</td>
+              <td scope="row">{{ item.id }}</td>
               <td scope="row">{{ item.name }}</td>
               <td scope="row">{{ item.isXTF ? "Si" : "No" }}</td>
               <td scope="row">{{ formatDate(item.createdAt) }}</td>

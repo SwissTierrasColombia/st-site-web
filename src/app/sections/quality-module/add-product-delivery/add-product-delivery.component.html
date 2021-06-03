@@ -183,6 +183,10 @@
                             [title]="'* Observaciones del Producto'"
                             [name]="'observation' + index"
                             [(inputModel)]="item.observations"
+                            [disabled]="
+                              selectTypeAttachment != '0' ? false : true
+                            "
+                            (change)="changeUpdaateInfoProduct(item)"
                           ></app-observation>
                         </div>
                         <div class="col-12 mt-1">
@@ -190,12 +194,13 @@
                             [labelSelect]="
                               '* Agregar archivo adjunto al producto'
                             "
-                            [nameSelect]="'listProductsDelivery'"
-                            [idSelect]="'listProductsDelivery'"
+                            [nameSelect]="'listTypeAttachmentProduct'"
+                            [idSelect]="'listTypeAttachmentProduct'"
                             [optionZero]="'Seleccione el tipo de adjunto'"
                             [listSelect]="listTypeAttachmentProduct"
                             [key]="'option'"
                             [(inputModel)]="selectTypeAttachment"
+                            (change)="changeUpdaateInfoProduct(item)"
                           ></app-select>
                         </div>
                         <div
@@ -225,7 +230,9 @@
                               name="file-documement"
                               class="form-control"
                               type="file"
-                              (change)="documentProduct($event.target.files)"
+                              (change)="
+                                documentProduct($event.target.files, item)
+                              "
                             />
                           </div>
                         </div>
@@ -240,6 +247,7 @@
                             [id]="'domain'"
                             [name]="'domain'"
                             [(inputModel)]="dataFTP.domain"
+                            (change)="changeUpdaateInfoProduct(item)"
                           ></app-input>
                         </div>
                         <div
@@ -254,6 +262,7 @@
                             [type]="'number'"
                             [name]="'port'"
                             [(inputModel)]="dataFTP.port"
+                            (change)="changeUpdaateInfoProduct(item)"
                           ></app-input>
                         </div>
                         <div
@@ -267,6 +276,7 @@
                             [id]="'unsername'"
                             [name]="'unsername'"
                             [(inputModel)]="dataFTP.username"
+                            (change)="changeUpdaateInfoProduct(item)"
                           ></app-input>
                         </div>
                         <div
@@ -281,6 +291,7 @@
                             [name]="'password'"
                             [type]="'password'"
                             [(inputModel)]="dataFTP.password"
+                            (change)="changeUpdaateInfoProduct(item)"
                           ></app-input>
                         </div>
                         <div
@@ -292,14 +303,17 @@
                             [title]="'* Observaciones'"
                             [name]="'observationAttachment'"
                             [(inputModel)]="observationAttachment"
+                            (change)="changeUpdaateInfoProduct(item)"
                           ></app-observation>
                         </div>
-                        <div
-                          class="col-12 mt-1"
-                          *ngIf="selectTypeAttachment != '0'"
-                          (click)="addAttachmentToProduct(item.id, item)"
-                        >
-                          <button type="button" class="btn btn-dark btn-block">
+                        <div class="col-12 mt-1">
+                          <button
+                            type="button"
+                            class="btn btn-dark btn-block"
+                            *ngIf="selectTypeAttachment != '0'"
+                            (click)="addAttachmentToProduct(item.id, item)"
+                            [disabled]="disabledButtonAttachment"
+                          >
                             Guardar
                           </button>
                         </div>
@@ -313,7 +327,7 @@
                     <div class="modal-body text-center">
                       <div
                         class="col-12 mb-1"
-                        *ngIf="attachmentsDeliveryProduct.length > 0"
+                        *ngIf="listAttachmentsDeliveryProduct.length > 0"
                       >
                         <div class="table-inverse table-responsive text-center">
                           <table class="table table-striped">
@@ -321,6 +335,7 @@
                               <tr>
                                 <th>Nº</th>
                                 <th>Tipo</th>
+                                <th>Información</th>
                                 <th>Fecha</th>
                                 <th>Observaciones</th>
                                 <th>Opciones</th>
@@ -329,12 +344,101 @@
                             <tbody>
                               <tr
                                 *ngFor="
-                                  let attachments of attachmentsDeliveryProduct;
+                                  let attachments of listAttachmentsDeliveryProduct;
                                   let index = index
                                 "
                               >
                                 <td scope="row">{{ index + 1 }}</td>
-                                <td scope="row">{{ attachments.type }}</td>
+                                <td scope="row">
+                                  <div
+                                    *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.DOCUMENTTitle
+                                    "
+                                  >
+                                    Documento
+                                  </div>
+                                  <div
+                                    *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.FTPTitle
+                                    "
+                                  >
+                                    FTP
+                                  </div>
+                                  <div
+                                    *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.XTFTitle
+                                    "
+                                  >
+                                    XTF
+                                  </div>
+                                </td>
+                                <td scope="row">
+                                  <div
+                                    *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.DOCUMENTTitle
+                                    "
+                                  >
+                                    N/A
+                                  </div>
+                                  <div
+                                    *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.FTPTitle
+                                    "
+                                  >
+                                    <strong>Dominio:</strong>
+                                    {{ attachments.data.domain }}<br />
+                                    <strong>Puerto:</strong>
+                                    {{ attachments.data.port }}<br />
+                                    <strong>Usuario:</strong>
+                                    {{ attachments.data.username }}<br />
+                                    <strong>Contraseña:</strong>
+                                    {{ attachments.data.password }}
+                                  </div>
+                                  <div
+                                    *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.XTFTitle
+                                    "
+                                  >
+                                    <div
+                                      *ngIf="
+                                        attachments.data.status ===
+                                        statusAttachmentsXTF.ACCEPTED
+                                      "
+                                    >
+                                      <span class="badge badge-success">
+                                        {{ statusAttachmentsXTF.ACCEPTED_TEXT }}
+                                      </span>
+                                    </div>
+                                    <div
+                                      *ngIf="
+                                        attachments.data.status ===
+                                        statusAttachmentsXTF.IN_VALIDATION
+                                      "
+                                    >
+                                      <span class="badge badge-info">
+                                        {{
+                                          statusAttachmentsXTF.IN_VALIDATION_TEXT
+                                        }}
+                                      </span>
+                                    </div>
+                                    <div
+                                      *ngIf="
+                                        attachments.data.status ===
+                                        statusAttachmentsXTF.REJECTED
+                                      "
+                                    >
+                                      <span class="badge badge-danger">
+                                        {{ statusAttachmentsXTF.REJECTED_TEXT }}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </td>
                                 <td scope="row">
                                   {{ formatDate(attachments.attachmentDate) }}
                                 </td>
@@ -371,7 +475,7 @@
                       </div>
                       <div
                         class="col-12 mb-1"
-                        *ngIf="attachmentsDeliveryProduct.length === 0"
+                        *ngIf="listAttachmentsDeliveryProduct.length === 0"
                       >
                         <div
                           class="alert alert-primary text-center"
