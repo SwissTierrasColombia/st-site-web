@@ -11,7 +11,7 @@ import {
   ItemDelivery,
 } from './models/find-deliveries.interface';
 import { FindProductsFromDeliveryInterface } from './models/find-products-from-delivery.interface';
-import { CreateProductInterface } from './models/create-product.interface';
+import { ManagerProductInterface } from './models/manager-product.interface';
 import { AttachmentsFromDeliveryProductInterface } from './models/attachments-from-delivery-product.interface';
 @Injectable({
   providedIn: 'root',
@@ -197,7 +197,7 @@ export class QualityService {
   /**
    * createProduct
    */
-  public createProduct(data: CreateProductInterface) {
+  public createProduct(data: ManagerProductInterface) {
     return this.httpClient.post(this.url + '/quality/v1/products', data);
   }
   /**
@@ -233,6 +233,128 @@ export class QualityService {
     return this.httpClient.patch(
       this.url + '/quality/v1/deliveries/' + deliveryId + '/status/delivered',
       {}
+    );
+  }
+  /**
+   * createFeedback
+   */
+  public createFeedback(
+    deliveryId: number,
+    deliveryProductId: number,
+    form: FormData
+  ) {
+    return this.httpClient.post(
+      this.url +
+        '/quality/v1/deliveries/' +
+        deliveryId +
+        '/products/' +
+        deliveryProductId +
+        '/feedbacks',
+      form
+    );
+  }
+  /**
+   * updateProduct
+   */
+  public updateProduct(productId: number, data: ManagerProductInterface) {
+    return this.httpClient.put(
+      this.url + '/quality/v1/products/' + productId,
+      data
+    );
+  }
+  /**
+   * removeProduct
+   */
+  public removeProduct(productId: number) {
+    return this.httpClient.delete(
+      this.url + '/quality/v1/products/' + productId
+    );
+  }
+  /**
+   * rejectDeliveryProduct
+   */
+  public rejectDeliveryProduct(deliveryId: number, deliveryProductId: number) {
+    return this.httpClient.patch(
+      this.url +
+        '/quality/v1/deliveries/' +
+        deliveryId +
+        '/products/' +
+        deliveryProductId +
+        '/status/rejected',
+      {}
+    );
+  }
+  /**
+   * acceptDeliveryProduct
+   */
+  public acceptDeliveryProduct(deliveryId: number, deliveryProductId: number) {
+    return this.httpClient.patch(
+      this.url +
+        '/quality/v1/deliveries/' +
+        deliveryId +
+        '/products/' +
+        deliveryProductId +
+        '/status/accepted',
+      {}
+    );
+  }
+  /**
+   * returnDeliveryToOperator
+   */
+  public returnDeliveryToOperator(deliveryId: number) {
+    return this.httpClient.patch(
+      this.url + '/quality/v1/deliveries/' + deliveryId + '/status/remediation',
+      {}
+    );
+  }
+  /**
+   * acceptDelivery
+   */
+  public acceptDelivery(deliveryId: number) {
+    return this.httpClient.patch(
+      this.url + '/quality/v1/deliveries/' + deliveryId + '/status/accepted',
+      {}
+    );
+  }
+  /**
+   * Start review (manager) or Finalize corrections (operator)
+   */
+  public startReviewManagerOrFinalizeCorrectionsOperator(deliveryId: number) {
+    return this.httpClient.patch(
+      this.url + '/quality/v1/deliveries/' + deliveryId + '/status/review',
+      {}
+    );
+  }
+  /**
+   * findFeedbacks
+   */
+  public findFeedbacks(deliveryId: number, deliveryProductId: number) {
+    return this.httpClient.get(
+      this.url +
+        '/quality/v1/deliveries/' +
+        deliveryId +
+        '/products/' +
+        deliveryProductId +
+        '/feedbacks'
+    );
+  }
+  /**
+   * downloadFeedbackAttachment
+   */
+  public downloadFeedbackAttachment(
+    deliveryId: number,
+    deliveryProductId: number,
+    feedbackId: number
+  ) {
+    return this.httpClient.get(
+      this.url +
+        '/quality/v1/deliveries/' +
+        deliveryId +
+        '/products/' +
+        deliveryProductId +
+        '/feedbacks/' +
+        feedbackId +
+        '/download'
     );
   }
 }
