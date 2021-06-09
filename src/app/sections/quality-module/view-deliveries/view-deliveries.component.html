@@ -82,7 +82,7 @@
                 <i
                   *ngIf="
                     isOperator &&
-                    StatesDeliveriesEnum.ACEPTADO != item.deliveryStatusId
+                    StatesDeliveriesEnum.BORRADOR == item.deliveryStatusId
                   "
                   class="material-icons cursor"
                   (click)="openModalUpdateDelivery(modalUpdateDelivery)"
@@ -97,7 +97,7 @@
                 show-delay="500"
                 *ngIf="
                   isOperator &&
-                  StatesDeliveriesEnum.ACEPTADO != item.deliveryStatusId
+                  StatesDeliveriesEnum.BORRADOR == item.deliveryStatusId
                 "
               >
                 <i

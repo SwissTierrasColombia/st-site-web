@@ -57,7 +57,11 @@
       </div>
       <div
         class="col-12 col-md-8 mb-1"
-        *ngIf="dataProductsFromManager.length > 0 && isOperator"
+        *ngIf="
+          dataProductsFromManager.length > 0 &&
+          isOperator &&
+          StatesDeliveriesEnum.BORRADOR == dataDelivery.deliveryStatusId
+        "
       >
         <app-select
           [labelSelect]="'Agregar productos a la entrega'"
@@ -71,7 +75,11 @@
       </div>
       <div
         class="col-12 col-md-4 mb-1"
-        *ngIf="dataProductsFromManager.length > 0 && isOperator"
+        *ngIf="
+          dataProductsFromManager.length > 0 &&
+          isOperator &&
+          StatesDeliveriesEnum.BORRADOR == dataDelivery.deliveryStatusId
+        "
       >
         <button
           type="button"
@@ -172,7 +180,7 @@
                     show-delay="500"
                     *ngIf="
                       isOperator &&
-                      StatesDeliveriesEnum.ACEPTADO !=
+                      StatesDeliveriesEnum.BORRADOR ==
                         dataDelivery.deliveryStatusId
                     "
                   >
@@ -186,12 +194,10 @@
                   <span
                     *ngIf="
                       !isOperator &&
-                      StatesDeliveriesEnum.BORRADOR !=
+                      StatesDeliveriesEnum.EN_REVISION ==
                         dataDelivery.deliveryStatusId &&
-                      StatesDeliveriesEnum.ENTREGADO !=
-                        dataDelivery.deliveryStatusId &&
-                      StatesDeliveriesEnum.ACEPTADO !=
-                        dataDelivery.deliveryStatusId
+                      item.deliveryProductStatusId ==
+                        StatesProductsEnum.PENDIENTE
                     "
                     ngbTooltip="Aceptar producto"
                     placement="top"
@@ -207,12 +213,10 @@
                   <span
                     *ngIf="
                       !isOperator &&
-                      StatesDeliveriesEnum.BORRADOR !=
+                      StatesDeliveriesEnum.EN_REVISION ==
                         dataDelivery.deliveryStatusId &&
-                      StatesDeliveriesEnum.ENTREGADO !=
-                        dataDelivery.deliveryStatusId &&
-                      StatesDeliveriesEnum.ACEPTADO !=
-                        dataDelivery.deliveryStatusId
+                      item.deliveryProductStatusId ==
+                        StatesProductsEnum.PENDIENTE
                     "
                     ngbTooltip="Rechazar producto"
                     placement="top"
@@ -231,7 +235,11 @@
                       StatesDeliveriesEnum.BORRADOR !=
                         dataDelivery.deliveryStatusId &&
                       StatesDeliveriesEnum.ENTREGADO !=
-                        dataDelivery.deliveryStatusId
+                        dataDelivery.deliveryStatusId &&
+                      (item.deliveryProductStatusId ==
+                        StatesProductsEnum.ACEPTADO ||
+                        item.deliveryProductStatusId ==
+                          StatesProductsEnum.RECHAZADO)
                     "
                     ngbTooltip="Realizar feedback"
                     placement="top"
@@ -260,7 +268,9 @@
                       class="modal-body text-center"
                       *ngIf="
                         StatesDeliveriesEnum.ACEPTADO !=
-                        dataDelivery.deliveryStatusId
+                          dataDelivery.deliveryStatusId &&
+                        StatesDeliveriesEnum.EN_CORRECCION !=
+                          dataDelivery.deliveryStatusId
                       "
                     >
                       <app-observation
@@ -288,7 +298,9 @@
                       class="modal-footer"
                       *ngIf="
                         StatesDeliveriesEnum.ACEPTADO !=
-                        dataDelivery.deliveryStatusId
+                          dataDelivery.deliveryStatusId &&
+                        StatesDeliveriesEnum.EN_CORRECCION !=
+                          dataDelivery.deliveryStatusId
                       "
                     >
                       <button
@@ -301,7 +313,10 @@
                       </button>
                     </div>
                     <div class="modal-body text-center">
-                      <div class="table-inverse table-responsive">
+                      <div
+                        class="table-inverse table-responsive"
+                        *ngIf="listFeedBacks.length > 0"
+                      >
                         <table class="table table-striped text-center">
                           <thead class="thead-inverse">
                             <tr>
@@ -334,6 +349,14 @@
                           </tbody>
                         </table>
                       </div>
+                      <div *ngIf="listFeedBacks.length == 0">
+                        <div
+                          class="alert alert-primary text-center"
+                          role="alert"
+                        >
+                          No se han realizado feedbacks.
+                        </div>
+                      </div>
                     </div>
                   </ng-template>
                   <ng-template #modalUpdateProduct let-modal>
@@ -358,7 +381,11 @@
                             [name]="'observation' + index"
                             [(inputModel)]="item.observations"
                             [disabled]="
-                              selectTypeAttachment != '0' ? false : true
+                              selectTypeAttachment != '0' &&
+                              StatesDeliveriesEnum.BORRADOR ==
+                                dataDelivery.deliveryStatusId
+                                ? false
+                                : true
                             "
                             (change)="changeUpdaateInfoProduct(item)"
                           ></app-observation>
@@ -665,7 +692,9 @@
                                     *ngIf="
                                       isOperator &&
                                       StatesDeliveriesEnum.ACEPTADO !=
-                                        dataDelivery.deliveryStatusId
+                                        dataDelivery.deliveryStatusId &&
+                                      item.deliveryProductStatusId !=
+                                        StatesProductsEnum.ACEPTADO
                                     "
                                   >
                                     <i class="material-icons cursor">
@@ -760,6 +789,20 @@
           (click)="returnDeliveryToOperator()"
         >
           enviar a corrección
+        </button>
+      </div>
+      <div class="col-12">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-dark btn-block"
+          *ngIf="
+            isOperator &&
+            StatesDeliveriesEnum.EN_CORRECCION == dataDelivery.deliveryStatusId
+          "
+          (click)="returnDeliveryToManager()"
+        >
+          enviar corrección
         </button>
       </div>
     </div>

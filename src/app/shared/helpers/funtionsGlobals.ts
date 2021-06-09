@@ -50,9 +50,9 @@ export class FuntionsGlobalsHelper {
       case StatesProductsEnum.PENDIENTE:
         return '<span class="badge badge-secondary">PENDIENTE</span>';
       case StatesProductsEnum.ACEPTADO:
-        return '<span class="badge badge-primary">ACEPTADO</span>';
+        return '<span class="badge badge-success">ACEPTADO</span>';
       case StatesProductsEnum.RECHAZADO:
-        return '<span class="badge badge-info">RECHAZADO</span>';
+        return '<span class="badge badge-danger">RECHAZADO</span>';
       default:
         return '';
     }

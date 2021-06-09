@@ -20,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AttachmentsFromDeliveryProductInterface } from '../models/attachments-from-delivery-product.interface';
 import { environment } from 'src/environments/environment';
 import { DecodedTokenInterface } from 'src/app/shared/models/decoded-token.interface';
+import { StatesProductsEnum } from '../models/states-products.enum';
 @Component({
   selector: 'app-add-product-delivery',
   templateUrl: './add-product-delivery.component.html',
@@ -52,6 +53,7 @@ export class AddProductDeliveryComponent implements OnInit {
   user: DecodedTokenInterface;
   observationfeedback: string = '';
   listFeedBacks: any = [];
+  StatesProductsEnum = StatesProductsEnum;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -308,7 +310,9 @@ export class AddProductDeliveryComponent implements OnInit {
     item: FindProductsFromDeliveryInterface
   ) {
     this.disabledButtonAttachment = true;
-    this.updateObservationProductDelivery(item);
+    if (StatesDeliveriesEnum.BORRADOR == this.dataDelivery.deliveryStatusId) {
+      this.updateObservationProductDelivery(item);
+    }
     let attachmentForm = new FormData();
     if (this.selectTypeAttachment === TypeAttachmentsProduct.DOCUMENTO) {
       attachmentForm.append('document.attachment', this.document);
@@ -455,8 +459,7 @@ export class AddProductDeliveryComponent implements OnInit {
   startReviewManager() {
     this.qualityService
       .startReviewManagerOrFinalizeCorrectionsOperator(this.deliveryId)
-      .subscribe((element) => {
-        console.log(element);
+      .subscribe((_) => {
         this.toastr.success('Ha iniciado la revisión');
         this.initPageServices();
       });
@@ -474,8 +477,7 @@ export class AddProductDeliveryComponent implements OnInit {
         if (result.option) {
           this.qualityService
             .acceptDeliveryProduct(this.deliveryId, deliveryProductId)
-            .subscribe((element) => {
-              console.log(element);
+            .subscribe((_) => {
               this.toastr.success('Ha aceptado el producto');
               this.findProductsFromDelivery(this.deliveryId);
             });
@@ -495,8 +497,7 @@ export class AddProductDeliveryComponent implements OnInit {
         if (result.option) {
           this.qualityService
             .rejectDeliveryProduct(this.deliveryId, deliveryProductId)
-            .subscribe((element) => {
-              console.log(element);
+            .subscribe((_) => {
               this.findProductsFromDelivery(this.deliveryId);
             });
         }
@@ -537,6 +538,27 @@ export class AddProductDeliveryComponent implements OnInit {
             .subscribe((_) => {
               this.toastr.success('Entrega enviada a corrección');
               this.initPageServices();
+            });
+        }
+      }
+    });
+  }
+  returnDeliveryToManager() {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title = 'Enviar corrección';
+    this.optionModalRef.componentInstance.description =
+      'Va enviar la corrección de la entrega';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.qualityService
+            .startReviewManagerOrFinalizeCorrectionsOperator(this.deliveryId)
+            .subscribe((_) => {
+              this.toastr.success('Entrega corregida enviada');
+              this.goBack();
             });
         }
       }
