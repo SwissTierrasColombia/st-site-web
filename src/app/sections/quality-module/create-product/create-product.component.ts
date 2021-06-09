@@ -60,7 +60,6 @@ export class CreateProductComponent implements OnInit {
     });
   }
   updateProduct(): void {
-    console.log(this.data);
     let dataUpdate: ManagerProductInterface = {
       name: this.data.name,
       description: this.data.description,

@@ -27,7 +27,7 @@ import { DecodedTokenInterface } from 'src/app/shared/models/decoded-token.inter
 })
 export class AddProductDeliveryComponent implements OnInit {
   dataDelivery: ItemDelivery;
-  productsFromDelivery: FindProductsFromDeliveryInterface[] = [];
+  listProductsFromDelivery: FindProductsFromDeliveryInterface[] = [];
   listManagerWithMunicipality: selectInterface[] = [];
   listProductsDelivery: selectInterface[] = [];
   listTypeAttachmentProduct: selectInterface[] = [];
@@ -50,6 +50,8 @@ export class AddProductDeliveryComponent implements OnInit {
   StatesDeliveriesEnum = StatesDeliveriesEnum;
   isOperator: Role;
   user: DecodedTokenInterface;
+  observationfeedback: string = '';
+  listFeedBacks: any = [];
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -86,44 +88,51 @@ export class AddProductDeliveryComponent implements OnInit {
       (item) => item.id === rolesEnum.operador
     );
     this.activedRoute.params.subscribe((params: Params) => {
-      this.deliveryId = params.deliveryId;
-      this.qualityService
-        .searchDelivery(params.deliveryId)
-        .subscribe((response) => {
-          this.dataDelivery = response;
-          this.listManagerWithMunicipality.push({
-            id: response.managerCode + ' - ' + response.municipalityCode,
-            option: response.managerName + ' - ' + response.municipalityName,
-          });
-          this.managerCodeAndMunicipality =
-            this.dataDelivery.managerCode +
-            ' - ' +
-            this.dataDelivery.municipalityCode;
-          this.dataDelivery.deliveryDate = this.formatDate(
-            this.dataDelivery.deliveryDate
-          );
-          this.findProductsFromDelivery(params.deliveryId);
-          this.qualityService
-            .findProductsFromManager(this.dataDelivery.managerCode)
-            .subscribe((response) => {
-              this.dataProductsFromManager = response;
-              this.dataProductsFromManager.forEach((element) => {
-                this.listProductsDelivery.push({
-                  id: element.id.toString(),
-                  option: element.name,
-                });
-              });
-            });
-        });
+      this.initPageServices(params);
     });
   }
+  initPageServices(params?: Params) {
+    if (params) {
+      this.deliveryId = params.deliveryId;
+    }
+    this.qualityService
+      .searchDelivery(this.deliveryId)
+      .subscribe((response) => {
+        this.dataDelivery = response;
+        this.listManagerWithMunicipality.push({
+          id: response.managerCode + ' - ' + response.municipalityCode,
+          option: response.managerName + ' - ' + response.municipalityName,
+        });
+        this.managerCodeAndMunicipality =
+          this.dataDelivery.managerCode +
+          ' - ' +
+          this.dataDelivery.municipalityCode;
+        this.dataDelivery.deliveryDate = this.formatDate(
+          this.dataDelivery.deliveryDate
+        );
+        this.findProductsFromDelivery(this.deliveryId);
+        this.qualityService
+          .findProductsFromManager(this.dataDelivery.managerCode)
+          .subscribe((response) => {
+            this.dataProductsFromManager = response;
+            this.dataProductsFromManager.forEach((element) => {
+              this.listProductsDelivery.push({
+                id: element.id.toString(),
+                option: element.name,
+              });
+            });
+          });
+      });
+  }
+
   findProductsFromDelivery(deliveryId: number) {
     this.qualityService
       .findProductsFromDelivery(deliveryId)
       .subscribe((response) => {
-        this.productsFromDelivery = response;
+        this.listProductsFromDelivery = response;
       });
   }
+
   changeIdProduct(
     item: number,
     key?: string
@@ -160,9 +169,10 @@ export class AddProductDeliveryComponent implements OnInit {
             .removeProductFromDelivery(this.deliveryId, item.id)
             .subscribe((_) => {
               this.toastr.success('Ha eliminado un producto');
-              this.productsFromDelivery = this.productsFromDelivery.filter(
-                (element) => element.id != item.id
-              );
+              this.listProductsFromDelivery =
+                this.listProductsFromDelivery.filter(
+                  (element) => element.id != item.id
+                );
             });
         }
       }
@@ -297,6 +307,7 @@ export class AddProductDeliveryComponent implements OnInit {
     deliveryProductId: number,
     item: FindProductsFromDeliveryInterface
   ) {
+    this.disabledButtonAttachment = true;
     this.updateObservationProductDelivery(item);
     let attachmentForm = new FormData();
     if (this.selectTypeAttachment === TypeAttachmentsProduct.DOCUMENTO) {
@@ -331,7 +342,7 @@ export class AddProductDeliveryComponent implements OnInit {
     });
     this.optionModalRef.componentInstance.title = 'Eliminar Adjunto';
     this.optionModalRef.componentInstance.description =
-      'Va ha eliminaar un adjunto del producto';
+      'Va ha eliminar un adjunto del producto';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -396,5 +407,100 @@ export class AddProductDeliveryComponent implements OnInit {
       .subscribe((data) => {
         FuntionsGlobalsHelper.downloadFile(data);
       });
+  }
+  findFeedback(deliveryProductId: number) {
+    this.qualityService
+      .findFeedbacks(this.deliveryId, deliveryProductId)
+      .subscribe((element) => {
+        this.listFeedBacks = element;
+      });
+  }
+  openModalFeedback(modal: TemplateRef<any>, deliveryProductId: number) {
+    this.findFeedback(deliveryProductId);
+    this.modalService.open(modal, {
+      centered: true,
+      scrollable: true,
+    });
+  }
+  documentFeedback(file: FileList) {
+    if (file[0].size / 1024 / 1024 <= environment.sizeFile) {
+      let re = /zip*/;
+      if (file[0].type.match(re)) {
+        this.document = file[0];
+      } else {
+        this.toastr.error('Por favor comprima el archivo en .zip.');
+      }
+    } else {
+      this.document = null;
+      this.documentFileRef.nativeElement.value = '';
+      this.toastr.error(
+        'No se puede cargar el archivo, supera el tamaño máximo permitido de 190 MB.'
+      );
+    }
+  }
+  createFeedback(deliveryProductId: number) {
+    let form = new FormData();
+    form.append('feedback', this.observationfeedback);
+    if (this.document) {
+      form.append('attachment', this.document);
+    }
+    this.qualityService
+      .createFeedback(this.deliveryId, deliveryProductId, form)
+      .subscribe((_) => {
+        this.observationfeedback = '';
+        this.document = null;
+        this.findFeedback(deliveryProductId);
+      });
+  }
+  startReviewManager() {
+    this.qualityService
+      .startReviewManagerOrFinalizeCorrectionsOperator(this.deliveryId)
+      .subscribe((element) => {
+        console.log(element);
+        this.toastr.success('Ha iniciado la revisión');
+        this.initPageServices();
+      });
+  }
+  openModalAcceptProduct(deliveryProductId: number) {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title = 'Aceptar producto';
+    this.optionModalRef.componentInstance.description =
+      'Va aceptar el producto';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.qualityService
+            .acceptDeliveryProduct(this.deliveryId, deliveryProductId)
+            .subscribe((element) => {
+              console.log(element);
+              this.toastr.success('Ha aceptado el producto');
+              this.findProductsFromDelivery(this.deliveryId);
+            });
+        }
+      }
+    });
+  }
+  openModalRejectProduct(deliveryProductId: number) {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title = 'Rechazar producto';
+    this.optionModalRef.componentInstance.description = 'Va rechazar producto';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.qualityService
+            .rejectDeliveryProduct(this.deliveryId, deliveryProductId)
+            .subscribe((element) => {
+              console.log(element);
+              this.findProductsFromDelivery(this.deliveryId);
+            });
+        }
+      }
+    });
   }
 }

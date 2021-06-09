@@ -35,6 +35,7 @@
             <th>Departamento</th>
             <th>Municipio</th>
             <th>Gestor</th>
+            <th>Operador</th>
             <th>Observación</th>
             <th>Estado</th>
             <th>Fecha</th>
@@ -44,9 +45,10 @@
         <tbody>
           <tr *ngFor="let item of itemsDelivery; let index = index">
             <td scope="row">{{ item.code }}</td>
-            <td scope="row">Departamento</td>
-            <td scope="row">Municipio</td>
-            <td scope="row">Gestor</td>
+            <td scope="row">{{ item.departmentName }}</td>
+            <td scope="row">{{ item.municipalityName }}</td>
+            <td scope="row">{{ item.managerName }}</td>
+            <td scope="row">{{ item.operatorName }}</td>
             <td scope="row">
               <app-observation
                 [name]="'observation' + index"
@@ -71,19 +73,27 @@
                   input
                 </i>
               </span>
+
               <span
                 ngbTooltip="Editar Entrega"
                 placement="top"
                 show-delay="500"
               >
                 <i
+                  *ngIf="isOperator"
                   class="material-icons cursor"
                   (click)="openModalUpdateDelivery(modalUpdateDelivery)"
                 >
                   edit
                 </i>
               </span>
-              <span ngbTooltip="Eliminar" placement="top" show-delay="500">
+
+              <span
+                ngbTooltip="Eliminar"
+                placement="top"
+                show-delay="500"
+                *ngIf="isOperator"
+              >
                 <i
                   class="material-icons cursor"
                   (click)="openModalDeleteDelivery(item)"
@@ -91,6 +101,7 @@
                   delete
                 </i>
               </span>
+
               <ng-template #modalUpdateDelivery let-modal>
                 <div class="modal-header">
                   <h4 class="modal-title">

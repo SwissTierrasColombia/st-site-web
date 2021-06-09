@@ -92,7 +92,7 @@
         </div>
         <div
           class="table-inverse table-responsive text-center"
-          *ngIf="dataDelivery && productsFromDelivery.length > 0"
+          *ngIf="dataDelivery && listProductsFromDelivery.length > 0"
         >
           <table class="table table-striped">
             <thead class="thead-inverse">
@@ -106,7 +106,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of productsFromDelivery; let index = index">
+              <tr
+                *ngFor="let item of listProductsFromDelivery; let index = index"
+              >
                 <td scope="row">{{ index + 1 }}</td>
                 <td scope="row">
                   {{ changeIdProduct(item.productId, "name") }}
@@ -167,6 +169,143 @@
                       delete
                     </i>
                   </span>
+                  <span
+                    *ngIf="
+                      !isOperator &&
+                      StatesDeliveriesEnum.BORRADOR !=
+                        dataDelivery.deliveryStatusId &&
+                      StatesDeliveriesEnum.ENTREGADO !=
+                        dataDelivery.deliveryStatusId
+                    "
+                    ngbTooltip="Aceptar producto"
+                    placement="top"
+                    show-delay="500"
+                  >
+                    <i
+                      class="material-icons cursor"
+                      (click)="openModalAcceptProduct(item.id)"
+                    >
+                      thumb_up_alt
+                    </i>
+                  </span>
+                  <span
+                    *ngIf="
+                      !isOperator &&
+                      StatesDeliveriesEnum.BORRADOR !=
+                        dataDelivery.deliveryStatusId &&
+                      StatesDeliveriesEnum.ENTREGADO !=
+                        dataDelivery.deliveryStatusId
+                    "
+                    ngbTooltip="Rechazar producto"
+                    placement="top"
+                    show-delay="500"
+                  >
+                    <i
+                      class="material-icons cursor"
+                      (click)="openModalRejectProduct(item.id)"
+                    >
+                      thumb_down_alt
+                    </i>
+                  </span>
+                  <span
+                    *ngIf="
+                      !isOperator &&
+                      StatesDeliveriesEnum.BORRADOR !=
+                        dataDelivery.deliveryStatusId &&
+                      StatesDeliveriesEnum.ENTREGADO !=
+                        dataDelivery.deliveryStatusId
+                    "
+                    ngbTooltip="Realizar feedback"
+                    placement="top"
+                    show-delay="500"
+                  >
+                    <i
+                      class="material-icons cursor"
+                      (click)="openModalFeedback(modalFeedback, item.id)"
+                    >
+                      feedback
+                    </i>
+                  </span>
+                  <ng-template #modalFeedback let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title">Realizar feedback</h4>
+                      <button
+                        type="button"
+                        class="close"
+                        aria-label="Close"
+                        (click)="modal.dismiss('Cross click')"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body text-center">
+                      <app-observation
+                        [id]="'observationfeedback'"
+                        [title]="'* Observaciones feedback'"
+                        [name]="'observationfeedback'"
+                        [(inputModel)]="observationfeedback"
+                      ></app-observation>
+                      <div class="input-group mt-1">
+                        <div class="input-group-prepend input-group-text">
+                          <div>Adjunto feedback</div>
+                        </div>
+                        <input
+                          #documentFileRef
+                          accept=".zip"
+                          id="file-documement-feedback"
+                          name="file-documement-feedback"
+                          class="form-control"
+                          type="file"
+                          (change)="documentFeedback($event.target.files)"
+                        />
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-dark btn-block"
+                        (click)="createFeedback(item.id)"
+                        [disabled]="observationfeedback == ''"
+                      >
+                        Enviar
+                      </button>
+                    </div>
+                    <div class="modal-body text-center">
+                      <div class="table-inverse table-responsive">
+                        <table class="table table-striped text-center">
+                          <thead class="thead-inverse">
+                            <tr>
+                              <th>ID</th>
+                              <th>Observaciones</th>
+                              <th>Fecha</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              *ngFor="
+                                let item of listFeedBacks;
+                                let index = index
+                              "
+                            >
+                              <td scope="row">{{ item.feedbackId }}</td>
+                              <td scope="row">
+                                <app-observation
+                                  [id]="'feedback' + index"
+                                  [name]="'feedback' + index"
+                                  [(inputModel)]="item.feedback"
+                                  [disabled]="true"
+                                >
+                                </app-observation>
+                              </td>
+                              <td scope="row">
+                                {{ formatDate(item.feedbackDate) }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </ng-template>
                   <ng-template #modalUpdateProduct let-modal>
                     <div class="modal-header">
                       <h4 class="modal-title">
@@ -528,7 +667,7 @@
             </tbody>
           </table>
         </div>
-        <div class="col-12 mb-1" *ngIf="productsFromDelivery.length === 0">
+        <div class="col-12 mb-1" *ngIf="listProductsFromDelivery.length === 0">
           <div class="alert alert-primary text-center" role="alert">
             No existen productos asociados a la entrega.
           </div>
@@ -551,24 +690,35 @@
       ngbAutofocus
       class="btn btn-dark btn-block"
       *ngIf="StatesDeliveriesEnum.ENTREGADO == dataDelivery.deliveryStatusId"
+      (click)="startReviewManager()"
     >
       Iniciar revisión
     </button>
-    <button
-      type="button"
-      ngbAutofocus
-      class="btn btn-dark btn-block"
-      *ngIf="StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId"
-    >
-      Aceptar entrega
-    </button>
-    <button
-      type="button"
-      ngbAutofocus
-      class="btn btn-dark btn-block"
-      *ngIf="StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId"
-    >
-      enviar a corrección
-    </button>
+    <div class="row">
+      <div class="col-6">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-dark btn-block"
+          *ngIf="
+            StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
+          "
+        >
+          Aceptar entrega
+        </button>
+      </div>
+      <div class="col-6">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-dark btn-block"
+          *ngIf="
+            StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
+          "
+        >
+          enviar a corrección
+        </button>
+      </div>
+    </div>
   </div>
 </div>
