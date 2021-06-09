@@ -139,7 +139,12 @@
                 </td>
                 <td scope="row">
                   <span
-                    ngbTooltip="Actualizar"
+                    [ngbTooltip]="
+                      StatesDeliveriesEnum.ACEPTADO !=
+                      dataDelivery.deliveryStatusId
+                        ? 'Actualizar'
+                        : 'Ver detalle'
+                    "
                     placement="top"
                     show-delay="500"
                   >
@@ -153,14 +158,23 @@
                         )
                       "
                     >
-                      edit
+                      {{
+                        StatesDeliveriesEnum.ACEPTADO !=
+                        dataDelivery.deliveryStatusId
+                          ? "edit"
+                          : "visibility"
+                      }}
                     </i>
                   </span>
                   <span
                     ngbTooltip="Eliminar"
                     placement="top"
                     show-delay="500"
-                    *ngIf="isOperator"
+                    *ngIf="
+                      isOperator &&
+                      StatesDeliveriesEnum.ACEPTADO !=
+                        dataDelivery.deliveryStatusId
+                    "
                   >
                     <i
                       class="material-icons cursor"
@@ -175,6 +189,8 @@
                       StatesDeliveriesEnum.BORRADOR !=
                         dataDelivery.deliveryStatusId &&
                       StatesDeliveriesEnum.ENTREGADO !=
+                        dataDelivery.deliveryStatusId &&
+                      StatesDeliveriesEnum.ACEPTADO !=
                         dataDelivery.deliveryStatusId
                     "
                     ngbTooltip="Aceptar producto"
@@ -194,6 +210,8 @@
                       StatesDeliveriesEnum.BORRADOR !=
                         dataDelivery.deliveryStatusId &&
                       StatesDeliveriesEnum.ENTREGADO !=
+                        dataDelivery.deliveryStatusId &&
+                      StatesDeliveriesEnum.ACEPTADO !=
                         dataDelivery.deliveryStatusId
                     "
                     ngbTooltip="Rechazar producto"
@@ -228,7 +246,7 @@
                   </span>
                   <ng-template #modalFeedback let-modal>
                     <div class="modal-header">
-                      <h4 class="modal-title">Realizar feedback</h4>
+                      <h4 class="modal-title">Feedback</h4>
                       <button
                         type="button"
                         class="close"
@@ -238,7 +256,13 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <div class="modal-body text-center">
+                    <div
+                      class="modal-body text-center"
+                      *ngIf="
+                        StatesDeliveriesEnum.ACEPTADO !=
+                        dataDelivery.deliveryStatusId
+                      "
+                    >
                       <app-observation
                         [id]="'observationfeedback'"
                         [title]="'* Observaciones feedback'"
@@ -260,7 +284,13 @@
                         />
                       </div>
                     </div>
-                    <div class="modal-footer">
+                    <div
+                      class="modal-footer"
+                      *ngIf="
+                        StatesDeliveriesEnum.ACEPTADO !=
+                        dataDelivery.deliveryStatusId
+                      "
+                    >
                       <button
                         type="button"
                         class="btn btn-dark btn-block"
@@ -333,7 +363,14 @@
                             (change)="changeUpdaateInfoProduct(item)"
                           ></app-observation>
                         </div>
-                        <div class="col-12 mt-1" *ngIf="isOperator">
+                        <div
+                          class="col-12 mt-1"
+                          *ngIf="
+                            isOperator &&
+                            StatesDeliveriesEnum.ACEPTADO !=
+                              dataDelivery.deliveryStatusId
+                          "
+                        >
                           <app-select
                             [labelSelect]="
                               '* Agregar archivo adjunto al producto'
@@ -625,7 +662,11 @@
                                         attachments.attachmentId
                                       )
                                     "
-                                    *ngIf="isOperator"
+                                    *ngIf="
+                                      isOperator &&
+                                      StatesDeliveriesEnum.ACEPTADO !=
+                                        dataDelivery.deliveryStatusId
+                                    "
                                   >
                                     <i class="material-icons cursor">
                                       delete
@@ -703,6 +744,7 @@
           *ngIf="
             StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
           "
+          (click)="acceptDelivery()"
         >
           Aceptar entrega
         </button>
@@ -715,6 +757,7 @@
           *ngIf="
             StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
           "
+          (click)="returnDeliveryToOperator()"
         >
           enviar a corrección
         </button>

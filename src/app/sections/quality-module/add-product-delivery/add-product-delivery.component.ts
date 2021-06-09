@@ -503,4 +503,43 @@ export class AddProductDeliveryComponent implements OnInit {
       }
     });
   }
+  acceptDelivery() {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title = 'Aceptar entrega';
+    this.optionModalRef.componentInstance.description = 'Va aceptar la entrega';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.qualityService.acceptDelivery(this.deliveryId).subscribe((_) => {
+            this.toastr.success('Entrega aceptada');
+            this.initPageServices();
+          });
+        }
+      }
+    });
+  }
+  returnDeliveryToOperator() {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title = 'Enviar a corrección';
+    this.optionModalRef.componentInstance.description =
+      'Va enviar a corrección la entrega';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.qualityService
+            .returnDeliveryToOperator(this.deliveryId)
+            .subscribe((_) => {
+              this.toastr.success('Entrega enviada a corrección');
+              this.initPageServices();
+            });
+        }
+      }
+    });
+  }
 }

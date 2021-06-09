@@ -80,7 +80,10 @@
                 show-delay="500"
               >
                 <i
-                  *ngIf="isOperator"
+                  *ngIf="
+                    isOperator &&
+                    StatesDeliveriesEnum.ACEPTADO != item.deliveryStatusId
+                  "
                   class="material-icons cursor"
                   (click)="openModalUpdateDelivery(modalUpdateDelivery)"
                 >
@@ -92,7 +95,10 @@
                 ngbTooltip="Eliminar"
                 placement="top"
                 show-delay="500"
-                *ngIf="isOperator"
+                *ngIf="
+                  isOperator &&
+                  StatesDeliveriesEnum.ACEPTADO != item.deliveryStatusId
+                "
               >
                 <i
                   class="material-icons cursor"

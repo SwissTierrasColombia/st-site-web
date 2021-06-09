@@ -39,6 +39,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
   pageSize: number = 10;
   optionModalRef: NgbModalRef;
   status: string | number;
+  StatesDeliveriesEnum = StatesDeliveriesEnum;
   constructor(
     private workspacesService: WorkspacesService,
     private qualityService: QualityService,
