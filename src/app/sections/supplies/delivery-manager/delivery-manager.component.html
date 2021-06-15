@@ -91,19 +91,21 @@
               <tr *ngFor="let item of supplies">
                 <td scope="row">
                   <span *ngIf="isAuthority(item)">{{ item.supply.name }}</span>
-                  <span *ngIf="isAuthority(item) === false"
-                    >{{
-                      item.supply.typeSupply ? item.supply.typeSupply.name : ""
-                    }}<br />({{
-                      item.supply.typeSupply
-                        ? item.supply.typeSupply.provider.name
-                        : ""
-                    }})
+                  <span *ngIf="isAuthority(item) === false">
+                    <div>
+                      {{ item.supply ? item.supply.name : "" }}
+                    </div>
+                    <div *ngIf="item.supply.typeSupply">
+                      ({{
+                        item.supply.typeSupply
+                          ? item.supply.typeSupply.provider.name
+                          : ""
+                      }})
+                    </div>
                   </span>
                   <div
                     *ngIf="
-                      item.supply.typeSupply?.id === 2 &&
-                      !item.supply.valid
+                      item.supply.typeSupply?.id === 2 && !item.supply.valid
                     "
                   >
                     <span class="badge badge-warning">
