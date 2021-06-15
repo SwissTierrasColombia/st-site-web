@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { JwtHelper } from 'src/app/helpers/jwt';
-import { RoleModel } from 'src/app/helpers/role.model';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
+import { RoleModel } from 'src/app/shared/helpers/role.model';
 
 @Component({
   selector: 'app-dashboard',

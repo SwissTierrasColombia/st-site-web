@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    <span [innerHTML]="title"></span>
+  </h4>
+  <button
+    *ngIf="!disableButtonClose"
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <h5 class="alert alert-warning text-center">
+    <span [innerHTML]="description"></span>
+  </h5>
+</div>
+<div class="modal-footer">
+  <div class="col-6">
+    <button
+      type="button"
+      class="btn btn-dark btn-block"
+      (click)="closeModal(false)"
+    >
+      No
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <button
+      type="button"
+      ngbAutofocus
+      class="btn btn-success btn-block"
+      (click)="closeModal(true)"
+    >
+      Si
+    </button>
+  </div>
+</div>

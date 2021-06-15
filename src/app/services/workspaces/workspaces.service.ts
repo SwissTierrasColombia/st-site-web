@@ -1,3 +1,4 @@
+import { GetWorkspacesByOperatorInterface } from './../../sections/quality-module/models/get-workspaces-by-operator.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -119,8 +120,6 @@ export class WorkspacesService {
    * loadSupplyFromRequest
    */
   public loadSupplyFromRequest(idInsumo: string, data: FormData) {
-    console.log(data);
-
     const headers = new HttpHeaders({ 'Transfer-Encoding': 'chunked' });
     return this.httpClient.put(
       this.url + '/workspaces/v1/providers/requests/' + idInsumo,
@@ -841,6 +840,14 @@ export class WorkspacesService {
   public getOnlyOperatorAssignByWorkspace(workspaceId: number) {
     return this.httpClient.get(
       this.url + '/workspaces/v1/workspaces/' + workspaceId + '/operators'
+    );
+  }
+  /**
+   * getWorkspacesByOperator
+   */
+  public getWorkspacesByOperator() {
+    return this.httpClient.get<GetWorkspacesByOperatorInterface[]>(
+      this.url + '/workspaces/v1/workspaces/operators'
     );
   }
 }

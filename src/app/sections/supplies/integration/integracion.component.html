@@ -1,0 +1,663 @@
+<div>
+  <app-page-header
+    [heading]="'Integración XTF Catastro-Registro'"
+    [icon]="'fa-star'"
+  >
+  </app-page-header>
+  <div class="card">
+    <div class="card-body">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a
+            class="nav-link cursor"
+            [ngClass]="{ active: tab === 1 }"
+            data-toggle="tab"
+            role="tab"
+            (click)="tab1()"
+            aria-controls="home"
+          >
+            <span class="material-icons"> new_releases </span> Integraciones en
+            ejecución</a
+          >
+        </li>
+        <!-- <li class="nav-item">
+          <a
+            class="nav-link cursor"
+            [ngClass]="{ active: tab === 2 }"
+            data-toggle="tab"
+            role="tab"
+            (click)="tab2()"
+            aria-controls="messages"
+          >
+            <span class="material-icons"> view_list </span>Candidatos a
+            integración</a
+          >
+        </li> -->
+        <li class="nav-item">
+          <a
+            class="nav-link cursor"
+            [ngClass]="{ active: tab === 3 }"
+            data-toggle="tab"
+            role="tab"
+            (click)="tab3()"
+            aria-controls="messages"
+          >
+            <span class="material-icons"> note </span>Integración XTF
+            Catastro-Registro</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="tab === 1">
+      <app-integrations-running></app-integrations-running>
+    </div>
+    <!-- <div *ngIf="tab === 2">
+      <app-integrations-possibles></app-integrations-possibles>
+    </div> -->
+    <div class="card" *ngIf="tab === 3">
+      <div class="card-header text-center">
+        <h3>Integración XTF Catastro-Registro</h3>
+      </div>
+      <div class="card-body">
+        <form action="" method="post">
+          <div class="row mb-2">
+            <div class="col-12 col-sm-6 mb-1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" aria-required="true"
+                    >* Departamento</label
+                  >
+                </div>
+                <select
+                  (change)="changeDepartament()"
+                  class="custom-select"
+                  name="departments"
+                  id="departments"
+                  [(ngModel)]="selectDepartment"
+                >
+                  <option value="0" selected>Seleccione el Departamento</option>
+                  <option [ngValue]="item.id" *ngFor="let item of departments">
+                    {{ item.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 mb-1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text">* Municipio</label>
+                </div>
+                <select
+                  (change)="changeMunucipality()"
+                  class="custom-select"
+                  name="munucipalities"
+                  id="munucipalities"
+                  [(ngModel)]="selectMunicipality"
+                >
+                  <option value="0" selected>Seleccione el Municipio</option>
+                  <option
+                    [ngValue]="item.id"
+                    *ngFor="let item of munucipalities"
+                  >
+                    {{ item.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 mt-3">
+              <div class="alert alert-primary text-center" role="alert">
+                Recuerde que los campos marcados con * son obligatorios.
+              </div>
+            </div>
+          </div>
+        </form>
+        <div
+          class="row justify-content-center text-center"
+          id="insumosXTF"
+          *ngIf="catastro.length > 0"
+        >
+          <div class="col-12 col-sm-6 mb-2">
+            <div class="card">
+              <div class="card-header text-center">
+                <h5>Catastro</h5>
+              </div>
+              <div class="card-body">
+                <div
+                  class="form-check"
+                  *ngFor="let item of catastro; let i = index"
+                >
+                  <input
+                    [(ngModel)]="selectsupplyCadastre"
+                    name="Catastro"
+                    class="form-check-input mt-2"
+                    type="radio"
+                    value="{{ item.id }}"
+                    id="{{ item.id }}"
+                    (change)="comprobar(modalskipValidated, item)"
+                  />
+                  <label class="form-check-label" for="radio{{ i + 1 }}">
+                    <span
+                      ngbTooltip="{{ item.observations }}"
+                      placement="bottom"
+                      show-delay="500"
+                    >
+                      {{ item.name }} v{{ i + 1 }}
+                      {{ globalFuntionDate(item.createdAt) }}
+                    </span>
+                  </label>
+                  <div
+                    *ngIf="item.modelVersion"
+                    class="alert alert-info text-center"
+                    role="alert"
+                  >
+                    <!-- <strong>Modelo {{item.modelVersion}}</strong> -->
+                    <strong>Submodelo Insumos V1.0</strong>
+                    <div
+                      *ngIf="
+                        item.valid !== null &&
+                        !item.valid
+                      "
+                    >
+                      <span class="badge badge-warning">
+                        Validado con errores
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 mb-2">
+            <div class="card">
+              <div class="card-header text-center">
+                <h5>Registro</h5>
+              </div>
+              <div class="card-body">
+                <div
+                  class="form-check"
+                  *ngFor="let item of registro; let i = index"
+                >
+                  <input
+                    [(ngModel)]="selectsupplyRegistration"
+                    name="Registro"
+                    class="form-check-input mt-2"
+                    type="radio"
+                    value="{{ item.id }}"
+                    id="{{ item.id }}"
+                    (change)="comprobar()"
+                  />
+                  <label class="form-check-label" for="radio{{ i + 1 }}">
+                    <span
+                      ngbTooltip="{{ item.observations }}"
+                      placement="bottom"
+                      show-delay="500"
+                    >
+                      {{ item.name }} v{{ i + 1 }}
+                      {{ globalFuntionDate(item.createdAt) }}
+                    </span>
+                  </label>
+                  <div
+                    *ngIf="item.modelVersion"
+                    class="alert alert-info text-center"
+                    role="alert"
+                  >
+                    <!-- <strong>Modelo {{item.modelVersion}}</strong> -->
+                    <strong>Submodelo Insumos V1.0</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-2 mb-2">
+            <div class="alert alert-warning text-center" role="alert">
+              <span [innerHTML]="msgAlert"></span>
+            </div>
+            <button
+              type="button"
+              class="btn btn-dark"
+              (click)="openModalXTF(modalRegistrarxtf1)"
+              [disabled]="activateButtonIntegration"
+            >
+              Realizar integración automatica de archivos XTF
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="integrationByWorkspace.length > 0 && tab === 3">
+    <div class="card text-center">
+      <div class="card-header">
+        <h5>Historial de Integraciones</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-inverse table-responsive">
+          <table class="table table-striped text-center">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Fecha de Integración</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of integrationByWorkspace">
+                <td scope="row">{{ item.integrationState.name }}</td>
+                <td scope="row">{{ item.integrationState.description }}</td>
+                <td scope="row">{{ globalFuntionDate(item.startedAt) }}</td>
+                <td scope="row">
+                  <span
+                    ngbTooltip="Ver detalle"
+                    placement="top"
+                    show-delay="500"
+                  >
+                    <i
+                      class="material-icons cursor ml-4"
+                      (click)="openModal(item.id, modal1)"
+                    >
+                      pageview
+                    </i>
+                  </span>
+                  <span
+                    ngbTooltip="Generar XTF"
+                    placement="top"
+                    show-delay="500"
+                    *ngIf="
+                      item.integrationState.id === 2 ||
+                      item.integrationState.id === 8
+                    "
+                  >
+                    <i
+                      class="material-icons cursor ml-4"
+                      (click)="openModalGenerateXTF(modalXTF, item.id)"
+                    >
+                      assignment_turned_in
+                    </i>
+                  </span>
+                  <!-- <span
+                    ngbTooltip="Iniciar integración asistida"
+                    placement="top"
+                    show-delay="500"
+                    *ngIf="item.integrationState.id === 2"
+                  >
+                    <i
+                      class="material-icons cursor ml-4"
+                      (click)="
+                        openModalIntegrationAssited(modalIntegration, item.id)
+                      "
+                    >
+                      important_devices
+                    </i>
+                  </span> -->
+                  <span
+                    ngbTooltip="Eliminar"
+                    placement="top"
+                    show-delay="500"
+                    *ngIf="
+                      item.integrationState.id === 2 ||
+                      item.integrationState.id === 7 ||
+                      item.integrationState.id === 8
+                    "
+                  >
+                    <i
+                      class="material-icons cursor ml-4"
+                      (click)="openModalcancel(modalCancel, item.id)"
+                    >
+                      delete
+                    </i>
+                  </span>
+                  <div
+                    *ngIf="item.errors && item.errors !== null"
+                    id="logsXTFIntegration"
+                    class="logsXTF"
+                    (click)="openModalErrorXTF(modalError, item)"
+                  >
+                    <small><u> Ver log </u></small>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #modal1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Resultados y Histórico de la Integración</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="table-inverse table-responsive">
+        <table class="table table-striped text-center">
+          <thead class="thead-inverse">
+            <tr>
+              <th>Estado de Integración</th>
+              <th>Descripción</th>
+              <th *ngIf="selectIntegration[0].stats.length > 0">
+                Número de Registros Catastrales
+              </th>
+              <th *ngIf="selectIntegration[0].stats.length > 0">
+                Número de Registros SNR
+              </th>
+              <th *ngIf="selectIntegration[0].stats.length > 0">
+                Registros Integrados
+              </th>
+              <th *ngIf="selectIntegration[0].stats.length > 0">Porcentaje</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of selectIntegration; let i = index">
+              <td scope="row">{{ item.integrationState.name }}</td>
+              <td scope="row">
+                {{
+                  item.integrationState ? item.integrationState.description : ""
+                }}
+              </td>
+              <td scope="row" *ngIf="item.stats.length > 0">
+                {{
+                  item.stats.length > 0
+                    ? parcelNumber(item.stats[0].cadastreRecordsNumber)
+                    : ""
+                }}
+              </td>
+              <td scope="row" *ngIf="item.stats.length > 0">
+                {{
+                  item.stats.length > 0
+                    ? parcelNumber(item.stats[0].snrRecordsNumber)
+                    : ""
+                }}
+              </td>
+              <td scope="row" *ngIf="item.stats.length > 0">
+                {{
+                  item.stats.length > 0
+                    ? parcelNumber(item.stats[0].matchNumber)
+                    : "0"
+                }}
+              </td>
+              <td scope="row" *ngIf="item.stats.length > 0">
+                <b
+                  >{{
+                    item.stats.length > 0
+                      ? roundDecimal(item.stats[0].percentage)
+                      : "0"
+                  }}%</b
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-inverse table-responsive">
+        <table class="table table-striped text-center">
+          <thead class="thead-inverse">
+            <tr>
+              <th>ID</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+              <th>Responsable</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let item of selectIntegration[0].histories;
+                let index = index
+              "
+            >
+              <td scope="row">{{ index + 1 }}</td>
+              <td scope="row">{{ item.state.name }}</td>
+              <td scope="row">{{ item.state.description }}</td>
+              <td scope="row">{{ item.userName }}</td>
+              <td scope="row">{{ globalFuntionDate(item.createdAt) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer"></div>
+  </ng-template>
+  <ng-template #modalXTF let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro que desea generar el producto a partir de la integración
+        automática?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción generará un nuevo XTF para el Municipio.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalGenerateXTF(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalGenerateXTF(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #modalIntegration let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de iniciar la integración asistida?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción genera una tarea a los integradores, para que
+        con ayuda del asistente puedan mejorar el porcentaje de integración.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalIntegrationAssited(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalIntegrationAssited(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #modalCancel let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de eliminar la integración automática?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción eliminara la integración.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalcancel(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalcancel(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #modalRegistrarxtf1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">¿Está seguro de realizar la integración?</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción realizará la integración automatica de archivos
+        XTF.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalXTF(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalXTF(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <div id="actionForm"></div>
+</div>
+<ng-template #modalError let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      Log de Integración
+      <span ngbTooltip="Copiar" placement="top" show-delay="500">
+        <span class="material-icons ml-2" (click)="myFunctionCopyOrder()">
+          content_copy
+        </span>
+      </span>
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <span class="text-center">{{ errorXTF }}</span>
+  </div>
+  <div class="modal-footer"></div>
+</ng-template>
+<ng-template #modalskipValidated let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      ¿Está seguro de seleccionar un XTF Validado con errores?
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="closeModalSkipValidation(false)"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h5 class="alert alert-warning text-center">
+      Advertencia: Ha escogido un XTF Validado con errores, esta
+      integración puede fallar.
+    </h5>
+  </div>
+  <div class="modal-footer">
+    <div class="col-6">
+      <button
+        type="button"
+        class="btn btn-dark btn-block"
+        (click)="closeModalSkipValidation(false)"
+      >
+        No
+      </button>
+    </div>
+    <div class="col-6 text-right">
+      <button
+        type="button"
+        ngbAutofocus
+        class="btn btn-success btn-block"
+        (click)="closeModalSkipValidation(true)"
+      >
+        Si
+      </button>
+    </div>
+  </div>
+</ng-template>

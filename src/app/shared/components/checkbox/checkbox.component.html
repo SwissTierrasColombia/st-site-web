@@ -1,0 +1,23 @@
+<div class="input-group" [class]="classStyle" *ngIf="title">
+  <div class="input-group-prepend" *ngIf="title">
+    <label class="input-group-text">{{ title }}</label>
+  </div>
+  <input
+    [id]="id"
+    type="checkbox"
+    [name]="name"
+    [disabled]="disabled"
+    [(ngModel)]="inputModel"
+    (ngModelChange)="inputModelChange.emit(inputModel)"
+  />
+</div>
+<div class="input-group" [class]="classStyle" *ngIf="!title">
+  <input
+    [id]="id"
+    type="checkbox"
+    [name]="name"
+    [disabled]="disabled"
+    [(ngModel)]="inputModel"
+    (ngModelChange)="inputModelChange.emit(inputModel)"
+  />
+</div>

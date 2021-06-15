@@ -1,8 +1,8 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { JwtHelper } from 'src/app/helpers/jwt';
-import { RoleModel } from 'src/app/helpers/role.model';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
+import { RoleModel } from 'src/app/shared/helpers/role.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -43,6 +43,7 @@ export class SidebarComponent implements OnInit {
     this.listMenu = {
       gestion: 'gestion',
       insumos: 'insumos',
+      quality: 'quality',
       administrador: 'administrador',
     };
     this.allroles = {};
