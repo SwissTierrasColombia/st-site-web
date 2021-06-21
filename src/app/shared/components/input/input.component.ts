@@ -16,6 +16,7 @@ export class InputComponent implements OnInit {
   @Input() classStyle: string;
   @Input() inputModel: any;
   @Input() disabled: boolean = false;
+  @Input() icon: string;
   @Output() inputModelChange = new EventEmitter<any>();
   constructor() {}
   ngOnInit(): void {}

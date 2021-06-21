@@ -1,130 +1,91 @@
 <div class="app-body">
+  <app-page-header [heading]="'Registrar usuarios'" [icon]="'fa-star'">
+  </app-page-header>
+
   <main class="main d-flex align-items-center">
     <div class="container">
       <div class="row">
         <div class="col-md-8 mx-auto">
           <div class="card-group">
-            <div class="card p-4">
+            <div class="card">
+              <div class="card-header text-center">
+                <h1 class="text-center mb-2">Registro de Usuarios</h1>
+                <h3 class="text-center mb-2" *ngIf="roleConnect.id === 5">
+                  Administrador del Sistema
+                </h3>
+                <h3 class="text-center mb-2" *ngIf="roleConnect.id === 1">
+                  Perfil Administrador
+                </h3>
+                <h3 class="text-center mb-2" *ngIf="roleConnect.id === 2">
+                  Gestor
+                </h3>
+                <h3 class="text-center mb-2" *ngIf="roleConnect.id === 4">
+                  Proveedor
+                </h3>
+              </div>
               <div class="card-body">
                 <form #formulariologin="ngForm">
-                  <h1 class="text-center mb-2">Registro de Usuarios</h1>
-                  <h3 class="text-center mb-2" *ngIf="roleConnect.id === 5">
-                    Administrador del Sistema
-                  </h3>
-                  <h3 class="text-center mb-2" *ngIf="roleConnect.id === 1">
-                    Perfil Administrador
-                  </h3>
-                  <h3 class="text-center mb-2" *ngIf="roleConnect.id === 2">
-                    Gestor
-                  </h3>
-                  <h3 class="text-center mb-2" *ngIf="roleConnect.id === 4">
-                    Proveedor
-                  </h3>
                   <p class="text-muted">Ingrese los siguientes datos.</p>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="material-icons"> perm_identity </i>
-                      </span>
-                    </div>
-                    <input
-                      (change)="validfield()"
-                      type="text"
-                      name="firstName"
-                      class="form-control"
-                      placeholder="Nombres"
-                      autocomplete="firstName"
-                      [(ngModel)]="registerData.firstName"
-                      required
-                    />
-                  </div>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="material-icons"> list_alt </i>
-                      </span>
-                    </div>
-                    <input
-                      (change)="validfield()"
-                      type="text"
-                      name="lastName"
-                      class="form-control"
-                      placeholder="Apellidos"
-                      autocomplete="lastName"
-                      [(ngModel)]="registerData.lastName"
-                      required
-                    />
-                  </div>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="material-icons"> account_circle </i>
-                      </span>
-                    </div>
-                    <input
-                      (change)="validfield()"
-                      type="text"
-                      name="username"
-                      class="form-control"
-                      placeholder="Nombre de usuario"
-                      autocomplete="username"
-                      [(ngModel)]="registerData.username"
-                      required
-                    />
-                  </div>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"
-                        ><i class="material-icons"> email </i></span
-                      >
-                    </div>
-                    <input
-                      (change)="validfield()"
-                      type="email"
-                      name="email"
-                      class="form-control"
-                      placeholder="Correo electrónico"
-                      autocomplete="email"
-                      [(ngModel)]="registerData.email"
-                      required
-                    />
-                  </div>
-
-                  <div class="input-group mb-4">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="material-icons"> security </i>
-                      </span>
-                    </div>
-                    <input
-                      (change)="validfield()"
-                      type="password"
-                      name="password"
-                      class="form-control"
-                      placeholder="Contraseña"
-                      autocomplete="current-password"
-                      [(ngModel)]="registerData.password"
-                      required
-                    />
-                  </div>
-                  <div class="input-group mb-4">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="material-icons"> lock </i>
-                      </span>
-                    </div>
-                    <input
-                      (change)="validfield()"
-                      type="password"
-                      name="confirmationPassword"
-                      class="form-control"
-                      placeholder="Confirmar contraseña"
-                      autocomplete="current-password"
-                      [(ngModel)]="registerData.confirmationPassword"
-                      required
-                    />
-                  </div>
-                  <!-- Select profiles -->
+                  <app-input
+                    [id]="'firstName'"
+                    [icon]="'perm_identity'"
+                    [type]="'text'"
+                    [name]="'firstName'"
+                    [placeholder]="'Nombres'"
+                    [(inputModel)]="registerData.firstName"
+                    (change)="validfield()"
+                  >
+                  </app-input>
+                  <app-input
+                    [id]="'lastName'"
+                    [icon]="'list_alt'"
+                    [type]="'text'"
+                    [name]="'lastName'"
+                    [placeholder]="'Apellidos'"
+                    [(inputModel)]="registerData.lastName"
+                    (change)="validfield()"
+                  >
+                  </app-input>
+                  <app-input
+                    [id]="'username'"
+                    [icon]="'account_circle'"
+                    [type]="'text'"
+                    [name]="'username'"
+                    [placeholder]="'Nombre de usuario'"
+                    [(inputModel)]="registerData.username"
+                    (change)="validfield()"
+                  >
+                  </app-input>
+                  <app-input
+                    [id]="'email'"
+                    [icon]="'email'"
+                    [type]="'email'"
+                    [name]="'email'"
+                    [placeholder]="'Correo electrónico'"
+                    [(inputModel)]="registerData.email"
+                    (change)="validfield()"
+                  >
+                  </app-input>
+                  <app-input
+                    [id]="'password'"
+                    [icon]="'security'"
+                    [type]="'password'"
+                    [name]="'password'"
+                    [placeholder]="'Contraseña'"
+                    [(inputModel)]="registerData.password"
+                    (change)="validfield()"
+                  >
+                  </app-input>
+                  <app-input
+                    [id]="'confirmationPassword'"
+                    [icon]="'lock'"
+                    [type]="'password'"
+                    [name]="'confirmationPassword'"
+                    [placeholder]="'Confirmar contraseña'"
+                    [(inputModel)]="registerData.confirmationPassword"
+                    (change)="validfield()"
+                  >
+                  </app-input>
                   <small
                     *ngIf="roleConnect.id === 1"
                     id="perfil"
@@ -171,7 +132,6 @@
                     </label>
                   </fieldset>
                   <div class="mb-3" *ngIf="selectROL === 2">
-                    <!-- Gestor lista unica -->
                     <div class="input-group" *ngIf="roleConnect.id === 1">
                       <div class="input-group-prepend">
                         <label class="input-group-text" aria-required="true"
@@ -185,7 +145,9 @@
                         id="managers"
                         [(ngModel)]="registerData.roleManager.managerId"
                       >
-                        <option value="0" selected>Seleccione entidad</option>
+                        <option value="0" selected [disabled]="true">
+                          Seleccione entidad
+                        </option>
                         <option
                           [ngValue]="item.id"
                           *ngFor="let item of managers"
@@ -194,7 +156,6 @@
                         </option>
                       </select>
                     </div>
-                    <!-- Perfiles Gestor lista multiple -->
                     <div
                       class="input-group mt-2"
                       *ngIf="dataUserLogger.is_manager_director"
@@ -235,7 +196,9 @@
                         id="operator"
                         [(ngModel)]="registerData.roleOperator.operatorId"
                       >
-                        <option value="0" selected>Seleccione entidad</option>
+                        <option value="0" selected [disabled]="true">
+                          Seleccione entidad
+                        </option>
                         <option
                           [ngValue]="item.id"
                           *ngFor="let item of operators"
@@ -246,7 +209,6 @@
                     </div>
                   </div>
                   <div class="mb-3" *ngIf="selectROL === 4">
-                    <!-- Proveedor lista unica -->
                     <div class="input-group" *ngIf="roleConnect.id === 1">
                       <div class="input-group-prepend">
                         <label class="input-group-text" aria-required="true"
@@ -264,7 +226,9 @@
                         id="providers"
                         [(ngModel)]="registerData.roleProvider.providerId"
                       >
-                        <option value="0" selected>Seleccione entidad</option>
+                        <option value="0" selected [disabled]="true">
+                          Seleccione entidad
+                        </option>
                         <option
                           [ngValue]="item.id"
                           *ngFor="let item of providers"
@@ -273,7 +237,6 @@
                         </option>
                       </select>
                     </div>
-                    <!-- Perfiles Proveedor lista multiple -->
                     <div
                       class="input-group mt-2"
                       *ngIf="dataUserLogger.is_provider_director"
@@ -320,7 +283,7 @@
                   </div>
                 </form>
               </div>
-              <div class="text-muted text-center">
+              <div class="card-footer text-muted text-center">
                 <button
                   type="button"
                   class="btn btn-dark px-4"

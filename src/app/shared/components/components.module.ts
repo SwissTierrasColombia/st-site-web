@@ -7,6 +7,7 @@ import { SelectComponent } from './select/select.component';
 import { ObservationComponent } from './observation/observation.component';
 import { ModalComponent } from './modal/modal.component';
 import { InputComponent } from './input/input.component';
+import { ShowFieldInfoComponent } from './show-field-info/show-field-info.component';
 @NgModule({
   declarations: [
     SelectComponent,
@@ -14,6 +15,7 @@ import { InputComponent } from './input/input.component';
     ModalComponent,
     InputComponent,
     CheckboxComponent,
+    ShowFieldInfoComponent,
   ],
   imports: [CommonModule, FormsModule],
   exports: [
@@ -22,6 +24,7 @@ import { InputComponent } from './input/input.component';
     ModalComponent,
     InputComponent,
     CheckboxComponent,
+    ShowFieldInfoComponent,
   ],
 })
 export class ComponentsModule {}

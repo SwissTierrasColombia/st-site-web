@@ -15,6 +15,7 @@ import { GestorComponent } from './manager/gestor.component';
 import { ProveedorComponent } from './provider/proveedor.component';
 import { OperadorComponent } from './operator/operador.component';
 import { NgSelect2Module } from 'ng-select2';
+import { ComponentsModule } from 'src/app/shared/components/components.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { NgSelect2Module } from 'ng-select2';
     NgxPaginationModule,
     Ng2SearchPipeModule,
     NgSelect2Module,
+    ComponentsModule,
   ],
   providers: [FuntionsGlobalsHelper],
   bootstrap: [ListUserComponent],
