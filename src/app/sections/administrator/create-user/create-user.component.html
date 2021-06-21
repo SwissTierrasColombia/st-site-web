@@ -288,7 +288,7 @@
                   type="button"
                   class="btn btn-dark px-4"
                   [disabled]="botonRegistrar"
-                  (click)="openModal(modalRegistrar)"
+                  (click)="openModal()"
                 >
                   Registrar
                 </button>
@@ -299,46 +299,4 @@
       </div>
     </div>
   </main>
-  <ng-template #modalRegistrar let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title">Registro de Usuarios</h4>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <h2 class="text-center font-weight-bold">
-        ¿Está seguro de registrar el usuario?
-      </h2>
-      <h5 class="alert alert-warning text-center">
-        Advertencia: Esta acción registra un usuario en el sistema.
-      </h5>
-    </div>
-    <div class="modal-footer">
-      <div class="col-6">
-        <button
-          type="button"
-          class="btn btn-dark btn-block"
-          (click)="closeModal(false)"
-        >
-          No
-        </button>
-      </div>
-      <div class="col-6 text-right">
-        <button
-          type="button"
-          ngbAutofocus
-          class="btn btn-success btn-block"
-          (click)="closeModal(true)"
-        >
-          Si
-        </button>
-      </div>
-    </div>
-  </ng-template>
 </div>

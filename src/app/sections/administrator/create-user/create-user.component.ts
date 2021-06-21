@@ -6,7 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
 import { JwtHelper } from 'src/app/shared/helpers/jwt';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -23,6 +24,7 @@ export class CreateUserComponent implements OnInit {
   dataUserLogger: any;
   roleConnect: any;
   botonRegistrar: boolean;
+  optionModalRef: NgbModalRef;
   constructor(
     private serviceManagers: ManagersService,
     private serviceProviders: ProvidersService,
@@ -409,15 +411,20 @@ export class CreateUserComponent implements OnInit {
       this.toast.error('Las contraseñas no son iguales.');
     }
   }
-  openModal(modal: any) {
-    this.modalService.open(modal, { centered: true, scrollable: true });
-  }
-  closeModal(option: boolean) {
-    if (option) {
-      this.register();
-      this.modalService.dismissAll();
-    } else {
-      this.modalService.dismissAll();
-    }
+  openModal() {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title = 'Registro de Usuarios';
+    this.optionModalRef.componentInstance.description =
+      '¿Está seguro de registrar el usuario? <br> Advertencia: Esta acción registra un usuario en el sistema.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.register();
+        }
+      }
+    });
   }
 }
