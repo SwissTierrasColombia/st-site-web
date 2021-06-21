@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-profiles',
@@ -15,6 +16,7 @@ export class ProfilesComponent implements OnInit {
   editMode: boolean;
   formOk: boolean;
   id: number;
+  optionModalRef: NgbModalRef;
   constructor(
     private serviceWorkSpace: WorkspacesService,
     private toast: ToastrService,
@@ -58,26 +60,34 @@ export class ProfilesComponent implements OnInit {
     this.id = this.data.id;
     this.editMode = true;
   }
-  deleteProfile(modal: any, id: number) {
-    this.modalService.open(modal);
+  deleteProfile(id: number) {
     this.idProfileDelete = id;
-  }
-  closeModalDisabled(option: boolean) {
-    if (option) {
-      this.serviceWorkSpace
-        .deleteProfileProvider(this.idProfileDelete)
-        .subscribe((_) => {
-          this.toast.success('Ha eliminado correctamente el perfil.');
-          this.idProfileDelete = 0;
-          this.serviceWorkSpace.GetProviderProfiles().subscribe((element) => {
-            this.dataProfile = element;
-            this.dataProfile.sort((a, b) => a.id - b.id);
-          });
-        });
-      this.modalService.dismissAll();
-    } else {
-      this.modalService.dismissAll();
-    }
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de Eliminar el Perfil?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Esta acción eliminará el perfil.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.serviceWorkSpace
+            .deleteProfileProvider(this.idProfileDelete)
+            .subscribe((_) => {
+              this.toast.success('Ha eliminado correctamente el perfil.');
+              this.idProfileDelete = 0;
+              this.serviceWorkSpace
+                .GetProviderProfiles()
+                .subscribe((element) => {
+                  this.dataProfile = element;
+                  this.dataProfile.sort((a, b) => a.id - b.id);
+                });
+            });
+        }
+      }
+    });
   }
   nitIsValid(dato) {
     const nit = dato.trim();
