@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ManagersService } from 'src/app/services/managers/managers.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ViewportScroller } from '@angular/common';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-gestor',
@@ -18,6 +19,7 @@ export class GestorComponent implements OnInit {
   editMode: boolean;
   formOk: boolean;
   id: number;
+  optionModalRef: NgbModalRef;
   constructor(
     private serviceManager: ManagersService,
     private toast: ToastrService,
@@ -80,24 +82,32 @@ export class GestorComponent implements OnInit {
     this.scroll.scrollToAnchor('actionForm');
     this.editMode = true;
   }
-  deleteProfile(modal, item: any) {
+  deleteProfile(item: any) {
     this.idProfileDelete = item;
-    this.modalService.open(modal, { centered: true, scrollable: true });
-  }
-  closeModalDisabled(option: boolean) {
-    if (option) {
-      this.serviceManager
-        .disableManager(this.idProfileDelete.id)
-        .subscribe((_) => {
-          this.toast.success('Ha desactivado correctamente el gestor.');
-          this.idProfileDelete.state = false;
-          this.idProfileDelete = {};
-        });
-      this.modalService.dismissAll();
-    } else {
-      this.idProfileDelete.state = true;
-      this.modalService.dismissAll();
-    }
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de Desactivar el Gestor?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Esta acción deshabilita el Gestor.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.serviceManager
+            .disableManager(this.idProfileDelete.id)
+            .subscribe((_) => {
+              this.toast.success('Ha desactivado correctamente el gestor.');
+              this.idProfileDelete.state = false;
+              this.idProfileDelete = {};
+            });
+          this.modalService.dismissAll();
+        } else {
+          this.idProfileDelete.state = true;
+        }
+      }
+    });
   }
   closeModalEnable(option: boolean) {
     if (option) {
@@ -114,9 +124,31 @@ export class GestorComponent implements OnInit {
       this.modalService.dismissAll();
     }
   }
-  activeManager(modal: any, item: any) {
-    this.modalService.open(modal, { centered: true, scrollable: true });
+  activeManager(item: any) {
     this.idProfileEnable = item;
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de Habilitar el Gestor?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Esta acción habilitara el Gestor.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.serviceManager
+            .enableManager(this.idProfileEnable.id)
+            .subscribe((_) => {
+              this.toast.success('Ha habilitado correctamente el gestor.');
+              this.idProfileEnable.state = true;
+              this.idProfileEnable = {};
+            });
+        } else {
+          this.idProfileEnable.state = false;
+        }
+      }
+    });
   }
   clickCheckBox(event: Event) {
     event.preventDefault();
