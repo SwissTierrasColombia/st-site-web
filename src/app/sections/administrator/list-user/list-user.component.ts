@@ -3,11 +3,12 @@ import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelper } from 'src/app/shared/helpers/jwt';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationService } from 'src/app/services/administration/administration.service';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { OperatorsService } from 'src/app/services/operators/operators.service';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-list-user',
@@ -42,6 +43,7 @@ export class ListUserComponent implements OnInit {
   managerId: number;
   operatorId: number;
   providerId: number;
+  optionModalRef: NgbModalRef;
   constructor(
     private serviceWorkspace: WorkspacesService,
     private modalService: NgbModal,
@@ -131,87 +133,125 @@ export class ListUserComponent implements OnInit {
   globalFuntionString(item: string) {
     return FuntionsGlobalsHelper.itemToLowerCase(item);
   }
-  openModalEnabled(modal: any, idUser: number) {
-    this.modalService.open(modal, { centered: true, scrollable: true });
+  openModalEnabled(idUser: number) {
     this.idUserEnabled = idUser;
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de activar el usuario?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Esta acción habilita el usuario y le permitirá el ingreso al sistema.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.serviceWorkspace
+            .EnableUser(this.idUserEnabled, {})
+            .subscribe((data: any) => {
+              this.modalService.dismissAll();
+              for (let index = 0; index < this.dataListUser.length; index++) {
+                if (this.dataListUser[index].id === this.idUserEnabled) {
+                  this.dataListUser[index] = data;
+                }
+              }
+              if (this.tab == 1) {
+                for (
+                  let index = 0;
+                  index < this.usersManagers.length;
+                  index++
+                ) {
+                  if (this.usersManagers[index].id === this.idUserEnabled) {
+                    this.tab1();
+                  }
+                }
+              }
+              if (this.tab == 2) {
+                for (
+                  let index = 0;
+                  index < this.usersOperators.length;
+                  index++
+                ) {
+                  if (this.usersOperators[index].id === this.idUserEnabled) {
+                    this.tab2();
+                  }
+                }
+              }
+              if (this.tab == 3) {
+                for (
+                  let index = 0;
+                  index < this.usersProviders.length;
+                  index++
+                ) {
+                  if (this.usersProviders[index].id === this.idUserEnabled) {
+                    this.tab3();
+                  }
+                }
+              }
+            });
+        }
+      }
+    });
   }
-  openModalDisabled(modal: any, idUser: number) {
-    this.modalService.open(modal, { centered: true, scrollable: true });
+  openModalDisabled(idUser: number) {
     this.idUserDisabled = idUser;
-  }
-  closeModalEnabled(option: boolean): void {
-    if (option) {
-      this.serviceWorkspace
-        .EnableUser(this.idUserEnabled, {})
-        .subscribe((data: any) => {
-          this.modalService.dismissAll();
-          for (let index = 0; index < this.dataListUser.length; index++) {
-            if (this.dataListUser[index].id === this.idUserEnabled) {
-              this.dataListUser[index] = data;
-            }
-          }
-          if (this.tab == 1) {
-            for (let index = 0; index < this.usersManagers.length; index++) {
-              if (this.usersManagers[index].id === this.idUserDisabled) {
-                this.tab1();
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de desactivar el usuario?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Esta acción deshabilita el usuario y no lo dejara ingresar al sistema.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.serviceWorkspace
+            .DisableUser(this.idUserDisabled, {})
+            .subscribe((data: any) => {
+              this.modalService.dismissAll();
+              for (let index = 0; index < this.dataListUser.length; index++) {
+                if (this.dataListUser[index].id === this.idUserDisabled) {
+                  this.dataListUser[index] = data;
+                }
               }
-            }
-          }
-          if (this.tab == 2) {
-            for (let index = 0; index < this.usersOperators.length; index++) {
-              if (this.usersOperators[index].id === this.idUserDisabled) {
-                this.tab2();
+              if (this.tab == 1) {
+                for (
+                  let index = 0;
+                  index < this.usersManagers.length;
+                  index++
+                ) {
+                  if (this.usersManagers[index].id === this.idUserDisabled) {
+                    this.tab1();
+                  }
+                }
               }
-            }
-          }
-          if (this.tab == 3) {
-            for (let index = 0; index < this.usersProviders.length; index++) {
-              if (this.usersProviders[index].id === this.idUserDisabled) {
-                this.tab3();
+              if (this.tab == 2) {
+                for (
+                  let index = 0;
+                  index < this.usersOperators.length;
+                  index++
+                ) {
+                  if (this.usersOperators[index].id === this.idUserDisabled) {
+                    this.tab2();
+                  }
+                }
               }
-            }
-          }
-        });
-    } else {
-      this.modalService.dismissAll();
-    }
-  }
-  closeModalDisabled(option: boolean) {
-    if (option) {
-      this.serviceWorkspace
-        .DisableUser(this.idUserDisabled, {})
-        .subscribe((data: any) => {
-          this.modalService.dismissAll();
-          for (let index = 0; index < this.dataListUser.length; index++) {
-            if (this.dataListUser[index].id === this.idUserDisabled) {
-              this.dataListUser[index] = data;
-            }
-          }
-          if (this.tab == 1) {
-            for (let index = 0; index < this.usersManagers.length; index++) {
-              if (this.usersManagers[index].id === this.idUserDisabled) {
-                this.tab1();
+              if (this.tab == 3) {
+                for (
+                  let index = 0;
+                  index < this.usersProviders.length;
+                  index++
+                ) {
+                  if (this.usersProviders[index].id === this.idUserDisabled) {
+                    this.tab3();
+                  }
+                }
               }
-            }
-          }
-          if (this.tab == 2) {
-            for (let index = 0; index < this.usersOperators.length; index++) {
-              if (this.usersOperators[index].id === this.idUserDisabled) {
-                this.tab2();
-              }
-            }
-          }
-          if (this.tab == 3) {
-            for (let index = 0; index < this.usersProviders.length; index++) {
-              if (this.usersProviders[index].id === this.idUserDisabled) {
-                this.tab3();
-              }
-            }
-          }
-        });
-    } else {
-      this.modalService.dismissAll();
-    }
+            });
+        }
+      }
+    });
   }
   updateUser(idUser: number) {
     this.router.navigate([
