@@ -1,7 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-proveedor',
@@ -17,6 +18,7 @@ export class ProveedorComponent implements OnInit {
   editMode: boolean;
   formOk: boolean;
   id: number;
+  optionModalRef: NgbModalRef;
   constructor(
     private serviceProvider: ProvidersService,
     private toast: ToastrService,
@@ -78,27 +80,34 @@ export class ProveedorComponent implements OnInit {
     });
     this.editMode = true;
   }
-  deleteProfile(modal: any, id: number) {
-    this.modalService.open(modal);
+  deleteProfile(id: number) {
     this.idProfileDelete = id;
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de Eliminar el Proveedor?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Esta acción eliminará el Proveedor.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.serviceProvider
+            .deleteProvider(this.idProfileDelete)
+            .subscribe((_) => {
+              this.toast.success('Ha eliminado correctamente el proveedor.');
+              this.idProfileDelete = 0;
+              this.serviceProvider.getProviders().subscribe((element) => {
+                this.dataProfile = element;
+                this.dataProfile.sort((a, b) => a.id - b.id);
+              });
+            });
+        }
+      }
+    });
   }
-  closeModalDisabled(option: boolean) {
-    if (option) {
-      this.serviceProvider
-        .deleteProvider(this.idProfileDelete)
-        .subscribe((_) => {
-          this.toast.success('Ha eliminado correctamente el proveedor.');
-          this.idProfileDelete = 0;
-          this.serviceProvider.getProviders().subscribe((element) => {
-            this.dataProfile = element;
-            this.dataProfile.sort((a, b) => a.id - b.id);
-          });
-        });
-      this.modalService.dismissAll();
-    } else {
-      this.modalService.dismissAll();
-    }
-  }
+
   nitIsValid(dato) {
     const nit = dato.trim();
     if (nit.length === 10 || nit.length === 11) {
@@ -161,38 +170,49 @@ export class ProveedorComponent implements OnInit {
     event.stopPropagation();
   }
 
-  openModalActiveProvider(modal: any) {
-    this.modalService.open(modal, { centered: true, scrollable: true });
+  openModalActiveProvider(providerId?: number, index?: number) {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de activar el proveedor?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Esta acción habilita el proveedor y le permitirá la visualización en el sistema.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.serviceProvider
+            .enableProvider(providerId)
+            .subscribe((response) => {
+              this.dataProfile[index] = response;
+              this.toast.success('Ha habilitado correctamente el proveedor.');
+            });
+        }
+      }
+    });
   }
 
-  closeModalEnabledProvider(
-    option: boolean,
-    providerId?: number,
-    index?: number
-  ) {
-    if (option) {
-      this.serviceProvider.enableProvider(providerId).subscribe((response) => {
-        this.dataProfile[index] = response;
-        this.toast.success('Ha habilitado correctamente el proveedor.');
-      });
-    }
-    this.modalService.dismissAll();
-  }
-
-  openModalDisableProvider(modal: any) {
-    this.modalService.open(modal, { centered: true, scrollable: true });
-  }
-  closeModalDisabledProvider(
-    option: boolean,
-    providerId?: number,
-    index?: number
-  ) {
-    if (option) {
-      this.serviceProvider.disableProvider(providerId).subscribe((response) => {
-        this.dataProfile[index] = response;
-        this.toast.success('Ha desactivado correctamente el proveedor.');
-      });
-    }
-    this.modalService.dismissAll();
+  openModalDisableProvider(providerId?: number, index?: number) {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de desactivar el proveedor?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Esta acción deshabilita el proveedor y no lo dejara visualizar en el sistema.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.serviceProvider
+            .disableProvider(providerId)
+            .subscribe((response) => {
+              this.dataProfile[index] = response;
+              this.toast.success('Ha desactivado correctamente el proveedor.');
+            });
+        }
+      }
+    });
   }
 }

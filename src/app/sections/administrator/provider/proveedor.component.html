@@ -14,49 +14,37 @@
       <form action="" method="post">
         <div class="row">
           <div class="col-12 col-md-6">
-            <div class="input-group mb-4">
-              <div class="input-group-prepend">
-                <span class="input-group-text"> * Nombre </span>
-              </div>
-              <input
-                (change)="changeState()"
-                type="text"
-                name="name"
-                class="form-control"
-                placeholder="Nombre"
-                [(ngModel)]="data.name"
-              />
-            </div>
+            <app-input
+              [id]="'name'"
+              [title]="'* Nombre'"
+              [name]="'name'"
+              [type]="'text'"
+              [placeholder]="'Nombre'"
+              (change)="changeState()"
+              [(inputModel)]="data.name"
+            ></app-input>
           </div>
           <div class="col-12 col-md-6">
-            <div class="input-group mb-4">
-              <div class="input-group-prepend">
-                <span class="input-group-text"> * Alias </span>
-              </div>
-              <input
-                (change)="changeState()"
-                type="text"
-                name="alias"
-                class="form-control"
-                placeholder="Alias"
-                [(ngModel)]="data.alias"
-              />
-            </div>
+            <app-input
+              [id]="'alias'"
+              [title]="'* Alias'"
+              [name]="'alias'"
+              [type]="'text'"
+              [placeholder]="'Alias'"
+              (change)="changeState()"
+              [(inputModel)]="data.alias"
+            ></app-input>
           </div>
           <div class="col-12 col-md-6">
-            <div class="input-group mb-4">
-              <div class="input-group-prepend">
-                <span class="input-group-text"> * NIT </span>
-              </div>
-              <input
-                (change)="changeState()"
-                type="text"
-                name="taxIdentificationNumber"
-                class="form-control"
-                placeholder="XXXXXXXXX-Y"
-                [(ngModel)]="data.taxIdentificationNumber"
-              />
-            </div>
+            <app-input
+              [id]="'taxIdentificationNumber'"
+              [title]="'* NIT'"
+              [name]="'taxIdentificationNumber'"
+              [type]="'text'"
+              [placeholder]="'XXXXXXXXX-Y'"
+              (change)="changeState()"
+              [(inputModel)]="data.taxIdentificationNumber"
+            ></app-input>
           </div>
           <div class="col-12 col-md-6">
             <div class="input-group mb-4">
@@ -166,8 +154,8 @@
                   [title]="item.active ? 'Desactivar' : 'Activar'"
                   (click)="
                     item.active
-                      ? openModalDisableProvider(modalDisabledProvider)
-                      : openModalActiveProvider(modalEnabledProvider)
+                      ? openModalDisableProvider(item.id, i)
+                      : openModalActiveProvider(item.id, i)
                   "
                 >
                   <input
@@ -177,90 +165,6 @@
                   />
                   <span class="slider round"></span>
                 </label>
-                <ng-template #modalDisabledProvider let-modal>
-                  <div class="modal-header">
-                    <h4 class="modal-title">
-                      ¿Está seguro de desactivar el proveedor?
-                    </h4>
-                    <button
-                      type="button"
-                      class="close"
-                      aria-label="Close"
-                      (click)="modal.dismiss('Cross click')"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <h5 class="alert alert-warning text-center">
-                      Advertencia: Esta acción deshabilita el proveedor y no lo
-                      dejara visualizar en el sistema.
-                    </h5>
-                  </div>
-                  <div class="modal-footer">
-                    <div class="col-6">
-                      <button
-                        type="button"
-                        class="btn btn-dark btn-block"
-                        (click)="closeModalDisabledProvider(false)"
-                      >
-                        No
-                      </button>
-                    </div>
-                    <div class="col-6 text-right">
-                      <button
-                        type="button"
-                        ngbAutofocus
-                        class="btn btn-success btn-block"
-                        (click)="closeModalDisabledProvider(true, item.id, i)"
-                      >
-                        Si
-                      </button>
-                    </div>
-                  </div>
-                </ng-template>
-                <ng-template #modalEnabledProvider let-modal>
-                  <div class="modal-header">
-                    <h4 class="modal-title">
-                      ¿Está seguro de activar el proveedor?
-                    </h4>
-                    <button
-                      type="button"
-                      class="close"
-                      aria-label="Close"
-                      (click)="modal.dismiss('Cross click')"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <h5 class="alert alert-warning text-center">
-                      Advertencia: Esta acción habilita el proveedor y le
-                      permitirá la visualización en el sistema.
-                    </h5>
-                  </div>
-                  <div class="modal-footer">
-                    <div class="col-6">
-                      <button
-                        type="button"
-                        class="btn btn-dark btn-block"
-                        (click)="closeModalEnabledProvider(false)"
-                      >
-                        No
-                      </button>
-                    </div>
-                    <div class="col-6 text-right">
-                      <button
-                        type="button"
-                        ngbAutofocus
-                        class="btn btn-success btn-block"
-                        (click)="closeModalEnabledProvider(true, item.id, i)"
-                      >
-                        Si
-                      </button>
-                    </div>
-                  </div>
-                </ng-template>
               </td>
               <td scope="row">
                 <span
@@ -270,7 +174,7 @@
                 >
                   <i
                     class="material-icons mr-2"
-                    (click)="deleteProfile(modalDisabled, item.id)"
+                    (click)="deleteProfile(item.id)"
                   >
                     delete
                   </i>
@@ -288,44 +192,5 @@
         </div>
       </div>
     </div>
-    <ng-template #modalDisabled let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title">¿Está seguro de Eliminar el Proveedor?</h4>
-        <button
-          type="button"
-          class="close"
-          aria-label="Close"
-          (click)="modal.dismiss('Cross click')"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h5 class="alert alert-warning text-center">
-          Advertencia: Esta acción eliminará el Proveedor.
-        </h5>
-      </div>
-      <div class="modal-footer">
-        <div class="col-6">
-          <button
-            type="button"
-            class="btn btn-dark btn-block"
-            (click)="closeModalDisabled(false)"
-          >
-            No
-          </button>
-        </div>
-        <div class="col-6 text-right">
-          <button
-            type="button"
-            ngbAutofocus
-            class="btn btn-success btn-block"
-            (click)="closeModalDisabled(true)"
-          >
-            Si
-          </button>
-        </div>
-      </div>
-    </ng-template>
   </div>
 </div>
