@@ -181,32 +181,16 @@ export class AddProductDeliveryComponent implements OnInit {
     });
   }
   openAddProductToDelivery() {
-    this.optionModalRef = this.modalService.open(ModalComponent, {
-      centered: true,
-      scrollable: true,
-      backdrop: 'static',
-      keyboard: false,
-    });
-    this.optionModalRef.componentInstance.title = 'Agregar producto';
-    this.optionModalRef.componentInstance.description =
-      'Va agregar un producto a la entrega.';
-    this.optionModalRef.componentInstance.disableButtonClose = true;
-    this.optionModalRef.result.then((result) => {
-      if (result) {
-        if (result.option) {
-          let product: AddProductToDeliveryInterface = {
-            productId: parseInt(this.selecProductsDelivery),
-          };
-          this.levCatReceptionService
-            .addProductToDelivery(this.deliveryId, product)
-            .subscribe((_) => {
-              this.toastr.success('Ha agregado un producto a la entrega');
-              this.selecProductsDelivery = '0';
-              this.findProductsFromDelivery(this.deliveryId);
-            });
-        }
-      }
-    });
+    let product: AddProductToDeliveryInterface = {
+      productId: parseInt(this.selecProductsDelivery),
+    };
+    this.levCatReceptionService
+      .addProductToDelivery(this.deliveryId, product)
+      .subscribe((_) => {
+        this.toastr.success('Ha agregado un producto a la entrega');
+        this.selecProductsDelivery = '0';
+        this.findProductsFromDelivery(this.deliveryId);
+      });
   }
   nameStateDelivery(deliveryStatusId: number): string {
     return FuntionsGlobalsHelper.nameStateDelivery(deliveryStatusId);
@@ -514,10 +498,12 @@ export class AddProductDeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.levCatReceptionService.acceptDelivery(this.deliveryId).subscribe((_) => {
-            this.toastr.success('Entrega aceptada');
-            this.initPageServices();
-          });
+          this.levCatReceptionService
+            .acceptDelivery(this.deliveryId)
+            .subscribe((_) => {
+              this.toastr.success('Entrega aceptada');
+              this.initPageServices();
+            });
         }
       }
     });

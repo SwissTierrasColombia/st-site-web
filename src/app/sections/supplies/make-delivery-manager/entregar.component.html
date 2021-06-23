@@ -154,12 +154,7 @@
                         item.typeSupply.provider.name
                       }})</span
                     >
-                    <div
-                      *ngIf="
-                        item.valid !== null &&
-                        !item.valid
-                      "
-                    >
+                    <div *ngIf="item.valid !== null && !item.valid">
                       <span class="badge badge-warning">
                         Validado con errores
                       </span>

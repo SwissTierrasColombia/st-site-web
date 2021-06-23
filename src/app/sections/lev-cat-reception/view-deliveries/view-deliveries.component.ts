@@ -1,3 +1,4 @@
+import { MunicipalityInterface } from './../../../shared/models/municipality.interface';
 import {
   FindDeliveriesInterface,
   ItemDelivery,
@@ -20,6 +21,8 @@ import { LevCatReceptionService } from '../lev-cat-reception.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
+import { DepartamentsInterface } from 'src/app/shared/models/departaments.interface';
+import { OperatorsAssignWorkspaceInterface } from 'src/app/shared/models/operators-assign-workspace.interface';
 
 @Component({
   selector: 'app-view-deliveries',
@@ -40,6 +43,14 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
   optionModalRef: NgbModalRef;
   status: string | number;
   StatesDeliveriesEnum = StatesDeliveriesEnum;
+  selectDepartment: number = 0;
+  departments: DepartamentsInterface[] = [];
+  munucipalities: MunicipalityInterface[] = [];
+  selectMunicipality: number = 0;
+  idWorkSpace: number = 0;
+  operators: OperatorsAssignWorkspaceInterface[] = [];
+  selectOperatorId: string = '0';
+  selectMunicipalityCode: string;
   constructor(
     private workspacesService: WorkspacesService,
     private levCatReceptionService: LevCatReceptionService,
@@ -91,6 +102,83 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
           });
         });
     }
+    if (!this.isOperator) {
+      this.workspacesService.getDepartments().subscribe((response) => {
+        this.departments = response;
+        this.departments.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
+      });
+    }
+  }
+  changeDepartament() {
+    this.workspacesService
+      .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
+      .subscribe((data) => {
+        this.munucipalities = data;
+        this.munucipalities.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          //a must be equal to b
+          return 0;
+        });
+      });
+  }
+  changeMunucipality() {
+    this.workspacesService
+      .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
+      .subscribe((response) => {
+        this.selectMunicipalityCode = response.municipality.code;
+        this.levCatReceptionService
+          .findDeliveries(
+            this.status,
+            this.page,
+            this.pageSize,
+            this.selectMunicipalityCode
+          )
+          .subscribe((response) => {
+            this.findDeliveries = response;
+            this.page = this.findDeliveries.currentPage;
+            this.totalElements = this.findDeliveries.totalElements;
+            this.pageSize = this.findDeliveries.size;
+            this.itemsDelivery = this.findDeliveries.items;
+          });
+        this.idWorkSpace = response.id;
+        this.workspacesService
+          .getOnlyOperatorAssignByWorkspace(this.idWorkSpace)
+          .subscribe((element) => {
+            this.operators = element;
+          });
+      });
+  }
+  changeOperator() {
+    this.levCatReceptionService
+      .findDeliveries(
+        this.status,
+        this.page,
+        this.pageSize,
+        this.selectMunicipalityCode,
+        undefined,
+        this.selectOperatorId
+      )
+      .subscribe((response) => {
+        this.findDeliveries = response;
+        this.page = this.findDeliveries.currentPage;
+        this.totalElements = this.findDeliveries.totalElements;
+        this.pageSize = this.findDeliveries.size;
+        this.itemsDelivery = this.findDeliveries.items;
+      });
   }
   changePage(event?: number) {
     if (event) {
@@ -155,9 +243,11 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     let data = {
       observations: itemDelivery.observations,
     };
-    this.levCatReceptionService.updateDelivery(itemDelivery.id, data).subscribe((_) => {
-      this.modalService.dismissAll();
-      this.toastr.success('Actualización realizada');
-    });
+    this.levCatReceptionService
+      .updateDelivery(itemDelivery.id, data)
+      .subscribe((_) => {
+        this.modalService.dismissAll();
+        this.toastr.success('Actualización realizada');
+      });
   }
 }

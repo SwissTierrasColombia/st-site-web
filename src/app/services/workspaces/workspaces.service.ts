@@ -1,7 +1,11 @@
+import { WorkspaceActiveByMunicipalityInterface } from './../../shared/models/workspace-active-by-municipality.interface';
+import { OperatorsAssignWorkspaceInterface } from './../../shared/models/operators-assign-workspace.interface';
+import { DepartamentsInterface } from './../../shared/models/departaments.interface';
 import { GetWorkspacesByOperatorInterface } from './../../sections/lev-cat-reception/models/get-workspaces-by-operator.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { MunicipalityInterface } from 'src/app/shared/models/municipality.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,13 +20,15 @@ export class WorkspacesService {
    * getDepartments
    */
   public getDepartments() {
-    return this.httpClient.get(this.url + '/workspaces/v1/departments');
+    return this.httpClient.get<DepartamentsInterface[]>(
+      this.url + '/workspaces/v1/departments'
+    );
   }
   /**
    * GetMunicipalitiesByDeparment
    */
   public GetMunicipalitiesByDeparment(idDepartament: number) {
-    return this.httpClient.get(
+    return this.httpClient.get<MunicipalityInterface[]>(
       this.url +
         '/workspaces/v1/departments/' +
         idDepartament +
@@ -89,7 +95,7 @@ export class WorkspacesService {
    * getWorkSpaceActiveByMunicipality
    */
   public getWorkSpaceActiveByMunicipality(idMunicipality: number) {
-    return this.httpClient.get(
+    return this.httpClient.get<WorkspaceActiveByMunicipalityInterface>(
       this.url +
         '/workspaces/v1/workspaces/municipalities/' +
         idMunicipality +
@@ -838,7 +844,7 @@ export class WorkspacesService {
    * getOnlyOperatorAssignByManager
    */
   public getOnlyOperatorAssignByWorkspace(workspaceId: number) {
-    return this.httpClient.get(
+    return this.httpClient.get<OperatorsAssignWorkspaceInterface[]>(
       this.url + '/workspaces/v1/workspaces/' + workspaceId + '/operators'
     );
   }

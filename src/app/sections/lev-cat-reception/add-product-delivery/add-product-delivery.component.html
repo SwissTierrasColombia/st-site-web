@@ -8,7 +8,7 @@
       <h3>Entrega</h3>
       Estado de la entrega:
       <span
-        *ngIf="dataDelivery"
+        *ngIf="dataDelivery.id != 0"
         [innerHTML]="nameStateDelivery(dataDelivery.deliveryStatusId)"
       ></span>
     </div>

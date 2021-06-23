@@ -12,6 +12,71 @@
       (change)="changePage()"
     ></app-select>
   </div>
+  <div class="col-12 col-sm-6 mb-1" *ngIf="!isOperator">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" aria-required="true"
+          >* Departamento</label
+        >
+      </div>
+      <select
+        (change)="changeDepartament()"
+        class="custom-select"
+        name="departments"
+        id="departments"
+        [(ngModel)]="selectDepartment"
+      >
+        <option disabled="true" value="0" selected>
+          Seleccione el Departamento
+        </option>
+        <option [ngValue]="item.id" *ngFor="let item of departments">
+          {{ item.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 mb-1" *ngIf="!isOperator">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text">* Municipio</label>
+      </div>
+      <select
+        (change)="changeMunucipality()"
+        class="custom-select"
+        name="munucipalities"
+        id="munucipalities"
+        [(ngModel)]="selectMunicipality"
+      >
+        <option disabled="true" value="0" selected>
+          Seleccione el Municipio
+        </option>
+        <option [ngValue]="item.id" *ngFor="let item of munucipalities">
+          {{ item.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 mb-1" *ngIf="!isOperator">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" aria-required="true">* Operador</label>
+      </div>
+      <select
+        (change)="changeOperator()"
+        class="custom-select"
+        name="operators"
+        id="operators"
+        [(ngModel)]="selectOperatorId"
+      >
+        <option disabled="true" value="0" selected>
+          Seleccione el Operador
+        </option>
+        <option [ngValue]="item.operator.id" *ngFor="let item of operators">
+          {{ item.operator.alias }}
+        </option>
+      </select>
+    </div>
+  </div>
   <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
     <ngb-pagination
       class="d-flex justify-content-center"
@@ -148,7 +213,7 @@
       </table>
     </div>
   </div>
-  <div class="col-12 mb-1" *ngIf="itemsDelivery.length === 0">
+  <div class="col-12 mb-1" *ngIf="itemsDelivery.length == 0">
     <div class="alert alert-primary text-center" role="alert">
       No existen entregas.
     </div>
