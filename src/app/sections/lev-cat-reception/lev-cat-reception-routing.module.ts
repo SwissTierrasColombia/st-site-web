@@ -13,11 +13,11 @@ const routes: Routes = [
     canActivate: [RoleOperatorGuard],
   },
   {
-    path: 'buscar-entregas',
+    path: 'buscar-entregas/:tab',
     component: TabsDeliveriesComponent,
   },
   {
-    path: 'entrega/:deliveryId',
+    path: ':tab/entrega/:deliveryId',
     component: AddProductDeliveryComponent,
   },
   {

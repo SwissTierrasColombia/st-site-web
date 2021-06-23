@@ -54,6 +54,7 @@ export class AddProductDeliveryComponent implements OnInit {
   observationfeedback: string = '';
   listFeedBacks: any = [];
   StatesProductsEnum = StatesProductsEnum;
+  tab: string = '0';
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -91,6 +92,7 @@ export class AddProductDeliveryComponent implements OnInit {
     );
     this.activedRoute.params.subscribe((params: Params) => {
       this.initPageServices(params);
+      this.tab = params.tab;
     });
   }
   initPageServices(params?: Params) {
@@ -151,7 +153,7 @@ export class AddProductDeliveryComponent implements OnInit {
     return '';
   }
   goBack() {
-    this.router.navigate(['/calidad/buscar-entregas']);
+    this.router.navigate(['/calidad/buscar-entregas/' + this.tab]);
   }
   formatDate(date: string) {
     return FuntionsGlobalsHelper.formatDate(date);

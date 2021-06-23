@@ -22,7 +22,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { DepartamentsInterface } from 'src/app/shared/models/departaments.interface';
-import { OperatorsAssignWorkspaceInterface } from 'src/app/shared/models/operators-assign-workspace.interface';
 import { OperatorByManager } from 'src/app/shared/models/operator-by-manager.interface';
 
 @Component({
@@ -86,6 +85,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
         StatesDeliveriesEnum.ACEPTADO + ',' + StatesDeliveriesEnum.RECHAZADO;
       this.changePage();
     }
+    this.tab = changes.tab.currentValue;
   }
 
   ngOnInit(): void {
@@ -190,7 +190,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     return FuntionsGlobalsHelper.formatDate(date);
   }
   viewDetailDelivery(item: ItemDelivery) {
-    this.router.navigate(['/calidad/entrega/' + item.id]);
+    this.router.navigate(['/calidad/' + this.tab + '/entrega/' + item.id]);
   }
   openModalDeleteDelivery(item: ItemDelivery) {
     this.optionModalRef = this.modalService.open(ModalComponent, {
