@@ -60,8 +60,8 @@ const routes: Routes = [
       {
         path: 'calidad',
         loadChildren: () =>
-          import('../sections/quality-module/quality-module.module').then(
-            (m) => m.QualityModuleModule
+          import('../sections/lev-cat-reception/lev-cat-reception.module').then(
+            (m) => m.LevCatReceptionModule
           ),
         canActivate: [RoleManagerOperatorGuard],
       },

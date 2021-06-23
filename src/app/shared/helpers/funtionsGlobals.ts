@@ -1,7 +1,7 @@
-import { StatesProductsEnum } from './../../sections/quality-module/models/states-products.enum';
+import { StatesProductsEnum } from './../../sections/lev-cat-reception/models/states-products.enum';
 import * as _moment from 'moment';
 import { Injectable } from '@angular/core';
-import { StatesDeliveriesEnum } from 'src/app/sections/quality-module/models/states-deliveries.enum';
+import { StatesDeliveriesEnum } from 'src/app/sections/lev-cat-reception/models/states-deliveries.enum';
 import { HttpResponse } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 

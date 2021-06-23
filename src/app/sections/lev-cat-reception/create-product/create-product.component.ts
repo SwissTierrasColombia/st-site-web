@@ -1,6 +1,7 @@
+import { TypeProduct } from './../models/type-product.interface';
 import { ManagerProductInterface } from '../models/manager-product.interface';
 import { Component, OnInit } from '@angular/core';
-import { QualityService } from '../quality.service';
+import { LevCatReceptionService } from '../lev-cat-reception.service';
 import { FindProductsFromManagerInterface } from '../models/find-products-from-manager.interface';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -20,8 +21,9 @@ export class CreateProductComponent implements OnInit {
   editMode: boolean = false;
   listProducts: FindProductsFromManagerInterface[] = [];
   optionModalRef: NgbModalRef;
+  typeProduct: TypeProduct[] = [];
   constructor(
-    private qualityService: QualityService,
+    private levCatReceptionService: LevCatReceptionService,
     private modalService: NgbModal,
     private scroll: ViewportScroller,
     private toastr: ToastrService
@@ -31,24 +33,38 @@ export class CreateProductComponent implements OnInit {
       isXTF: false,
       description: '',
     };
+    this.typeProduct = [
+      {
+        id: true,
+        name: 'XTF',
+      },
+      {
+        id: false,
+        name: 'Otro',
+      },
+    ];
   }
 
   ngOnInit(): void {
     this.getProducts();
   }
   getProducts() {
-    this.qualityService.findProductsFromManager().subscribe((element) => {
-      this.listProducts = element;
-    });
+    this.levCatReceptionService
+      .findProductsFromManager()
+      .subscribe((element) => {
+        this.listProducts = element;
+      });
   }
   changeState(): void {
+    console.log(this.data);
+
     this.formOk = false;
     if (this.data.name !== '' && this.data.description !== '') {
       this.formOk = true;
     }
   }
   create(): void {
-    this.qualityService.createProduct(this.data).subscribe((_) => {
+    this.levCatReceptionService.createProduct(this.data).subscribe((_) => {
       this.data = {
         name: '',
         isXTF: false,
@@ -65,7 +81,7 @@ export class CreateProductComponent implements OnInit {
       description: this.data.description,
       isXTF: this.data.isXTF,
     };
-    this.qualityService
+    this.levCatReceptionService
       .updateProduct(this.data.id, dataUpdate)
       .subscribe((_) => {
         this.toastr.success('Producto: ' + this.data.id + ' actualizado');
@@ -96,18 +112,21 @@ export class CreateProductComponent implements OnInit {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = 'Eliminar producto';
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de Eliminar el Producto?';
     this.optionModalRef.componentInstance.description =
-      'Va ha eliminaar un producto';
+      'Advertencia: Va ha eliminar un producto.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.qualityService.removeProduct(productId).subscribe((_) => {
-            this.listProducts = this.listProducts.filter(
-              (item) => item.id != productId
-            );
-            this.toastr.success('Producto eliminado');
-          });
+          this.levCatReceptionService
+            .removeProduct(productId)
+            .subscribe((_) => {
+              this.listProducts = this.listProducts.filter(
+                (item) => item.id != productId
+              );
+              this.toastr.success('Producto eliminado');
+            });
         }
       }
     });

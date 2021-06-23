@@ -16,7 +16,7 @@ import { selectInterface } from 'src/app/shared/models/select.interface';
 import { GetWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { Router } from '@angular/router';
-import { QualityService } from './../quality.service';
+import { LevCatReceptionService } from '../lev-cat-reception.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
@@ -42,7 +42,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
   StatesDeliveriesEnum = StatesDeliveriesEnum;
   constructor(
     private workspacesService: WorkspacesService,
-    private qualityService: QualityService,
+    private levCatReceptionService: LevCatReceptionService,
     private router: Router,
     private modalService: NgbModal,
     private toastr: ToastrService
@@ -99,7 +99,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
       this.page = 1;
     }
     let codes = this.managerCodeAndMunicipality.split(' - ');
-    this.qualityService
+    this.levCatReceptionService
       .findDeliveries(
         this.status,
         this.page,
@@ -132,7 +132,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.qualityService.removeDelivery(item.id).subscribe((_) => {
+          this.levCatReceptionService.removeDelivery(item.id).subscribe((_) => {
             this.toastr.success('Ha eliminado la entrega');
             this.itemsDelivery = this.itemsDelivery.filter(
               (element) => element.id !== item.id
@@ -155,7 +155,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     let data = {
       observations: itemDelivery.observations,
     };
-    this.qualityService.updateDelivery(itemDelivery.id, data).subscribe((_) => {
+    this.levCatReceptionService.updateDelivery(itemDelivery.id, data).subscribe((_) => {
       this.modalService.dismissAll();
       this.toastr.success('Actualización realizada');
     });

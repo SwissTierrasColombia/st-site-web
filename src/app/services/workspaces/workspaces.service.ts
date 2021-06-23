@@ -1,4 +1,4 @@
-import { GetWorkspacesByOperatorInterface } from './../../sections/quality-module/models/get-workspaces-by-operator.interface';
+import { GetWorkspacesByOperatorInterface } from './../../sections/lev-cat-reception/models/get-workspaces-by-operator.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';

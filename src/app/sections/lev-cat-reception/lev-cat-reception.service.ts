@@ -16,7 +16,7 @@ import { AttachmentsFromDeliveryProductInterface } from './models/attachments-fr
 @Injectable({
   providedIn: 'root',
 })
-export class QualityService {
+export class LevCatReceptionService {
   url: string;
   constructor(private httpClient: HttpClient) {
     this.url = environment.apiBaseUrlPrefix;

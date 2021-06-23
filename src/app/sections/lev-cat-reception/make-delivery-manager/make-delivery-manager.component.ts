@@ -8,7 +8,7 @@ import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { ToastrService } from 'ngx-toastr';
-import { QualityService } from './../quality.service';
+import { LevCatReceptionService } from '../lev-cat-reception.service';
 
 @Component({
   selector: 'app-make-delivery-manager',
@@ -24,7 +24,7 @@ export class MakeDeliveryManagerComponent implements OnInit {
   optionModalRef: NgbModalRef;
   constructor(
     private workspacesService: WorkspacesService,
-    private qualityService: QualityService,
+    private levCatReceptionService: LevCatReceptionService,
     private modalService: NgbModal,
     private toastr: ToastrService
   ) {
@@ -97,7 +97,7 @@ export class MakeDeliveryManagerComponent implements OnInit {
     }
   }
   makeDeliveryToManager() {
-    this.qualityService
+    this.levCatReceptionService
       .makeDeliveryToManager(this.dataMakeDeliveryToManager)
       .subscribe((_) => {
         this.toastr.success('Ha creado una entrega');

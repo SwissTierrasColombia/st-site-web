@@ -5,7 +5,7 @@ import { StatesDeliveriesEnum } from './../models/states-deliveries.enum';
 import { StatusAttachmentsXTF } from './../models/status-attachment-XTF.enum';
 import { FtpAttachmentProductInterface } from './../models/ftp-attachment-product.interface';
 import { TypeAttachmentsProduct } from './../models/type-attachments-product.enum';
-import { QualityService } from './../quality.service';
+import { LevCatReceptionService } from '../lev-cat-reception.service';
 import { Component, ElementRef, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -57,7 +57,7 @@ export class AddProductDeliveryComponent implements OnInit {
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
-    private qualityService: QualityService,
+    private levCatReceptionService: LevCatReceptionService,
     private modalService: NgbModal,
     private toastr: ToastrService
   ) {
@@ -97,7 +97,7 @@ export class AddProductDeliveryComponent implements OnInit {
     if (params) {
       this.deliveryId = params.deliveryId;
     }
-    this.qualityService
+    this.levCatReceptionService
       .searchDelivery(this.deliveryId)
       .subscribe((response) => {
         this.dataDelivery = response;
@@ -113,7 +113,7 @@ export class AddProductDeliveryComponent implements OnInit {
           this.dataDelivery.deliveryDate
         );
         this.findProductsFromDelivery(this.deliveryId);
-        this.qualityService
+        this.levCatReceptionService
           .findProductsFromManager(this.dataDelivery.managerCode)
           .subscribe((response) => {
             this.dataProductsFromManager = response;
@@ -128,7 +128,7 @@ export class AddProductDeliveryComponent implements OnInit {
   }
 
   findProductsFromDelivery(deliveryId: number) {
-    this.qualityService
+    this.levCatReceptionService
       .findProductsFromDelivery(deliveryId)
       .subscribe((response) => {
         this.listProductsFromDelivery = response;
@@ -167,7 +167,7 @@ export class AddProductDeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.qualityService
+          this.levCatReceptionService
             .removeProductFromDelivery(this.deliveryId, item.id)
             .subscribe((_) => {
               this.toastr.success('Ha eliminado un producto');
@@ -197,7 +197,7 @@ export class AddProductDeliveryComponent implements OnInit {
           let product: AddProductToDeliveryInterface = {
             productId: parseInt(this.selecProductsDelivery),
           };
-          this.qualityService
+          this.levCatReceptionService
             .addProductToDelivery(this.deliveryId, product)
             .subscribe((_) => {
               this.toastr.success('Ha agregado un producto a la entrega');
@@ -217,7 +217,7 @@ export class AddProductDeliveryComponent implements OnInit {
     );
   }
   findAttachmentFromProduct(deliveryProductId: number) {
-    this.qualityService
+    this.levCatReceptionService
       .findAttachmentsFromDeliveryProduct(this.deliveryId, deliveryProductId)
       .subscribe((element) => {
         this.listAttachmentsDeliveryProduct = element;
@@ -281,7 +281,7 @@ export class AddProductDeliveryComponent implements OnInit {
     let data = {
       observations: itemProduct.observations,
     };
-    this.qualityService
+    this.levCatReceptionService
       .updateProductFromDelivery(this.deliveryId, itemProduct.id, data)
       .subscribe((_) => {});
   }
@@ -327,7 +327,7 @@ export class AddProductDeliveryComponent implements OnInit {
       attachmentForm.append('ftp.password', this.dataFTP.password);
     }
     attachmentForm.append('observations', this.observationAttachment);
-    this.qualityService
+    this.levCatReceptionService
       .addAttachmentToProduct(
         this.deliveryId,
         deliveryProductId,
@@ -350,7 +350,7 @@ export class AddProductDeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.qualityService
+          this.levCatReceptionService
             .removeAttachmentFromProduct(
               this.deliveryId,
               deliveryProductId,
@@ -368,7 +368,7 @@ export class AddProductDeliveryComponent implements OnInit {
     });
   }
   sendDeliveryToManager() {
-    this.qualityService
+    this.levCatReceptionService
       .sendDeliveryToManager(this.deliveryId)
       .subscribe((_) => {
         this.dataDelivery.deliveryStatusId = StatesDeliveriesEnum.ENTREGADO;
@@ -406,14 +406,14 @@ export class AddProductDeliveryComponent implements OnInit {
     }
   }
   downloadAttachment(deliveryProductId: number, attachmentId: number) {
-    this.qualityService
+    this.levCatReceptionService
       .downloadAttachment(this.deliveryId, deliveryProductId, attachmentId)
       .subscribe((data) => {
         FuntionsGlobalsHelper.downloadFile(data);
       });
   }
   findFeedback(deliveryProductId: number) {
-    this.qualityService
+    this.levCatReceptionService
       .findFeedbacks(this.deliveryId, deliveryProductId)
       .subscribe((element) => {
         this.listFeedBacks = element;
@@ -448,7 +448,7 @@ export class AddProductDeliveryComponent implements OnInit {
     if (this.document) {
       form.append('attachment', this.document);
     }
-    this.qualityService
+    this.levCatReceptionService
       .createFeedback(this.deliveryId, deliveryProductId, form)
       .subscribe((_) => {
         this.observationfeedback = '';
@@ -457,7 +457,7 @@ export class AddProductDeliveryComponent implements OnInit {
       });
   }
   startReviewManager() {
-    this.qualityService
+    this.levCatReceptionService
       .startReviewManagerOrFinalizeCorrectionsOperator(this.deliveryId)
       .subscribe((_) => {
         this.toastr.success('Ha iniciado la revisión');
@@ -475,7 +475,7 @@ export class AddProductDeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.qualityService
+          this.levCatReceptionService
             .acceptDeliveryProduct(this.deliveryId, deliveryProductId)
             .subscribe((_) => {
               this.toastr.success('Ha aceptado el producto');
@@ -495,7 +495,7 @@ export class AddProductDeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.qualityService
+          this.levCatReceptionService
             .rejectDeliveryProduct(this.deliveryId, deliveryProductId)
             .subscribe((_) => {
               this.findProductsFromDelivery(this.deliveryId);
@@ -514,7 +514,7 @@ export class AddProductDeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.qualityService.acceptDelivery(this.deliveryId).subscribe((_) => {
+          this.levCatReceptionService.acceptDelivery(this.deliveryId).subscribe((_) => {
             this.toastr.success('Entrega aceptada');
             this.initPageServices();
           });
@@ -533,7 +533,7 @@ export class AddProductDeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.qualityService
+          this.levCatReceptionService
             .returnDeliveryToOperator(this.deliveryId)
             .subscribe((_) => {
               this.toastr.success('Entrega enviada a corrección');
@@ -554,7 +554,7 @@ export class AddProductDeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.qualityService
+          this.levCatReceptionService
             .startReviewManagerOrFinalizeCorrectionsOperator(this.deliveryId)
             .subscribe((_) => {
               this.toastr.success('Entrega corregida enviada');

@@ -17,6 +17,7 @@ export class CheckboxComponent implements OnInit, OnChanges {
   @Input() title: string;
   @Input() id: string;
   @Input() name: string = 'checkbox';
+  @Input() type: string = 'checkbox';
   @Input() classStyle: string;
   @Input() inputModel: any;
   @Input() disabled: boolean = false;

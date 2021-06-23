@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MakeDeliveryManagerComponent } from './make-delivery-manager/make-delivery-manager.component';
-import { QualityModuleRoutingModule } from './quality-module-routing.module';
+import { LevCatReceptionRoutingModule } from './lev-cat-reception-routing.module';
 import { PageHeaderModule } from 'src/app/shared';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { ViewDeliveriesComponent } from './view-deliveries/view-deliveries.component';
@@ -22,10 +22,10 @@ import { CreateProductComponent } from './create-product/create-product.componen
   imports: [
     CommonModule,
     NgbModule,
-    QualityModuleRoutingModule,
+    LevCatReceptionRoutingModule,
     PageHeaderModule,
     ComponentsModule,
     FormsModule,
   ],
 })
-export class QualityModuleModule {}
+export class LevCatReceptionModule {}
