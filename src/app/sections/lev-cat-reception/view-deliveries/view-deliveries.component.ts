@@ -23,6 +23,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { DepartamentsInterface } from 'src/app/shared/models/departaments.interface';
 import { OperatorsAssignWorkspaceInterface } from 'src/app/shared/models/operators-assign-workspace.interface';
+import { OperatorByManager } from 'src/app/shared/models/operator-by-manager.interface';
 
 @Component({
   selector: 'app-view-deliveries',
@@ -47,8 +48,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
   departments: DepartamentsInterface[] = [];
   munucipalities: MunicipalityInterface[] = [];
   selectMunicipality: number = 0;
-  idWorkSpace: number = 0;
-  operators: OperatorsAssignWorkspaceInterface[] = [];
+  operators: OperatorByManager[] = [];
   selectOperatorId: string = '0';
   selectMunicipalityCode: string;
   constructor(
@@ -116,9 +116,17 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
           return 0;
         });
       });
+      this.workspacesService.getOperatorsByManager().subscribe((element) => {
+        this.operators = element;
+      });
     }
   }
   changeDepartament() {
+    if (this.selectDepartment == 0) {
+      this.changePage();
+      this.selectMunicipalityCode = '0';
+      this.selectOperatorId = '0';
+    }
     this.workspacesService
       .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
       .subscribe((data) => {
@@ -135,42 +143,17 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
         });
       });
   }
-  changeMunucipality() {
-    this.workspacesService
-      .getWorkSpaceActiveByMunicipality(this.selectMunicipality)
-      .subscribe((response) => {
-        this.selectMunicipalityCode = response.municipality.code;
-        this.levCatReceptionService
-          .findDeliveries(
-            this.status,
-            this.page,
-            this.pageSize,
-            this.selectMunicipalityCode
-          )
-          .subscribe((response) => {
-            this.findDeliveries = response;
-            this.page = this.findDeliveries.currentPage;
-            this.totalElements = this.findDeliveries.totalElements;
-            this.pageSize = this.findDeliveries.size;
-            this.itemsDelivery = this.findDeliveries.items;
-          });
-        this.idWorkSpace = response.id;
-        this.workspacesService
-          .getOnlyOperatorAssignByWorkspace(this.idWorkSpace)
-          .subscribe((element) => {
-            this.operators = element;
-          });
-      });
-  }
-  changeOperator() {
+  filterDelivery() {
     this.levCatReceptionService
       .findDeliveries(
         this.status,
         this.page,
         this.pageSize,
-        this.selectMunicipalityCode,
+        this.selectMunicipalityCode != '0'
+          ? this.selectMunicipalityCode
+          : undefined,
         undefined,
-        this.selectOperatorId
+        this.selectOperatorId != '0' ? this.selectOperatorId : undefined
       )
       .subscribe((response) => {
         this.findDeliveries = response;

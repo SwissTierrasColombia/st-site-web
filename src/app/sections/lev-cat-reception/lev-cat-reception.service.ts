@@ -61,10 +61,12 @@ export class LevCatReceptionService {
     if (code) {
       url = url + '&code=' + code;
     }
-    if (municipality) {
+    if (municipality && municipality! != '0') {
+      console.log('hola ', municipality);
+
       url = url + '&municipality=' + municipality;
     }
-    if (operator) {
+    if (operator && operator! != '0') {
       url = url + '&operator=' + operator;
     }
     if (manager) {

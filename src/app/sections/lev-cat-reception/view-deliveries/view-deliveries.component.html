@@ -26,9 +26,7 @@
         id="departments"
         [(ngModel)]="selectDepartment"
       >
-        <option disabled="true" value="0" selected>
-          Seleccione el Departamento
-        </option>
+        <option value="0" selected>Seleccione el Departamento</option>
         <option [ngValue]="item.id" *ngFor="let item of departments">
           {{ item.name }}
         </option>
@@ -41,16 +39,14 @@
         <label class="input-group-text">* Municipio</label>
       </div>
       <select
-        (change)="changeMunucipality()"
+        (change)="filterDelivery()"
         class="custom-select"
         name="munucipalities"
         id="munucipalities"
         [(ngModel)]="selectMunicipality"
       >
-        <option disabled="true" value="0" selected>
-          Seleccione el Municipio
-        </option>
-        <option [ngValue]="item.id" *ngFor="let item of munucipalities">
+        <option [value]="'0'" selected>Seleccione el Municipio</option>
+        <option [ngValue]="item.code" *ngFor="let item of munucipalities">
           {{ item.name }}
         </option>
       </select>
@@ -62,17 +58,15 @@
         <label class="input-group-text" aria-required="true">* Operador</label>
       </div>
       <select
-        (change)="changeOperator()"
+        (change)="filterDelivery()"
         class="custom-select"
         name="operators"
         id="operators"
         [(ngModel)]="selectOperatorId"
       >
-        <option disabled="true" value="0" selected>
-          Seleccione el Operador
-        </option>
-        <option [ngValue]="item.operator.id" *ngFor="let item of operators">
-          {{ item.operator.alias }}
+        <option [value]="'0'" selected>Seleccione el Operador</option>
+        <option [ngValue]="item.id" *ngFor="let item of operators">
+          {{ item.alias }}
         </option>
       </select>
     </div>

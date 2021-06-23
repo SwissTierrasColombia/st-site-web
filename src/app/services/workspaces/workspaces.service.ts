@@ -1,3 +1,4 @@
+import { OperatorByManager } from './../../shared/models/operator-by-manager.interface';
 import { WorkspaceActiveByMunicipalityInterface } from './../../shared/models/workspace-active-by-municipality.interface';
 import { OperatorsAssignWorkspaceInterface } from './../../shared/models/operators-assign-workspace.interface';
 import { DepartamentsInterface } from './../../shared/models/departaments.interface';
@@ -854,6 +855,14 @@ export class WorkspacesService {
   public getWorkspacesByOperator() {
     return this.httpClient.get<GetWorkspacesByOperatorInterface[]>(
       this.url + '/workspaces/v1/workspaces/operators'
+    );
+  }
+  /**
+   * getOperatorsByManager
+   */
+  public getOperatorsByManager() {
+    return this.httpClient.get<OperatorByManager[]>(
+      this.url + '/workspaces/v1/managers/operators'
     );
   }
 }
