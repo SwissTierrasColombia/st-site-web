@@ -21,6 +21,7 @@ import { AttachmentsFromDeliveryProductInterface } from '../models/attachments-f
 import { environment } from 'src/environments/environment';
 import { DecodedTokenInterface } from 'src/app/shared/models/decoded-token.interface';
 import { StatesProductsEnum } from '../models/states-products.enum';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-add-product-delivery',
   templateUrl: './add-product-delivery.component.html',
@@ -55,12 +56,14 @@ export class AddProductDeliveryComponent implements OnInit {
   listFeedBacks: any = [];
   StatesProductsEnum = StatesProductsEnum;
   tab: string = '0';
+  isUpdateTableProduct: boolean = true;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
     private levCatReceptionService: LevCatReceptionService,
     private modalService: NgbModal,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) {
     this.dataFTP = {
       domain: '',
@@ -215,6 +218,7 @@ export class AddProductDeliveryComponent implements OnInit {
           username: '',
         };
         this.observationAttachment = '';
+        this.isUpdateTableProduct = false;
       });
   }
   openModalUpdateProduct(
@@ -259,6 +263,8 @@ export class AddProductDeliveryComponent implements OnInit {
       centered: true,
       scrollable: true,
       size: 'xl',
+      backdrop: 'static',
+      keyboard: false,
     });
   }
   updateObservationProductDelivery(
@@ -295,6 +301,7 @@ export class AddProductDeliveryComponent implements OnInit {
     deliveryProductId: number,
     item: FindProductsFromDeliveryInterface
   ) {
+    this.spinner.show();
     this.disabledButtonAttachment = true;
     if (StatesDeliveriesEnum.BORRADOR == this.dataDelivery.deliveryStatusId) {
       this.updateObservationProductDelivery(item);
@@ -354,16 +361,34 @@ export class AddProductDeliveryComponent implements OnInit {
     });
   }
   sendDeliveryToManager() {
-    this.levCatReceptionService
-      .sendDeliveryToManager(this.deliveryId)
-      .subscribe((_) => {
-        this.dataDelivery.deliveryStatusId = StatesDeliveriesEnum.ENTREGADO;
-        this.toastr.success('Ha enviado la entrega al gestor');
-        this.goBack();
-      });
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title = '¿Va a realizar la entrega?';
+    this.optionModalRef.componentInstance.description =
+      'Adventercia: va a realizar una entrega al gestor.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.levCatReceptionService
+            .sendDeliveryToManager(this.deliveryId)
+            .subscribe((_) => {
+              this.dataDelivery.deliveryStatusId =
+                StatesDeliveriesEnum.ENTREGADO;
+              this.toastr.success('Ha enviado la entrega al gestor');
+              this.goBack();
+            });
+        }
+      }
+    });
   }
   changeUpdaateInfoProduct(item: FindProductsFromDeliveryInterface) {
     this.disabledButtonAttachment = true;
+    this.isUpdateTableProduct = true;
+    if (this.selectTypeAttachment == '0') {
+      this.isUpdateTableProduct = false;
+    }
     if (this.selectTypeAttachment != '0') {
       if (
         this.selectTypeAttachment === TypeAttachmentsProduct.DOCUMENTO ||
@@ -551,5 +576,16 @@ export class AddProductDeliveryComponent implements OnInit {
         }
       }
     });
+  }
+  downloadFeedback(deliveryProductId: number, feedbackId: number) {
+    this.levCatReceptionService
+      .downloadFeedbackAttachment(
+        this.deliveryId,
+        deliveryProductId,
+        feedbackId
+      )
+      .subscribe((data) => {
+        FuntionsGlobalsHelper.downloadFile(data, 'feedback-' + feedbackId);
+      });
   }
 }

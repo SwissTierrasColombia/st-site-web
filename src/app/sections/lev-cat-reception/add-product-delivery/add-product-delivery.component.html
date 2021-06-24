@@ -147,12 +147,7 @@
                 </td>
                 <td scope="row">
                   <span
-                    [ngbTooltip]="
-                      StatesDeliveriesEnum.ACEPTADO !=
-                      dataDelivery.deliveryStatusId
-                        ? 'Actualizar'
-                        : 'Ver detalle'
-                    "
+                    [ngbTooltip]="isOperator ? 'Actualizar' : 'Ver detalle'"
                     placement="top"
                     show-delay="500"
                   >
@@ -166,12 +161,7 @@
                         )
                       "
                     >
-                      {{
-                        StatesDeliveriesEnum.ACEPTADO !=
-                        dataDelivery.deliveryStatusId
-                          ? "edit"
-                          : "visibility"
-                      }}
+                      {{ isOperator ? "edit" : "visibility" }}
                     </i>
                   </span>
                   <span
@@ -230,18 +220,9 @@
                     </i>
                   </span>
                   <span
-                    *ngIf="
-                      !isOperator &&
-                      StatesDeliveriesEnum.BORRADOR !=
-                        dataDelivery.deliveryStatusId &&
-                      StatesDeliveriesEnum.ENTREGADO !=
-                        dataDelivery.deliveryStatusId &&
-                      (item.deliveryProductStatusId ==
-                        StatesProductsEnum.ACEPTADO ||
-                        item.deliveryProductStatusId ==
-                          StatesProductsEnum.RECHAZADO)
+                    [ngbTooltip]="
+                      isOperator ? 'Ver feedback' : 'Realizar feedback'
                     "
-                    ngbTooltip="Realizar feedback"
                     placement="top"
                     show-delay="500"
                   >
@@ -267,6 +248,7 @@
                     <div
                       class="modal-body text-center"
                       *ngIf="
+                        !isOperator &&
                         StatesDeliveriesEnum.ACEPTADO !=
                           dataDelivery.deliveryStatusId &&
                         StatesDeliveriesEnum.EN_CORRECCION !=
@@ -297,6 +279,7 @@
                     <div
                       class="modal-footer"
                       *ngIf="
+                        !isOperator &&
                         StatesDeliveriesEnum.ACEPTADO !=
                           dataDelivery.deliveryStatusId &&
                         StatesDeliveriesEnum.EN_CORRECCION !=
@@ -323,27 +306,45 @@
                               <th>ID</th>
                               <th>Observaciones</th>
                               <th>Fecha</th>
+                              <th>Opciones</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr
                               *ngFor="
-                                let item of listFeedBacks;
+                                let feedback of listFeedBacks;
                                 let index = index
                               "
                             >
-                              <td scope="row">{{ item.feedbackId }}</td>
+                              <td scope="row">{{ feedback.feedbackId }}</td>
                               <td scope="row">
                                 <app-observation
                                   [id]="'feedback' + index"
                                   [name]="'feedback' + index"
-                                  [(inputModel)]="item.feedback"
+                                  [(inputModel)]="feedback.feedback"
                                   [disabled]="true"
                                 >
                                 </app-observation>
                               </td>
                               <td scope="row">
-                                {{ formatDate(item.feedbackDate) }}
+                                {{ formatDate(feedback.feedbackDate) }}
+                              </td>
+                              <td scope="row">
+                                <span
+                                  ngbTooltip="Descargar feedback"
+                                  placement="top"
+                                  show-delay="500"
+                                  (click)="
+                                    downloadFeedback(
+                                      item.id,
+                                      feedback.feedbackId
+                                    )
+                                  "
+                                >
+                                  <i class="material-icons cursor">
+                                    download
+                                  </i>
+                                </span>
                               </td>
                             </tr>
                           </tbody>
@@ -365,6 +366,7 @@
                         Actualizar información del producto
                       </h4>
                       <button
+                        [disabled]="isUpdateTableProduct"
                         type="button"
                         class="close"
                         aria-label="Close"
@@ -407,6 +409,7 @@
                             [optionZero]="'Seleccione el tipo de adjunto'"
                             [listSelect]="listTypeAttachmentProduct"
                             [key]="'option'"
+                            [disableOptionZero]="false"
                             [(inputModel)]="selectTypeAttachment"
                             (change)="changeUpdaateInfoProduct(item)"
                           ></app-select>
@@ -722,6 +725,7 @@
                     <div class="modal-footer">
                       <div class="text-left">
                         <button
+                          [disabled]="isUpdateTableProduct"
                           type="button"
                           ngbAutofocus
                           class="btn btn-dark btn-block"
@@ -751,7 +755,10 @@
       ngbAutofocus
       class="btn btn-dark btn-block"
       (click)="sendDeliveryToManager()"
-      *ngIf="StatesDeliveriesEnum.BORRADOR == dataDelivery.deliveryStatusId"
+      *ngIf="
+        StatesDeliveriesEnum.BORRADOR == dataDelivery.deliveryStatusId &&
+        listProductsFromDelivery.length != 0
+      "
     >
       Entregar
     </button>
@@ -802,9 +809,12 @@
           "
           (click)="returnDeliveryToManager()"
         >
-          enviar corrección
+          Entregar corrección
         </button>
       </div>
     </div>
   </div>
 </div>
+<ngx-spinner>
+  <p style="color: white">Cargando, por favor espere ...</p>
+</ngx-spinner>

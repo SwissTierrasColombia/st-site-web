@@ -10,7 +10,7 @@ import { AddProductDeliveryComponent } from './add-product-delivery/add-product-
 import { FormsModule } from '@angular/forms';
 import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.component';
 import { CreateProductComponent } from './create-product/create-product.component';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   declarations: [
     MakeDeliveryManagerComponent,
@@ -26,6 +26,7 @@ import { CreateProductComponent } from './create-product/create-product.componen
     PageHeaderModule,
     ComponentsModule,
     FormsModule,
+    NgxSpinnerModule,
   ],
 })
 export class LevCatReceptionModule {}

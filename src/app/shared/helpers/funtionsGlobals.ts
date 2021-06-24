@@ -62,6 +62,6 @@ export class FuntionsGlobalsHelper {
     const type = contentType.split(',')[0];
     const dataFile = data.body;
     const blob = new Blob([dataFile], { type });
-    saveAs(blob, nameFile);
+    saveAs(blob, nameFile + '.zip');
   }
 }

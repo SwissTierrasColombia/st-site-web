@@ -197,9 +197,10 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = 'Borrar entrega';
+    this.optionModalRef.componentInstance.title =
+      '¿Esta seguro de eliminar la entrega?';
     this.optionModalRef.componentInstance.description =
-      'Va eliminar la entrega.';
+      'Advertencia: Va eliminar la entrega.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {

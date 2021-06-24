@@ -90,7 +90,7 @@
       <table class="table table-striped">
         <thead class="thead-inverse">
           <tr>
-            <th>código</th>
+            <th>Código</th>
             <th>Departamento</th>
             <th>Municipio</th>
             <th>Gestor</th>
@@ -124,7 +124,13 @@
               {{ formatDate(item.deliveryDate) }}
             </td>
             <td scope="row">
-              <span ngbTooltip="Ver entrega" placement="top" show-delay="500">
+              <span
+                [ngbTooltip]="
+                  isOperator ? 'Entrega de productos BPM' : 'Ver entrega'
+                "
+                placement="top"
+                show-delay="500"
+              >
                 <i
                   class="material-icons cursor"
                   (click)="viewDetailDelivery(item)"
@@ -134,7 +140,7 @@
               </span>
 
               <span
-                ngbTooltip="Editar Entrega"
+                ngbTooltip="Actualizar observación de la entrega"
                 placement="top"
                 show-delay="500"
               >
@@ -151,7 +157,7 @@
               </span>
 
               <span
-                ngbTooltip="Eliminar"
+                ngbTooltip="Eliminar entrega"
                 placement="top"
                 show-delay="500"
                 *ngIf="

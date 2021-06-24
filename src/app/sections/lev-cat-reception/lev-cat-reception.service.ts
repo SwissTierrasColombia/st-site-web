@@ -355,7 +355,8 @@ export class LevCatReceptionService {
         deliveryProductId +
         '/feedbacks/' +
         feedbackId +
-        '/download'
+        '/download',
+      { responseType: 'arraybuffer', observe: 'response' }
     );
   }
 }
