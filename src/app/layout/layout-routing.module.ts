@@ -17,7 +17,7 @@ const routes: Routes = [
       {
         path: 'inicio',
         loadChildren: () =>
-          import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+          import('./home/dashboard.module').then((m) => m.DashboardModule),
       },
       {
         path: 'insumos',

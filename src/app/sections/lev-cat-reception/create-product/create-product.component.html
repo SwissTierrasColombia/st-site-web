@@ -1,10 +1,10 @@
 <div id="actionForm">
-  <app-page-header [heading]="'Creación de Productos'" [icon]="'fa-star'">
+  <app-page-header [heading]="'Caracterizar Productos'" [icon]="'fa-star'">
   </app-page-header>
   <div class="card">
     <div class="card-header text-center">
       <h2>
-        {{ id > 0 ? "Actualizar" : "Crear" }} Producto
+        {{ id > 0 ? "Actualizar" : "Crear" }} producto
         <span *ngIf="id > 0"
           ><b>#{{ id }}</b></span
         >
@@ -92,7 +92,7 @@
     <div class="col-12">
       <div class="card-header">
         <div class="text-center">
-          <h3>Productos creados</h3>
+          <h3>Productos a entregar por el operador</h3>
         </div>
       </div>
       <div

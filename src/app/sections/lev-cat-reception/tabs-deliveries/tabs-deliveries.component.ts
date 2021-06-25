@@ -10,7 +10,7 @@ import { ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./tabs-deliveries.component.scss'],
 })
 export class TabsDeliveriesComponent implements OnInit {
-  tab: number;
+  tab: number = 1;
   user: DecodedTokenInterface;
   isManager: boolean = false;
   isOperator: boolean = false;
