@@ -93,8 +93,8 @@
             <th>Código</th>
             <th>Departamento</th>
             <th>Municipio</th>
-            <th>Gestor</th>
-            <th>Operador</th>
+            <th *ngIf="isOperator">Gestor</th>
+            <th *ngIf="!isOperator">Operador</th>
             <th>Observación</th>
             <th>Estado</th>
             <th>Fecha</th>
@@ -106,8 +106,8 @@
             <td scope="row">{{ item.code }}</td>
             <td scope="row">{{ item.departmentName }}</td>
             <td scope="row">{{ item.municipalityName }}</td>
-            <td scope="row">{{ item.managerName }}</td>
-            <td scope="row">{{ item.operatorName }}</td>
+            <td scope="row" *ngIf="isOperator">{{ item.managerName }}</td>
+            <td scope="row" *ngIf="!isOperator">{{ item.operatorName }}</td>
             <td scope="row">
               <app-observation
                 [name]="'observation' + index"

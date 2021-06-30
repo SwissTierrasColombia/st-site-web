@@ -147,7 +147,9 @@
                 </td>
                 <td scope="row">
                   <span
-                    [ngbTooltip]="isOperator ? 'Actualizar' : 'Ver detalle'"
+                    [ngbTooltip]="
+                      isOperator ? 'Actualizar' : 'Ver detalle del producto'
+                    "
                     placement="top"
                     show-delay="500"
                   >
@@ -195,7 +197,7 @@
                   >
                     <i
                       class="material-icons cursor"
-                      (click)="openModalAcceptProduct(item.id)"
+                      (click)="openModalAcceptProduct(item.id, modalFeedback)"
                     >
                       thumb_up_alt
                     </i>
@@ -214,12 +216,18 @@
                   >
                     <i
                       class="material-icons cursor"
-                      (click)="openModalRejectProduct(item.id)"
+                      (click)="openModalRejectProduct(item.id, modalFeedback)"
                     >
                       thumb_down_alt
                     </i>
                   </span>
                   <span
+                    *ngIf="
+                      StatesDeliveriesEnum.BORRADOR !=
+                        dataDelivery.deliveryStatusId &&
+                      StatesDeliveriesEnum.ENTREGADO !=
+                        dataDelivery.deliveryStatusId
+                    "
                     [ngbTooltip]="
                       isOperator ? 'Ver feedback' : 'Realizar feedback'
                     "
@@ -249,9 +257,7 @@
                       class="modal-body text-center"
                       *ngIf="
                         !isOperator &&
-                        StatesDeliveriesEnum.ACEPTADO !=
-                          dataDelivery.deliveryStatusId &&
-                        StatesDeliveriesEnum.EN_CORRECCION !=
+                        StatesDeliveriesEnum.EN_REVISION ==
                           dataDelivery.deliveryStatusId
                       "
                     >
@@ -280,9 +286,7 @@
                       class="modal-footer"
                       *ngIf="
                         !isOperator &&
-                        StatesDeliveriesEnum.ACEPTADO !=
-                          dataDelivery.deliveryStatusId &&
-                        StatesDeliveriesEnum.EN_CORRECCION !=
+                        StatesDeliveriesEnum.EN_REVISION ==
                           dataDelivery.deliveryStatusId
                       "
                     >
@@ -331,6 +335,7 @@
                               </td>
                               <td scope="row">
                                 <span
+                                  *ngIf="feedback.hasAttachment"
                                   ngbTooltip="Descargar feedback"
                                   placement="top"
                                   show-delay="500"
@@ -345,6 +350,7 @@
                                     download
                                   </i>
                                 </span>
+                                <span *ngIf="!feedback.hasAttachment">N/A</span>
                               </td>
                             </tr>
                           </tbody>
@@ -362,9 +368,7 @@
                   </ng-template>
                   <ng-template #modalUpdateProduct let-modal>
                     <div class="modal-header">
-                      <h4 class="modal-title">
-                        Actualizar información del producto
-                      </h4>
+                      <h4 class="modal-title">Detalle del producto</h4>
                       <button
                         [disabled]="isUpdateTableProduct"
                         type="button"
@@ -415,7 +419,7 @@
                           ></app-select>
                         </div>
                         <div
-                          class="col-12 mt-1"
+                          class="col-6 mt-1"
                           *ngIf="
                             selectTypeAttachment ==
                               typeAttachmentsProduct.DOCUMENTO ||
@@ -446,6 +450,23 @@
                               "
                             />
                           </div>
+                        </div>
+                        <div
+                          class="col-6 mt-1"
+                          *ngIf="
+                            selectTypeAttachment == typeAttachmentsProduct.XTF
+                          "
+                        >
+                          <app-select
+                            [labelSelect]="'* Modelo'"
+                            [nameSelect]="'listTypeModel'"
+                            [idSelect]="'listTypeModel'"
+                            [optionZero]="'Seleccione la versión de modelo'"
+                            [listSelect]="listTypeModel"
+                            [key]="'option'"
+                            [(inputModel)]="modelVersionAttachment"
+                            (change)="changeUpdaateInfoProduct(item)"
+                          ></app-select>
                         </div>
                         <div
                           class="col-6 mt-1"
@@ -530,11 +551,23 @@
                         </div>
                       </div>
                     </div>
+
                     <div class="card-header">
                       <div class="text-center">
                         <h3>Adjuntos del producto</h3>
                       </div>
                     </div>
+                    <small
+                      class="form-text text-muted text-center"
+                      *ngIf="isLoadAttachment"
+                    >
+                      por favor espere cargando archivo
+                      <img
+                        class="load-spinner-size"
+                        src="/assets/Filled-fading-balls.gif"
+                        alt="Filled fading balls"
+                      />
+                    </small>
                     <div class="modal-body text-center">
                       <div
                         class="col-12 mb-1"
@@ -622,9 +655,13 @@
                                         statusAttachmentsXTF.ACCEPTED
                                       "
                                     >
+                                      <strong>Estado: </strong>
                                       <span class="badge badge-success">
                                         {{ statusAttachmentsXTF.ACCEPTED_TEXT }}
                                       </span>
+                                      <br />
+                                      <strong>Versión modelo: </strong
+                                      >{{ attachments.data.version }}
                                     </div>
                                     <div
                                       *ngIf="
@@ -632,11 +669,15 @@
                                         statusAttachmentsXTF.IN_VALIDATION
                                       "
                                     >
+                                      <strong>Estado: </strong>
                                       <span class="badge badge-info">
                                         {{
                                           statusAttachmentsXTF.IN_VALIDATION_TEXT
                                         }}
                                       </span>
+                                      <br />
+                                      <strong>Versión modelo: </strong
+                                      >{{ attachments.data.version }}
                                     </div>
                                     <div
                                       *ngIf="
@@ -644,6 +685,7 @@
                                         statusAttachmentsXTF.REJECTED
                                       "
                                     >
+                                      <strong>Estado: </strong>
                                       <span class="badge badge-danger">
                                         {{ statusAttachmentsXTF.REJECTED_TEXT }}
                                       </span>
@@ -775,12 +817,12 @@
       <div class="col-6">
         <button
           type="button"
-          ngbAutofocus
           class="btn btn-dark btn-block"
           *ngIf="
             StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
           "
           (click)="acceptDelivery()"
+          [disabled]="statusOnlyProduct1(StatesProductsEnum.PENDIENTE)"
         >
           Aceptar entrega
         </button>
@@ -788,12 +830,12 @@
       <div class="col-6">
         <button
           type="button"
-          ngbAutofocus
           class="btn btn-dark btn-block"
           *ngIf="
             StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
           "
           (click)="returnDeliveryToOperator()"
+          [disabled]="statusOnlyProduct2(StatesProductsEnum.RECHAZADO)"
         >
           enviar a corrección
         </button>
@@ -801,7 +843,6 @@
       <div class="col-12">
         <button
           type="button"
-          ngbAutofocus
           class="btn btn-dark btn-block"
           *ngIf="
             isOperator &&

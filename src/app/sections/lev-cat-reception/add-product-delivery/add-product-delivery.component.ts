@@ -21,7 +21,6 @@ import { AttachmentsFromDeliveryProductInterface } from '../models/attachments-f
 import { environment } from 'src/environments/environment';
 import { DecodedTokenInterface } from 'src/app/shared/models/decoded-token.interface';
 import { StatesProductsEnum } from '../models/states-products.enum';
-import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-add-product-delivery',
   templateUrl: './add-product-delivery.component.html',
@@ -57,13 +56,15 @@ export class AddProductDeliveryComponent implements OnInit {
   StatesProductsEnum = StatesProductsEnum;
   tab: string = '0';
   isUpdateTableProduct: boolean = true;
+  isLoadAttachment: boolean = false;
+  listTypeModel: selectInterface[] = [];
+  modelVersionAttachment: string = '0';
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
     private levCatReceptionService: LevCatReceptionService,
     private modalService: NgbModal,
-    private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private toastr: ToastrService
   ) {
     this.dataFTP = {
       domain: '',
@@ -86,6 +87,16 @@ export class AddProductDeliveryComponent implements OnInit {
       managerName: '',
       operatorName: '',
     };
+    this.listTypeModel = [
+      {
+        id: '1.0',
+        option: 'Versión 1.0',
+      },
+      {
+        id: '1.1',
+        option: 'Versión 1.1',
+      },
+    ];
   }
 
   ngOnInit(): void {
@@ -166,9 +177,10 @@ export class AddProductDeliveryComponent implements OnInit {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = 'Borrar producto';
+    this.optionModalRef.componentInstance.title =
+      '¿Esta seguro de borrar el producto?';
     this.optionModalRef.componentInstance.description =
-      'Va eliminar un producto de entrega.';
+      'Advertencia: Va eliminar un producto de entrega.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -301,7 +313,7 @@ export class AddProductDeliveryComponent implements OnInit {
     deliveryProductId: number,
     item: FindProductsFromDeliveryInterface
   ) {
-    this.spinner.show();
+    this.isLoadAttachment = true;
     this.disabledButtonAttachment = true;
     if (StatesDeliveriesEnum.BORRADOR == this.dataDelivery.deliveryStatusId) {
       this.updateObservationProductDelivery(item);
@@ -312,6 +324,7 @@ export class AddProductDeliveryComponent implements OnInit {
     }
     if (this.selectTypeAttachment === TypeAttachmentsProduct.XTF) {
       attachmentForm.append('xtf.attachment', this.document);
+      attachmentForm.append('xtf.version', this.modelVersionAttachment);
     }
     if (this.selectTypeAttachment === TypeAttachmentsProduct.FTP) {
       attachmentForm.append('ftp.domain', this.dataFTP.domain);
@@ -326,20 +339,30 @@ export class AddProductDeliveryComponent implements OnInit {
         deliveryProductId,
         attachmentForm
       )
-      .subscribe((_) => {
-        this.selectTypeAttachment = '0';
-        this.toastr.success('Adjunto añadido con exito');
-        this.findAttachmentFromProduct(deliveryProductId);
-      });
+      .subscribe(
+        (_) => {
+          this.selectTypeAttachment = '0';
+          this.toastr.success('Adjunto añadido con exito');
+          this.findAttachmentFromProduct(deliveryProductId);
+          this.findProductsFromDelivery(this.deliveryId);
+          this.isLoadAttachment = false;
+        },
+        (error) => {
+          this.selectTypeAttachment = '0';
+          this.findAttachmentFromProduct(deliveryProductId);
+          this.findProductsFromDelivery(this.deliveryId);
+          this.isLoadAttachment = false;
+        }
+      );
   }
   deleteAttachment(deliveryProductId: number, attachmentId: number) {
     this.optionModalRef = this.modalService.open(ModalComponent, {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = 'Eliminar Adjunto';
+    this.optionModalRef.componentInstance.title = '¿Va a eliminar un adjunto?';
     this.optionModalRef.componentInstance.description =
-      'Va ha eliminar un adjunto del producto';
+      'Advertencia: Va ha eliminar un adjunto del producto';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -367,7 +390,7 @@ export class AddProductDeliveryComponent implements OnInit {
     });
     this.optionModalRef.componentInstance.title = '¿Va a realizar la entrega?';
     this.optionModalRef.componentInstance.description =
-      'Adventercia: va a realizar una entrega al gestor.';
+      'Advertencia: va a realizar una entrega al gestor.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -390,14 +413,21 @@ export class AddProductDeliveryComponent implements OnInit {
       this.isUpdateTableProduct = false;
     }
     if (this.selectTypeAttachment != '0') {
-      if (
-        this.selectTypeAttachment === TypeAttachmentsProduct.DOCUMENTO ||
-        this.selectTypeAttachment === TypeAttachmentsProduct.XTF
-      ) {
+      if (this.selectTypeAttachment === TypeAttachmentsProduct.DOCUMENTO) {
         if (
           item.observations != '' &&
           this.document &&
           this.observationAttachment != ''
+        ) {
+          this.disabledButtonAttachment = false;
+        }
+      }
+      if (this.selectTypeAttachment === TypeAttachmentsProduct.XTF) {
+        if (
+          item.observations != '' &&
+          this.document &&
+          this.observationAttachment != '' &&
+          this.modelVersionAttachment != '0'
         ) {
           this.disabledButtonAttachment = false;
         }
@@ -465,6 +495,7 @@ export class AddProductDeliveryComponent implements OnInit {
         this.observationfeedback = '';
         this.document = null;
         this.findFeedback(deliveryProductId);
+        this.toastr.success('Ha realizado un feedback');
       });
   }
   startReviewManager() {
@@ -475,14 +506,14 @@ export class AddProductDeliveryComponent implements OnInit {
         this.initPageServices();
       });
   }
-  openModalAcceptProduct(deliveryProductId: number) {
+  openModalAcceptProduct(deliveryProductId: number, modal: TemplateRef<any>) {
     this.optionModalRef = this.modalService.open(ModalComponent, {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = 'Aceptar producto';
+    this.optionModalRef.componentInstance.title = '¿Desea aceptar el producto?';
     this.optionModalRef.componentInstance.description =
-      'Va aceptar el producto';
+      'Advertencia: Va aceptar un producto';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -491,18 +522,20 @@ export class AddProductDeliveryComponent implements OnInit {
             .subscribe((_) => {
               this.toastr.success('Ha aceptado el producto');
               this.findProductsFromDelivery(this.deliveryId);
+              this.openModalFeedback(modal, deliveryProductId);
             });
         }
       }
     });
   }
-  openModalRejectProduct(deliveryProductId: number) {
+  openModalRejectProduct(deliveryProductId: number, modal: TemplateRef<any>) {
     this.optionModalRef = this.modalService.open(ModalComponent, {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = 'Rechazar producto';
-    this.optionModalRef.componentInstance.description = 'Va rechazar producto';
+    this.optionModalRef.componentInstance.title = '¿Va a rechazar un producto?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Va rechazar un producto';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -510,6 +543,7 @@ export class AddProductDeliveryComponent implements OnInit {
             .rejectDeliveryProduct(this.deliveryId, deliveryProductId)
             .subscribe((_) => {
               this.findProductsFromDelivery(this.deliveryId);
+              this.openModalFeedback(modal, deliveryProductId);
             });
         }
       }
@@ -520,8 +554,9 @@ export class AddProductDeliveryComponent implements OnInit {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = 'Aceptar entrega';
-    this.optionModalRef.componentInstance.description = 'Va aceptar la entrega';
+    this.optionModalRef.componentInstance.title = '¿Va a aceptar la entrega?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Va aceptar la entrega';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -540,9 +575,10 @@ export class AddProductDeliveryComponent implements OnInit {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = 'Enviar a corrección';
+    this.optionModalRef.componentInstance.title =
+      '¿Desea enviar a corrección la entrega?';
     this.optionModalRef.componentInstance.description =
-      'Va enviar a corrección la entrega';
+      'Advertencia: Va enviar a corrección la entrega';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -561,9 +597,10 @@ export class AddProductDeliveryComponent implements OnInit {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = 'Enviar corrección';
+    this.optionModalRef.componentInstance.title =
+      '¿va a enviar la corrección de la entrega?';
     this.optionModalRef.componentInstance.description =
-      'Va enviar la corrección de la entrega';
+      'Advertencia: Va enviar la corrección de la entrega';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -587,5 +624,17 @@ export class AddProductDeliveryComponent implements OnInit {
       .subscribe((data) => {
         FuntionsGlobalsHelper.downloadFile(data, 'feedback-' + feedbackId);
       });
+  }
+  statusOnlyProduct1(status: number): boolean {
+    let value = this.listProductsFromDelivery.find(
+      (element) => element.deliveryProductStatusId === status
+    );
+    return value ? true : false;
+  }
+  statusOnlyProduct2(status: number): boolean {
+    let value = this.listProductsFromDelivery.find(
+      (element) => element.deliveryProductStatusId === status
+    );
+    return value ? false : true;
   }
 }

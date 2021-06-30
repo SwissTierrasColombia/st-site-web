@@ -33,6 +33,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
             if (err.error.error === 'invalid_grant') {
               this.toastrService.error('Autenticación fallida');
             }
+            this.toastrService.error(error);
             break;
           case 401:
             if (err.error.error === 'invalid_token') {
