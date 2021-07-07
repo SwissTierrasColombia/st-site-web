@@ -1,10 +1,10 @@
-import { Role } from './../../../shared/models/decoded-token.interface';
-import { rolesEnum } from './../../../shared/models/roles.enum';
-import { JwtHelper } from './../../../shared/helpers/jwt';
-import { StatesDeliveriesEnum } from './../models/states-deliveries.enum';
-import { StatusAttachmentsXTF } from './../models/status-attachment-XTF.enum';
-import { FtpAttachmentProductInterface } from './../models/ftp-attachment-product.interface';
-import { TypeAttachmentsProduct } from './../models/type-attachments-product.enum';
+import { Role } from '../../../shared/models/decoded-token.interface';
+import { rolesEnum } from '../../../shared/models/roles.enum';
+import { JwtHelper } from '../../../shared/helpers/jwt';
+import { StatesDeliveriesEnum } from '../models/states-deliveries.enum';
+import { StatusAttachmentsXTF } from '../models/status-attachment-XTF.enum';
+import { FtpAttachmentProductInterface } from '../models/ftp-attachment-product.interface';
+import { TypeAttachmentsProduct } from '../models/type-attachments-product.enum';
 import { LevCatReceptionService } from '../lev-cat-reception.service';
 import { Component, ElementRef, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -178,9 +178,9 @@ export class AddProductDeliveryComponent implements OnInit {
       scrollable: true,
     });
     this.optionModalRef.componentInstance.title =
-      '¿Esta seguro de borrar el producto?';
+      '¿Está seguro eliminar el producto de la entrega?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va eliminar un producto de entrega.';
+      'Advertencia: Va a eliminar un producto de la entrega.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -388,9 +388,9 @@ export class AddProductDeliveryComponent implements OnInit {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = '¿Va a realizar la entrega?';
+    this.optionModalRef.componentInstance.title = '¿Está seguro de realizar esta entrega?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: va a realizar una entrega al gestor.';
+      'Advertencia: Va a realizar una entrega al Gestor.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -576,9 +576,9 @@ export class AddProductDeliveryComponent implements OnInit {
       scrollable: true,
     });
     this.optionModalRef.componentInstance.title =
-      '¿Desea enviar a corrección la entrega?';
+      '¿Está seguro de enviar esta corrección al Gestor?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va enviar a corrección la entrega';
+      'Advertencia: Va a enviar una corrección a la entrega.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {

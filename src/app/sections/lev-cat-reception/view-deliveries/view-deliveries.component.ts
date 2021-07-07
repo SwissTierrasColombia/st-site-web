@@ -1,8 +1,8 @@
-import { MunicipalityInterface } from './../../../shared/models/municipality.interface';
+import { MunicipalityInterface } from '../../../shared/models/municipality.interface';
 import {
   FindDeliveriesInterface,
   ItemDelivery,
-} from './../models/find-deliveries.interface';
+} from '../models/find-deliveries.interface';
 import {
   Component,
   Input,
@@ -198,9 +198,9 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
       scrollable: true,
     });
     this.optionModalRef.componentInstance.title =
-      '¿Esta seguro de eliminar la entrega?';
+      '¿Está seguro de eliminar la entrega?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va eliminar la entrega.';
+      'Advertencia: Va a eliminar este borrador.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {

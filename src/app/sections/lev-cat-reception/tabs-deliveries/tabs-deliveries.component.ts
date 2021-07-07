@@ -1,5 +1,5 @@
-import { rolesEnum } from './../../../shared/models/roles.enum';
-import { DecodedTokenInterface } from './../../../shared/models/decoded-token.interface';
+import { rolesEnum } from '../../../shared/models/roles.enum';
+import { DecodedTokenInterface } from '../../../shared/models/decoded-token.interface';
 import { Component, OnInit } from '@angular/core';
 import { JwtHelper } from 'src/app/shared/helpers/jwt';
 import { ActivatedRoute, Params } from '@angular/router';

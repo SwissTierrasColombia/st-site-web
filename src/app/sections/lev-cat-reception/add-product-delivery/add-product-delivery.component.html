@@ -148,7 +148,8 @@
                 <td scope="row">
                   <span
                     [ngbTooltip]="
-                      isOperator ? 'Actualizar' : 'Ver detalle del producto'
+                    !isOperator || StatesDeliveriesEnum.ACEPTADO ==
+                    dataDelivery.deliveryStatusId ? 'Ver detalle del producto' : 'Actualizar'
                     "
                     placement="top"
                     show-delay="500"
@@ -163,7 +164,8 @@
                         )
                       "
                     >
-                      {{ isOperator ? "edit" : "visibility" }}
+                      {{ !isOperator || StatesDeliveriesEnum.ACEPTADO  ==
+                        dataDelivery.deliveryStatusId ? "visibility" : "edit" }}
                     </i>
                   </span>
                   <span
@@ -368,7 +370,7 @@
                   </ng-template>
                   <ng-template #modalUpdateProduct let-modal>
                     <div class="modal-header">
-                      <h4 class="modal-title">Detalle del producto</h4>
+                      <h4 class="modal-title">Información del producto</h4>
                       <button
                         [disabled]="isUpdateTableProduct"
                         type="button"

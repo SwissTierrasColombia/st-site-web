@@ -1,4 +1,4 @@
-import { TypeProduct } from './../models/type-product.interface';
+import { TypeProduct } from '../models/type-product.interface';
 import { ManagerProductInterface } from '../models/manager-product.interface';
 import { Component, OnInit } from '@angular/core';
 import { LevCatReceptionService } from '../lev-cat-reception.service';

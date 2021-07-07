@@ -1,4 +1,4 @@
-import { MakeDeliveryToManagerInterface } from './../models/make-delivery-to-manager.interface';
+import { MakeDeliveryToManagerInterface } from '../models/make-delivery-to-manager.interface';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { Component, OnInit } from '@angular/core';
 import { GetWorkspacesByOperatorInterface } from '../models/get-workspaces-by-operator.interface';
