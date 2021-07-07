@@ -95,6 +95,8 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
         .subscribe((response: GetWorkspacesByOperatorInterface[]) => {
           this.dataWorkspacesByOperator = response;
           this.dataWorkspacesByOperator.forEach((element) => {
+            console.log(element);
+
             this.listManagerWithMunicipality.push({
               id: element.managerCode + ' - ' + element.municipality.code,
               option: element.manager.alias + ' - ' + element.municipality.name,

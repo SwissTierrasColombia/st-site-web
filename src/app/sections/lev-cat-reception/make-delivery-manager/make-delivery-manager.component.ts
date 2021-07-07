@@ -71,9 +71,9 @@ export class MakeDeliveryManagerComponent implements OnInit {
       scrollable: true,
     });
     this.optionModalRef.componentInstance.title =
-      '¿Desea crear un borrador de entrega para el Gestor?';
+      '¿Desea crear un borrador de entrega?';
     this.optionModalRef.componentInstance.description =
-      'Va a crear un borrador de entrega para el <strong>gestor<strong>';
+      'Advertencia: Va a preparar una entrega para el Gestor.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {

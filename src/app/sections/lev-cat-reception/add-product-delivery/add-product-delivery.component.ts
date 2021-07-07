@@ -360,9 +360,10 @@ export class AddProductDeliveryComponent implements OnInit {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = '¿Va a eliminar un adjunto?';
+    this.optionModalRef.componentInstance.title =
+      '¿Va a eliminar un archivo del producto?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va ha eliminar un adjunto del producto';
+      'Advertencia: Está acción eliminará el archivo adjunto y no podrá recuperarse.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -373,7 +374,9 @@ export class AddProductDeliveryComponent implements OnInit {
               attachmentId
             )
             .subscribe((_) => {
-              this.toastr.success('Ha eliminado un adjunto del producto');
+              this.toastr.success(
+                'Ha eliminado un archivo adjunto del producto'
+              );
               this.listAttachmentsDeliveryProduct =
                 this.listAttachmentsDeliveryProduct.filter(
                   (item) => item.attachmentId != attachmentId
@@ -388,7 +391,8 @@ export class AddProductDeliveryComponent implements OnInit {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = '¿Está seguro de realizar esta entrega?';
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de realizar esta entrega?';
     this.optionModalRef.componentInstance.description =
       'Advertencia: Va a realizar una entrega al Gestor.';
     this.optionModalRef.result.then((result) => {
@@ -450,7 +454,17 @@ export class AddProductDeliveryComponent implements OnInit {
     this.levCatReceptionService
       .downloadAttachment(this.deliveryId, deliveryProductId, attachmentId)
       .subscribe((data) => {
-        FuntionsGlobalsHelper.downloadFile(data);
+        FuntionsGlobalsHelper.downloadFile(
+          data,
+          'archivo-' +
+            this.dataDelivery.code +
+            '-' +
+            this.dataDelivery.municipalityName +
+            '-' +
+            deliveryProductId +
+            '-' +
+            attachmentId
+        );
       });
   }
   findFeedback(deliveryProductId: number) {
@@ -513,7 +527,7 @@ export class AddProductDeliveryComponent implements OnInit {
     });
     this.optionModalRef.componentInstance.title = '¿Desea aceptar el producto?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va aceptar un producto';
+      'Advertencia: Va a aceptar un producto de la entrega.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -533,9 +547,10 @@ export class AddProductDeliveryComponent implements OnInit {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = '¿Va a rechazar un producto?';
+    this.optionModalRef.componentInstance.title =
+      '¿Desea rechazar el producto?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va rechazar un producto';
+      'Advertencia: Va a rechazar un producto de la entrega.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -554,9 +569,10 @@ export class AddProductDeliveryComponent implements OnInit {
       centered: true,
       scrollable: true,
     });
-    this.optionModalRef.componentInstance.title = '¿Va a aceptar la entrega?';
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de aceptar esta entrega?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va aceptar la entrega';
+      'Advertencia: Esta estrega será recibida y aceptada por el Gestor.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -576,9 +592,9 @@ export class AddProductDeliveryComponent implements OnInit {
       scrollable: true,
     });
     this.optionModalRef.componentInstance.title =
-      '¿Está seguro de enviar esta corrección al Gestor?';
+      '¿Desea enviar a corrección la entrega?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va a enviar una corrección a la entrega.';
+      'Advertencia: Va a enviar a corrección los productos <strong>no aprobados</strong> de esta entrega.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -598,9 +614,9 @@ export class AddProductDeliveryComponent implements OnInit {
       scrollable: true,
     });
     this.optionModalRef.componentInstance.title =
-      '¿va a enviar la corrección de la entrega?';
+      '¿Está seguro de enviar esta corrección al Gestor?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va enviar la corrección de la entrega';
+      'Advertencia: Va a enviar una corrección a la entrega.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
@@ -622,7 +638,15 @@ export class AddProductDeliveryComponent implements OnInit {
         feedbackId
       )
       .subscribe((data) => {
-        FuntionsGlobalsHelper.downloadFile(data, 'feedback-' + feedbackId);
+        FuntionsGlobalsHelper.downloadFile(
+          data,
+          'feedback-' +
+            this.dataDelivery.code +
+            '-' +
+            deliveryProductId +
+            '-' +
+            feedbackId
+        );
       });
   }
   statusOnlyProduct1(status: number): boolean {

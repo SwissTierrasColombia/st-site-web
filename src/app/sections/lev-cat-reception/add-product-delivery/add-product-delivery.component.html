@@ -17,7 +17,7 @@
     <div class="row" *ngIf="dataDelivery">
       <div class="col-12 col-md-6 mb-1">
         <app-input
-          [title]="'Código'"
+          [title]="'Código de la entrega'"
           [id]="'code'"
           [name]="'code'"
           [disabled]="true"
@@ -105,7 +105,7 @@
           <table class="table table-striped">
             <thead class="thead-inverse">
               <tr>
-                <th>Nº</th>
+                <th>ID producto</th>
                 <th>Nombre</th>
                 <th>Estado</th>
                 <th>Descripción</th>
@@ -117,7 +117,9 @@
               <tr
                 *ngFor="let item of listProductsFromDelivery; let index = index"
               >
-                <td scope="row">{{ index + 1 }}</td>
+                <td scope="row">
+                  {{ item.id }}
+                </td>
                 <td scope="row">
                   {{ changeIdProduct(item.productId, "name") }}
                 </td>
@@ -148,8 +150,11 @@
                 <td scope="row">
                   <span
                     [ngbTooltip]="
-                    !isOperator || StatesDeliveriesEnum.ACEPTADO ==
-                    dataDelivery.deliveryStatusId ? 'Ver detalle del producto' : 'Actualizar'
+                      !isOperator ||
+                      StatesDeliveriesEnum.ACEPTADO ==
+                        dataDelivery.deliveryStatusId
+                        ? 'Ver detalle del producto'
+                        : 'Actualizar'
                     "
                     placement="top"
                     show-delay="500"
@@ -164,8 +169,13 @@
                         )
                       "
                     >
-                      {{ !isOperator || StatesDeliveriesEnum.ACEPTADO  ==
-                        dataDelivery.deliveryStatusId ? "visibility" : "edit" }}
+                      {{
+                        !isOperator ||
+                        StatesDeliveriesEnum.ACEPTADO ==
+                          dataDelivery.deliveryStatusId
+                          ? "visibility"
+                          : "edit"
+                      }}
                     </i>
                   </span>
                   <span
@@ -385,7 +395,7 @@
                       <div class="row">
                         <div class="col-12">
                           <app-observation
-                            [title]="'* Observaciones del Producto'"
+                            [title]="'* Observaciones del producto'"
                             [name]="'observation' + index"
                             [(inputModel)]="item.observations"
                             [disabled]="
@@ -408,11 +418,11 @@
                         >
                           <app-select
                             [labelSelect]="
-                              '* Agregar archivo adjunto al producto'
+                              '* Agregar archivo adjunto del producto'
                             "
                             [nameSelect]="'listTypeAttachmentProduct'"
                             [idSelect]="'listTypeAttachmentProduct'"
-                            [optionZero]="'Seleccione el tipo de adjunto'"
+                            [optionZero]="'Seleccione el tipo de archivo'"
                             [listSelect]="listTypeAttachmentProduct"
                             [key]="'option'"
                             [disableOptionZero]="false"
@@ -556,7 +566,7 @@
 
                     <div class="card-header">
                       <div class="text-center">
-                        <h3>Adjuntos del producto</h3>
+                        <h3>Archivos del producto</h3>
                       </div>
                     </div>
                     <small
@@ -579,7 +589,7 @@
                           <table class="table table-striped">
                             <thead class="thead-inverse">
                               <tr>
-                                <th>Nº</th>
+                                <th>ID</th>
                                 <th>Tipo</th>
                                 <th>Información</th>
                                 <th>Fecha</th>
@@ -594,7 +604,9 @@
                                   let index = index
                                 "
                               >
-                                <td scope="row">{{ index + 1 }}</td>
+                                <td scope="row">
+                                  {{ attachments.attachmentId }}
+                                </td>
                                 <td scope="row">
                                   <div
                                     *ngIf="
@@ -712,7 +724,7 @@
                                       attachments.type !=
                                       typeAttachmentsProduct.FTPTitle
                                     "
-                                    ngbTooltip="Descargar adjunto"
+                                    ngbTooltip="Descargar"
                                     placement="top"
                                     show-delay="500"
                                     (click)="
@@ -727,7 +739,7 @@
                                     </i>
                                   </span>
                                   <span
-                                    ngbTooltip="Eliminar adjunto"
+                                    ngbTooltip="Eliminar"
                                     placement="top"
                                     show-delay="500"
                                     (click)="
@@ -839,7 +851,7 @@
           (click)="returnDeliveryToOperator()"
           [disabled]="statusOnlyProduct2(StatesProductsEnum.RECHAZADO)"
         >
-          enviar a corrección
+          Enviar a corrección
         </button>
       </div>
       <div class="col-12">

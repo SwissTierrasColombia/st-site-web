@@ -6,7 +6,7 @@ import { DashboardComponent } from './dashboard.component';
 import { StatModule } from '../../shared';
 import { AboutComponent } from '../../sections/about/about.component';
 import { TooltipModule } from 'ng2-tooltip-directive';
-
+import { ComponentsModule } from 'src/app/shared/components/components.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +15,7 @@ import { TooltipModule } from 'ng2-tooltip-directive';
     DashboardRoutingModule,
     StatModule,
     TooltipModule,
+    ComponentsModule,
   ],
   declarations: [DashboardComponent, AboutComponent],
 })
