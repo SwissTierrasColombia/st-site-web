@@ -27,6 +27,7 @@ import { SearchComponent } from './search/search.component';
 import { BuscarSolicitudComponent } from './search-request/buscar-solicitud.component';
 import { DeliveriesManagerComponent } from './deliveries-manager/deliveries-manager.component';
 import { DeliveryManagerComponent } from './delivery-manager/delivery-manager.component';
+import { ReportSnrComponent } from './report-snr/report-snr.component';
 @NgModule({
   declarations: [
     CargueComponent,
@@ -47,6 +48,7 @@ import { DeliveryManagerComponent } from './delivery-manager/delivery-manager.co
     PeticionesProveedorComponent,
     DeliveriesManagerComponent,
     DeliveryManagerComponent,
+    ReportSnrComponent,
   ],
   imports: [
     CommonModule,

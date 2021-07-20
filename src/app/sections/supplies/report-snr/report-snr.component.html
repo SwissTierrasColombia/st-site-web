@@ -1,0 +1,54 @@
+<app-page-header [heading]="'Reporte'" [icon]="'fa-star'"> </app-page-header>
+<div class="card">
+  <div class="card-header text-center">
+    <h3>Generar Reporte</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text">* Fecha de inicio</label>
+          </div>
+          <input
+            class="form-control"
+            type="date"
+            name="FechaInicio"
+            [(ngModel)]="fromDate"
+            (change)="changeData()"
+          />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text">* Fecha final</label>
+          </div>
+          <input
+            class="form-control"
+            type="date"
+            [min]="fromDate"
+            name="FechaFinal"
+            [(ngModel)]="toDate"
+            (change)="changeData()"
+          />
+        </div>
+      </div>
+      <div class="col-12 mt-2">
+        <div class="alert alert-primary text-center" role="alert">
+          Recuerde que los campos marcados con * son obligatorios.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-center">
+    <button
+      type="button"
+      class="btn btn-dark"
+      (click)="generateReport()"
+      [disabled]="!isSelectFields"
+    >
+      Generar
+    </button>
+  </div>
+</div>
