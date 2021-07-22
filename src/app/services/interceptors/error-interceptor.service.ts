@@ -30,32 +30,30 @@ export class ErrorInterceptorService implements HttpInterceptor {
         const error = err.error.message || err.statusText;
         switch (err.status) {
           case 400:
+            error == 'OK' ? '' : this.toastrService.error(error);
             if (err.error.error === 'invalid_grant') {
               this.toastrService.error('Autenticación fallida');
             }
-            this.toastrService.error(error);
             break;
           case 401:
+            error == 'OK' ? '' : this.toastrService.error(error);
             if (err.error.error === 'invalid_token') {
               localStorage.removeItem(environment.nameTokenSession);
               localStorage.removeItem('showMenu');
-
               this.router.navigate(['/login']);
-            } else {
-              this.toastrService.error(error);
             }
             break;
           case 404:
+            error == 'OK' ? '' : this.toastrService.error(error);
           case 422:
-            this.toastrService.error(error);
+            error == 'OK' ? '' : this.toastrService.error(error);
             break;
           case 403:
+            error == 'OK' ? '' : this.toastrService.error(error);
             if (err.error.hasOwnProperty('tokenExpiration')) {
               localStorage.removeItem(environment.nameTokenSession);
               localStorage.removeItem('showMenu');
               this.router.navigate(['/login']);
-            } else {
-              this.toastrService.error(error);
             }
             break;
           default:
