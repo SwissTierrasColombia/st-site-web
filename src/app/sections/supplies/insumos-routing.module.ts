@@ -20,6 +20,8 @@ import { SearchComponent } from './search/search.component';
 import { BuscarSolicitudComponent } from './search-request/buscar-solicitud.component';
 import { DeliveryManagerComponent } from './delivery-manager/delivery-manager.component';
 import { DeliveriesManagerComponent } from './deliveries-manager/deliveries-manager.component';
+import { ReportSnrComponent } from './report-snr/report-snr.component';
+import { RoleOperatorSnrGuard } from 'src/app/shared/guard/role-operator-snr-guard.service';
 
 const routes: Routes = [
   {
@@ -101,6 +103,11 @@ const routes: Routes = [
     path: 'entregas-realizadas/:deliveryId',
     component: DeliveryManagerComponent,
     canActivate: [RoleManagerGuard],
+  },
+  {
+    path: 'reporte-snr',
+    component: ReportSnrComponent,
+    canActivate: [RoleOperatorSnrGuard],
   },
 ];
 

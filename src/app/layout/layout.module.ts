@@ -1,3 +1,4 @@
+import { RoleOperatorSnrGuard } from './../shared/guard/role-operator-snr-guard.service';
 import { RoleManagerOperatorGuard } from './../shared/guard/role-manager-operator-guard.service';
 import { RoleAdminManagerGuard } from './../shared/guard/role-admin-manager-guard.service';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -46,6 +47,7 @@ import { RoleRevisorGuard } from '../shared/guard/role-revisor-guard.service';
     RoleProviderDirectorGuard,
     RoleRevisorGuard,
     RoleManagerOperatorGuard,
+    RoleOperatorSnrGuard,
   ],
 })
 export class LayoutModule {}

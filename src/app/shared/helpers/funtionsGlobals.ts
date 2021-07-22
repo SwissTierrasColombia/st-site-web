@@ -57,11 +57,15 @@ export class FuntionsGlobalsHelper {
         return '';
     }
   }
-  static downloadFile(data: HttpResponse<ArrayBuffer>, nameFile?: string) {
+  static downloadFile(
+    data: HttpResponse<ArrayBuffer>,
+    nameFile?: string,
+    extension?: string
+  ) {
     const contentType = data.headers.get('content-type');
     const type = contentType.split(',')[0];
     const dataFile = data.body;
     const blob = new Blob([dataFile], { type });
-    saveAs(blob, nameFile + '.zip');
+    saveAs(blob, nameFile + extension ? extension : '.zip');
   }
 }

@@ -174,8 +174,8 @@
               ((roleproveedor
                 ? roleproveedor.id && user.is_provider_director === false
                 : 0 === allroles.proveedor) &&
-                !this.isSnr) ||
-              this.delegate
+                !isSnr) ||
+              delegate
             "
           >
             <a
@@ -185,6 +185,22 @@
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Solicitudes</span><br />
               <span class="ml-4">Atendidas</span>
+            </a>
+          </li>
+          <li
+            *ngIf="
+              (roleproveedor
+                ? roleproveedor.id && user.is_provider_director === false
+                : 0 === allroles.proveedor) && isSnr
+            "
+          >
+            <a
+              [routerLink]="['/insumos/reporte-snr']"
+              (click)="isCollapsed(listMenu.insumos)"
+            >
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Generar</span><br />
+              <span class="ml-4">Reporte</span>
             </a>
           </li>
 

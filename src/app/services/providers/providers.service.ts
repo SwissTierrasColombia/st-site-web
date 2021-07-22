@@ -99,4 +99,17 @@ export class ProvidersService {
         managerId
     );
   }
+  /**
+   * getReportSuppliesDelivered
+   */
+  public getReportSuppliesDelivered(fromDate: string, toDate: string) {
+    return this.httpClient.get(
+      this.url +
+        '/providers-supplies/v1/reports/supplies-delivered-snr?from=' +
+        fromDate +
+        '&to=' +
+        toDate,
+      { responseType: 'arraybuffer', observe: 'response' }
+    );
+  }
 }
