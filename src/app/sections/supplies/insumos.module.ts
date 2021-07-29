@@ -28,6 +28,7 @@ import { BuscarSolicitudComponent } from './search-request/buscar-solicitud.comp
 import { DeliveriesManagerComponent } from './deliveries-manager/deliveries-manager.component';
 import { DeliveryManagerComponent } from './delivery-manager/delivery-manager.component';
 import { ReportSnrComponent } from './report-snr/report-snr.component';
+import { ComponentsModule } from 'src/app/shared/components/components.module';
 @NgModule({
   declarations: [
     CargueComponent,
@@ -61,6 +62,7 @@ import { ReportSnrComponent } from './report-snr/report-snr.component';
     NgbModule,
     Ng2SearchPipeModule,
     NgSelect2Module,
+    ComponentsModule,
   ],
   bootstrap: [IntegracionComponent],
   providers: [TypeDataSuppliesModel],
