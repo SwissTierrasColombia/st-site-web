@@ -56,6 +56,8 @@ export class SolicitudesComponent implements OnInit {
         this.dataRequestPending = data.items;
         this.numSolicitudes = data.totalElements;
         this.totalElements = data.totalElements;
+        this.selectMunicipality = 0;
+        this.selectOrder = '';
       });
   }
   changeDepartament() {

@@ -71,14 +71,7 @@
           </div>
         </div>
       </div>
-      <button
-        type="button"
-        class="btn btn-dark mb-2"
-        [disabled]="
-          selectOrder == '' && selectDepartment == 0 && selectMunicipality == 0
-        "
-        (click)="filter()"
-      >
+      <button type="button" class="btn btn-dark mb-2" (click)="filter()">
         Filtrar
       </button>
       <ngb-pagination
