@@ -35,7 +35,6 @@ export class ReportSnrComponent implements OnInit {
           this.toastrService.error(
             'No se han encontrado solicitudes para el período de tiempo seleccionado.'
           );
-          console.log();
         }
       );
   }

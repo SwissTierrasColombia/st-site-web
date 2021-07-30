@@ -5,7 +5,7 @@
     <div class="card-header">
       <h3>
         Solicitudes Atendidas
-        <h4 style="color: green">({{ numSolicitudes }})</h4>
+        <h4 style="color: green">({{ totalElements }})</h4>
       </h3>
     </div>
     <div class="card-body">
@@ -74,18 +74,18 @@
       <button type="button" class="btn btn-dark mb-2" (click)="filter()">
         Filtrar
       </button>
-      <ngb-pagination
-        id="pagination-usersManagers"
-        class="d-flex justify-content-center"
-        [(page)]="page"
-        [pageSize]="totalElements"
-        [collectionSize]="dataRequestPending.length"
-        [rotate]="true"
-        [ellipses]="false"
-        [boundaryLinks]="true"
-        (pageChange)="getPage($event)"
-      >
-      </ngb-pagination>
+      <div *ngIf="totalElements">
+        <ngb-pagination
+          class="d-flex justify-content-center"
+          [collectionSize]="totalElements"
+          [(page)]="page"
+          [maxSize]="5"
+          [rotate]="true"
+          [ellipses]="false"
+          [boundaryLinks]="true"
+          (pageChange)="getPage($event)"
+        ></ngb-pagination>
+      </div>
       <div class="search-hero">
         <input
           class="form-control"

@@ -56,8 +56,6 @@ export class CreateProductComponent implements OnInit {
       });
   }
   changeState(): void {
-    console.log(this.data);
-
     this.formOk = false;
     if (this.data.name !== '' && this.data.description !== '') {
       this.formOk = true;

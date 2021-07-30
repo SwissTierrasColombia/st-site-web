@@ -13,7 +13,6 @@ const moment = _moment;
 })
 export class SolicitudesAtendidasComponent implements OnInit {
   dataRequestPending: any;
-  numSolicitudes: number;
   searchText: string;
   page: number = 1;
   limit: number = 10;
@@ -30,7 +29,6 @@ export class SolicitudesAtendidasComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService
   ) {
     this.dataRequestPending = [];
-    this.numSolicitudes = 0;
   }
 
   ngOnInit() {
@@ -41,7 +39,6 @@ export class SolicitudesAtendidasComponent implements OnInit {
       .getAttentedRequetsPagination(this.page, this.limit)
       .subscribe((data) => {
         this.dataRequestPending = data.items;
-        this.numSolicitudes = data.totalElements;
         this.totalElements = data.totalElements;
       });
   }
@@ -55,7 +52,6 @@ export class SolicitudesAtendidasComponent implements OnInit {
       )
       .subscribe((data) => {
         this.dataRequestPending = data.items;
-        this.numSolicitudes = data.totalElements;
         this.totalElements = data.totalElements;
         this.selectMunicipality = 0;
         this.selectOrder = '';

@@ -120,7 +120,7 @@ export class ProvidersService {
     page: number,
     limit: number,
     municipality?: number,
-    orderNumber?: number,
+    orderNumber?: string,
     manager?: number
   ) {
     let url =

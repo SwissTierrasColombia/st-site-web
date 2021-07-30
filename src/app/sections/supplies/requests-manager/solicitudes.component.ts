@@ -14,7 +14,6 @@ const moment = _moment;
 })
 export class SolicitudesComponent implements OnInit {
   dataRequestPending: Item[] = [];
-  numSolicitudes: any;
   searchText: string;
   page: number = 1;
   limit: number = 10;
@@ -28,9 +27,7 @@ export class SolicitudesComponent implements OnInit {
     private router: Router,
     private providersService: ProvidersService,
     private serviceWorkspaces: WorkspacesService
-  ) {
-    this.numSolicitudes = 0;
-  }
+  ) {}
 
   ngOnInit() {
     this.serviceWorkspaces.getDepartments().subscribe((response) => {
@@ -40,13 +37,26 @@ export class SolicitudesComponent implements OnInit {
       .getPendingRequestsPaginate(this.page, this.limit)
       .subscribe((data) => {
         this.dataRequestPending = data.items;
-        this.numSolicitudes = data.totalElements;
+        this.page = data.currentPage;
         this.totalElements = data.totalElements;
+      });
+  }
+  getPage(page: number) {
+    this.dataRequestPending = [];
+    this.page = page;
+    this.providersService
+      .getPendingRequestsPaginate(page, this.limit)
+      .subscribe((data) => {
+        this.dataRequestPending = data.items;
+        this.page = data.currentPage;
+        this.totalElements = data.totalElements;
+        this.selectMunicipality = 0;
+        this.selectOrder = '';
       });
   }
   filter() {
     this.providersService
-      .getAttentedRequetsPagination(
+      .getPendingRequestsPaginate(
         this.page,
         this.limit,
         this.selectMunicipality != 0 ? this.selectMunicipality : null,
@@ -54,10 +64,10 @@ export class SolicitudesComponent implements OnInit {
       )
       .subscribe((data) => {
         this.dataRequestPending = data.items;
-        this.numSolicitudes = data.totalElements;
         this.totalElements = data.totalElements;
         this.selectMunicipality = 0;
         this.selectOrder = '';
+        this.page = data.currentPage;
       });
   }
   changeDepartament() {
@@ -75,14 +85,6 @@ export class SolicitudesComponent implements OnInit {
           //a must be equal to b
           return 0;
         });
-      });
-  }
-  getPage(page: number) {
-    this.page = page;
-    this.providersService
-      .getPendingRequestsPaginate(page, this.limit)
-      .subscribe((data) => {
-        this.dataRequestPending = data.items;
       });
   }
   formatDate(date: string) {
