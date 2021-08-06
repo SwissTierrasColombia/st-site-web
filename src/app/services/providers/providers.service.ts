@@ -119,7 +119,7 @@ export class ProvidersService {
   public getPendingRequestsPaginate(
     page: number,
     limit: number,
-    municipality?: number,
+    municipality?: string,
     orderNumber?: string,
     manager?: number
   ) {
@@ -146,7 +146,7 @@ export class ProvidersService {
   public getAttentedRequetsPagination(
     page: number,
     limit: number,
-    municipality?: number,
+    municipality?: string,
     orderNumber?: string
   ) {
     let url =

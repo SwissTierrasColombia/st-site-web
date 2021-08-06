@@ -14,14 +14,13 @@ const moment = _moment;
 })
 export class SolicitudesComponent implements OnInit {
   dataRequestPending: Item[] = [];
-  searchText: string;
   page: number = 1;
   limit: number = 10;
   totalElements: number;
   listDepartments: any = [];
   listMunicipalities: any = [];
   selectDepartment: number = 0;
-  selectMunicipality: number = 0;
+  selectMunicipality: string = '0';
   selectOrder: string = '';
   constructor(
     private router: Router,
@@ -29,17 +28,48 @@ export class SolicitudesComponent implements OnInit {
     private serviceWorkspaces: WorkspacesService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (
+      localStorage.getItem('selectDepartment') !== '0' &&
+      localStorage.getItem('selectDepartment') !== 'NaN' &&
+      localStorage.getItem('selectDepartment') != null &&
+      localStorage.getItem('selectDepartment') != undefined
+    ) {
+      this.selectDepartment = parseInt(
+        localStorage.getItem('selectDepartment')
+      );
+      await this.changeDepartament();
+      if (
+        localStorage.getItem('selectMunicipality') !== '0' &&
+        localStorage.getItem('selectMunicipality') !== 'NaN' &&
+        localStorage.getItem('selectMunicipality') != null &&
+        localStorage.getItem('selectMunicipality') != undefined
+      ) {
+        this.selectMunicipality = localStorage.getItem('selectMunicipality');
+      }
+    }
+    if (
+      localStorage.getItem('selectOrder') !== '' &&
+      localStorage.getItem('selectOrder') !== 'null' &&
+      localStorage.getItem('selectOrder') != null &&
+      localStorage.getItem('selectOrder') != undefined
+    ) {
+      this.selectOrder = localStorage.getItem('selectOrder');
+    }
+    if (this.selectMunicipality !== '0' || this.selectOrder !== '') {
+      this.filter();
+    } else {
+      this.providersService
+        .getPendingRequestsPaginate(this.page, this.limit)
+        .subscribe((data) => {
+          this.dataRequestPending = data.items;
+          this.page = data.currentPage;
+          this.totalElements = data.totalElements;
+        });
+    }
     this.serviceWorkspaces.getDepartments().subscribe((response) => {
       this.listDepartments = response;
     });
-    this.providersService
-      .getPendingRequestsPaginate(this.page, this.limit)
-      .subscribe((data) => {
-        this.dataRequestPending = data.items;
-        this.page = data.currentPage;
-        this.totalElements = data.totalElements;
-      });
   }
   getPage(page: number) {
     this.dataRequestPending = [];
@@ -50,28 +80,29 @@ export class SolicitudesComponent implements OnInit {
         this.dataRequestPending = data.items;
         this.page = data.currentPage;
         this.totalElements = data.totalElements;
-        this.selectMunicipality = 0;
+        this.selectMunicipality = '0';
         this.selectOrder = '';
       });
   }
   filter() {
+    localStorage.setItem('selectDepartment', this.selectDepartment.toString());
+    localStorage.setItem('selectMunicipality', this.selectMunicipality);
+    localStorage.setItem('selectOrder', this.selectOrder);
     this.providersService
       .getPendingRequestsPaginate(
         this.page,
         this.limit,
-        this.selectMunicipality != 0 ? this.selectMunicipality : null,
+        this.selectMunicipality != '0' ? this.selectMunicipality : null,
         this.selectOrder != '' ? this.selectOrder : null
       )
       .subscribe((data) => {
         this.dataRequestPending = data.items;
         this.totalElements = data.totalElements;
-        this.selectMunicipality = 0;
-        this.selectOrder = '';
         this.page = data.currentPage;
       });
   }
-  changeDepartament() {
-    this.serviceWorkspaces
+  async changeDepartament() {
+    await this.serviceWorkspaces
       .GetMunicipalitiesByDeparment(this.selectDepartment)
       .subscribe((data) => {
         this.listMunicipalities = data;
