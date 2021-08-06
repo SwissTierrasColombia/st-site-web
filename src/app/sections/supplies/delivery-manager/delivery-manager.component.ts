@@ -42,8 +42,6 @@ export class DeliveryManagerComponent implements OnInit {
         .subscribe((data) => {
           this.dataRequestPending = data;
           this.supplies = this.dataRequestPending.supplies;
-          console.log(this.supplies);
-
           const isDownloadGeneralReport = this.supplies.filter((item) => {
             return item.downloaded === true;
           });

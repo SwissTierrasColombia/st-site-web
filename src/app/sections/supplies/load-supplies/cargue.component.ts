@@ -465,7 +465,7 @@ export class CargueComponent implements OnInit, AfterViewInit {
     return data.user.name;
   }
   volver() {
-    this.router.navigate(['/insumos/solicitudes/pendientes']);
+    this.router.navigate(['/insumos/solicitudes/pendientes/']);
   }
   openModal(modal: any) {
     this.modalService.open(modal, { centered: true, scrollable: true });

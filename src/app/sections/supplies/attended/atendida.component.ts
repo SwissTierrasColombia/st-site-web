@@ -10,7 +10,7 @@ const moment = _moment;
 @Component({
   selector: 'app-atendida',
   templateUrl: './atendida.component.html',
-  styleUrls: ['./atendida.component.scss']
+  styleUrls: ['./atendida.component.scss'],
 })
 export class AtendidaComponent implements OnInit {
   idInsumo: string;
@@ -37,28 +37,34 @@ export class AtendidaComponent implements OnInit {
   }
   ngOnInit() {
     const promise1 = new Promise((resolve) => {
-      this.activedRoute.params.subscribe(
-        response => {
-          this.idInsumo = response.idInsumo;
-          resolve(response);
-        }
-      );
+      this.activedRoute.params.subscribe((response) => {
+        this.idInsumo = response.idInsumo;
+        resolve(response);
+      });
     });
     const promise2 = new Promise((resolve) => {
-      this.serviceWorkspaces.getAttendedRequestByProvider().subscribe(
-        data => {
+      this.serviceWorkspaces
+        .getAttendedRequestByProvider()
+        .subscribe((data) => {
           this.dataRequestPending = data;
+          console.log('this.dataRequestPending: ', this.dataRequestPending);
+
           resolve(data);
-        }
-      );
+        });
     });
-    Promise.all([promise1, promise2]).then(_ => {
-      this.dataRequestPending = this.dataRequestPending.filter((element: any) => {
-        if (element.id.toString() === this.idInsumo) {
-          return element;
-        }
-      });
-      this.suppliesRequested = this.clone(this.dataRequestPending[0].suppliesRequested);
+    Promise.all([promise1, promise2]).then((_) => {
+      // this.dataRequestPending = this.dataRequestPending.filter(
+      //   (element: any) => {
+      //     if (element.id.toString() === this.idInsumo) {
+      //       return element;
+      //     }
+      //   }
+      // );
+      console.log('this.dataRequestPending: ', this.dataRequestPending);
+
+      this.suppliesRequested = this.clone(
+        this.dataRequestPending[0].suppliesRequested
+      );
     });
   }
   formatDate(date: string) {
@@ -71,12 +77,11 @@ export class AtendidaComponent implements OnInit {
 
   getEntity(item: any) {
     let data = item.emitters.find((elem: any) => {
-      return elem.emitterType === "ENTITY"
+      return elem.emitterType === 'ENTITY';
     });
-    return data.user.name
+    return data.user.name;
   }
   volver() {
     this.router.navigate(['/insumos/solicitudes/atendidas']);
   }
 }
-
