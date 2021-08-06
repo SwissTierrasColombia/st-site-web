@@ -61,7 +61,9 @@
                 <td scope="row">
                   {{ item.typeSupply.name }}
                   <div *ngIf="item.valid !== null && !item.valid">
-                    <span class="badge badge-warning"> Validado con errores </span>
+                    <span class="badge badge-warning">
+                      Validado con errores
+                    </span>
                   </div>
                 </td>
                 <td scope="row">{{ item.state.name }}</td>
@@ -87,8 +89,8 @@
                   {{ item.deliveredAt ? formatDate(item.deliveredAt) : "N/A" }}
                 </td>
                 <td scope="row">
-                  {{ item.userDeliveryBy.firstName }} <br />
-                  {{ item.userDeliveryBy.lastName }}
+                  {{ dataRequestPending[0].userClosedBy.firstName }} <br />
+                  {{ dataRequestPending[0].userClosedBy.lastName }}
                 </td>
               </tr>
             </tbody>
