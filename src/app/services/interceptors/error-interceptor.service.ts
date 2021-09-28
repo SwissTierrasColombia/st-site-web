@@ -57,8 +57,6 @@ export class ErrorInterceptorService implements HttpInterceptor {
             }
             break;
           default:
-            localStorage.removeItem(environment.nameTokenSession);
-            this.router.navigate(['/login']);
             this.toastrService.error(
               'No se ha podido conectar con el servidor, espere unos minutos he intentelo de nuevo.',
               'Actualicé la página',

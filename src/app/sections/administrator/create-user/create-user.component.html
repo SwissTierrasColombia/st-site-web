@@ -24,264 +24,399 @@
                 </h3>
               </div>
               <div class="card-body">
-                <form #formulariologin="ngForm">
-                  <p class="text-muted">Ingrese los siguientes datos.</p>
-                  <app-input
-                    [id]="'firstName'"
-                    [icon]="'perm_identity'"
-                    [type]="'text'"
-                    [name]="'firstName'"
-                    [placeholder]="'Nombres'"
-                    [(inputModel)]="registerData.firstName"
-                    (change)="validfield()"
-                  >
-                  </app-input>
-                  <app-input
-                    [id]="'lastName'"
-                    [icon]="'list_alt'"
-                    [type]="'text'"
-                    [name]="'lastName'"
-                    [placeholder]="'Apellidos'"
-                    [(inputModel)]="registerData.lastName"
-                    (change)="validfield()"
-                  >
-                  </app-input>
-                  <app-input
-                    [id]="'username'"
-                    [icon]="'account_circle'"
-                    [type]="'text'"
-                    [name]="'username'"
-                    [placeholder]="'Nombre de usuario'"
-                    [(inputModel)]="registerData.username"
-                    (change)="validfield()"
-                  >
-                  </app-input>
-                  <app-input
-                    [id]="'email'"
-                    [icon]="'email'"
-                    [type]="'email'"
-                    [name]="'email'"
-                    [placeholder]="'Correo electrónico'"
-                    [(inputModel)]="registerData.email"
-                    (change)="validfield()"
-                  >
-                  </app-input>
-                  <app-input
-                    [id]="'password'"
-                    [icon]="'security'"
-                    [type]="'password'"
-                    [name]="'password'"
-                    [placeholder]="'Contraseña'"
-                    [(inputModel)]="registerData.password"
-                    (change)="validfield()"
-                  >
-                  </app-input>
-                  <app-input
-                    [id]="'confirmationPassword'"
-                    [icon]="'lock'"
-                    [type]="'password'"
-                    [name]="'confirmationPassword'"
-                    [placeholder]="'Confirmar contraseña'"
-                    [(inputModel)]="registerData.confirmationPassword"
-                    (change)="validfield()"
-                  >
-                  </app-input>
-                  <small
-                    *ngIf="roleConnect.id === 1"
-                    id="perfil"
-                    class="form-text text-muted mb-3"
-                  >
-                    Seleccione el rol que tendrá el usuario.
-                  </small>
-                  <fieldset
-                    class="form-group text-center"
-                    *ngIf="roleConnect.id === 1"
-                  >
+                <p class="text-muted">Ingrese los siguientes datos.</p>
+                <app-input
+                  [id]="'firstName'"
+                  [icon]="'perm_identity'"
+                  [type]="'text'"
+                  [name]="'firstName'"
+                  [placeholder]="'Nombres'"
+                  [(inputModel)]="registerData.firstName"
+                  (change)="validfield()"
+                >
+                </app-input>
+                <app-input
+                  [id]="'lastName'"
+                  [icon]="'list_alt'"
+                  [type]="'text'"
+                  [name]="'lastName'"
+                  [placeholder]="'Apellidos'"
+                  [(inputModel)]="registerData.lastName"
+                  (change)="validfield()"
+                >
+                </app-input>
+                <app-input
+                  [id]="'username'"
+                  [icon]="'account_circle'"
+                  [type]="'text'"
+                  [name]="'username'"
+                  [placeholder]="'Nombre de usuario'"
+                  [(inputModel)]="registerData.username"
+                  (change)="validfield()"
+                >
+                </app-input>
+                <app-input
+                  [id]="'email'"
+                  [icon]="'email'"
+                  [type]="'email'"
+                  [name]="'email'"
+                  [placeholder]="'Correo electrónico'"
+                  [(inputModel)]="registerData.email"
+                  (change)="validfield()"
+                >
+                </app-input>
+                <form [formGroup]="frmSignup" (submit)="submit()">
+                  <div class="form-group">
                     <label
-                      class="radio-inline col-12 col-sm-3"
-                      *ngFor="let item of registerData.state; let i = index"
-                    >
-                      <input
-                        (change)="validfield()"
-                        [(ngModel)]="selectROL"
-                        [value]="item.id"
-                        [id]="item.id"
-                        name="roles"
-                        type="radio"
-                      />
-                      {{ item.name }}
-                    </label>
-                  </fieldset>
-                  <fieldset
-                    class="form-group text-center"
-                    *ngIf="dataUserLogger.is_provider_director"
-                  >
+                      for="password"
+                      [ngClass]="
+                        frmSignup.controls['password'].invalid
+                          ? 'is-invalid'
+                          : ''
+                      "
+                    ></label>
+                    <input
+                      id="password"
+                      formControlName="password"
+                      type="password"
+                      class="form-control"
+                      [ngClass]="
+                        frmSignup.controls['password'].invalid
+                          ? 'is-invalid'
+                          : ''
+                      "
+                      placeholder="Contraseña"
+                      (change)="submit()"
+                    />
                     <label
-                      class="radio-inline col-12 col-sm-3"
-                      *ngFor="let item of registerData.state; let i = index"
+                      class="col"
+                      [ngClass]="
+                        frmSignup.controls['password'].hasError('required') ||
+                        frmSignup.controls['password'].hasError('minlength')
+                          ? 'text-danger'
+                          : 'text-success'
+                      "
                     >
-                      <input
-                        (change)="validfield()"
-                        [(ngModel)]="selectROL"
-                        [value]="item.id"
-                        [id]="item.id"
-                        name="roles"
-                        type="radio"
-                      />
-                      {{ item.name }}
+                      <i class="material-icons">{{
+                        frmSignup.controls["password"].hasError("required") ||
+                        frmSignup.controls["password"].hasError("minlength")
+                          ? "cancel"
+                          : "check_circle"
+                      }}</i>
+                      ¡Debe tener al menos 8 caracteres!
                     </label>
-                  </fieldset>
-                  <div class="mb-3" *ngIf="selectROL === 2">
-                    <div class="input-group" *ngIf="roleConnect.id === 1">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text" aria-required="true"
-                          >* Gestor</label
-                        >
-                      </div>
-                      <select
-                        (change)="getProfilesManager()"
-                        class="custom-select"
-                        name="managers"
-                        id="managers"
-                        [(ngModel)]="registerData.roleManager.managerId"
-                      >
-                        <option value="0" selected [disabled]="true">
-                          Seleccione entidad
-                        </option>
-                        <option
-                          [ngValue]="item.id"
-                          *ngFor="let item of managers"
-                        >
-                          {{ item.alias }}
-                        </option>
-                      </select>
-                    </div>
-                    <div
-                      class="input-group mt-2"
-                      *ngIf="dataUserLogger.is_manager_director"
+                    <label
+                      class="col"
+                      [ngClass]="
+                        frmSignup.controls['password'].hasError('required') ||
+                        frmSignup.controls['password'].hasError('hasNumber')
+                          ? 'text-danger'
+                          : 'text-success'
+                      "
                     >
-                      <div class="input-group-prepend">
-                        <label class="input-group-text" aria-required="true"
-                          >* Perfil</label
-                        >
-                      </div>
-                      <select
-                        (change)="validfield()"
-                        class="custom-select"
-                        name="managersprfile"
-                        id="managersprofile"
-                        [(ngModel)]="registerData.roleManager.profiles"
-                        multiple
-                      >
-                        <option
-                          [ngValue]="item.id"
-                          *ngFor="let item of profilesManagers"
-                        >
-                          {{ item.name }}
-                        </option>
-                      </select>
-                    </div>
+                      <i class="material-icons">{{
+                        frmSignup.controls["password"].hasError("required") ||
+                        frmSignup.controls["password"].hasError("hasNumber")
+                          ? "cancel"
+                          : "check_circle"
+                      }}</i>
+                      ¡Debe contener al menos 1 número!
+                    </label>
+                    <!-- <label
+                      class="col"
+                      [ngClass]="
+                        frmSignup.controls['password'].hasError('required') ||
+                        frmSignup.controls['password'].hasError(
+                          'hasCapitalCase'
+                        )
+                          ? 'text-danger'
+                          : 'text-success'
+                      "
+                    >
+                      <i class="material-icons">{{
+                        frmSignup.controls["password"].hasError("required") ||
+                        frmSignup.controls["password"].hasError(
+                          "hasCapitalCase"
+                        )
+                          ? "cancel"
+                          : "check_circle"
+                      }}</i>
+                      Must contain at least 1 in Capital Case!
+                    </label> -->
+                    <label
+                      class="col"
+                      [ngClass]="
+                        frmSignup.controls['password'].hasError('required') ||
+                        frmSignup.controls['password'].hasError('hasSmallCase')
+                          ? 'text-danger'
+                          : 'text-success'
+                      "
+                    >
+                      <i class="material-icons">{{
+                        frmSignup.controls["password"].hasError("required") ||
+                        frmSignup.controls["password"].hasError("hasSmallCase")
+                          ? "cancel"
+                          : "check_circle"
+                      }}</i>
+                      ¡Debe contener al menos 1 letra en minúscula!
+                    </label>
+                    <!-- <label
+                      class="col"
+                      [ngClass]="
+                        frmSignup.controls['password'].hasError('required') ||
+                        frmSignup.controls['password'].hasError(
+                          'hasSpecialCharacters'
+                        )
+                          ? 'text-danger'
+                          : 'text-success'
+                      "
+                    >
+                      <i class="material-icons">{{
+                        frmSignup.controls["password"].hasError("required") ||
+                        frmSignup.controls["password"].hasError(
+                          "hasSpecialCharacters"
+                        )
+                          ? "cancel"
+                          : "check_circle"
+                      }}</i>
+                      Must contain at least 1 Special Character!
+                    </label> -->
                   </div>
-                  <div class="mb-3" *ngIf="selectROL === 3">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text" aria-required="true"
-                          >* Operador</label
-                        >
-                      </div>
-                      <select
-                        (change)="validfield()"
-                        class="custom-select"
-                        name="operator"
-                        id="operator"
-                        [(ngModel)]="registerData.roleOperator.operatorId"
-                      >
-                        <option value="0" selected [disabled]="true">
-                          Seleccione entidad
-                        </option>
-                        <option
-                          [ngValue]="item.id"
-                          *ngFor="let item of operators"
-                        >
-                          {{ item.alias }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="mb-3" *ngIf="selectROL === 4">
-                    <div class="input-group" *ngIf="roleConnect.id === 1">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text" aria-required="true"
-                          >* Proveedor</label
-                        >
-                      </div>
-                      <select
-                        (change)="
-                          getProfilesProviders(
-                            registerData.roleProvider.providerId
-                          )
-                        "
-                        class="custom-select"
-                        name="providers"
-                        id="providers"
-                        [(ngModel)]="registerData.roleProvider.providerId"
-                      >
-                        <option value="0" selected [disabled]="true">
-                          Seleccione entidad
-                        </option>
-                        <option
-                          [ngValue]="item.id"
-                          *ngFor="let item of providers"
-                        >
-                          {{ item.alias }}
-                        </option>
-                      </select>
-                    </div>
-                    <div
-                      class="input-group mt-2"
-                      *ngIf="dataUserLogger.is_provider_director"
+                  <div class="form-group">
+                    <label
+                      for="confirmPassword"
+                      [ngClass]="
+                        frmSignup.controls['confirmPassword'].invalid
+                          ? 'text-danger'
+                          : ''
+                      "
+                    ></label>
+                    <input
+                      id="confirmPassword"
+                      formControlName="confirmPassword"
+                      type="password"
+                      class="form-control"
+                      [ngClass]="
+                        frmSignup.controls['confirmPassword'].invalid
+                          ? 'is-invalid'
+                          : ''
+                      "
+                      placeholder="Confirmar contraseña"
+                      (change)="submit()"
+                    />
+                    <label
+                      class="text-danger"
+                      *ngIf="
+                        frmSignup.controls['confirmPassword'].hasError(
+                          'required'
+                        )
+                      "
                     >
-                      <div class="input-group-prepend">
-                        <label class="input-group-text" aria-required="true"
-                          >* Areá de trabajo</label
-                        >
-                      </div>
-                      <select
-                        (change)="validfield()"
-                        class="custom-select"
-                        name="profilesProviders"
-                        id="profilesProviders"
-                        [(ngModel)]="registerData.roleProvider.profiles"
-                        multiple
-                      >
-                        <option
-                          [ngValue]="item.id"
-                          *ngFor="let item of profilesProviders"
-                        >
-                          {{ item.name }}
-                        </option>
-                      </select>
-                    </div>
-                    <small
-                      *ngIf="dataUserLogger.is_provider_director"
-                      id="entities"
-                      class="form-text text-muted"
-                      >Seleccione el área o áreas de trabajo al que se vinculará
-                      el usuario.</small
+                      ¡Se requiere contraseña!
+                    </label>
+                    <label
+                      class="text-danger"
+                      *ngIf="
+                        frmSignup.controls['confirmPassword'].hasError(
+                          'NoPassswordMatch'
+                        )
+                      "
                     >
-                  </div>
-                  <div class="mb-3" *ngIf="selectROL === 5">
-                    <small
-                      *ngIf="dataUserLogger.is_provider_director"
-                      id="entities"
-                      class="form-text text-muted"
-                    >
-                      <b>Generador PDF:</b> Este usuario revisará y agregará los
-                      archivos soporte, para cabida y linderos en el archivo
-                      XTF.
-                    </small>
+                      La contraseña no coincide
+                    </label>
                   </div>
                 </form>
+                <small
+                  *ngIf="roleConnect.id === 1"
+                  id="perfil"
+                  class="form-text text-muted mb-3"
+                >
+                  Seleccione el rol que tendrá el usuario.
+                </small>
+                <fieldset
+                  class="form-group text-center"
+                  *ngIf="roleConnect.id === 1"
+                >
+                  <label
+                    class="radio-inline col-12 col-sm-3"
+                    *ngFor="let item of registerData.state; let i = index"
+                  >
+                    <input
+                      (change)="validfield()"
+                      [(ngModel)]="selectROL"
+                      [value]="item.id"
+                      [id]="item.id"
+                      name="roles"
+                      type="radio"
+                    />
+                    {{ item.name }}
+                  </label>
+                </fieldset>
+                <fieldset
+                  class="form-group text-center"
+                  *ngIf="dataUserLogger.is_provider_director"
+                >
+                  <label
+                    class="radio-inline col-12 col-sm-3"
+                    *ngFor="let item of registerData.state; let i = index"
+                  >
+                    <input
+                      (change)="validfield()"
+                      [(ngModel)]="selectROL"
+                      [value]="item.id"
+                      [id]="item.id"
+                      name="roles"
+                      type="radio"
+                    />
+                    {{ item.name }}
+                  </label>
+                </fieldset>
+                <div class="mb-3" *ngIf="selectROL === 2">
+                  <div class="input-group" *ngIf="roleConnect.id === 1">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" aria-required="true"
+                        >* Gestor</label
+                      >
+                    </div>
+                    <select
+                      (change)="getProfilesManager()"
+                      class="custom-select"
+                      name="managers"
+                      id="managers"
+                      [(ngModel)]="registerData.roleManager.managerId"
+                    >
+                      <option value="0" selected [disabled]="true">
+                        Seleccione entidad
+                      </option>
+                      <option [ngValue]="item.id" *ngFor="let item of managers">
+                        {{ item.alias }}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    class="input-group mt-2"
+                    *ngIf="dataUserLogger.is_manager_director"
+                  >
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" aria-required="true"
+                        >* Perfil</label
+                      >
+                    </div>
+                    <select
+                      (change)="validfield()"
+                      class="custom-select"
+                      name="managersprfile"
+                      id="managersprofile"
+                      [(ngModel)]="registerData.roleManager.profiles"
+                      multiple
+                    >
+                      <option
+                        [ngValue]="item.id"
+                        *ngFor="let item of profilesManagers"
+                      >
+                        {{ item.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3" *ngIf="selectROL === 3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" aria-required="true"
+                        >* Operador</label
+                      >
+                    </div>
+                    <select
+                      (change)="validfield()"
+                      class="custom-select"
+                      name="operator"
+                      id="operator"
+                      [(ngModel)]="registerData.roleOperator.operatorId"
+                    >
+                      <option value="0" selected [disabled]="true">
+                        Seleccione entidad
+                      </option>
+                      <option
+                        [ngValue]="item.id"
+                        *ngFor="let item of operators"
+                      >
+                        {{ item.alias }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3" *ngIf="selectROL === 4">
+                  <div class="input-group" *ngIf="roleConnect.id === 1">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" aria-required="true"
+                        >* Proveedor</label
+                      >
+                    </div>
+                    <select
+                      (change)="
+                        getProfilesProviders(
+                          registerData.roleProvider.providerId
+                        )
+                      "
+                      class="custom-select"
+                      name="providers"
+                      id="providers"
+                      [(ngModel)]="registerData.roleProvider.providerId"
+                    >
+                      <option value="0" selected [disabled]="true">
+                        Seleccione entidad
+                      </option>
+                      <option
+                        [ngValue]="item.id"
+                        *ngFor="let item of providers"
+                      >
+                        {{ item.alias }}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    class="input-group mt-2"
+                    *ngIf="dataUserLogger.is_provider_director"
+                  >
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" aria-required="true"
+                        >* Areá de trabajo</label
+                      >
+                    </div>
+                    <select
+                      (change)="validfield()"
+                      class="custom-select"
+                      name="profilesProviders"
+                      id="profilesProviders"
+                      [(ngModel)]="registerData.roleProvider.profiles"
+                      multiple
+                    >
+                      <option
+                        [ngValue]="item.id"
+                        *ngFor="let item of profilesProviders"
+                      >
+                        {{ item.name }}
+                      </option>
+                    </select>
+                  </div>
+                  <small
+                    *ngIf="dataUserLogger.is_provider_director"
+                    id="entities"
+                    class="form-text text-muted"
+                    >Seleccione el área o áreas de trabajo al que se vinculará
+                    el usuario.</small
+                  >
+                </div>
+                <div class="mb-3" *ngIf="selectROL === 5">
+                  <small
+                    *ngIf="dataUserLogger.is_provider_director"
+                    id="entities"
+                    class="form-text text-muted"
+                  >
+                    <b>Generador PDF:</b> Este usuario revisará y agregará los
+                    archivos soporte, para cabida y linderos en el archivo XTF.
+                  </small>
+                </div>
               </div>
               <div class="card-footer text-muted text-center">
                 <button

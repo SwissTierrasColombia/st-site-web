@@ -1,3 +1,4 @@
+import { CustomValidators } from './../validators/custom-validators';
 import { Component, OnInit } from '@angular/core';
 import { ManagersService } from 'src/app/services/managers/managers.service';
 import { ProvidersService } from 'src/app/services/providers/providers.service';
@@ -8,12 +9,14 @@ import { OperatorsService } from 'src/app/services/operators/operators.service';
 import { JwtHelper } from 'src/app/shared/helpers/jwt';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.scss'],
 })
 export class CreateUserComponent implements OnInit {
+  public frmSignup: FormGroup;
   registerData: any;
   providers: any;
   managers: any;
@@ -31,8 +34,10 @@ export class CreateUserComponent implements OnInit {
     private serviceWorkSpace: WorkspacesService,
     private toast: ToastrService,
     private serviceOperators: OperatorsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private fb: FormBuilder
   ) {
+    this.frmSignup = this.createSignupForm();
     this.profilesManagers = [];
     this.profilesProviders = [];
     this.registerData = {
@@ -87,7 +92,58 @@ export class CreateUserComponent implements OnInit {
     this.roleConnect = {};
     this.botonRegistrar = true;
   }
-
+  createSignupForm(): FormGroup {
+    return this.fb.group(
+      {
+        email: [
+          null,
+          Validators.compose([Validators.email, Validators.required]),
+        ],
+        password: [
+          null,
+          Validators.compose([
+            Validators.required,
+            // check whether the entered password has a number
+            CustomValidators.patternValidator(/\d/, {
+              hasNumber: true,
+            }),
+            // check whether the entered password has upper case letter
+            // CustomValidators.patternValidator(/[A-Z]/, {
+            //   hasCapitalCase: true,
+            // }),
+            // check whether the entered password has a lower case letter
+            CustomValidators.patternValidator(/[a-z]/, {
+              hasSmallCase: true,
+            }),
+            // check whether the entered password has a special character
+            // CustomValidators.patternValidator(
+            //   /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,
+            //   {
+            //     hasSpecialCharacters: true,
+            //   }
+            // ),
+            Validators.minLength(8),
+          ]),
+        ],
+        confirmPassword: [null, Validators.compose([Validators.required])],
+      },
+      {
+        // check whether our password and confirm password match
+        validator: CustomValidators.passwordMatchValidator,
+      }
+    );
+  }
+  submit() {
+    if (this.frmSignup.value.password) {
+      this.registerData.password = this.frmSignup.value.password;
+      this.validfield();
+    }
+    if (this.frmSignup.value.confirmPassword) {
+      this.registerData.confirmationPassword =
+        this.frmSignup.value.confirmPassword;
+      this.validfield();
+    }
+  }
   ngOnInit() {
     this.dataUserLogger = JwtHelper.getUserPublicInformation();
     this.roleConnect = this.dataUserLogger.roles.find((elem) => {
@@ -273,6 +329,7 @@ export class CreateUserComponent implements OnInit {
           delete data.roleProvider;
         }
         this.serviceWorkSpace.CreateUser(data).subscribe((_) => {
+          this.frmSignup = this.createSignupForm();
           this.toast.success(
             'Se ha registrado el usuario ' +
               FuntionsGlobalsHelper.clone(this.registerData.username) +
