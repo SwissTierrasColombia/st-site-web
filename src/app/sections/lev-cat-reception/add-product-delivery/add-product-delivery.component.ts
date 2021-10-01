@@ -314,6 +314,7 @@ export class AddProductDeliveryComponent implements OnInit {
     item: FindProductsFromDeliveryInterface
   ) {
     this.isLoadAttachment = true;
+    this.isUpdateTableProduct = true;
     this.disabledButtonAttachment = true;
     if (StatesDeliveriesEnum.BORRADOR == this.dataDelivery.deliveryStatusId) {
       this.updateObservationProductDelivery(item);
@@ -346,12 +347,14 @@ export class AddProductDeliveryComponent implements OnInit {
           this.findAttachmentFromProduct(deliveryProductId);
           this.findProductsFromDelivery(this.deliveryId);
           this.isLoadAttachment = false;
+          this.isUpdateTableProduct = false;
         },
         (error) => {
           this.selectTypeAttachment = '0';
           this.findAttachmentFromProduct(deliveryProductId);
           this.findProductsFromDelivery(this.deliveryId);
           this.isLoadAttachment = false;
+          this.isUpdateTableProduct = false;
         }
       );
   }
@@ -412,10 +415,6 @@ export class AddProductDeliveryComponent implements OnInit {
   }
   changeUpdaateInfoProduct(item: FindProductsFromDeliveryInterface) {
     this.disabledButtonAttachment = true;
-    this.isUpdateTableProduct = true;
-    if (this.selectTypeAttachment == '0') {
-      this.isUpdateTableProduct = false;
-    }
     if (this.selectTypeAttachment != '0') {
       if (this.selectTypeAttachment === TypeAttachmentsProduct.DOCUMENTO) {
         if (
