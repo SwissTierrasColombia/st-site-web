@@ -359,13 +359,53 @@ export class LevCatReceptionService {
       { responseType: 'arraybuffer', observe: 'response' }
     );
   }
-    /**
+  /**
    * rejectedDelivery
    */
-     public rejectedDelivery(deliveryId: number) {
-      return this.httpClient.patch(
-        this.url + '/quality/v1/deliveries/' + deliveryId + '/status/rejected',
-        {}
+  public rejectedDelivery(deliveryId: number) {
+    return this.httpClient.patch(
+      this.url + '/quality/v1/deliveries/' + deliveryId + '/status/rejected',
+      {}
+    );
+  }
+  /**
+   * createTaskQualityAttachment
+   */
+  public createTaskQualityAttachment(
+    deliveryId: number,
+    deliveryProductId: number,
+    attachmentId: number
+  ) {
+    return this.httpClient.post(
+      this.url +
+        '/quality/v1/deliveries/' +
+        deliveryId +
+        '/products/' +
+        deliveryProductId +
+        '/attachments/' +
+        attachmentId +
+        '/start-quality',
+      {}
+    );
+  }
+    /**
+   * downloadReportQualityAttachment
+   */
+     public downloadReportQualityAttachment(
+      deliveryId: number,
+      deliveryProductId: number,
+      attachmentId: number
+    ) {
+      return this.httpClient.get(
+        this.url +
+          '/quality/v1/deliveries/' +
+          deliveryId +
+          '/products/' +
+          deliveryProductId +
+          '/attachments/' +
+          attachmentId +
+          '/report-download',
+        { responseType: 'arraybuffer', observe: 'response' }
       );
     }
 }

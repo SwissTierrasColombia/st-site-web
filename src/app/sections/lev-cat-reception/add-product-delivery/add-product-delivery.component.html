@@ -747,10 +747,52 @@
                                 <td>
                                   <span
                                     *ngIf="
+                                      attachments.data.status ===
+                                        statusAttachmentsXTF.ACCEPTED &&
+                                      attachments.type ==
+                                        typeAttachmentsProduct.XTFTitle
+                                    "
+                                    ngbTooltip="Crear tarea de calidad"
+                                    placement="top"
+                                    show-delay="500"
+                                    (click)="
+                                      createTaskQualityAttachment(
+                                        attachments.deliveryProductId,
+                                        attachments.attachmentId
+                                      )
+                                    "
+                                  >
+                                    <i class="material-icons cursor">
+                                      task_alt
+                                    </i>
+                                  </span>
+                                  <span
+                                    *ngIf="
+                                      attachments.data.status ===
+                                        statusAttachmentsXTF.FINALIZADO_CALIDAD &&
+                                      attachments.type ==
+                                        typeAttachmentsProduct.XTFTitle
+                                    "
+                                    ngbTooltip="Descargar reporte control de calidad"
+                                    placement="top"
+                                    show-delay="500"
+                                    (click)="
+                                      downloadReportQualityAttachment(
+                                        attachments.deliveryProductId,
+                                        attachments.attachmentId
+                                      )
+                                    "
+                                  >
+                                    <i class="material-icons cursor">
+                                      summarize
+                                    </i>
+                                  </span>
+                                  <span
+                                    *ngIf="
                                       attachments.type !=
                                       typeAttachmentsProduct.FTPTitle
                                     "
-                                    ngbTooltip="Descargar"
+                                    ngbTooltip="Descargar adjunto"
                                     placement="top"
                                     show-delay="500"
                                     (click)="

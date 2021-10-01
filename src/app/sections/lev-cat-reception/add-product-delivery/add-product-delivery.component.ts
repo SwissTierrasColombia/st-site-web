@@ -683,4 +683,53 @@ export class AddProductDeliveryComponent implements OnInit {
     );
     return value ? false : true;
   }
+  createTaskQualityAttachment(deliveryProductId: number, attachmentId: number) {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de enviar el archivo XTF a control de calidad?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Va a enviar una archivo XTF a control de calidad.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.levCatReceptionService
+            .createTaskQualityAttachment(
+              this.deliveryId,
+              deliveryProductId,
+              attachmentId
+            )
+            .subscribe((_) => {
+              this.toastr.success('Archivo XTF enviado correctamente.');
+            });
+        }
+      }
+    });
+  }
+  downloadReportQualityAttachment(
+    deliveryProductId: number,
+    attachmentId: number
+  ) {
+    this.levCatReceptionService
+      .downloadReportQualityAttachment(
+        this.deliveryId,
+        deliveryProductId,
+        attachmentId
+      )
+      .subscribe((data) => {
+        FuntionsGlobalsHelper.downloadFile(
+          data,
+          'archivo-' +
+            this.dataDelivery.code +
+            '-' +
+            this.dataDelivery.municipalityName +
+            '-' +
+            deliveryProductId +
+            '-' +
+            attachmentId
+        );
+      });
+  }
 }
