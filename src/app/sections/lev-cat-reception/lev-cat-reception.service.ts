@@ -359,4 +359,13 @@ export class LevCatReceptionService {
       { responseType: 'arraybuffer', observe: 'response' }
     );
   }
+    /**
+   * rejectedDelivery
+   */
+     public rejectedDelivery(deliveryId: number) {
+      return this.httpClient.patch(
+        this.url + '/quality/v1/deliveries/' + deliveryId + '/status/rejected',
+        {}
+      );
+    }
 }

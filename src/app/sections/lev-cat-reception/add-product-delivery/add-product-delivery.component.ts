@@ -585,6 +585,28 @@ export class AddProductDeliveryComponent implements OnInit {
       }
     });
   }
+  rejectedDelivery() {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de rechazar esta entrega?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Esta estrega será rechazada.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.levCatReceptionService
+            .rejectedDelivery(this.deliveryId)
+            .subscribe((_) => {
+              this.toastr.success('Entrega rechazada');
+              this.initPageServices();
+            });
+        }
+      }
+    });
+  }
   returnDeliveryToOperator() {
     this.optionModalRef = this.modalService.open(ModalComponent, {
       centered: true,

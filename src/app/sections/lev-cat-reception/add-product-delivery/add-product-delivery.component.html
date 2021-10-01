@@ -854,6 +854,19 @@
           Enviar a corrección
         </button>
       </div>
+      <div class="col-6 mt-4">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          *ngIf="
+            StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
+          "
+          (click)="rejectedDelivery()"
+          [disabled]="statusOnlyProduct1(StatesProductsEnum.PENDIENTE)"
+        >
+          Rechazar entrega
+        </button>
+      </div>
       <div class="col-12">
         <button
           type="button"
