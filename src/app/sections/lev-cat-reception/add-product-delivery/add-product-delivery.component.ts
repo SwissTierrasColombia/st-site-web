@@ -222,6 +222,7 @@ export class AddProductDeliveryComponent implements OnInit {
       .findAttachmentsFromDeliveryProduct(this.deliveryId, deliveryProductId)
       .subscribe((element) => {
         this.listAttachmentsDeliveryProduct = element;
+        console.log(this.listAttachmentsDeliveryProduct);
         this.document = null;
         this.dataFTP = {
           domain: '',

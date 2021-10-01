@@ -704,6 +704,32 @@
                                         {{ statusAttachmentsXTF.REJECTED_TEXT }}
                                       </span>
                                     </div>
+                                    <div
+                                      *ngIf="
+                                        attachments.data.status ===
+                                        statusAttachmentsXTF.EN_CONTROL_CALIDAD
+                                      "
+                                    >
+                                      <strong>Estado: </strong>
+                                      <span class="badge badge-warning">
+                                        {{
+                                          statusAttachmentsXTF.EN_CONTROL_CALIDAD_TEXT
+                                        }}
+                                      </span>
+                                    </div>
+                                    <div
+                                      *ngIf="
+                                        attachments.data.status ===
+                                        statusAttachmentsXTF.FINALIZADO_CALIDAD
+                                      "
+                                    >
+                                      <strong>Estado: </strong>
+                                      <span class="badge badge-primary">
+                                        {{
+                                          statusAttachmentsXTF.FINALIZADO_CALIDAD_TEXT
+                                        }}
+                                      </span>
+                                    </div>
                                   </div>
                                 </td>
                                 <td scope="row">
