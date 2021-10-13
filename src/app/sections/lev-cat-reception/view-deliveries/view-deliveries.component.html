@@ -71,7 +71,7 @@
       </select>
     </div>
   </div>
-  <div class="col-12 col-sm-12 mb-1">
+  <div class="col-12 mb-1" [ngClass]="isManager ? 'col-sm-6' : 'col-sm-12'">
     <app-input
       [title]="'* Código de Orden'"
       [id]="'codeOrder'"

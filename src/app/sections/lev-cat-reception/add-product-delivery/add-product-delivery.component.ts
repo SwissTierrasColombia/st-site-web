@@ -59,6 +59,8 @@ export class AddProductDeliveryComponent implements OnInit {
   isLoadAttachment: boolean = false;
   listTypeModel: selectInterface[] = [];
   modelVersionAttachment: string = '0';
+  isConnectManager: boolean = false;
+  isConnectOperator: boolean = false;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -105,6 +107,8 @@ export class AddProductDeliveryComponent implements OnInit {
       (item) => item.id === rolesEnum.operador
     );
     this.activedRoute.params.subscribe((params: Params) => {
+      this.isConnectManager = 'true' === params.isManager;
+      this.isConnectOperator = 'true' === params.isOperator;
       this.initPageServices(params);
       this.tab = params.tab;
     });
@@ -719,17 +723,7 @@ export class AddProductDeliveryComponent implements OnInit {
         attachmentId
       )
       .subscribe((data) => {
-        FuntionsGlobalsHelper.downloadFile(
-          data,
-          'archivo-' +
-            this.dataDelivery.code +
-            '-' +
-            this.dataDelivery.municipalityName +
-            '-' +
-            deliveryProductId +
-            '-' +
-            attachmentId
-        );
+        FuntionsGlobalsHelper.downloadFile(data, 'Reporte_Revision_XTF_BMP');
       });
   }
 }

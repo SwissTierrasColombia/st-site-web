@@ -63,7 +63,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     if (changes.isOperator) {
       this.isOperator = changes.isOperator.currentValue;
     }
-    if (changes.isOperator) {
+    if (changes.isManager) {
       this.isManager = changes.isManager.currentValue;
     }
     if (changes.tab.currentValue === 1) {
@@ -196,7 +196,13 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
     return FuntionsGlobalsHelper.formatDate(date);
   }
   viewDetailDelivery(item: ItemDelivery) {
-    this.router.navigate(['/calidad/' + this.tab + '/entrega/' + item.id]);
+    this.router.navigate([
+      '/calidad/' + this.tab + '/entrega/' + item.id,
+      {
+        isOperator: this.isOperator,
+        isManager: this.isManager,
+      },
+    ]);
   }
   openModalDeleteDelivery(item: ItemDelivery) {
     this.optionModalRef = this.modalService.open(ModalComponent, {

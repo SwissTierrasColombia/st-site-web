@@ -150,7 +150,7 @@
                 <td scope="row">
                   <span
                     [ngbTooltip]="
-                      !isOperator ||
+                      isConnectManager ||
                       StatesDeliveriesEnum.ACEPTADO ==
                         dataDelivery.deliveryStatusId
                         ? 'Ver detalle del producto'
@@ -170,9 +170,11 @@
                       "
                     >
                       {{
-                        !isOperator ||
+                        isConnectManager ||
                         StatesDeliveriesEnum.ACEPTADO ==
-                          dataDelivery.deliveryStatusId
+                          dataDelivery.deliveryStatusId ||
+                        StatesProductsEnum.ACEPTADO ==
+                          item.deliveryProductStatusId
                           ? "visibility"
                           : "edit"
                       }}
@@ -197,7 +199,7 @@
                   </span>
                   <span
                     *ngIf="
-                      !isOperator &&
+                      isConnectManager &&
                       StatesDeliveriesEnum.EN_REVISION ==
                         dataDelivery.deliveryStatusId &&
                       item.deliveryProductStatusId ==
@@ -216,7 +218,7 @@
                   </span>
                   <span
                     *ngIf="
-                      !isOperator &&
+                      isConnectManager &&
                       StatesDeliveriesEnum.EN_REVISION ==
                         dataDelivery.deliveryStatusId &&
                       item.deliveryProductStatusId ==
@@ -268,7 +270,7 @@
                     <div
                       class="modal-body text-center"
                       *ngIf="
-                        !isOperator &&
+                        isConnectManager &&
                         StatesDeliveriesEnum.EN_REVISION ==
                           dataDelivery.deliveryStatusId
                       "
@@ -297,7 +299,7 @@
                     <div
                       class="modal-footer"
                       *ngIf="
-                        !isOperator &&
+                        isConnectManager &&
                         StatesDeliveriesEnum.EN_REVISION ==
                           dataDelivery.deliveryStatusId
                       "
@@ -413,7 +415,9 @@
                           *ngIf="
                             isOperator &&
                             StatesDeliveriesEnum.ACEPTADO !=
-                              dataDelivery.deliveryStatusId
+                              dataDelivery.deliveryStatusId &&
+                            StatesProductsEnum.ACEPTADO !=
+                              item.deliveryProductStatusId
                           "
                         >
                           <app-select
@@ -747,6 +751,9 @@
                                 <td>
                                   <span
                                     *ngIf="
+                                      StatesDeliveriesEnum.EN_REVISION ==
+                                        dataDelivery.deliveryStatusId &&
+                                      isConnectManager &&
                                       attachments.data.status ===
                                         statusAttachmentsXTF.ACCEPTED &&
                                       attachments.type ==
