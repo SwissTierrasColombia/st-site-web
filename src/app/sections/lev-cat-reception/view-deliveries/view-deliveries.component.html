@@ -12,7 +12,7 @@
       (change)="changePage()"
     ></app-select>
   </div>
-  <div class="col-12 col-sm-6 mb-1" *ngIf="!isOperator">
+  <div class="col-12 col-sm-6 mb-1" *ngIf="isManager">
     <div class="input-group">
       <div class="input-group-prepend">
         <label class="input-group-text" aria-required="true"
@@ -33,7 +33,7 @@
       </select>
     </div>
   </div>
-  <div class="col-12 col-sm-6 mb-1" *ngIf="!isOperator">
+  <div class="col-12 col-sm-6 mb-1" *ngIf="isManager">
     <div class="input-group">
       <div class="input-group-prepend">
         <label class="input-group-text">* Municipio</label>
@@ -52,7 +52,7 @@
       </select>
     </div>
   </div>
-  <div class="col-12 col-sm-6 mb-1" *ngIf="!isOperator">
+  <div class="col-12 col-sm-6 mb-1" *ngIf="isManager">
     <div class="input-group">
       <div class="input-group-prepend">
         <label class="input-group-text" aria-required="true">* Operador</label>
@@ -70,6 +70,17 @@
         </option>
       </select>
     </div>
+  </div>
+  <div class="col-12 col-sm-12 mb-1">
+    <app-input
+      [title]="'* Código de Orden'"
+      [id]="'codeOrder'"
+      [name]="'codeOrder'"
+      [type]="'text'"
+      [placeholder]="'Digite el Código de Orden'"
+      [(inputModel)]="selectOrder"
+      (change)="filterDelivery()"
+    ></app-input>
   </div>
   <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
     <ngb-pagination
@@ -94,7 +105,7 @@
             <th>Departamento</th>
             <th>Municipio</th>
             <th *ngIf="isOperator">Gestor</th>
-            <th *ngIf="!isOperator">Operador</th>
+            <th *ngIf="isManager">Operador</th>
             <th>Observación</th>
             <th>Estado</th>
             <th>Fecha</th>
@@ -107,7 +118,7 @@
             <td scope="row">{{ item.departmentName }}</td>
             <td scope="row">{{ item.municipalityName }}</td>
             <td scope="row" *ngIf="isOperator">{{ item.managerName }}</td>
-            <td scope="row" *ngIf="!isOperator">{{ item.operatorName }}</td>
+            <td scope="row" *ngIf="isManager">{{ item.operatorName }}</td>
             <td scope="row">
               <app-observation
                 [name]="'observation' + index"

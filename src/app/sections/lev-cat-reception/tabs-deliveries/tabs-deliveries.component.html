@@ -18,7 +18,7 @@
           <i class="material-icons"> toc </i>Entregas en Borrador
         </a>
       </li>
-      <li class="nav-item" *ngIf="isManager">
+      <li class="nav-item" *ngIf="isManager || isOperator">
         <a
           class="nav-link"
           [ngClass]="{ active: tab === 2 }"
@@ -27,7 +27,8 @@
           (click)="tab = 2"
           aria-controls="home"
         >
-          <i class="material-icons"> pending_actions </i>Entregas Recibidas
+          <i class="material-icons"> pending_actions </i>
+          {{ isManager ? "Entregas Recibidas" : "Entregas Enviadas" }}
         </a>
       </li>
       <li class="nav-item" *ngIf="isManager">
@@ -85,10 +86,14 @@
         class="tab-pane"
         [ngClass]="{ active: tab === 2 }"
         role="tabpanel"
-        *ngIf="isManager"
+        *ngIf="isManager || isOperator"
       >
         <br />
-        <app-view-deliveries [tab]="tab"></app-view-deliveries>
+        <app-view-deliveries
+          [isManager]="isManager"
+          [isOperator]="isOperator"
+          [tab]="tab"
+        ></app-view-deliveries>
       </div>
       <div
         class="tab-pane"
@@ -97,7 +102,10 @@
         *ngIf="isManager"
       >
         <br />
-        <app-view-deliveries [tab]="tab"></app-view-deliveries>
+        <app-view-deliveries
+          [isManager]="isManager"
+          [tab]="tab"
+        ></app-view-deliveries>
       </div>
       <div
         class="tab-pane"
@@ -121,6 +129,7 @@
         <app-view-deliveries
           [tab]="tab"
           [isOperator]="isOperator"
+          [isManager]="isManager"
         ></app-view-deliveries>
       </div>
     </div>

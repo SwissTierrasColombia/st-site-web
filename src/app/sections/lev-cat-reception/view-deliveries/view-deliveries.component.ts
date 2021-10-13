@@ -32,6 +32,7 @@ import { OperatorByManager } from 'src/app/shared/models/operator-by-manager.int
 export class ViewDeliveriesComponent implements OnInit, OnChanges {
   @Input() tab: number;
   @Input() isOperator: boolean = false;
+  @Input() isManager: boolean = false;
   findDeliveries: FindDeliveriesInterface;
   itemsDelivery: ItemDelivery[] = [];
   dataWorkspacesByOperator: GetWorkspacesByOperatorInterface[] = [];
@@ -50,6 +51,7 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
   operators: OperatorByManager[] = [];
   selectOperatorId: string = '0';
   selectMunicipalityCode: string;
+  selectOrder: string = '';
   constructor(
     private workspacesService: WorkspacesService,
     private levCatReceptionService: LevCatReceptionService,
@@ -60,6 +62,9 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isOperator) {
       this.isOperator = changes.isOperator.currentValue;
+    }
+    if (changes.isOperator) {
+      this.isManager = changes.isManager.currentValue;
     }
     if (changes.tab.currentValue === 1) {
       this.status = StatesDeliveriesEnum.BORRADOR;
@@ -153,7 +158,8 @@ export class ViewDeliveriesComponent implements OnInit, OnChanges {
           ? this.selectMunicipalityCode
           : undefined,
         undefined,
-        this.selectOperatorId != '0' ? this.selectOperatorId : undefined
+        this.selectOperatorId != '0' ? this.selectOperatorId : undefined,
+        this.selectOrder != '' ? this.selectOrder : undefined
       )
       .subscribe((response) => {
         this.findDeliveries = response;
