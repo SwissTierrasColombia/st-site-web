@@ -11,10 +11,14 @@ export class ModalComponent implements OnInit {
   @Input() description: String;
   @Input() option: boolean = false;
   @Input() disableButtonClose: boolean = false;
+  @Input() field: boolean = false;
+  @Input() titleObservation: string;
+  @Input() idObservation: string;
+  @Input() observations: string;
   constructor(public activeModal: NgbActiveModal) {}
   ngOnInit(): void {}
   closeModal(value: boolean) {
     this.option = value;
-    this.activeModal.close({ option: this.option });
+    this.activeModal.close({ option: this.option, field: this.observations });
   }
 }

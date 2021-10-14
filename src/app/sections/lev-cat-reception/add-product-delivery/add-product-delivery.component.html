@@ -56,6 +56,20 @@
         ></app-observation>
       </div>
       <div
+        class="col-12 mb-1"
+        *ngIf="
+          dataDelivery.deliveryStatusId == StatesDeliveriesEnum.ACEPTADO ||
+          dataDelivery.deliveryStatusId == StatesDeliveriesEnum.RECHAZADO
+        "
+      >
+        <app-observation
+          [title]="'Comentarios finales'"
+          [id]="'observationsFinal'"
+          [disabled]="true"
+          [(inputModel)]="dataDelivery.finalComments"
+        ></app-observation>
+      </div>
+      <div
         class="col-12 col-md-8 mb-1"
         *ngIf="
           dataProductsFromManager.length > 0 &&
@@ -680,6 +694,9 @@
                                       <br />
                                       <strong>Versión modelo: </strong
                                       >{{ attachments.data.version }}
+                                      <br />
+                                      <strong>Fecha: </strong>
+                                      {{ attachments.deliveryStatusDate }}
                                     </div>
                                     <div
                                       *ngIf="
@@ -696,6 +713,9 @@
                                       <br />
                                       <strong>Versión modelo: </strong
                                       >{{ attachments.data.version }}
+                                      <br />
+                                      <strong>Fecha: </strong>
+                                      {{ attachments.deliveryStatusDate }}
                                     </div>
                                     <div
                                       *ngIf="

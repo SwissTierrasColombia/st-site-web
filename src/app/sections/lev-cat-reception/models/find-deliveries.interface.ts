@@ -21,4 +21,5 @@ export interface ItemDelivery {
   municipalityName: string;
   managerName: string;
   operatorName: string;
+  finalComments: string;
 }

@@ -89,6 +89,7 @@ export class AddProductDeliveryComponent implements OnInit {
       municipalityName: '',
       managerName: '',
       operatorName: '',
+      finalComments: '',
     };
     this.listTypeModel = [
       {
@@ -577,15 +578,23 @@ export class AddProductDeliveryComponent implements OnInit {
       '¿Está seguro de aceptar esta entrega?';
     this.optionModalRef.componentInstance.description =
       'Advertencia: Esta estrega será recibida y aceptada por el Gestor.';
+    this.optionModalRef.componentInstance.field = true;
+    this.optionModalRef.componentInstance.titleObservation = '* Justificación';
+    this.optionModalRef.componentInstance.idObservation = 'justification';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.levCatReceptionService
-            .acceptDelivery(this.deliveryId)
-            .subscribe((_) => {
-              this.toastr.success('Entrega aceptada');
-              this.initPageServices();
-            });
+          if (result.field) {
+            let data = {
+              justification: result.field,
+            };
+            this.levCatReceptionService
+              .acceptDelivery(this.deliveryId, data)
+              .subscribe((_) => {
+                this.toastr.success('Entrega aceptada');
+                this.initPageServices();
+              });
+          }
         }
       }
     });
@@ -599,15 +608,24 @@ export class AddProductDeliveryComponent implements OnInit {
       '¿Está seguro de rechazar esta entrega?';
     this.optionModalRef.componentInstance.description =
       'Advertencia: Esta estrega será rechazada.';
+    this.optionModalRef.componentInstance.field = true;
+    this.optionModalRef.componentInstance.titleObservation = '* Justificación';
+    this.optionModalRef.componentInstance.idObservation = 'justification';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.levCatReceptionService
-            .rejectedDelivery(this.deliveryId)
-            .subscribe((_) => {
-              this.toastr.success('Entrega rechazada');
-              this.initPageServices();
-            });
+          if (result.field) {
+            let data = {
+              justification: result.field,
+            };
+            console.log(data);
+            this.levCatReceptionService
+              .rejectedDelivery(this.deliveryId, data)
+              .subscribe((_) => {
+                this.toastr.success('Entrega rechazada');
+                this.initPageServices();
+              });
+          }
         }
       }
     });

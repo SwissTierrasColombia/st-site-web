@@ -311,10 +311,10 @@ export class LevCatReceptionService {
   /**
    * acceptDelivery
    */
-  public acceptDelivery(deliveryId: number) {
+  public acceptDelivery(deliveryId: number, data: object) {
     return this.httpClient.patch(
       this.url + '/quality/v1/deliveries/' + deliveryId + '/status/accepted',
-      {}
+      data
     );
   }
   /**
@@ -362,10 +362,10 @@ export class LevCatReceptionService {
   /**
    * rejectedDelivery
    */
-  public rejectedDelivery(deliveryId: number) {
+  public rejectedDelivery(deliveryId: number, data: object) {
     return this.httpClient.patch(
       this.url + '/quality/v1/deliveries/' + deliveryId + '/status/rejected',
-      {}
+      data
     );
   }
   /**
@@ -388,24 +388,24 @@ export class LevCatReceptionService {
       {}
     );
   }
-    /**
+  /**
    * downloadReportQualityAttachment
    */
-     public downloadReportQualityAttachment(
-      deliveryId: number,
-      deliveryProductId: number,
-      attachmentId: number
-    ) {
-      return this.httpClient.get(
-        this.url +
-          '/quality/v1/deliveries/' +
-          deliveryId +
-          '/products/' +
-          deliveryProductId +
-          '/attachments/' +
-          attachmentId +
-          '/report-download',
-        { responseType: 'arraybuffer', observe: 'response' }
-      );
-    }
+  public downloadReportQualityAttachment(
+    deliveryId: number,
+    deliveryProductId: number,
+    attachmentId: number
+  ) {
+    return this.httpClient.get(
+      this.url +
+        '/quality/v1/deliveries/' +
+        deliveryId +
+        '/products/' +
+        deliveryProductId +
+        '/attachments/' +
+        attachmentId +
+        '/report-download',
+      { responseType: 'arraybuffer', observe: 'response' }
+    );
+  }
 }

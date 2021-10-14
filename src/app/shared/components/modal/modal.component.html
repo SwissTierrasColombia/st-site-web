@@ -16,6 +16,13 @@
   <h5 class="alert alert-warning text-center">
     <span [innerHTML]="description"></span>
   </h5>
+  <div *ngIf="field">
+    <app-observation
+      [title]="titleObservation"
+      [id]="idObservation"
+      [(inputModel)]="observations"
+    ></app-observation>
+  </div>
 </div>
 <div class="modal-footer">
   <div class="col-6">
