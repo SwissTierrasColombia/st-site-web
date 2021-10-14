@@ -757,7 +757,8 @@
                                       attachments.data.status ===
                                         statusAttachmentsXTF.ACCEPTED &&
                                       attachments.type ==
-                                        typeAttachmentsProduct.XTFTitle
+                                        typeAttachmentsProduct.XTFTitle &&
+                                      isEnabledControlQuality
                                     "
                                     ngbTooltip="Crear tarea de calidad"
                                     placement="top"
@@ -897,7 +898,10 @@
       type="button"
       ngbAutofocus
       class="btn btn-dark btn-block"
-      *ngIf="StatesDeliveriesEnum.ENTREGADO == dataDelivery.deliveryStatusId"
+      *ngIf="
+        StatesDeliveriesEnum.ENTREGADO == dataDelivery.deliveryStatusId &&
+        isConnectManager
+      "
       (click)="startReviewManager()"
     >
       Iniciar revisión
@@ -911,7 +915,12 @@
             StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
           "
           (click)="acceptDelivery()"
-          [disabled]="statusOnlyProduct1(StatesProductsEnum.PENDIENTE)"
+          [disabled]="
+            statusOnlyProduct1(
+              StatesProductsEnum.PENDIENTE,
+              StatesProductsEnum.RECHAZADO
+            )
+          "
         >
           Aceptar entrega
         </button>
@@ -937,7 +946,7 @@
             StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
           "
           (click)="rejectedDelivery()"
-          [disabled]="statusOnlyProduct1(StatesProductsEnum.PENDIENTE)"
+          [disabled]="statusOnlyProduct3(StatesProductsEnum.ACEPTADO)"
         >
           Rechazar entrega
         </button>

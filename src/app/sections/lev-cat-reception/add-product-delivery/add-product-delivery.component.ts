@@ -61,6 +61,7 @@ export class AddProductDeliveryComponent implements OnInit {
   modelVersionAttachment: string = '0';
   isConnectManager: boolean = false;
   isConnectOperator: boolean = false;
+  isEnabledControlQuality: boolean = true;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -226,7 +227,6 @@ export class AddProductDeliveryComponent implements OnInit {
       .findAttachmentsFromDeliveryProduct(this.deliveryId, deliveryProductId)
       .subscribe((element) => {
         this.listAttachmentsDeliveryProduct = element;
-        console.log(this.listAttachmentsDeliveryProduct);
         this.document = null;
         this.dataFTP = {
           domain: '',
@@ -675,10 +675,16 @@ export class AddProductDeliveryComponent implements OnInit {
         );
       });
   }
-  statusOnlyProduct1(status: number): boolean {
+  statusOnlyProduct1(status: number, status2: number): boolean {
     let value = this.listProductsFromDelivery.find(
       (element) => element.deliveryProductStatusId === status
     );
+    let value2 = this.listProductsFromDelivery.filter(
+      (element) => element.deliveryProductStatusId === status2
+    );
+    if (value2.length === this.listProductsFromDelivery.length) {
+      return true;
+    }
     return value ? true : false;
   }
   statusOnlyProduct2(status: number): boolean {
@@ -707,6 +713,7 @@ export class AddProductDeliveryComponent implements OnInit {
             )
             .subscribe((_) => {
               this.toastr.success('Archivo XTF enviado correctamente.');
+              this.isEnabledControlQuality = false;
             });
         }
       }
@@ -725,5 +732,11 @@ export class AddProductDeliveryComponent implements OnInit {
       .subscribe((data) => {
         FuntionsGlobalsHelper.downloadFile(data, 'Reporte_Revision_XTF_BMP');
       });
+  }
+  statusOnlyProduct3(status: number): boolean {
+    let value = this.listProductsFromDelivery.filter(
+      (element) => element.deliveryProductStatusId === status
+    );
+    return value.length === this.listProductsFromDelivery.length ? true : false;
   }
 }

@@ -47,8 +47,6 @@ export class AtendidaComponent implements OnInit {
         .getAttendedRequestByProvider()
         .subscribe((data) => {
           this.dataRequestPending = data;
-          console.log('this.dataRequestPending: ', this.dataRequestPending);
-
           resolve(data);
         });
     });
@@ -60,8 +58,6 @@ export class AtendidaComponent implements OnInit {
       //     }
       //   }
       // );
-      console.log('this.dataRequestPending: ', this.dataRequestPending);
-
       this.suppliesRequested = this.clone(
         this.dataRequestPending[0].suppliesRequested
       );
