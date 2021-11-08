@@ -865,4 +865,13 @@ export class WorkspacesService {
       this.url + '/workspaces/v1/managers/operators'
     );
   }
+  /**
+   * configureMap
+   */
+  public configureMap(integrationId: number) {
+    return this.httpClient.put(
+      `${this.url}/workspaces/v1/integrations/${integrationId}/configure-view`,
+      {}
+    );
+  }
 }

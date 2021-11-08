@@ -152,12 +152,7 @@
                   >
                     <!-- <strong>Modelo {{item.modelVersion}}</strong> -->
                     <strong>Submodelo Insumos V1.0</strong>
-                    <div
-                      *ngIf="
-                        item.valid !== null &&
-                        !item.valid
-                      "
-                    >
+                    <div *ngIf="item.valid !== null && !item.valid">
                       <span class="badge badge-warning">
                         Validado con errores
                       </span>
@@ -315,6 +310,45 @@
                   >
                     <small><u> Ver log </u></small>
                   </div>
+                  <div
+                    *ngIf="
+                      !item.urlMap &&
+                      item.integrationState.name === 'PRODUCTO GENERADO'
+                    "
+                  >
+                    <span
+                      ngbTooltip="Generar mapa"
+                      placement="top"
+                      show-delay="500"
+                    >
+                      <i
+                        class="material-icons cursor ml-4"
+                        (click)="generateMap(item.id)"
+                      >
+                        layers
+                      </i>
+                    </span>
+                  </div>
+                  <div
+                    *ngIf="
+                      item.urlMap &&
+                      item.integrationState.name === 'PRODUCTO GENERADO'
+                    "
+                  >
+                    <span
+                      ngbTooltip="Ver mapa"
+                      placement="top"
+                      show-delay="500"
+                    >
+                      <i
+                        class="material-icons cursor ml-4"
+                        (click)="openMap(item.urlMap)"
+                      >
+                        map
+                      </i>
+                    </span>
+                  </div>
+                  <!-- <pre>{{ item | json }}</pre> -->
                 </td>
               </tr>
             </tbody>
@@ -635,8 +669,8 @@
   </div>
   <div class="modal-body">
     <h5 class="alert alert-warning text-center">
-      Advertencia: Ha escogido un XTF Validado con errores, esta
-      integración puede fallar.
+      Advertencia: Ha escogido un XTF Validado con errores, esta integración
+      puede fallar.
     </h5>
   </div>
   <div class="modal-footer">

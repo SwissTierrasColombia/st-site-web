@@ -1,11 +1,13 @@
+import { environment } from 'src/environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ToastrService } from 'ngx-toastr';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ViewportScroller } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SuppliesService } from 'src/app/services/supplies/supplies.service';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-integracion',
@@ -45,6 +47,8 @@ export class IntegracionComponent implements OnInit {
   SelectIntegrationPossible: any;
   municipalityCode: string;
   errorXTF: string;
+  optionModalRef: NgbModalRef;
+
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private toastr: ToastrService,
@@ -413,5 +417,37 @@ export class IntegracionComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+  generateMap(integrationId: number) {
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      '¿Está seguro de generar el mapa?';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: Va a generar el mapa del producto generado.';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.serviceWorkspaces
+            .configureMap(integrationId)
+            .subscribe((element) => {
+              console.log(element);
+              this.toastr.success('Se a generado el mapa correctamente.');
+            });
+        }
+      }
+    });
+  }
+  openMap(urlMap: string) {
+    let win = window.open();
+    win.localStorage.getItem(environment.nameTokenSession);
+    let url = `${environment.apiBaseUrl}/mapstore/${urlMap}`;
+    win.document.write(
+      `<iframe style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" src='${url}' frameborder="0" allowfullscreen>
+      <p>Tu navegador no soporta esta funcionalidad</p>
+      </iframe>`
+    );
   }
 }
