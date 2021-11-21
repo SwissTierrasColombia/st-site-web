@@ -874,4 +874,10 @@ export class WorkspacesService {
       {}
     );
   }
+  /**
+   * viewMap
+   */
+  public viewMap(urlMap: string) {
+    return this.httpClient.get(`${this.url}/mapstore/${urlMap}`);
+  }
 }

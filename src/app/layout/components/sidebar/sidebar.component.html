@@ -341,7 +341,7 @@
               <span class="ml-3">Usuarios</span>
             </a>
           </li>
-          <li *ngIf="!this.user.is_manager_director">
+          <li>
             <a
               [routerLink]="['/administrador/crear-usuario']"
               (click)="isCollapsed(listMenu.administrador)"

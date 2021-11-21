@@ -450,4 +450,18 @@ export class IntegracionComponent implements OnInit {
       </iframe>`
     );
   }
+  // openMap(urlMap: string) {
+  //   let win = window.open();
+  //   this.serviceWorkspaces.viewMap(urlMap).subscribe((element) => {
+  //     let token = localStorage.getItem(environment.nameTokenSession);
+  //     win.localStorage.setItem(environment.nameTokenSession, token);
+  //     win.document.write(
+  //       `<iframe
+  //       style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"
+  //        src='${element}' frameborder="0" allowfullscreen sandbox>
+  //       <p>Tu navegador no soporta esta funcionalidad</p>
+  //       </iframe>`
+  //     );
+  //   });
+  // }
 }
