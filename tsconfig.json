@@ -12,6 +12,8 @@
     },
     {
       "path": "./tsconfig.spec.json"
-    }
-  ]
+    },
+  ],
+  "emitDecoratorMetadata": true,
+  "experimentalDecorators": true,
 }
