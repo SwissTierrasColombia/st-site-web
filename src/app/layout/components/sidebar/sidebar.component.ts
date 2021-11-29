@@ -45,6 +45,7 @@ export class SidebarComponent implements OnInit {
       insumos: 'insumos',
       quality: 'quality',
       administrador: 'administrador',
+      sinic: 'sinic'
     };
     this.allroles = {};
     this.roleAdmin = {

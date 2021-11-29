@@ -1,22 +1,16 @@
-<nav
-  class="sidebar"
-  [ngClass]="{ sidebarPushRight: isActive, collapsed: collapsed }"
->
+<nav class="sidebar" [ngClass]="{ sidebarPushRight: isActive, collapsed: collapsed }">
   <div class="list-group">
     <a routerLink="" class="list-group-item">
       <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
       <span>Página Principal</span>
     </a>
-    <div
-      class="nested-menu"
-      *ngIf="
+    <div class="nested-menu" *ngIf="
         roleAdmin
           ? roleAdmin.id
           : 0 === allroles.administrador || rolegestor
           ? rolegestor.id
           : 0 === allroles.gestor
-      "
-    >
+      ">
       <a class="list-group-item" (click)="addExpandClass(listMenu.gestion)">
         <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>Gestión de Municipio</span>
@@ -24,53 +18,33 @@
       <li class="nested" [class.expand]="showMenu === listMenu.gestion">
         <ul class="submenu">
           <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador">
-            <a
-              href=""
-              [routerLink]="['/gestion/workspace']"
-              (click)="isCollapsed(listMenu.gestion)"
-            >
+            <a href="" [routerLink]="['/gestion/workspace']" (click)="isCollapsed(listMenu.gestion)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Asignación</span>
             </a>
           </li>
           <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador">
-            <a
-              href=""
-              [routerLink]="['/gestion/workspace/active']"
-              (click)="isCollapsed(listMenu.gestion)"
-            >
+            <a href="" [routerLink]="['/gestion/workspace/active']" (click)="isCollapsed(listMenu.gestion)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Búsqueda de</span><br />
               <span class="ml-4">municipios</span>
             </a>
           </li>
           <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador">
-            <a
-              href=""
-              [routerLink]="['/gestion/workspace/delivery']"
-              (click)="isCollapsed(listMenu.gestion)"
-            >
+            <a href="" [routerLink]="['/gestion/workspace/delivery']" (click)="isCollapsed(listMenu.gestion)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Entrega de</span><br />
               <span class="ml-4">información</span>
             </a>
           </li>
           <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador">
-            <a
-              href=""
-              [routerLink]="['/gestion/workspace/refuse']"
-              (click)="isCollapsed(listMenu.gestion)"
-            >
+            <a href="" [routerLink]="['/gestion/workspace/refuse']" (click)="isCollapsed(listMenu.gestion)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Desasignar</span>
             </a>
           </li>
           <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor">
-            <a
-              href=""
-              [routerLink]="['/gestion/workspace/asignado']"
-              (click)="isCollapsed(listMenu.gestion)"
-            >
+            <a href="" [routerLink]="['/gestion/workspace/asignado']" (click)="isCollapsed(listMenu.gestion)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Búsqueda de</span><br />
               <span class="ml-4">municipios</span>
@@ -81,31 +55,31 @@
     </div>
 
     <!-- START SINIC -->
-    <div
-      class="nested-menu"
-      *ngIf="
+    <div class="nested-menu" *ngIf="
         roleAdmin
           ? roleAdmin.id
           : 0 === allroles.administrador || rolegestor
           ? rolegestor.id
           : 0 === allroles.gestor
-      "
-    >
-      <a class="list-group-item" (click)="addExpandClass(listMenu.gestion)">
+      ">
+      <a class="list-group-item" (click)="addExpandClass(listMenu.sinic)">
         <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>SINIC</span>
       </a>
-      <li class="nested" [class.expand]="showMenu === listMenu.gestion">
+      <li class="nested" [class.expand]="showMenu === listMenu.sinic">
         <ul class="submenu">
           <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor">
-            <a
-              href=""
-              [routerLink]="['/sinic/crear-entrega']"
-              (click)="isCollapsed(listMenu.gestion)"
-            >
+            <a href="" [routerLink]="['/sinic/crear-entrega']" (click)="isCollapsed(listMenu.sinic)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Crear</span><br />
               <span class="ml-4">entrega</span>
+            </a>
+          </li>
+          <li>
+            <a href="" [routerLink]="['/sinic/listar-entregas/0']" (click)="isCollapsed(listMenu.sinic)">
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Búsqueda</span><br />
+              <span class="ml-4">de Entregas</span>
             </a>
           </li>
         </ul>
@@ -113,9 +87,7 @@
     </div>
     <!-- END SINIC -->
 
-    <div
-      class="nested-menu"
-      *ngIf="
+    <div class="nested-menu" *ngIf="
         rolegestor
           ? rolegestor.id
           : 0 === allroles.gestor || roleproveedor
@@ -123,8 +95,7 @@
           : 0 === allroles.proveedor || roleoperador
           ? roleoperador.id
           : 0 === allroles.operador
-      "
-    >
+      ">
       <a class="list-group-item" (click)="addExpandClass(listMenu.insumos)">
         <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>Insumos</span>
@@ -132,106 +103,72 @@
       <li class="nested" [class.expand]="showMenu === listMenu.insumos">
         <ul class="submenu">
           <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor">
-            <a
-              [routerLink]="['/insumos/solicitud']"
-              (click)="isCollapsed(listMenu.insumos)"
-            >
+            <a [routerLink]="['/insumos/solicitud']" (click)="isCollapsed(listMenu.insumos)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Solicitud</span>
             </a>
           </li>
           <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor">
-            <a
-              href=""
-              [routerLink]="['/insumos/buscar-solicitud']"
-              (click)="isCollapsed(listMenu.insumos)"
-            >
+            <a href="" [routerLink]="['/insumos/buscar-solicitud']" (click)="isCollapsed(listMenu.insumos)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Búsqueda</span><br />
               <span class="ml-4">de Solicitudes</span>
             </a>
           </li>
           <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor">
-            <a
-              [routerLink]="['/insumos/integracion']"
-              (click)="isCollapsed(listMenu.insumos)"
-            >
+            <a [routerLink]="['/insumos/integracion']" (click)="isCollapsed(listMenu.insumos)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Integración</span>
             </a>
           </li>
           <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor">
-            <a
-              href=""
-              [routerLink]="['/insumos/buscar']"
-              (click)="isCollapsed(listMenu.insumos)"
-            >
+            <a href="" [routerLink]="['/insumos/buscar']" (click)="isCollapsed(listMenu.insumos)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Búsqueda</span><br />
               <span class="ml-4">de Insumos</span>
             </a>
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               (roleproveedor
                 ? roleproveedor.id && user.is_provider_director === false
                 : 0 === allroles.proveedor) && !this.delegate
-            "
-          >
-            <a
-              [routerLink]="['/insumos/solicitudes/pendientes']"
-              (click)="isCollapsed(listMenu.insumos)"
-            >
+            ">
+            <a [routerLink]="['/insumos/solicitudes/pendientes']" (click)="isCollapsed(listMenu.insumos)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Solicitudes</span><br />
               <span class="ml-4">Pendientes</span>
             </a>
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               (roleproveedor
                 ? roleproveedor.id && user.is_provider_director === false
                 : 0 === allroles.proveedor) && this.delegate
-            "
-          >
-            <a
-              [routerLink]="['/insumos/revisiones-pendientes']"
-              (click)="isCollapsed(listMenu.insumos)"
-            >
+            ">
+            <a [routerLink]="['/insumos/revisiones-pendientes']" (click)="isCollapsed(listMenu.insumos)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Revisiones</span><br />
               <span class="ml-4">Pendientes</span>
             </a>
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               ((roleproveedor
                 ? roleproveedor.id && user.is_provider_director === false
                 : 0 === allroles.proveedor) &&
                 !isSnr) ||
               delegate
-            "
-          >
-            <a
-              [routerLink]="['/insumos/solicitudes/atendidas']"
-              (click)="isCollapsed(listMenu.insumos)"
-            >
+            ">
+            <a [routerLink]="['/insumos/solicitudes/atendidas']" (click)="isCollapsed(listMenu.insumos)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Solicitudes</span><br />
               <span class="ml-4">Atendidas</span>
             </a>
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               (roleproveedor
                 ? roleproveedor.id && user.is_provider_director === false
                 : 0 === allroles.proveedor) && isSnr
-            "
-          >
-            <a
-              [routerLink]="['/insumos/reporte-snr']"
-              (click)="isCollapsed(listMenu.insumos)"
-            >
+            ">
+            <a [routerLink]="['/insumos/reporte-snr']" (click)="isCollapsed(listMenu.insumos)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Generar</span><br />
               <span class="ml-4">Reporte</span>
@@ -239,49 +176,34 @@
           </li>
 
           <li *ngIf="user.is_provider_director">
-            <a
-              [routerLink]="['/insumos/caracterizacion/insumo']"
-              (click)="isCollapsed(listMenu.insumos)"
-            >
+            <a [routerLink]="['/insumos/caracterizacion/insumo']" (click)="isCollapsed(listMenu.insumos)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Caracterización</span><br />
               <span class="ml-4">de Insumos</span>
             </a>
           </li>
-          <li
-            *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor"
-            (click)="isCollapsed(listMenu.insumos)"
-          >
+          <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor" (click)="isCollapsed(listMenu.insumos)">
             <a [routerLink]="['/insumos/realizar-entrega']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Realización</span><br />
               <span class="ml-4">de Entregas</span>
             </a>
           </li>
-          <li
-            *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor"
-            (click)="isCollapsed(listMenu.insumos)"
-          >
+          <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor" (click)="isCollapsed(listMenu.insumos)">
             <a [routerLink]="['/insumos/entregas-realizadas']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Entregas</span><br />
               <span class="ml-4">Realizadas</span>
             </a>
           </li>
-          <li
-            *ngIf="roleoperador ? roleoperador.id : 0 === allroles.operador"
-            (click)="isCollapsed(listMenu.insumos)"
-          >
+          <li *ngIf="roleoperador ? roleoperador.id : 0 === allroles.operador" (click)="isCollapsed(listMenu.insumos)">
             <a [routerLink]="['/operador/descargas']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Descargas</span><br />
               <span class="ml-4">pendientes</span>
             </a>
           </li>
-          <li
-            *ngIf="roleoperador ? roleoperador.id : 0 === allroles.operador"
-            (click)="isCollapsed(listMenu.insumos)"
-          >
+          <li *ngIf="roleoperador ? roleoperador.id : 0 === allroles.operador" (click)="isCollapsed(listMenu.insumos)">
             <a [routerLink]="['/operador/descargas-realizadas']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Descargas</span><br />
@@ -290,62 +212,45 @@
           </li>
         </ul>
       </li>
-      <a
-        class="list-group-item"
-        (click)="addExpandClass(listMenu.quality)"
-        *ngIf="
+      <a class="list-group-item" (click)="addExpandClass(listMenu.quality)" *ngIf="
           roleoperador
             ? roleoperador.id
             : 0 === allroles.operador || rolegestor
             ? rolegestor.id
             : 0 === allroles.gestor
-        "
-      >
+        ">
         <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>LevCat</span>
       </a>
-      <li
-        class="nested"
-        [class.expand]="showMenu === listMenu.quality"
-        *ngIf="
+      <li class="nested" [class.expand]="showMenu === listMenu.quality" *ngIf="
           roleoperador
             ? roleoperador.id
             : 0 === allroles.operador || rolegestor
             ? rolegestor.id
             : 0 === allroles.gestor
-        "
-      >
+        ">
         <ul class="submenu">
-          <li
-            *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor"
-            (click)="isCollapsed(listMenu.quality)"
-          >
+          <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor" (click)="isCollapsed(listMenu.quality)">
             <a [routerLink]="['calidad/crear-producto']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Caracterizar</span><br />
               <span class="ml-4">Productos</span>
             </a>
           </li>
-          <li
-            *ngIf="roleoperador ? roleoperador.id : 0 === allroles.operador"
-            (click)="isCollapsed(listMenu.quality)"
-          >
+          <li *ngIf="roleoperador ? roleoperador.id : 0 === allroles.operador" (click)="isCollapsed(listMenu.quality)">
             <a [routerLink]="['/calidad/hacer-entrega-gestor']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Crear</span><br />
               <span class="ml-4">Entregas</span>
             </a>
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               roleoperador
                 ? roleoperador.id
                 : 0 === allroles.operador || rolegestor
                 ? rolegestor.id
                 : 0 === allroles.gestor
-            "
-            (click)="isCollapsed(listMenu.quality)"
-          >
+            " (click)="isCollapsed(listMenu.quality)">
             <a [routerLink]="['/calidad/buscar-entregas/0']">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Búsqueda</span><br />
@@ -356,59 +261,44 @@
       </li>
     </div>
     <div class="nested-menu" *ngIf="administration">
-      <a
-        class="list-group-item"
-        (click)="addExpandClass(listMenu.administrador)"
-      >
+      <a class="list-group-item" (click)="addExpandClass(listMenu.administrador)">
         <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
         <span>Administrador</span>
       </a>
       <li class="nested" [class.expand]="showMenu === listMenu.administrador">
         <ul class="submenu">
           <li>
-            <a
-              [routerLink]="['/administrador/usuarios/1']"
-              (click)="isCollapsed(listMenu.administrador)"
-            >
+            <a [routerLink]="['/administrador/usuarios/1']" (click)="isCollapsed(listMenu.administrador)">
               <i class="fa fa-fw fa-angle-double-right"></i>
               <span>Listar</span><br />
               <span class="ml-3">Usuarios</span>
             </a>
           </li>
           <li>
-            <a
-              [routerLink]="['/administrador/crear-usuario']"
-              (click)="isCollapsed(listMenu.administrador)"
-            >
+            <a [routerLink]="['/administrador/crear-usuario']" (click)="isCollapsed(listMenu.administrador)">
               <i class="fa fa-fw fa-angle-double-right"></i>
               <span>Registrar</span><br />
               <span class="ml-3">Usuarios</span>
             </a>
           </li>
-          <li
-            *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador"
-            (click)="isCollapsed(listMenu.administrador)"
-          >
+          <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador"
+            (click)="isCollapsed(listMenu.administrador)">
             <a [routerLink]="['/administrador/crear/gestor']">
               <i class="fa fa-fw fa-angle-double-right"></i>
               <span>Registrar</span><br />
               <span class="ml-3">Gestor</span>
             </a>
           </li>
-          <li
-            *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador"
-            (click)="isCollapsed(listMenu.administrador)"
-          >
+          <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador"
+            (click)="isCollapsed(listMenu.administrador)">
             <a [routerLink]="['/administrador/crear/operador']">
               <i class="fa fa-fw fa-angle-double-right"></i>
               <span>Registrar</span><br />
               <span class="ml-3">Operador</span>
             </a>
           </li>
-          <li
-            *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador"
-            (click)="isCollapsed(listMenu.administrador)"
-          >
+          <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador"
+            (click)="isCollapsed(listMenu.administrador)">
             <a [routerLink]="['/administrador/crear/proveedor']">
               <i class="fa fa-fw fa-angle-double-right"></i>
               <span>Registrar</span><br />
@@ -416,10 +306,7 @@
             </a>
           </li>
           <li *ngIf="user.is_provider_director">
-            <a
-              [routerLink]="['/administrador/crear/area-trabajo']"
-              (click)="isCollapsed(listMenu.administrador)"
-            >
+            <a [routerLink]="['/administrador/crear/area-trabajo']" (click)="isCollapsed(listMenu.administrador)">
               <i class="fa fa-fw fa-angle-double-right"></i>
               <span>Crear</span><br />
               <span class="ml-3">Área de trabajo</span>
@@ -473,13 +360,8 @@
       </div>
     </div>
   </div>
-  <div
-    class="toggle-button"
-    [ngClass]="{ collapsed: collapsed }"
-    (click)="toggleCollapsed()"
-  >
-    <i class="fa fa-fw fa-angle-double-{{ collapsed ? 'right' : 'left' }}"></i
-    >&nbsp;
+  <div class="toggle-button" [ngClass]="{ collapsed: collapsed }" (click)="toggleCollapsed()">
+    <i class="fa fa-fw fa-angle-double-{{ collapsed ? 'right' : 'left' }}"></i>&nbsp;
     <span>Contraer barra lateral</span>
   </div>
 </nav>

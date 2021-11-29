@@ -1,1 +1,159 @@
-<p>find-deliveries works!</p>
+<div class="row">
+    <div class="col-12 col-sm-6 mb-1">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Departamento</label>
+            </div>
+            <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
+                [(ngModel)]="selectDepartment">
+                <option value="0" selected>Seleccione el Departamento</option>
+                <option [ngValue]="item.id" *ngFor="let item of departments">
+                    {{ item.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 mb-1">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text">* Municipio</label>
+            </div>
+            <select (change)="filterDelivery()" class="custom-select" name="munucipalities" id="munucipalities"
+                [(ngModel)]="selectMunicipality">
+                <option [value]="'0'" selected>Seleccione el Municipio</option>
+                <option [ngValue]="item.code" *ngFor="let item of munucipalities">
+                    {{ item.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 mb-1" *ngIf="isAdministrator">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Gestor</label>
+            </div>
+            <select (change)="filterDelivery()" class="custom-select" name="managers" id="managers"
+                [(ngModel)]="selectManagerId">
+                <option [value]="'0'" selected>Seleccione el Gestor</option>
+                <option [ngValue]="item.id" *ngFor="let item of managers">
+                    {{ item.alias }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 mb-1" *ngIf="this.tab == 2">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Estado</label>
+            </div>
+            <select (change)="filterDelivery()" class="custom-select" name="states" id="states"
+                [(ngModel)]="selectStates">
+                <option [value]="'0'" selected disabled>Seleccione el Estado</option>
+                <option [ngValue]="item.id" *ngFor="let item of statesList">
+                    {{ item.alias }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6">
+        <app-input [title]="'* Código de Orden'" [id]="'codeOrder'" [name]="'codeOrder'" [type]="'text'"
+            [placeholder]="'Digite el Código de Orden'" [(inputModel)]="code" (change)="filterDelivery()">
+        </app-input>
+    </div>
+    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
+        <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="page" [pageSize]="pageSize"
+            [collectionSize]="totalElements" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+            (pageChange)="changePage($event)">
+        </ngb-pagination>
+    </div>
+    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
+        <div class="table-inverse table-responsive text-center">
+            <table class="table table-striped">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Código de la entrega</th>
+                        <th>Departamento</th>
+                        <th>Municipio</th>
+                        <th *ngIf="isAdministrator">Gestor</th>
+                        <th>Observación</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Fecha de estado</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of itemsDelivery; let index = index">
+                        <td scope="row">{{ item.code }}</td>
+                        <td scope="row">{{ item.locality.department }}</td>
+                        <td scope="row">{{ item.locality.municipality}}</td>
+                        <td scope="row" *ngIf="isAdministrator">{{ item.manager.name }}</td>
+                        <td scope="row">
+                            <app-observation [name]="'observation' + index" [(inputModel)]="item.observations"
+                                [disabled]="true"></app-observation>
+                        </td>
+                        <td scope="row">
+                            {{ formatDate(item.date) }}
+                        </td>
+                        <td scope="row"> <span [innerHTML]="nameStateDelivery(item.status)"></span></td>
+                        <td scope="row">
+                            {{ formatDate(item.dateStatus) }}
+                        </td>
+                        <td scope="row">
+                            <span [ngbTooltip]="
+                    isAdministrator ? 'Entrega de productos BPM' : 'Ver entrega'
+                  " placement="top" show-delay="500">
+                                <i class="material-icons cursor" (click)="viewDetailDelivery(item)">
+                                    input
+                                </i>
+                            </span>
+
+                            <span ngbTooltip="Actualizar observación de la entrega" placement="top" show-delay="500">
+                                <i *ngIf="!isAdministrator" class="material-icons cursor"
+                                    (click)="openModalUpdateDelivery(modalUpdateDelivery)">
+                                    edit
+                                </i>
+                            </span>
+
+                            <span ngbTooltip="Eliminar entrega" placement="top" show-delay="500"
+                                *ngIf="!isAdministrator">
+                                <i class="material-icons cursor" (click)="openModalDeleteDelivery(item)">
+                                    delete
+                                </i>
+                            </span>
+
+                            <ng-template #modalUpdateDelivery let-modal>
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        Actualizar información de la entrega
+                                    </h4>
+                                    <button type="button" class="close" aria-label="Close"
+                                        (click)="modal.dismiss('Cross click')">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <app-observation [title]="'Observaciones'" [name]="'observation' + index"
+                                        [(inputModel)]="item.observations"></app-observation>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="col-12 text-center">
+                                        <button type="button" ngbAutofocus class="btn btn-dark btn-block"
+                                            (click)="closeModalUpdateDelivery(item)">
+                                            Guardar
+                                        </button>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-12 mb-1" *ngIf="itemsDelivery.length == 0">
+        <div class="alert alert-primary text-center" role="alert">
+            No existen entregas.
+        </div>
+    </div>
+</div>
