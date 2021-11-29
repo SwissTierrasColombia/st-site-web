@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { StateDeliveriesEnum } from '../models/state-delivery.enum';
+import { StateFilesEnum } from '../models/state-file.enum';
 
 const stateDeliveriesEnum = StateDeliveriesEnum;
+const stateFilesEnum = StateFilesEnum;
 @Injectable()
 export default class Commons {
 
@@ -19,6 +21,18 @@ export default class Commons {
                 return '<span class="badge badge-success">Importación exitosa</span>';
             case stateDeliveriesEnum.FAILED_IMPORT:
                 return '<span class="badge badge-danger">Fallo la importación</span>';
+            default:
+                return '';
+        }
+    }
+    public static nameStateFile(fileId: string): string {
+        switch (fileId) {
+            case StateFilesEnum.IN_VALIDATION:
+                return '<span class="badge badge-info">En validación</span>';
+            case StateFilesEnum.SUCCESSFUL:
+                return '<span class="badge badge-success">Exitoso</span>';
+            case StateFilesEnum.UNSUCCESSFUL:
+                return '<span class="badge badge-danger">No exitoso</span>';
             default:
                 return '';
         }

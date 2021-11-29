@@ -63,4 +63,39 @@ export class SinicService {
       data
     );
   }
+  /**
+   * addFileToDelivery
+   */
+  public addFileToDelivery(deliveryId: number, formData: FormData) {
+    return this.httpClient.post(`${this.url}/sinic/v1/deliveries/${deliveryId}/files`, formData);
+  }
+  /**
+   * downloadFile
+   */
+  public downloadFile(deliveryId: number, fileId: number) {
+    return this.httpClient.get(`${this.url}/sinic/v1/deliveries/${deliveryId}/files/${fileId}/download`,
+      { responseType: 'arraybuffer', observe: 'response' }
+    );
+  }
+  /**
+   * downloadLog
+   */
+  public downloadLog(deliveryId: number, fileId: number) {
+    return this.httpClient.get(`${this.url}/sinic/v1/deliveries/${deliveryId}/files/${fileId}/log/download`,
+      { responseType: 'arraybuffer', observe: 'response' }
+    );
+  }
+  /**
+   * removeFile
+   */
+  public removeFile(deliveryId: number, fileId: number) {
+    return this.httpClient.delete(`${this.url}/sinic/v1/deliveries/${deliveryId}/files/${fileId}`);
+
+  }
+  /**
+   * findFilesFromDelivery
+   */
+  public findFilesFromDelivery(deliveryId: number) {
+    return this.httpClient.get(`${this.url}/sinic/v1/deliveries/${deliveryId}/files`);
+  }
 }
