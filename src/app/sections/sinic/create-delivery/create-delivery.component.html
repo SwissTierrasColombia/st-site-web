@@ -1,0 +1,53 @@
+<app-page-header [heading]="'Crear Entregas'" [icon]="'fa-star'">
+</app-page-header>
+<div class="card">
+  <div class="card-header text-center">
+    <h3>Crear entrega</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-sm-6 mb-1">
+        <app-select
+          [labelSelect]="'* Departamento'"
+          [nameSelect]="'departments'"
+          [idSelect]="'departments'"
+          [optionZero]="'Seleccione el Departamento'"
+          [listSelect]="departments"
+          [key]="'name'"
+          [(inputModel)]="selectDepartment"
+          (change)="changeDepartament()"
+        ></app-select>
+      </div>
+      <div class="col-12 col-sm-6 mb-1">
+        <app-select
+          [labelSelect]="'* Municipio'"
+          [nameSelect]="'departments'"
+          [idSelect]="'departments'"
+          [optionZero]="'Seleccione el Municipio'"
+          [listSelect]="municipalities"
+          [key]="'name'"
+          [(inputModel)]="selectMunicipality"
+          (change)="change()"
+        ></app-select>
+      </div>
+      <div class="col-12 mb-1">
+        <app-observation
+          [title]="'* Observaciones'"
+          [id]="'observation'"
+          [(inputModel)]="observations"
+          (change)="change()"
+        ></app-observation>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-center">
+    <button
+      type="button"
+      class="btn btn-dark"
+      (click)="openModalCreateDelivery()"
+      [disabled]="!createActive"
+    >
+      Crear entrega
+    </button>
+  </div>
+</div>

@@ -79,6 +79,40 @@
         </ul>
       </li>
     </div>
+
+    <!-- START SINIC -->
+    <div
+      class="nested-menu"
+      *ngIf="
+        roleAdmin
+          ? roleAdmin.id
+          : 0 === allroles.administrador || rolegestor
+          ? rolegestor.id
+          : 0 === allroles.gestor
+      "
+    >
+      <a class="list-group-item" (click)="addExpandClass(listMenu.gestion)">
+        <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
+        <span>SINIC</span>
+      </a>
+      <li class="nested" [class.expand]="showMenu === listMenu.gestion">
+        <ul class="submenu">
+          <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor">
+            <a
+              href=""
+              [routerLink]="['/sinic/crear-entrega']"
+              (click)="isCollapsed(listMenu.gestion)"
+            >
+              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
+              <span>Crear</span><br />
+              <span class="ml-4">entrega</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </div>
+    <!-- END SINIC -->
+
     <div
       class="nested-menu"
       *ngIf="
