@@ -10,7 +10,8 @@ import { DepartamentsInterface } from 'src/app/shared/models/departaments.interf
 import { MunicipalityInterface } from 'src/app/shared/models/municipality.interface';
 import { StateDeliveriesEnum } from '../models/state-delivery.enum';
 import { SinicService } from '../sinic.service';
-import IOptionsFindDeliveryInterface from '../models/options-find-delivery.interface'
+import IOptionsFindDeliveryInterface from '../models/options-find-delivery.interface';
+import Commons from '../commons/commons';
 @Component({
   selector: 'app-find-deliveries',
   templateUrl: './find-deliveries.component.html',
@@ -198,10 +199,9 @@ export class FindDeliveriesComponent implements OnInit {
   }
   viewDetailDelivery(item: any) {
     this.router.navigate([
-      '/calidad/' + this.tab + '/entrega/' + item.id,
+      `sinic/listar-entregas/${this.tab}/entrega/${item.id}`,
       {
-        isAdministrator: this.isAdministrator,
-        isManager: this.isManager,
+        isAdministrator: this.isAdministrator
       },
     ]);
   }
@@ -245,21 +245,6 @@ export class FindDeliveriesComponent implements OnInit {
       });
   }
   nameStateDelivery(deliveryStatusId: string): string {
-    switch (deliveryStatusId) {
-      case this.stateDeliveriesEnum.DRAFT:
-        return '<span class="badge badge-secondary">Borrador</span>';
-      case this.stateDeliveriesEnum.IMPORTING:
-        return '<span class="badge badge-primary">Importando</span>';
-      case this.stateDeliveriesEnum.IN_QUEUE_TO_IMPORT:
-        return '<span class="badge badge-info">Esperando para importación</span>';
-      case this.stateDeliveriesEnum.SENT_CADASTRAL_AUTHORITY:
-        return '<span class="badge badge-warning">Enviado Autoridad Catastral</span>';
-      case this.stateDeliveriesEnum.SUCCESS_IMPORT:
-        return '<span class="badge badge-success">Importación exitosa</span>';
-      case this.stateDeliveriesEnum.FAILED_IMPORT:
-        return '<span class="badge badge-danger">Fallo la importación</span>';
-      default:
-        return '';
-    }
+    return Commons.nameStateDelivery(deliveryStatusId);
   }
 }

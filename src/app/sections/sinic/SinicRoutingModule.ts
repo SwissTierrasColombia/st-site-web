@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateDeliveryComponent } from './create-delivery/create-delivery.component';
+import { DeliveryComponent } from './delivery/delivery.component';
 import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.component';
 
 const routes: Routes = [
@@ -12,6 +13,11 @@ const routes: Routes = [
   {
     path: 'listar-entregas/:tab',
     component: TabsDeliveriesComponent,
+    canActivate: [],
+  },
+  {
+    path: 'listar-entregas/:tab/entrega/:deliveryId',
+    component: DeliveryComponent,
     canActivate: [],
   },
 ];

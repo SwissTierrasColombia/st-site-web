@@ -1,0 +1,50 @@
+<app-page-header [heading]="'Entrega'" [icon]="'fa-star'"> </app-page-header>
+<div class="card">
+    <div class="card-header">
+        <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+            <i class="material-icons cursor m-2" (click)="goBack()">backspace</i>
+        </span>
+        <div class="text-center">
+            <h3>Entrega</h3>
+            Estado de la entrega:
+            <span [innerHTML]="nameStateDelivery(delivery.status)"></span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="col-12 mb-1">
+            <div class="table-inverse table-responsive text-center">
+                <table class="table table-striped">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>Código de la entrega</th>
+                            <th>Departamento</th>
+                            <th>Municipio</th>
+                            <th *ngIf="isAdministrator">Gestor</th>
+                            <th>Observación</th>
+                            <th>Fecha</th>
+                            <th>Fecha de estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td scope="row">{{ delivery.code }}</td>
+                            <td scope="row">{{ delivery.locality.department }}</td>
+                            <td scope="row">{{ delivery.locality.municipality}}</td>
+                            <td scope="row" *ngIf="isAdministrator">{{ delivery.manager.name }}</td>
+                            <td scope="row">
+                                <app-observation [name]="'observation'" [(inputModel)]="delivery.observations"
+                                    [disabled]="true"></app-observation>
+                            </td>
+                            <td scope="row">
+                                {{ formatDate(delivery.date) }}
+                            </td>
+                            <td scope="row">
+                                {{ formatDate(delivery.dateStatus) }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

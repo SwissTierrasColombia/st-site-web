@@ -9,8 +9,9 @@ import { CreateDeliveryComponent } from './create-delivery/create-delivery.compo
 import { SinicRoutingModule } from './SinicRoutingModule';
 import { FindDeliveriesComponent } from './find-deliveries/find-deliveries.component';
 import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.component';
+import { DeliveryComponent } from './delivery/delivery.component';
 @NgModule({
-  declarations: [CreateDeliveryComponent, FindDeliveriesComponent, TabsDeliveriesComponent],
+  declarations: [CreateDeliveryComponent, FindDeliveriesComponent, TabsDeliveriesComponent, DeliveryComponent],
   imports: [
     CommonModule,
     SinicRoutingModule,
@@ -22,4 +23,4 @@ import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.compo
     NgxSpinnerModule,
   ],
 })
-export class SinicModule {}
+export class SinicModule { }
