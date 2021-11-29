@@ -150,13 +150,16 @@ export class DeliveryComponent implements OnInit {
   }
   downloadLog(item: any) {
     this.sinicService.downloadLog(this.deliveryId, item.id).subscribe(data => {
-      FuntionsGlobalsHelper.downloadFile(data, `archivo-${this.deliveryId}-${item.id}`, '.zip');
+      const nameFile = `archivo-${this.deliveryId}-${item.id}`
+      console.log(nameFile);
+      FuntionsGlobalsHelper.downloadFile(data, nameFile, '.zip');
     });
   }
 
   downloadFile(item: any) {
     this.sinicService.downloadFile(this.deliveryId, item.id).subscribe(data => {
-      FuntionsGlobalsHelper.downloadFile(data, `archivo-${this.deliveryId}-${item.id}`, '.zip');
+      const nameFile = `archivo-${this.deliveryId}-${item.id}`
+      FuntionsGlobalsHelper.downloadFile(data, nameFile, '.zip');
     });
   }
   changeNameStateFile(state: string) {
