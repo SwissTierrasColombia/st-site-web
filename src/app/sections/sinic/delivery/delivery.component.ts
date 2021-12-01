@@ -40,6 +40,12 @@ export class DeliveryComponent implements OnInit {
   listFiles: any = [];
   optionModalRef: NgbModalRef;
   errorXTF: string = '';
+  isManager: boolean = false;
+  selectDepartment: string;
+  selectMunicipality: string;
+  selectManagerId: string;
+  selectStates: string;
+  code: string;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -52,12 +58,17 @@ export class DeliveryComponent implements OnInit {
 
   ngOnInit(): void {
     this.activedRoute.params.subscribe((params: Params) => {
-      const stringValue = params.isAdministrator;
-      this.isAdministrator = (stringValue == "true")
-      console.log(this.isAdministrator);
-
+      const isAdmin = params.isAdministrator;
+      this.isAdministrator = (isAdmin == "true");
       this.deliveryId = Number(params.deliveryId);
       this.tab = params.tab;
+      const isManager = params.isAdministrator;
+      this.isManager = (isManager == "true");;
+      this.selectDepartment = params.selectDepartment;
+      this.selectMunicipality = params.selectMunicipality;
+      this.selectManagerId = params.selectManagerId;
+      this.selectStates = params.selectStates;
+      this.code = params.code;
       this.findDelivery(this.deliveryId);
     });
   }
@@ -82,7 +93,16 @@ export class DeliveryComponent implements OnInit {
     return FuntionsGlobalsHelper.formatDate(date);
   }
   goBack() {
-    this.router.navigate(['/sinic/listar-entregas/' + this.tab]);
+    this.router.navigate(['/sinic/listar-entregas/' + this.tab,
+    {
+      isAdministrator: this.isAdministrator,
+      isManager: this.isManager,
+      selectDepartment: this.selectDepartment,
+      selectMunicipality: this.selectMunicipality,
+      selectManagerId: this.selectManagerId,
+      selectStates: this.selectStates,
+      code: this.code,
+    }]);
 
   }
   docSoport(file: File) {

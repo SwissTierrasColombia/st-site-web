@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ManagersService } from 'src/app/services/managers/managers.service';
@@ -47,6 +47,7 @@ export class FindDeliveriesComponent implements OnInit {
     private toastr: ToastrService,
     private sinicService: SinicService,
     private serviceManagers: ManagersService,
+    private activedRoute: ActivatedRoute,
 
   ) { }
   ngOnChanges(changes: SimpleChanges): void {
@@ -70,6 +71,26 @@ export class FindDeliveriesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activedRoute.params.subscribe((params: Params) => {
+      if (params.selectDepartment && params.selectDepartment != '0') {
+        this.getDepartaments();
+        this.selectDepartment = params.selectDepartment;
+        this.changeDepartament();
+        if (params.selectMunicipality && params.selectMunicipality != '0') {
+          this.selectMunicipality = params.selectMunicipality;
+        }
+      }
+      if (params.selectManagerId && params.selectManagerId != '0') {
+        this.getManagers();
+        this.selectManagerId = params.selectManagerId;
+      }
+      if (params.selectStates && params.selectStates != '0') {
+        this.selectStates = params.selectStates;
+      }
+      if (params.code && params.code != '') {
+        this.code = params.code;
+      }
+    });
     this.statesList = [
       {
         id: this.stateDeliveriesEnum.SENT_CADASTRAL_AUTHORITY,
@@ -92,6 +113,17 @@ export class FindDeliveriesComponent implements OnInit {
         alias: 'Fallo en la importación a BD'
       }
     ]
+
+    if (this.isAdministrator) {
+      this.getManagers();
+    }
+  }
+  getManagers() {
+    this.serviceManagers.getManagers().subscribe((data: any) => {
+      this.managers = data;
+    });
+  }
+  getDepartaments() {
     this.workspacesService.getDepartments().subscribe((response) => {
       this.departments = response;
       this.departments.sort(function (a, b) {
@@ -105,11 +137,6 @@ export class FindDeliveriesComponent implements OnInit {
         return 0;
       });
     });
-    if (this.isAdministrator) {
-      this.serviceManagers.getManagers().subscribe((data: any) => {
-        this.managers = data;
-      });
-    }
   }
   changeDepartament() {
     if (this.selectDepartment == 0) {
@@ -204,7 +231,12 @@ export class FindDeliveriesComponent implements OnInit {
       `sinic/listar-entregas/${this.tab}/entrega/${item.id}`,
       {
         isAdministrator: this.isAdministrator,
-        isManager: this.isManager
+        isManager: this.isManager,
+        selectDepartment: this.selectDepartment,
+        selectMunicipality: this.selectMunicipality,
+        selectManagerId: this.selectManagerId,
+        selectStates: this.selectStates,
+        code: this.code,
       },
     ]);
   }

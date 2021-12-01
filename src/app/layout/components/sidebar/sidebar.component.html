@@ -58,9 +58,9 @@
     <div class="nested-menu" *ngIf="
         roleAdmin
           ? roleAdmin.id
-          : 0 === allroles.administrador || rolegestor
-          ? rolegestor.id
-          : 0 === allroles.gestor
+          : 0 === allroles.administrador || sinic
+          ? sinic.id
+          : 0 === allroles.sinic
       ">
       <a class="list-group-item" (click)="addExpandClass(listMenu.sinic)">
         <i class="fa fa-fw fa-angle-double-down"></i>&nbsp;
@@ -68,7 +68,7 @@
       </a>
       <li class="nested" [class.expand]="showMenu === listMenu.sinic">
         <ul class="submenu">
-          <li *ngIf="rolegestor ? rolegestor.id : 0 === allroles.gestor">
+          <li *ngIf="sinic ? sinic.id : 0 === allroles.sinic">
             <a href="" [routerLink]="['/sinic/crear-entrega']" (click)="isCollapsed(listMenu.sinic)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
               <span>Crear</span><br />
