@@ -25,7 +25,7 @@ export class CreateDeliveryComponent implements OnInit {
     private modalService: NgbModal,
     private toastr: ToastrService
 
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.serviceWorkspaces.getDepartments().subscribe((response) => {
@@ -82,10 +82,12 @@ export class CreateDeliveryComponent implements OnInit {
             observations: this.observations,
           };
           this.sinicService.createDelivery(data).subscribe((_) => {
-            this.selectDepartment = '0';
+            this.municipalities = [];
             this.selectMunicipality = '0';
+            this.selectDepartment = '0';
             this.observations = '';
             this.toastr.success('Ha creado una entrega');
+            this.createActive = false;
           });
         }
       }

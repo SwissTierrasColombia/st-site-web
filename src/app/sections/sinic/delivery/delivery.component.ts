@@ -52,7 +52,10 @@ export class DeliveryComponent implements OnInit {
 
   ngOnInit(): void {
     this.activedRoute.params.subscribe((params: Params) => {
-      this.isAdministrator = params.isAdministrator;
+      const stringValue = params.isAdministrator;
+      this.isAdministrator = (stringValue == "true")
+      console.log(this.isAdministrator);
+
       this.deliveryId = Number(params.deliveryId);
       this.tab = params.tab;
       this.findDelivery(this.deliveryId);
@@ -134,7 +137,7 @@ export class DeliveryComponent implements OnInit {
     this.optionModalRef.componentInstance.title =
       '¿Está seguro de eliminar el adjunto?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va ha eliminar un adjunto.';
+      'Advertencia: Va ha eliminar el archivo cargado.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {

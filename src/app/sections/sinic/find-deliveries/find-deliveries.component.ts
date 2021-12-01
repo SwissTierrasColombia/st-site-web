@@ -52,6 +52,8 @@ export class FindDeliveriesComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAdministrator) {
       this.isAdministrator = changes.isAdministrator.currentValue;
+      console.log(this.isAdministrator);
+
     }
     if (changes.isManager) {
       this.isManager = changes.isManager.currentValue;
@@ -71,23 +73,23 @@ export class FindDeliveriesComponent implements OnInit {
     this.statesList = [
       {
         id: this.stateDeliveriesEnum.SENT_CADASTRAL_AUTHORITY,
-        alias: 'Enviado Autoridad Catastral'
+        alias: 'Enviado a Autoridad Catastral'
       },
       {
         id: this.stateDeliveriesEnum.IN_QUEUE_TO_IMPORT,
-        alias: 'Esperando para importación'
+        alias: 'Esperando para importación a BD'
       },
       {
         id: this.stateDeliveriesEnum.IMPORTING,
-        alias: 'Importando'
+        alias: 'Importando a BD'
       },
       {
         id: this.stateDeliveriesEnum.SUCCESS_IMPORT,
-        alias: 'Importación exitosa'
+        alias: 'Importación exitosa a BD'
       },
       {
         id: this.stateDeliveriesEnum.FAILED_IMPORT,
-        alias: 'Fallo la importación'
+        alias: 'Fallo en la importación a BD'
       }
     ]
     this.workspacesService.getDepartments().subscribe((response) => {
@@ -201,7 +203,8 @@ export class FindDeliveriesComponent implements OnInit {
     this.router.navigate([
       `sinic/listar-entregas/${this.tab}/entrega/${item.id}`,
       {
-        isAdministrator: this.isAdministrator
+        isAdministrator: this.isAdministrator,
+        isManager: this.isManager
       },
     ]);
   }
@@ -211,9 +214,9 @@ export class FindDeliveriesComponent implements OnInit {
       scrollable: true,
     });
     this.optionModalRef.componentInstance.title =
-      '¿Está seguro de eliminar la entrega?';
+      '¿Está seguro de eliminar el borrador de la entrega?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va a eliminar este borrador.';
+      'Advertencia: Va a eliminar este borrador, si tiene archivos cargados estos se eliminarán.';
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {

@@ -56,8 +56,8 @@
         </div>
     </div>
     <div class="col-12 col-sm-6">
-        <app-input [title]="'* Código de Orden'" [id]="'codeOrder'" [name]="'codeOrder'" [type]="'text'"
-            [placeholder]="'Digite el Código de Orden'" [(inputModel)]="code" (change)="filterDelivery()">
+        <app-input [title]="'* Código de la entrega'" [id]="'codeDelivery'" [name]="'codeDelivery'" [type]="'text'"
+            [placeholder]="'Digite el Código de la entrega'" [(inputModel)]="code" (change)="filterDelivery()">
         </app-input>
     </div>
     <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
@@ -71,12 +71,12 @@
             <table class="table table-striped">
                 <thead class="thead-inverse">
                     <tr>
+                        <th *ngIf="isAdministrator">Gestor</th>
                         <th>Código de la entrega</th>
+                        <th>Fecha</th>
                         <th>Departamento</th>
                         <th>Municipio</th>
-                        <th *ngIf="isAdministrator">Gestor</th>
                         <th>Observación</th>
-                        <th>Fecha</th>
                         <th>Estado</th>
                         <th>Fecha de estado</th>
                         <th>Opciones</th>
@@ -84,16 +84,16 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of itemsDelivery; let index = index">
+                        <td scope="row" *ngIf="isAdministrator">{{ item.manager.name }}</td>
                         <td scope="row">{{ item.code }}</td>
+                        <td scope="row">
+                            {{ formatDate(item.date) }}
+                        </td>
                         <td scope="row">{{ item.locality.department }}</td>
                         <td scope="row">{{ item.locality.municipality}}</td>
-                        <td scope="row" *ngIf="isAdministrator">{{ item.manager.name }}</td>
                         <td scope="row">
                             <app-observation [name]="'observation' + index" [(inputModel)]="item.observations"
                                 [disabled]="true"></app-observation>
-                        </td>
-                        <td scope="row">
-                            {{ formatDate(item.date) }}
                         </td>
                         <td scope="row"> <span [innerHTML]="nameStateDelivery(item.status)"></span></td>
                         <td scope="row">
@@ -101,7 +101,7 @@
                         </td>
                         <td scope="row">
                             <span [ngbTooltip]="
-                    isAdministrator ? 'Entrega de productos BPM' : 'Ver entrega'
+                    isAdministrator ? 'ver entrega' : 'Ver entrega'
                   " placement="top" show-delay="500">
                                 <i class="material-icons cursor" (click)="viewDetailDelivery(item)">
                                     input
@@ -114,8 +114,12 @@
                                     edit
                                 </i>
                             </span>
-
-                            <span ngbTooltip="Eliminar entrega" placement="top" show-delay="500"
+                            <span ngbTooltip="volver a cargar a BD" placement="top" show-delay="500" *ngIf="isAdministrator">
+                                <span class="material-icons" aria-disabled="true">
+                                    published_with_changes
+                                </span>
+                            </span>
+                            <span ngbTooltip="Eliminar borrador de entrega" placement="top" show-delay="500"
                                 *ngIf="!isAdministrator">
                                 <i class="material-icons cursor" (click)="openModalDeleteDelivery(item)">
                                     delete

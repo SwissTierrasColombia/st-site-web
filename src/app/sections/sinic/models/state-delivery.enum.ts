@@ -5,5 +5,4 @@ export const StateDeliveriesEnum = {
     IMPORTING: 'IMPORTING',
     SUCCESS_IMPORT: 'SUCCESS_IMPORT',
     FAILED_IMPORT: 'FAILED_IMPORT',
-
 }

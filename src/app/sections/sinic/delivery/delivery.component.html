@@ -1,13 +1,36 @@
 <app-page-header [heading]="'Entrega'" [icon]="'fa-star'"> </app-page-header>
 <div class="card">
     <div class="card-header">
-        <span ngbTooltip="Volver" placement="bottom" show-delay="500">
-            <i class="material-icons cursor m-2" (click)="goBack()">backspace</i>
-        </span>
-        <div class="text-center">
-            <h3>Entrega</h3>
-            Estado de la entrega:
-            <span [innerHTML]="nameStateDelivery(delivery.status)"></span>
+        <div class="row">
+            <div class="col-2">
+                <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+                    <i class="material-icons cursor m-2" (click)="goBack()">backspace</i>
+                </span>
+            </div>
+            <div class="col-5">
+
+            </div>
+            <div class="col-5">
+                <div class="text-left">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" aria-required="true">* Trimestre para informar: </label>
+                        </div>
+                        <select class="custom-select" name="managers" id="managers" disabled="true">
+                            <option value="0" selected [disabled]="true">
+                                Último trimestre 2021 (octubre – diciembre de 2021)
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="text-center">
+                    <h3>Entrega</h3>
+                    Estado de la entrega:
+                    <span [innerHTML]="nameStateDelivery(delivery.status)"></span>
+                </div>
+            </div>
         </div>
     </div>
     <div class="card-body">
@@ -16,43 +39,43 @@
                 <table class="table table-striped">
                     <thead class="thead-inverse">
                         <tr>
+                            <th *ngIf="isAdministrator">Gestor</th>
                             <th>Código de la entrega</th>
+                            <th>Fecha</th>
                             <th>Departamento</th>
                             <th>Municipio</th>
-                            <th *ngIf="isAdministrator">Gestor</th>
                             <th>Observación</th>
-                            <th>Fecha</th>
                             <th>Fecha de estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <td scope="row" *ngIf="isAdministrator">{{ delivery.manager.name }}</td>
                             <td scope="row">{{ delivery.code }}</td>
+                            <td scope="row">
+                                {{ formatDate(delivery.date) }}
+                            </td>
                             <td scope="row">{{ delivery.locality.department }}</td>
                             <td scope="row">{{ delivery.locality.municipality}}</td>
-                            <td scope="row" *ngIf="isAdministrator">{{ delivery.manager.name }}</td>
                             <td scope="row">
                                 <app-observation [name]="'observation'" [(inputModel)]="delivery.observations"
                                     [disabled]="true"></app-observation>
                             </td>
                             <td scope="row">
-                                {{ formatDate(delivery.date) }}
-                            </td>
-                            <td scope="row">
-                                {{ formatDate(delivery.dateStatus) }}
+                                <span style="color: red;">{{ formatDate(delivery.dateStatus) }}</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="card-header text-center">
+        <div class="card-header text-center" *ngIf="!isAdministrator">
             <h2>
-                {{ id > 0 ? "Actualizar" : "Añadir" }} adjunto a la entrega
+                {{ id > 0 ? "Actualizar" : "Añadir" }} archivo XTF a la entrega
                 <span *ngIf="id > 0"><b>#{{ id }}</b></span>
             </h2>
         </div>
-        <form action="" method="post">
+        <form action="" method="post" *ngIf="!isAdministrator">
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="input-group">
@@ -78,19 +101,19 @@
             </div>
         </form>
     </div>
-    <div class="card-footer text-muted text-center">
+    <div class="card-footer text-muted text-center" *ngIf="!isAdministrator">
         <button type="button" [disabled]="!formOk" *ngIf="!editMode" class="btn btn-dark" (click)="create()">
-            Crear
+            Adjuntar
         </button>
         <button type="button" [disabled]="!formOk" *ngIf="editMode" class="btn btn-dark" (click)="save()">
             Guardar
         </button>
         <button type="button" style="margin-left: 10px" class="btn btn-dark" (click)="cancel()">
-            Cancelar
+            Limpiar
         </button>
     </div>
     <div class="card-header text-center">
-        <h4>Lista de Adjuntos</h4>
+        <h4>Lista de archivos adjuntos <strong style="color: green">({{listFiles.length}})</strong></h4>
     </div>
     <div class="card-body" *ngIf="listFiles.length > 0">
         <div class="col-12 mb-1">
@@ -99,44 +122,44 @@
                     <thead class="thead-inverse">
                         <tr>
                             <th>ID</th>
-                            <th>Fecha</th>
-                            <th>Fecha de estado</th>
+                            <th>Fecha de cargue</th>
                             <th>Estado</th>
                             <th>Valido</th>
+                            <th>Fecha de estado</th>
                             <th>Observación</th>
-                            <th>Version</th>
-                            <th>Opciones</th>
+                            <!-- <th>Version</th> -->
+                            <th *ngIf="!isAdministrator">Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of listFiles; let index = index">
                             <td scope="row">{{ item.id }}</td>
                             <td scope="row"> {{ formatDate(item.date) }}</td>
-                            <td scope="row">{{ formatDate(item.dateStatus) }}</td>
                             <td scope="row">
                                 <span [innerHTML]="changeNameStateFile(item.status)"></span>
                             </td>
                             <td scope="row">{{ item.isValid?'Si':'No' }}</td>
+                            <td scope="row">{{ formatDate(item.dateStatus) }}</td>
                             <td scope="row">
                                 <app-observation [name]="'observation'" [(inputModel)]="item.observations"
                                     [disabled]="true"></app-observation>
                             </td>
-                            <td scope="row">{{ item.version }}</td>
-                            <td scope="row">
+                            <!-- <td scope="row">{{ item.version }}</td> -->
+                            <td scope="row" *ngIf="!isAdministrator">
                                 <span ngbTooltip="Descargar adjunto" placement="top" show-delay="500"
                                     (click)="downloadFile(item)" *ngIf="isAdministrator">
                                     <i class="material-icons cursor">
-                                        save
+                                        file_download
                                     </i>
                                 </span>
-                                <span ngbTooltip="Descargar log de errores" placement="top" show-delay="500"
-                                    (click)="downloadLog(item)" *ngIf="isAdministrator">
+                                <span *ngIf="!isAdministrator && item.hasLog" ngbTooltip="Descargar log de errores"
+                                    placement="top" show-delay="500" (click)="downloadLog(item)">
                                     <i class="material-icons cursor">
                                         description
                                     </i>
                                 </span>
                                 <span ngbTooltip="Eliminar" placement="top" show-delay="500"
-                                    (click)="deleteAttachment(item)" *ngIf="isAdministrator">
+                                    (click)="deleteAttachment(item)">
                                     <i class="material-icons cursor">
                                         delete
                                     </i>
@@ -154,5 +177,10 @@
                 No tiene adjuntos
             </div>
         </div>
+    </div>
+    <div class="card-footer text-muted text-center" *ngIf="!isAdministrator">
+        <button type="button" [disabled]="true" class="btn btn-dark">
+            Enviar a autoridad catastral
+        </button>
     </div>
 </div>
