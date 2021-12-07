@@ -46,6 +46,7 @@ export class DeliveryComponent implements OnInit {
   selectManagerId: string;
   selectStates: string;
   code: string;
+  sendAuthority: boolean = false;
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,
@@ -76,14 +77,13 @@ export class DeliveryComponent implements OnInit {
   findDelivery(deliveryId: number) {
     this.sinicService.searchDelivery(deliveryId).subscribe(element => {
       this.delivery = element;
-      console.log(this.delivery);
     });
     this.findFiles(deliveryId);
   }
   findFiles(deliveryId: number) {
     this.sinicService.findFilesFromDelivery(deliveryId).subscribe(element => {
       this.listFiles = element;
-      console.log(this.listFiles);
+      this.sendAuthority = this.findSuccessFiles();
     })
   }
   nameStateDelivery(deliveryStatusId: string): string {
@@ -140,7 +140,20 @@ export class DeliveryComponent implements OnInit {
       this.findFiles(this.deliveryId);
     })
   }
-  save() { }
+  findSuccessFiles(): boolean {
+    let isValid = this.listFiles.find(item => item.isValid === false);
+    if (isValid) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  save() {
+    this.sinicService.sendAuthority(this.deliveryId).subscribe(_ => {
+      this.toastr.success('Se ha enviado correctamente ha autoridad catastral');
+      this.findDelivery(this.deliveryId);
+    });
+  }
   cancel() {
     this.id = 0;
     this.editMode = false;

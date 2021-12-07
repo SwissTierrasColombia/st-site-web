@@ -124,7 +124,6 @@
                             <th>ID</th>
                             <th>Fecha de cargue</th>
                             <th>Estado</th>
-                            <th>Valido</th>
                             <th>Fecha de estado</th>
                             <th>Observación</th>
                             <!-- <th>Version</th> -->
@@ -138,7 +137,6 @@
                             <td scope="row">
                                 <span [innerHTML]="changeNameStateFile(item.status)"></span>
                             </td>
-                            <td scope="row">{{ item.isValid?'Si':'No' }}</td>
                             <td scope="row">{{ formatDate(item.dateStatus) }}</td>
                             <td scope="row">
                                 <app-observation [name]="'observation'" [(inputModel)]="item.observations"
@@ -178,8 +176,8 @@
             </div>
         </div>
     </div>
-    <div class="card-footer text-muted text-center" *ngIf="!isAdministrator">
-        <button type="button" [disabled]="true" class="btn btn-dark">
+    <div class="card-footer text-muted text-center" *ngIf="!isAdministrator && this.delivery.status ==='DRAFT'">
+        <button type="button" [disabled]="!sendAuthority" class="btn btn-dark" (click)="save()">
             Enviar a autoridad catastral
         </button>
     </div>

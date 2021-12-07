@@ -98,4 +98,10 @@ export class SinicService {
   public findFilesFromDelivery(deliveryId: number) {
     return this.httpClient.get(`${this.url}/sinic/v1/deliveries/${deliveryId}/files`);
   }
+  /**
+ * sendAuthority
+ */
+  public sendAuthority(deliveryId: number) {
+    return this.httpClient.patch(`${this.url}/sinic/v1/deliveries/${deliveryId}`, {});
+  }
 }

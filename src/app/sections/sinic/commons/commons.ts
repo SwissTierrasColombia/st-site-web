@@ -27,12 +27,18 @@ export default class Commons {
     }
     public static nameStateFile(fileId: string): string {
         switch (fileId) {
+            case StateFilesEnum.IMPORTING:
+                return '<span class="badge badge-secondary">Importando</span>';
+            case StateFilesEnum.IMPORT_SUCCESSFUL:
+                return '<span class="badge badge-primary">Importación exitosa</span>';
+            case StateFilesEnum.IMPORT_UNSUCCESSFUL:
+                return '<span class="badge badge-info">Fallo la importación</span>';
             case StateFilesEnum.IN_VALIDATION:
-                return '<span class="badge badge-info">En validación</span>';
+                return '<span class="badge badge-warning">En Validación</span>';
             case StateFilesEnum.SUCCESSFUL:
                 return '<span class="badge badge-success">Exitoso</span>';
             case StateFilesEnum.UNSUCCESSFUL:
-                return '<span class="badge badge-danger">No exitoso</span>';
+                return '<span class="badge badge-danger">Fallo</span>';
             default:
                 return '';
         }
