@@ -1,8 +1,8 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { JwtHelper } from 'src/app/helpers/jwt';
-import { RoleModel } from 'src/app/helpers/role.model';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
+import { RoleModel } from 'src/app/shared/helpers/role.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,6 +25,7 @@ export class SidebarComponent implements OnInit {
   isSnr: any;
   @Output() collapsedEvent = new EventEmitter<boolean>();
   administration: any;
+  sinic: any;
 
   constructor(public router: Router, private roles: RoleModel) {
     this.user = {
@@ -43,7 +44,9 @@ export class SidebarComponent implements OnInit {
     this.listMenu = {
       gestion: 'gestion',
       insumos: 'insumos',
+      quality: 'quality',
       administrador: 'administrador',
+      sinic: 'sinic'
     };
     this.allroles = {};
     this.roleAdmin = {
@@ -92,6 +95,14 @@ export class SidebarComponent implements OnInit {
     });
     if (this.user.provider_sub_roles) {
       this.delegate = this.user.provider_sub_roles.find((elem: any) => {
+        return elem.id === 2;
+      });
+      if (this.user.entity.id === 8) {
+        this.isSnr = true;
+      }
+    }
+    if (this.user.manager_sub_roles) {
+      this.sinic = this.user.manager_sub_roles.find((elem: any) => {
         return elem.id === 2;
       });
       if (this.user.entity.id === 8) {

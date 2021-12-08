@@ -1,0 +1,22 @@
+<label class="input-group-text" [class]="classStyle" *ngIf="title">{{
+  title
+}}</label>
+<input
+  class="ml-1"
+  [id]="id"
+  [type]="type"
+  [name]="name"
+  [disabled]="disabled"
+  [(ngModel)]="inputModel"
+  (ngModelChange)="inputModelChange.emit(inputModel)"
+/>
+<div class="input-group" [class]="classStyle" *ngIf="!title">
+  <input
+    [id]="id"
+    [type]="type"
+    [name]="name"
+    [disabled]="disabled"
+    [(ngModel)]="inputModel"
+    (ngModelChange)="inputModelChange.emit(inputModel)"
+  />
+</div>

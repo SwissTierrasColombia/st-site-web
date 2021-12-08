@@ -1,0 +1,41 @@
+<app-page-header [heading]="'Crear Entregas'" [icon]="'fa-star'">
+</app-page-header>
+<div class="card">
+  <div class="card-header text-center">
+    <h3>Crear entrega</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 mb-1">
+        <app-select
+          [labelSelect]="'* Gestor - Municipio'"
+          [nameSelect]="'managersAndMunicipality'"
+          [idSelect]="'managersAndMunicipality'"
+          [optionZero]="'Seleccione el Gestor - Municipio'"
+          [listSelect]="listManagerWithMunicipality"
+          [key]="'option'"
+          [(inputModel)]="managerCodeAndMunicipality"
+          (change)="managersAndMunicipality()"
+        ></app-select>
+      </div>
+      <div class="col-12 mb-1">
+        <app-observation
+          [title]="'* Observaciones'"
+          [id]="'observation'"
+          [(inputModel)]="dataMakeDeliveryToManager.observations"
+          (change)="change()"
+        ></app-observation>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-center">
+    <button
+      type="button"
+      class="btn btn-dark"
+      (click)="openModalCreateDelivery()"
+      [disabled]="!createActive"
+    >
+      Crear entrega
+    </button>
+  </div>
+</div>

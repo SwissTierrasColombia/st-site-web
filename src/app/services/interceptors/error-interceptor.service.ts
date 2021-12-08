@@ -27,40 +27,41 @@ export class ErrorInterceptorService implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err) => {
         this.spinner.hide();
-
         const error = err.error.message || err.statusText;
-
         switch (err.status) {
           case 400:
+            error == 'OK' ? '' : this.toastrService.error(error);
             if (err.error.error === 'invalid_grant') {
               this.toastrService.error('Autenticación fallida');
             }
             break;
           case 401:
+            error == 'OK' ? '' : this.toastrService.error(error);
             if (err.error.error === 'invalid_token') {
               localStorage.removeItem(environment.nameTokenSession);
               localStorage.removeItem('showMenu');
-
               this.router.navigate(['/login']);
-            } else {
-              this.toastrService.error(error);
             }
             break;
           case 404:
+            error == 'OK' ? '' : this.toastrService.error(error);
           case 422:
-            this.toastrService.error(error);
+            error == 'OK' ? '' : this.toastrService.error(error);
             break;
           case 403:
+            error == 'OK' ? '' : this.toastrService.error(error);
             if (err.error.hasOwnProperty('tokenExpiration')) {
               localStorage.removeItem(environment.nameTokenSession);
               localStorage.removeItem('showMenu');
               this.router.navigate(['/login']);
-            } else {
-              this.toastrService.error(error);
             }
             break;
           default:
-            // this.toastrService.error('No se ha podido conectar con el servidor, espere unos minutos he intentelo de nuevo.', 'Actualicé la página', { disableTimeOut: true });
+            this.toastrService.error(
+              'No se ha podido conectar con el servidor, espere unos minutos he intentelo de nuevo.',
+              'Actualicé la página',
+              { disableTimeOut: true }
+            );
             break;
         }
 

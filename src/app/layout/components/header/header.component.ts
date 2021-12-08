@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { JwtHelper } from 'src/app/helpers/jwt';
+import { JwtHelper } from 'src/app/shared/helpers/jwt';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
-import { RoleModel } from 'src/app/helpers/role.model';
+import { RoleModel } from 'src/app/shared/helpers/role.model';
 
 @Component({
   selector: 'app-header',

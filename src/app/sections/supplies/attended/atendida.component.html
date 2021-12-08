@@ -1,0 +1,102 @@
+<div>
+  <app-page-header [heading]="'Insumo Atendido'" [icon]="'fa-star'">
+  </app-page-header>
+  <div class="card text-center">
+    <div class="card-header row">
+      <div class="col-1">
+        <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+          <i class="material-icons cursor" (click)="volver()">backspace</i>
+        </span>
+      </div>
+      <div class="col-10">
+        <h3>Insumos Entregados</h3>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-12 table-inverse table-responsive">
+          <table class="table table-striped text-center">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Departamento</th>
+                <th>Municipio</th>
+                <th>Gestor</th>
+                <th>Número de Solicitud</th>
+                <th>Fecha de Solicitud</th>
+                <th>Fecha de Entrega</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataRequestPending; let i = index">
+                <td scope="row">{{ item.municipality.department.name }}</td>
+                <td scope="row">{{ item.municipality.name }}</td>
+                <td scope="row">{{ getEntity(item) }}</td>
+                <td scope="row">
+                  <strong>{{ item.id }}</strong>
+                </td>
+                <td scope="row">{{ formatDate(item.createdAt) }}</td>
+                <td scope="row">{{ formatDate(item.closedAt) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-12 table-inverse table-responsive">
+          <table class="table table-striped text-center">
+            <thead class="thead-inverse">
+              <tr>
+                <th><strong>#</strong></th>
+                <th>Nombre de Insumo</th>
+                <th>Estado</th>
+                <th>Observación Gestor</th>
+                <th>Observación Proveedor</th>
+                <th>Fecha de Cargue</th>
+                <th>Entregado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of suppliesRequested; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td scope="row">
+                  {{ item.typeSupply.name }}
+                  <div *ngIf="item.valid !== null && !item.valid">
+                    <span class="badge badge-warning">
+                      Validado con errores
+                    </span>
+                  </div>
+                </td>
+                <td scope="row">{{ item.state.name }}</td>
+                <td scope="row">
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    maxlength="255"
+                    disabled="true"
+                    >{{ item.description }}</textarea
+                  >
+                </td>
+                <td scope="row">
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    maxlength="255"
+                    disabled="true"
+                    >{{ item.observations }}</textarea
+                  >
+                </td>
+                <td scope="row">
+                  {{ item.deliveredAt ? formatDate(item.deliveredAt) : "N/A" }}
+                </td>
+                <td scope="row">
+                  {{ dataRequestPending[0].userClosedBy.firstName }} <br />
+                  {{ dataRequestPending[0].userClosedBy.lastName }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

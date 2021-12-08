@@ -1,0 +1,158 @@
+<div id="actionForm">
+  <app-page-header [heading]="'Caracterizar Productos'" [icon]="'fa-star'">
+  </app-page-header>
+  <div class="card">
+    <div class="card-header text-center">
+      <h2>
+        {{ id > 0 ? "Actualizar" : "Crear" }} producto
+        <span *ngIf="id > 0"
+          ><b>#{{ id }}</b></span
+        >
+      </h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-6 mb-1">
+          <app-input
+            [id]="'nameProduct'"
+            [name]="'nameProduct'"
+            [title]="'* Nombre'"
+            [placeholder]="'Nombre del Producto'"
+            [(inputModel)]="data.name"
+            (change)="changeState()"
+          ></app-input>
+        </div>
+        <div class="col-12 col-md-6 mb-1">
+          <div class="text-center">
+            <strong>Tipo de Archivo</strong>
+          </div>
+          <fieldset class="form-group text-center">
+            <label
+              class="radio-inline col-12 col-sm-2"
+              *ngFor="let item of typeProduct; let i = index"
+            >
+              <input
+                (change)="changeState()"
+                [(ngModel)]="data.isXTF"
+                [value]="item.id"
+                [id]="item.id"
+                name="roles"
+                type="radio"
+              />
+              {{ item.name }}
+            </label>
+          </fieldset>
+        </div>
+        <div class="col-12 col-md-12 mb-1">
+          <app-observation
+            [title]="'* Descripción'"
+            [name]="'description-product'"
+            [placeholder]="'Descripción del Producto'"
+            [(inputModel)]="data.description"
+            (change)="changeState()"
+          ></app-observation>
+        </div>
+        <div class="col-12">
+          <div class="alert alert-primary text-center" role="alert">
+            Recuerde que los campos marcados con * son obligatorios.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button
+        type="button"
+        [disabled]="!formOk"
+        *ngIf="!editMode"
+        class="btn btn-dark"
+        (click)="create()"
+      >
+        Crear
+      </button>
+      <button
+        type="button"
+        [disabled]="!formOk"
+        *ngIf="editMode"
+        class="btn btn-dark"
+        (click)="updateProduct()"
+      >
+        Actualizar
+      </button>
+      <button
+        type="button"
+        style="margin-left: 10px"
+        class="btn btn-dark"
+        (click)="cancel()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+  <div class="card mt-2">
+    <div class="col-12">
+      <div class="card-header">
+        <div class="text-center">
+          <h3>Productos a entregar por el operador</h3>
+        </div>
+      </div>
+      <div
+        class="table-inverse table-responsive text-center"
+        *ngIf="listProducts.length > 0"
+      >
+        <table class="table table-striped">
+          <thead class="thead-inverse">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Archivo XTF</th>
+              <th>Fecha de Creación</th>
+              <th>Descripción</th>
+              <th>Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              [style.background-color]="item.id == id ? '#3ada1273' : ''"
+              [style.font-weight]="item.id == id ? 'bold' : ''"
+              *ngFor="let item of listProducts; let index = index"
+            >
+              <td scope="row">{{ item.id }}</td>
+              <td scope="row">{{ item.name }}</td>
+              <td scope="row">{{ item.isXTF ? "Si" : "No" }}</td>
+              <td scope="row">{{ formatDate(item.createdAt) }}</td>
+              <td scope="row">
+                <app-observation
+                  [id]="'observationProduct' + index"
+                  [name]="'observationProduct' + index"
+                  [(inputModel)]="item.description"
+                  [disabled]="true"
+                >
+                </app-observation>
+              </td>
+              <td scope="row">
+                <span ngbTooltip="Actualizar" placement="top" show-delay="500">
+                  <i class="material-icons cursor" (click)="editProduct(item)">
+                    edit
+                  </i>
+                </span>
+                <span ngbTooltip="Eliminar" placement="top" show-delay="500">
+                  <i
+                    class="material-icons cursor"
+                    (click)="openModalRemoveProduct(item.id)"
+                  >
+                    delete
+                  </i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-12 mb-1" *ngIf="listProducts.length === 0">
+        <div class="alert alert-primary text-center" role="alert">
+          No existen productos.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

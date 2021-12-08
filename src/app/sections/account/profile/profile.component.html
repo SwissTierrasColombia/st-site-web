@@ -1,0 +1,96 @@
+<div>
+  <app-page-header [heading]="'Perfil'" [icon]="'fa-star'"> </app-page-header>
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Información de usuario</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <app-show-field-info
+            [title]="'Nombre'"
+            [info]="profile.first_name"
+          ></app-show-field-info>
+        </div>
+        <div class="col-12 col-md-6">
+          <app-show-field-info
+            [title]="'Apellido'"
+            [info]="profile.last_name"
+          ></app-show-field-info>
+        </div>
+        <div class="col-12 col-md-6">
+          <app-show-field-info
+            [title]="'Correo electrónico'"
+            [info]="profile.email"
+          ></app-show-field-info>
+        </div>
+        <div class="col-12 col-md-6">
+          <app-show-field-info
+            [title]="'Rol'"
+            [info]="profile.roles[0].name"
+          ></app-show-field-info>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted"></div>
+  </div>
+  <div class="card mt-2">
+    <div class="card-header">
+      <h2>Cambiar contraseña</h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <app-input
+            [id]="'password'"
+            [icon]="'security'"
+            [type]="'password'"
+            [name]="'password'"
+            [placeholder]="'Contraseña'"
+            [(inputModel)]="password"
+            (change)="passIqual()"
+          >
+          </app-input>
+        </div>
+        <div class="col-12 col-md-6">
+          <app-input
+            [id]="'confirmationPassword'"
+            [icon]="'lock'"
+            [type]="'password'"
+            [name]="'confirmationPassword'"
+            [placeholder]="'Confirmar contraseña'"
+            [(inputModel)]="confirmationPassword"
+            (change)="passIqual()"
+          >
+          </app-input>
+        </div>
+        <div *ngIf="mensaje">
+          <small
+            *ngIf="mensaje === 1"
+            id="passIqual"
+            class="form-text text-muted"
+            >Las contraseñas no coinciden</small
+          >
+          <small
+            *ngIf="mensaje === 2"
+            id="passIqual"
+            class="form-text text-muted"
+            >Las contraseñas son iguales</small
+          >
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <div class="col-12">
+        <button
+          type="button"
+          [disabled]="changepass"
+          class="btn btn-dark"
+          (click)="submitChangePass()"
+        >
+          Cambiar contraseña
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

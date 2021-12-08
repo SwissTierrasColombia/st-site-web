@@ -1,0 +1,37 @@
+<div class="input-group mt-1 mb-1" [class]="classStyle" *ngIf="min && max">
+  <div class="input-group-prepend">
+    <label class="input-group-text" aria-required="true">{{ title }}</label>
+  </div>
+  <input
+    [id]="id"
+    [type]="type"
+    [min]="min"
+    [max]="max"
+    [name]="name"
+    class="form-control"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [(ngModel)]="inputModel"
+    (ngModelChange)="inputModelChange.emit(inputModel)"
+  />
+</div>
+<div class="input-group mt-1 mb-1" [class]="classStyle">
+  <div class="input-group-prepend" *ngIf="title || icon">
+    <label class="input-group-text" aria-required="true" *ngIf="title">
+      {{ title }}
+    </label>
+    <span class="input-group-text" *ngIf="icon">
+      <i class="material-icons"> {{ icon }} </i>
+    </span>
+  </div>
+  <input
+    [id]="id"
+    [type]="type"
+    [name]="name"
+    class="form-control"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [(ngModel)]="inputModel"
+    (ngModelChange)="inputModelChange.emit(inputModel)"
+  />
+</div>

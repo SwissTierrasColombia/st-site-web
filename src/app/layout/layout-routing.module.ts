@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { AuthGuard } from '../shared/guard/auth.guard';
-import { RoleAdminManagerGuard } from '../guards/role-admin-manager-guard.service';
-import { RoleOperatorGuard } from '../guards/role-operator-guard.service';
-import { AdministrationGuard } from '../guards/administration-guard.service';
+import { RoleManagerOperatorGuard } from '../shared/guard/role-manager-operator-guard.service';
+import { RoleOperatorGuard } from '../shared/guard/role-operator-guard.service';
+import { AdministrationGuard } from '../shared/guard/administration-guard.service';
+import { RoleAdminManagerGuard } from '../shared/guard/role-admin-manager-guard.service';
 
 const routes: Routes = [
   {
@@ -16,19 +17,12 @@ const routes: Routes = [
       {
         path: 'inicio',
         loadChildren: () =>
-          import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
-      },
-      {
-        path: 'components',
-        loadChildren: () =>
-          import('./bs-component/bs-component.module').then(
-            (m) => m.BsComponentModule
-          ),
+          import('./home/dashboard.module').then((m) => m.DashboardModule),
       },
       {
         path: 'insumos',
         loadChildren: () =>
-          import('./sections/supplies/insumos.module').then(
+          import('../sections/supplies/insumos.module').then(
             (m) => m.InsumosModule
           ),
       },
@@ -36,14 +30,14 @@ const routes: Routes = [
         path: 'gestion',
         loadChildren: () =>
           import(
-            './sections/municipality-management/gestion-municipio.module'
+            '../sections/municipality-management/gestion-municipio.module'
           ).then((m) => m.GestionMunicipioModule),
         canActivate: [RoleAdminManagerGuard],
       },
       {
         path: 'administrador',
         loadChildren: () =>
-          import('./sections/administrator/administrador.module').then(
+          import('../sections/administrator/administrador.module').then(
             (m) => m.AdministradorModule
           ),
         canActivate: [AdministrationGuard],
@@ -51,17 +45,31 @@ const routes: Routes = [
       {
         path: 'cuenta',
         loadChildren: () =>
-          import('./sections/account/account.module').then(
+          import('../sections/account/account.module').then(
             (m) => m.AccountModule
           ),
       },
       {
         path: 'operador',
         loadChildren: () =>
-          import('./sections/operation/operacion.module').then(
+          import('../sections/operation/operacion.module').then(
             (m) => m.OperacionModule
           ),
         canActivate: [RoleOperatorGuard],
+      },
+      {
+        path: 'calidad',
+        loadChildren: () =>
+          import('../sections/lev-cat-reception/lev-cat-reception.module').then(
+            (m) => m.LevCatReceptionModule
+          ),
+        canActivate: [RoleManagerOperatorGuard],
+      },
+      {
+        path: 'sinic',
+        loadChildren: () =>
+          import('../sections/sinic/sinic.module').then((m) => m.SinicModule),
+        canActivate: [RoleAdminManagerGuard],
       },
     ],
   },

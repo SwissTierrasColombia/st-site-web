@@ -1,0 +1,384 @@
+<div>
+  <app-page-header
+    [heading]="'Entrega de información'"
+    [icon]="'fa-star'"
+  ></app-page-header>
+
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Entrega de información - <em>Habilitación Catastral</em></h3>
+    </div>
+    <div class="card-body">
+      <form action="" method="post">
+        <div class="row mb-2">
+          <div class="col-12 col-sm-6 mb-1">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true"
+                  >* Gestor</label
+                >
+              </div>
+              <select
+                (change)="changeDepartament()"
+                class="custom-select"
+                name="activeManagers"
+                id="activeManagers"
+                [(ngModel)]="selectManager"
+              >
+                <option value="0" selected>Seleccione el Gestor</option>
+                <option [ngValue]="item.id" *ngFor="let item of activeManagers">
+                  {{ item.alias }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 mb-1">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text">* Municipio</label>
+              </div>
+              <select
+                class="custom-select"
+                name="munucipalities"
+                id="munucipalities"
+                [(ngModel)]="selectMunicipality"
+                (change)="changeMunicipalitie()"
+              >
+                <option value="0" selected>Seleccione el Municipio</option>
+                <option [ngValue]="item.id" *ngFor="let item of munucipalities">
+                  {{ item.name }} - ({{ item.department.name }})
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="alert alert-primary text-center" role="alert">
+              Recuerde que los campos marcados con * son obligatorios.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button
+        type="button"
+        class="btn btn-dark"
+        (click)="searchWorkSpaceActive()"
+        [disabled]="!isActiveSearch"
+      >
+        Buscar
+      </button>
+    </div>
+    <div *ngIf="isActive === false">
+      <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          No existe una gestión de municipio.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" *ngIf="isSearch">
+  <div class="card-body">
+    <div class="row mb-2">
+      <div class="col-12">
+        <small id="perfil" class="form-text text-muted mb-4 ml-1 text-left">
+          <h6>
+            Autoridad Catastral, cargue aquí la información que requiere
+            entregar al Gestor para iniciar la Gestión Catastral del municipio.
+          </h6>
+        </small>
+      </div>
+      <div class="col-12 col-sm-6 mb-2">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" aria-required="true">* Tipo</label>
+          </div>
+          <select
+            class="custom-select"
+            name="attachmentsTypes"
+            id="attachmentsTypes"
+            [(ngModel)]="selectAttachments"
+            (change)="validAttachmentsTypes()"
+          >
+            <option value="0" selected>Seleccione tipo de cargue</option>
+            <option
+              [ngValue]="item.id"
+              *ngFor="let item of dataAttachmentsTypes"
+            >
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 mb-2" *ngIf="selectAttachments != 0">
+        <div [ngSwitch]="selectAttachments != 0">
+          <div *ngSwitchCase="selectAttachments === 1">
+            <div class="input-group">
+              <input
+                #myInput
+                id="fileattachmentsTypes"
+                name="fileattachmentsTypes"
+                class="form-control"
+                type="file"
+                (change)="docSoportAttachmentsTypes($event.target.files)"
+                multiple="false"
+              />
+            </div>
+            <small>Cargue el archivo con la información a entregar.</small>
+          </div>
+          <div *ngSwitchCase="selectAttachments === 2">
+            <div class="input-group">
+              <input
+                placeholder="Ingrese la  URL ó FTP"
+                (change)="validAttachmentsTypes()"
+                class="form-control"
+                id="urlattachmentsTypes"
+                type="url"
+                name="urlattachmentsTypes"
+                [(ngModel)]="ftpAttachmentsTypes"
+              />
+            </div>
+            <div class="input-group mt-1">
+              <div class="input-group">
+                <div class="input-group-prepend input-group-text">
+                  <div class="">Credenciales</div>
+                </div>
+                <input
+                  (change)="validAttachmentsTypes()"
+                  class="form-control"
+                  id="passftpAttachments"
+                  type="url"
+                  name="passftpAttachments"
+                  [(ngModel)]="passftpAttachments"
+                />
+              </div>
+            </div>
+          </div>
+          <div *ngSwitchCase="selectAttachments === 3">
+            <div class="input-group">
+              <input
+                placeholder="Cargue la evidencia de la entrega fisica de la información."
+                #myInput
+                id="fileattachmentsTypesExtert"
+                name="fileattachmentsTypesExtert"
+                class="form-control"
+                type="file"
+                (change)="docSoportAttachmentsTypes($event.target.files)"
+                multiple="false"
+              />
+            </div>
+            <small
+              >Cargue la evidencia de la entrega fisica de la
+              información.</small
+            >
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12"></div>
+      <div class="col-12 col-sm-6">
+        <div class="input-group">
+          <div class="input-group-prepend input-group-text">
+            <div class="">* Nombre</div>
+          </div>
+          <input
+            (change)="validAttachmentsTypes()"
+            class="form-control"
+            id="nameAttachmentsTypes"
+            type="url"
+            name="nameAttachmentsTypes"
+            [(ngModel)]="nameAttachmentsTypes"
+          />
+        </div>
+      </div>
+      <div class="col-12 col-sm-6">
+        <div class="input-group">
+          <div class="input-group-prepend input-group-text">
+            <div class="">
+              * Observaciones <br />
+              <small>(max. 255 caracteres)</small>
+            </div>
+          </div>
+          <textarea
+            (change)="validAttachmentsTypes()"
+            maxlength="255"
+            class="form-control"
+            id="observationsattachmentsTypes"
+            rows="3"
+            name="observacionesattachmentsTypes"
+            [(ngModel)]="observationsAttachmentsTypes"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-12 mt-2">
+        <div class="alert alert-primary text-center" role="alert">
+          Recuerde que los campos marcados con * son obligatorios.
+        </div>
+      </div>
+      <div class="col-12 col-sm-12">
+        <div class="card-footer text-muted text-center">
+          <button
+            type="button"
+            [disabled]="!validInputAttachmentsTypes"
+            class="btn btn-dark"
+            (click)="openModalDeliveryInfo(modalDeliveryInfo)"
+          >
+            Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row text-center">
+      <div
+        class="table-inverse table-responsive"
+        *ngIf="suppliesAttachmentsData.length > 0"
+      >
+        <table class="table table-striped">
+          <thead class="thead-inverse">
+            <tr>
+              <th>#</th>
+              <th>Entregado por</th>
+              <th>Nombre</th>
+              <th>Fecha de cargue</th>
+              <th>Observación</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of suppliesAttachmentsData; let index = index">
+              <td scope="row">{{ index + 1 }}</td>
+              <td scope="row">AUTORIDAD CATASTRAL</td>
+              <td scope="row">{{ item.name }}</td>
+              <td scope="row">{{ formatDate(item.createdAt) }}</td>
+              <td scope="row">
+                <textarea
+                  maxlength="255"
+                  readonly
+                  style="border: none; background: #dedede"
+                  >{{ item.observations }}</textarea
+                >
+              </td>
+              <td scope="row">
+                <i
+                  class="material-icons cursor"
+                  (click)="openModalDelete(item.id, customModal2)"
+                >
+                  delete_forever
+                </i>
+                <ng-template #customModal2 let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title">
+                      ¿Está seguro de eliminar el registro?
+                    </h4>
+                    <button
+                      type="button"
+                      class="close"
+                      aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h5 class="alert alert-warning text-center">
+                      Advertencia: La información se borrará permanentemente del
+                      Sistema.
+                    </h5>
+                  </div>
+                  <div class="modal-footer">
+                    <div class="col-6">
+                      <button
+                        type="button"
+                        class="btn btn-dark btn-block"
+                        (click)="closeModalDelete(false)"
+                      >
+                        No
+                      </button>
+                    </div>
+                    <div class="col-6 text-right">
+                      <button
+                        type="button"
+                        ngbAutofocus
+                        class="btn btn-success btn-block"
+                        (click)="closeModalDelete(true, index)"
+                      >
+                        Si
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div
+      class="row justify-content-center text-center"
+      *ngIf="suppliesAttachmentsData.length > 0"
+    >
+      <div class="col-12 mt-2">
+        <button
+          class="text-center"
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="downloadGetReportAuthority()"
+        >
+          Descargar reporte
+          <i class="material-icons" style="color: white">description</i>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="suppliesAttachmentsData.length === 0">
+      <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          No hay información cargada para este Municipio.
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #modalDeliveryInfo let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        ¿Está seguro de realizar esta entrega al Gestor?
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="alert alert-warning text-center">
+        Advertencia: Esta acción realizará una entrega de información al Gestor.
+      </h5>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-dark btn-block"
+          (click)="closeModalDeliveryInfo(false)"
+        >
+          No
+        </button>
+      </div>
+      <div class="col-6 text-right">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-success btn-block"
+          (click)="closeModalDeliveryInfo(true)"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>

@@ -1,3 +1,4 @@
+import { GetPendingRequestsPaginate } from './../../sections/supplies/requests-manager/models/get-pending-requets.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -98,5 +99,69 @@ export class ProvidersService {
         '/providers-supplies/v1/providers/from-requested-manager/' +
         managerId
     );
+  }
+  /**
+   * getReportSuppliesDelivered
+   */
+  public getReportSuppliesDelivered(fromDate: string, toDate: string) {
+    return this.httpClient.get(
+      this.url +
+        '/providers-supplies/v1/reports/supplies-delivered-snr?from=' +
+        fromDate +
+        '&to=' +
+        toDate,
+      { responseType: 'arraybuffer', observe: 'response' }
+    );
+  }
+  /**
+   * getPendingRequestsPaginate
+   */
+  public getPendingRequestsPaginate(
+    page: number,
+    limit: number,
+    municipality?: string,
+    orderNumber?: string,
+    manager?: number
+  ) {
+    let url =
+      this.url +
+      '/providers-supplies/v2/pending-requests?page=' +
+      page +
+      '&limit=' +
+      limit;
+    if (municipality) {
+      url = url + '&municipality=' + municipality;
+    }
+    if (orderNumber) {
+      url = url + '&orderNumber=' + orderNumber;
+    }
+    if (manager) {
+      url = url + '&manager=' + manager;
+    }
+    return this.httpClient.get<GetPendingRequestsPaginate>(url);
+  }
+  /**
+   * getAttentedRequetsPagination
+   */
+  public getAttentedRequetsPagination(
+    page: number,
+    limit: number,
+    municipality?: string,
+    orderNumber?: string
+  ) {
+    let url =
+      this.url +
+      '/providers-supplies/v2/attended-requests?page=' +
+      page +
+      '&limit=' +
+      limit;
+    if (municipality) {
+      url = url + '&municipality=' + municipality;
+    }
+    if (orderNumber) {
+      url = url + '&orderNumber=' + orderNumber;
+    }
+
+    return this.httpClient.get<GetPendingRequestsPaginate>(url);
   }
 }

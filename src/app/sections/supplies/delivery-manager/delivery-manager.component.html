@@ -1,0 +1,148 @@
+<div>
+  <app-page-header
+    [heading]="'Información específica entrega realizada'"
+    [icon]="'fa-star'"
+  >
+  </app-page-header>
+  <div class="justify-content-center text-center mb-2">
+    <div class="card text-center">
+      <div class="card-header">
+        <div class="col-1">
+          <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+            <i class="material-icons cursor" (click)="volver()">backspace</i>
+          </span>
+        </div>
+        <div class="col-12">
+          <h3>Información específica entrega realizada</h3>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-inverse table-responsive">
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Entrega</th>
+                <th>Operador</th>
+                <th>Municipio</th>
+                <th>Código Municipio</th>
+                <th>Fecha de entrega</th>
+                <th>Observaciones generales</th>
+                <th>Descargar reporte general</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row">{{ dataRequestPending.id }}</td>
+                <td scope="row">{{ dataRequestPending.operator?.name }}</td>
+                <td scope="row">{{ dataRequestPending.municipality.name }}</td>
+                <td scope="row">{{ dataRequestPending.municipality.code }}</td>
+                <td scope="row">
+                  {{ formatDate(dataRequestPending.createdAt) }}
+                </td>
+                <td scope="row">
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    maxlength="255"
+                    disabled="true"
+                    >{{ dataRequestPending.observations }}</textarea
+                  >
+                </td>
+                <td scope="row">
+                  <span
+                    ngbTooltip="Descargar reporte general"
+                    placement="bottom"
+                    show-delay="500"
+                  >
+                    <i
+                      class="material-icons"
+                      style="color: red"
+                      (click)="downloadGeneralReport()"
+                    >
+                      description
+                    </i>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="justify-content-center text-center">
+    <div class="card text-center">
+      <div class="card-header">
+        <h3>Insumos</h3>
+      </div>
+      <div class="card-body">
+        <div class="table-inverse table-responsive">
+          <table *ngIf="supplies.length > 0" class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Insumo</th>
+                <th>Observaciones</th>
+                <th>Fecha de descarga</th>
+                <th>Descargado por</th>
+                <th>Correo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of supplies">
+                <td scope="row">
+                  <span *ngIf="isAuthority(item)">{{ item.supply.name }}</span>
+                  <span *ngIf="isAuthority(item) === false">
+                    <div>
+                      {{ item.supply ? item.supply.name : "" }}
+                    </div>
+                    <div *ngIf="item.supply.typeSupply">
+                      ({{
+                        item.supply.typeSupply
+                          ? item.supply.typeSupply.provider.name
+                          : ""
+                      }})
+                    </div>
+                  </span>
+                  <div
+                    *ngIf="
+                      item.supply.typeSupply?.id === 2 && !item.supply.valid
+                    "
+                  >
+                    <span class="badge badge-warning">
+                      Validado con errores
+                    </span>
+                  </div>
+                </td>
+                <td scope="row">
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    maxlength="255"
+                    disabled="true"
+                    >{{ item.observations }}</textarea
+                  >
+                </td>
+                <td scope="row">
+                  {{
+                    item.downloadedAt
+                      ? formatDate(item.downloadedAt)
+                      : "No se ha descargado el insumo."
+                  }}
+                </td>
+                <td scope="row">
+                  {{ item.userDownloaded ? item.userDownloaded.firstName : "" }}
+                  <br />{{
+                    item.userDownloaded ? item.userDownloaded.lastName : ""
+                  }}
+                </td>
+                <td scope="row">
+                  {{ item.userDownloaded ? item.userDownloaded.email : "" }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,134 @@
+<div>
+  <app-page-header [heading]="'Solicitudes Atendidas'" [icon]="'fa-star'">
+  </app-page-header>
+  <div class="card text-center">
+    <div class="card-header">
+      <h3>
+        Solicitudes Atendidas
+        <h4 style="color: green">({{ totalElements }})</h4>
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="row mb-2">
+        <div class="col-12 col-sm-6 mb-1">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" aria-required="true"
+                >* Departamento</label
+              >
+            </div>
+            <select
+              (change)="changeDepartament()"
+              class="custom-select"
+              name="departments"
+              id="departments"
+              [(ngModel)]="selectDepartment"
+            >
+              <option value="0" selected>Seleccione el Departamento</option>
+              <option [ngValue]="item.id" *ngFor="let item of listDepartments">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 mb-1">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text">* Municipio</label>
+            </div>
+            <select
+              class="custom-select"
+              name="municipalities"
+              id="municipalities"
+              [(ngModel)]="selectMunicipality"
+            >
+              <option value="0" selected>Seleccione el Municipio</option>
+              <option
+                [ngValue]="item.code"
+                *ngFor="let item of listMunicipalities"
+              >
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 mb-1">
+          <app-input
+            [title]="'* Código de Orden'"
+            [id]="'codeOrder'"
+            [name]="'codeOrder'"
+            [type]="'text'"
+            [placeholder]="'Digite el Código de Orden'"
+            [(inputModel)]="selectOrder"
+          ></app-input>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button type="button" class="btn btn-dark mb-2" (click)="filter()">
+        Filtrar
+      </button>
+    </div>
+    <div class="mt-2" *ngIf="totalElements">
+      <ngb-pagination
+        class="d-flex justify-content-center"
+        [collectionSize]="totalElements"
+        [(page)]="page"
+        [maxSize]="5"
+        [rotate]="true"
+        [ellipses]="false"
+        [boundaryLinks]="true"
+        (pageChange)="getPage($event)"
+      ></ngb-pagination>
+    </div>
+    <div class="table-inverse table-responsive">
+      <table *ngIf="dataRequestPending.length > 0" class="table table-striped">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Código de Orden</th>
+            <th>Nº de Solicitud</th>
+            <th>Área</th>
+            <th>Insumo</th>
+            <th>Departamento</th>
+            <th>Municipio</th>
+            <th>Gestor</th>
+            <th>Fecha de Solicitud</th>
+            <th>Fecha Límite</th>
+            <th>Ver</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dataRequestPending">
+            <td scope="row">
+              {{ item.orderNumber }}
+            </td>
+            <td scope="row">{{ item.id }}</td>
+            <td scope="row">{{ item.suppliesSummary[0].area }} <br /></td>
+            <td scope="row">
+              <div *ngFor="let element of item.suppliesSummary">
+                {{ element.name }}
+              </div>
+            </td>
+            <td scope="row">{{ item.federation.state }}</td>
+            <td scope="row">{{ item.federation.municipality }}</td>
+            <td scope="row">{{ item.manager.alias }}</td>
+            <td scope="row">{{ formatDate(item.createdAt) }}</td>
+            <td scope="row">{{ formatDate(item.deadline) }}</td>
+            <td scope="row">
+              <i class="material-icons cursor" (click)="load(item.id)">
+                input
+              </i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="dataRequestPending.length === 0" class="row mt-3">
+      <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          No tiene solicitudes
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

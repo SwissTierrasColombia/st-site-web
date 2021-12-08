@@ -1,0 +1,720 @@
+<app-page-header [heading]="'Listar Usuarios'" [icon]="'fa-star'">
+</app-page-header>
+<div class="card" *ngIf="roleConnectAdmin">
+  <div class="card-body">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: tab === 1 }"
+          data-toggle="tab"
+          role="tab"
+          (click)="tab1()"
+          aria-controls="home"
+        >
+          <i class="material-icons"> groups </i>Gestores</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: tab === 2 }"
+          data-toggle="tab"
+          role="tab"
+          (click)="tab2()"
+          aria-controls="messages"
+        >
+          <i class="material-icons"> people </i>Operadores</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: tab === 3 }"
+          data-toggle="tab"
+          role="tab"
+          (click)="tab3()"
+          aria-controls="messages"
+        >
+          <i class="material-icons"> supervised_user_circle </i>Proveedores</a
+        >
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel">
+        <div class="mt-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" aria-required="true"
+                >* Gestor</label
+              >
+            </div>
+            <select
+              (change)="tab1()"
+              class="custom-select"
+              name="managers"
+              id="managers"
+              [(ngModel)]="managerId"
+            >
+              <option value="0" selected>Seleccione entidad</option>
+              <option [ngValue]="item.id" *ngFor="let item of managers">
+                {{ item.alias }}
+              </option>
+            </select>
+          </div>
+          <div class="card">
+            <div class="card-body" *ngIf="usersManagers.length > 0">
+              <ngb-pagination
+                id="pagination-usersManagers"
+                class="d-flex justify-content-center"
+                [(page)]="page1"
+                [pageSize]="pageSize1"
+                [collectionSize]="usersManagers.length"
+                [rotate]="true"
+                [ellipses]="false"
+                [boundaryLinks]="true"
+                (pageChange)="cleanPagination()"
+              >
+              </ngb-pagination>
+              <div class="search-hero">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="search"
+                  [(ngModel)]="searchText"
+                  autocomplete="off"
+                  placeholder="&#61442;  Buscar"
+                />
+              </div>
+              <div class="table-inverse table-responsive">
+                <table class="table table-striped text-center">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>Gestor</th>
+                      <th>Usuario</th>
+                      <th>Perfil</th>
+                      <th>Nombres</th>
+                      <th>Apellidos</th>
+                      <th>Correo</th>
+                      <th>Fecha de Creación</th>
+                      <th>Editar</th>
+                      <th>Activar/Desactivar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let item of usersManagers
+                          | filter: searchText
+                          | slice
+                            : (page1 - 1) * pageSize1
+                            : (page1 - 1) * pageSize1 + pageSize1
+                      "
+                    >
+                      <td scope="row">{{ item.manager.name }}</td>
+                      <td scope="row">{{ item.username }}</td>
+                      <td scope="row">
+                        <div *ngIf="item.profiles.length > 0">
+                          <div *ngFor="let profile of item.profiles">
+                            {{ profile.name }}
+                          </div>
+                        </div>
+                        <div *ngIf="item.profiles.length === 0">TÉCNICO</div>
+                      </td>
+                      <td scope="row">{{ item.firstName }}</td>
+                      <td scope="row">{{ item.lastName }}</td>
+                      <td scope="row">{{ item.email }}</td>
+                      <td scope="row">
+                        {{ globalFuntionDate(item.createdAt) }}
+                      </td>
+                      <td scope="row">
+                        <div *ngIf="isDirectorManager(item)">
+                          <span
+                            ngbTooltip="Modificar Usuario"
+                            placement="bottom"
+                            show-delay="500"
+                          >
+                            <i
+                              class="material-icons mr-2"
+                              (click)="updateUser(item.id)"
+                            >
+                              edit
+                            </i>
+                          </span>
+                        </div>
+                      </td>
+                      <td scope="row">
+                        <div *ngIf="isDirectorManager(item)">
+                          <label
+                            class="switch"
+                            [title]="
+                              item.enabled
+                                ? 'Desactivar Usuario'
+                                : 'Activar Usuario'
+                            "
+                            (click)="
+                              item.enabled
+                                ? openModalDisabled(item.id)
+                                : openModalEnabled(item.id)
+                            "
+                          >
+                            <input
+                              (click)="clickCheckBox($event)"
+                              [(ngModel)]="item.enabled"
+                              type="checkbox"
+                            />
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-body" *ngIf="usersManagers.length === 0">
+              <div class="alert alert-primary text-center" role="alert">
+                No tiene usuarios registrados
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel">
+        <div class="mt-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" aria-required="true"
+                >* Operador</label
+              >
+            </div>
+            <select
+              (change)="tab2()"
+              class="custom-select"
+              name="operator"
+              id="operator"
+              [(ngModel)]="operatorId"
+            >
+              <option value="0" selected>Seleccione entidad</option>
+              <option [ngValue]="item.id" *ngFor="let item of operators">
+                {{ item.alias }}
+              </option>
+            </select>
+          </div>
+          <div class="card">
+            <div class="card-body" *ngIf="usersOperators.length > 0">
+              <ngb-pagination
+                id="pagination-usersOperators"
+                class="d-flex justify-content-center"
+                [(page)]="page2"
+                [pageSize]="pageSize2"
+                [collectionSize]="usersOperators.length"
+                [rotate]="true"
+                [ellipses]="false"
+                [boundaryLinks]="true"
+                (pageChange)="cleanPagination()"
+              >
+              </ngb-pagination>
+              <div class="search-hero">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="search"
+                  [(ngModel)]="searchText"
+                  autocomplete="off"
+                  placeholder="&#61442;  Buscar"
+                />
+              </div>
+              <div class="table-inverse table-responsive">
+                <table class="table table-striped text-center">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>Operador</th>
+                      <th>Usuario</th>
+                      <!-- <th>Perfil</th> -->
+                      <th>Nombres</th>
+                      <th>Apellidos</th>
+                      <th>Correo</th>
+                      <th>Fecha de Creación</th>
+                      <th>Editar</th>
+                      <th>Activar/Desactivar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let item of usersOperators
+                          | filter: searchText
+                          | slice
+                            : (page2 - 1) * pageSize2
+                            : (page2 - 1) * pageSize2 + pageSize2
+                      "
+                    >
+                      <td scope="row">{{ item.operator.name }}</td>
+                      <td scope="row">{{ item.username }}</td>
+                      <!-- <td scope="row">
+                        <div *ngFor="let profile of item.profiles">
+                          {{ profile.name }}
+                        </div>
+                      </td> -->
+                      <td scope="row">{{ item.firstName }}</td>
+                      <td scope="row">{{ item.lastName }}</td>
+                      <td scope="row">{{ item.email }}</td>
+                      <td scope="row">
+                        {{ globalFuntionDate(item.createdAt) }}
+                      </td>
+                      <td scope="row">
+                        <div>
+                          <span
+                            ngbTooltip="Modificar Usuario"
+                            placement="bottom"
+                            show-delay="500"
+                          >
+                            <i
+                              class="material-icons mr-2"
+                              (click)="updateUser(item.id)"
+                            >
+                              edit
+                            </i>
+                          </span>
+                        </div>
+                      </td>
+                      <td scope="row" *ngIf="roleConnectAdmin">
+                        <div>
+                          <label
+                            class="switch"
+                            [title]="
+                              item.enabled
+                                ? 'Desactivar Usuario'
+                                : 'Activar Usuario'
+                            "
+                            (click)="
+                              item.enabled
+                                ? openModalDisabled(item.id)
+                                : openModalEnabled(item.id)
+                            "
+                          >
+                            <input
+                              (click)="clickCheckBox($event)"
+                              [(ngModel)]="item.enabled"
+                              type="checkbox"
+                            />
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </td>
+                      <td scope="row" *ngIf="!roleConnectAdmin">
+                        <label
+                          class="switch"
+                          [title]="
+                            item.enabled
+                              ? 'Desactivar Usuario'
+                              : 'Activar Usuario'
+                          "
+                          (click)="
+                            item.enabled
+                              ? openModalDisabled(item.id)
+                              : openModalEnabled(item.id)
+                          "
+                        >
+                          <input
+                            (click)="clickCheckBox($event)"
+                            [(ngModel)]="item.enabled"
+                            type="checkbox"
+                          />
+                          <span class="slider round"></span>
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-body" *ngIf="usersOperators.length === 0">
+              <div class="alert alert-primary text-center" role="alert">
+                No tiene usuarios registrados
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel">
+        <div class="mt-2">
+          <div class="card">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true"
+                  >* Proveedor</label
+                >
+              </div>
+              <select
+                (change)="tab3()"
+                class="custom-select"
+                name="providers"
+                id="providers"
+                [(ngModel)]="providerId"
+              >
+                <option value="0" selected>Seleccione entidad</option>
+                <option [ngValue]="item.id" *ngFor="let item of providers">
+                  {{ item.alias }}
+                </option>
+              </select>
+            </div>
+            <div class="card-body" *ngIf="usersProviders.length > 0">
+              <ngb-pagination
+                id="pagination-usersProviders"
+                class="d-flex justify-content-center"
+                [(page)]="page3"
+                [pageSize]="pageSize3"
+                [collectionSize]="usersProviders.length"
+                [rotate]="true"
+                [ellipses]="false"
+                [boundaryLinks]="true"
+                (pageChange)="cleanPagination()"
+              >
+              </ngb-pagination>
+              <div class="search-hero">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="search"
+                  [(ngModel)]="searchText"
+                  autocomplete="off"
+                  placeholder="&#61442;  Buscar"
+                />
+              </div>
+              <div class="table-inverse table-responsive">
+                <table class="table table-striped text-center">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>Proveedor</th>
+                      <th>Área de trabajo</th>
+                      <th>Usuario</th>
+                      <th>Perfil</th>
+                      <th>Nombres</th>
+                      <th>Apellidos</th>
+                      <th>Correo</th>
+                      <th>Fecha de Creación</th>
+                      <th>Editar</th>
+                      <th>Activar/Desactivar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let item of usersProviders
+                          | filter: searchText
+                          | slice
+                            : (page3 - 1) * pageSize3
+                            : (page3 - 1) * pageSize3 + pageSize3
+                      "
+                    >
+                      <td scope="row">
+                        {{ item.provider.name }}
+                      </td>
+                      <td>
+                        <div *ngIf="item.profiles.length > 0">
+                          <div *ngFor="let perfil of item.profiles">
+                            {{ perfil.name }}
+                          </div>
+                        </div>
+                        <div *ngIf="item.profiles.length === 0">--</div>
+                      </td>
+                      <td scope="row" *ngIf="roleConnectProvider">
+                        <div *ngIf="isDelegado(item)">REVISOR</div>
+                        <div *ngIf="!isDelegado(item)">TÉCNICO</div>
+                      </td>
+                      <td scope="row">{{ item.username }}</td>
+                      <td scope="row">
+                        <div *ngIf="item.roles.length > 0">
+                          <div *ngFor="let roles of item.roles">
+                            {{ roles.name }}
+                          </div>
+                        </div>
+                        <div *ngIf="item.roles.length === 0">TÉCNICO</div>
+                      </td>
+                      <td scope="row">{{ item.firstName }}</td>
+                      <td scope="row">{{ item.lastName }}</td>
+                      <td scope="row">{{ item.email }}</td>
+                      <td scope="row">
+                        {{ globalFuntionDate(item.createdAt) }}
+                      </td>
+                      <td scope="row">
+                        <div *ngIf="isDirectorProvider(item)">
+                          <span
+                            ngbTooltip="Modificar Usuario"
+                            placement="bottom"
+                            show-delay="500"
+                          >
+                            <i
+                              class="material-icons mr-2"
+                              (click)="updateUser(item.id)"
+                            >
+                              edit
+                            </i>
+                          </span>
+                        </div>
+                      </td>
+
+                      <td scope="row">
+                        <div *ngIf="isDirectorProvider(item)">
+                          <label
+                            class="switch"
+                            [title]="
+                              item.enabled
+                                ? 'Desactivar Usuario'
+                                : 'Activar Usuario'
+                            "
+                            (click)="
+                              item.enabled
+                                ? openModalDisabled(item.id)
+                                : openModalEnabled(item.id)
+                            "
+                          >
+                            <input
+                              (click)="clickCheckBox($event)"
+                              [(ngModel)]="item.enabled"
+                              type="checkbox"
+                            />
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-body" *ngIf="usersProviders.length === 0">
+              <div class="alert alert-primary text-center" role="alert">
+                No tiene usuarios registrados
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="d-flex justify-content-around" *ngIf="!roleConnectAdmin">
+    <div class="card">
+      <div class="card-body" *ngIf="dataListUser.length > 0">
+        <ngb-pagination
+          id="pagination-dataListUser"
+          class="d-flex justify-content-center"
+          [(page)]="page4"
+          [pageSize]="pageSize4"
+          [collectionSize]="dataListUser.length"
+          [rotate]="true"
+          [ellipses]="false"
+          [boundaryLinks]="true"
+          (pageChange)="cleanPagination()"
+        >
+        </ngb-pagination>
+        <div class="search-hero">
+          <input
+            class="form-control"
+            type="text"
+            name="search"
+            [(ngModel)]="searchText"
+            autocomplete="off"
+            placeholder="&#61442;  Buscar"
+          />
+        </div>
+        <div class="table-inverse table-responsive">
+          <table class="table table-striped text-center">
+            <thead class="thead-inverse">
+              <tr>
+                <th *ngIf="roleConnectAdmin">Entidad</th>
+                <th *ngIf="!roleConnectManager && !roleConnectProvider">Rol</th>
+                <th *ngIf="!roleConnectSuperAdmin">
+                  {{
+                    roleConnectAdmin || roleConnectManager
+                      ? "Perfil"
+                      : "Área de trabajo"
+                  }}
+                </th>
+                <th *ngIf="roleConnectAdmin">Área de trabajo</th>
+                <th *ngIf="roleConnectProvider">Perfil</th>
+                <th>Usuario</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Correo</th>
+                <th>Fecha de Creación</th>
+                <th>Editar</th>
+                <th>Activar/Desactivar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let item of dataListUser
+                    | filter: searchText
+                    | slice
+                      : (page4 - 1) * pageSize4
+                      : (page4 - 1) * pageSize4 + pageSize4
+                "
+              >
+                <td scope="row" *ngIf="roleConnectAdmin">
+                  {{ item.entity ? item.entity.name : "--" }}
+                </td>
+                <td
+                  scope="row"
+                  *ngIf="!roleConnectManager && !roleConnectProvider"
+                >
+                  <div *ngFor="let rol of item.roles">
+                    {{ globalFuntionString(rol.name) }}
+                  </div>
+                </td>
+                <td scope="row" *ngIf="!roleConnectSuperAdmin">
+                  <div *ngIf="item.profilesManager.length > 0">
+                    <div *ngFor="let perfil of item.profilesManager">
+                      {{ perfil.name }}
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      item.profilesProvider.length > 0 && !roleConnectAdmin
+                    "
+                  >
+                    <div *ngFor="let perfil of item.profilesProvider">
+                      {{ perfil.name }}
+                    </div>
+                  </div>
+                  <div *ngIf="roleConnectAdmin">
+                    <div *ngFor="let perfil of item.rolesProvider">
+                      {{ perfil.name }}
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      item.profilesManager.length == 0 &&
+                      item.profilesProvider.length == 0 &&
+                      item.rolesProvider.length == 0
+                    "
+                  >
+                    --
+                  </div>
+                  <div
+                    *ngIf="
+                      item.profilesManager.length == 0 &&
+                      item.profilesProvider.length == 0 &&
+                      isDelegado(item) &&
+                      roleConnectProvider
+                    "
+                  >
+                    --
+                  </div>
+                  <div
+                    *ngIf="
+                      roleConnectAdmin &&
+                      item.rolesProvider.length == 0 &&
+                      isProvider(item)
+                    "
+                  >
+                    TÉCNICO
+                  </div>
+                </td>
+                <td *ngIf="roleConnectAdmin">
+                  <div *ngIf="item.profilesProvider.length > 0">
+                    <div *ngFor="let perfil of item.profilesProvider">
+                      {{ perfil.name }}
+                    </div>
+                  </div>
+                  <div *ngIf="item.profilesProvider.length === 0">--</div>
+                </td>
+                <td scope="row" *ngIf="roleConnectProvider">
+                  <div *ngIf="isDelegado(item)">REVISOR</div>
+                  <div *ngIf="!isDelegado(item)">TÉCNICO</div>
+                </td>
+                <td scope="row">{{ item.username }}</td>
+                <td scope="row">{{ item.firstName }}</td>
+                <td scope="row">{{ item.lastName }}</td>
+                <td scope="row">{{ item.email }}</td>
+                <td scope="row">{{ globalFuntionDate(item.createdAt) }}</td>
+                <td scope="row" *ngIf="roleConnectAdmin">
+                  <div *ngIf="isDirector(item)">
+                    <span
+                      ngbTooltip="Modificar Usuario"
+                      placement="bottom"
+                      show-delay="500"
+                    >
+                      <i
+                        class="material-icons mr-2"
+                        (click)="updateUser(item.id)"
+                      >
+                        edit
+                      </i>
+                    </span>
+                  </div>
+                </td>
+                <td scope="row" *ngIf="!roleConnectAdmin">
+                  <span
+                    ngbTooltip="Modificar Usuario"
+                    placement="bottom"
+                    show-delay="500"
+                  >
+                    <i
+                      class="material-icons mr-2"
+                      (click)="updateUser(item.id)"
+                    >
+                      edit
+                    </i>
+                  </span>
+                </td>
+                <td scope="row" *ngIf="roleConnectAdmin">
+                  <div *ngIf="isDirector(item)">
+                    <label
+                      class="switch"
+                      [title]="
+                        item.enabled ? 'Desactivar Usuario' : 'Activar Usuario'
+                      "
+                      (click)="
+                        item.enabled
+                          ? openModalDisabled(item.id)
+                          : openModalEnabled(item.id)
+                      "
+                    >
+                      <input
+                        (click)="clickCheckBox($event)"
+                        [(ngModel)]="item.enabled"
+                        type="checkbox"
+                      />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </td>
+                <td scope="row" *ngIf="!roleConnectAdmin">
+                  <label
+                    class="switch"
+                    [title]="
+                      item.enabled ? 'Desactivar Usuario' : 'Activar Usuario'
+                    "
+                    (click)="
+                      item.enabled
+                        ? openModalDisabled(item.id)
+                        : openModalEnabled(item.id)
+                    "
+                  >
+                    <input
+                      (click)="clickCheckBox($event)"
+                      [(ngModel)]="item.enabled"
+                      type="checkbox"
+                    />
+                    <span class="slider round"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-body" *ngIf="dataListUser.length === 0">
+        <div class="alert alert-primary text-center" role="alert">
+          No tiene usuarios registrados
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

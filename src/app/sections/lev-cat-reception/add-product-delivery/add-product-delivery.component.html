@@ -1,0 +1,653 @@
+<app-page-header [heading]="'Entrega'" [icon]="'fa-star'"> </app-page-header>
+<div class="card">
+  <div class="card-header">
+    <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+      <i class="material-icons cursor m-2" (click)="goBack()">backspace</i>
+    </span>
+    <div class="text-center">
+      <h3>Entrega</h3>
+      Estado de la entrega:
+      <span *ngIf="dataDelivery.id != 0" [innerHTML]="nameStateDelivery(dataDelivery.deliveryStatusId)"></span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row" *ngIf="dataDelivery">
+      <div class="col-12 col-md-6 mb-1">
+        <app-input [title]="'Código de la entrega'" [id]="'code'" [name]="'code'" [disabled]="true"
+          [(inputModel)]="dataDelivery.code"></app-input>
+      </div>
+      <div class="col-12 col-md-6 mb-1">
+        <app-input [title]="'Fecha'" [id]="'date'" [name]="'date'" [disabled]="true" [type]="'text'"
+          [(inputModel)]="dataDelivery.deliveryDate"></app-input>
+      </div>
+      <div class="col-12 mb-1">
+        <app-select [disableOptionZero]="false" [labelSelect]="'Gestor - Municipio'"
+          [nameSelect]="'managersAndMunicipality'" [idSelect]="'managersAndMunicipality'"
+          [optionZero]="'Seleccione el Gestor - Municipio'" [listSelect]="listManagerWithMunicipality" [key]="'option'"
+          [(inputModel)]="managerCodeAndMunicipality" [disable]="true"></app-select>
+      </div>
+      <div class="col-12 mb-1">
+        <app-observation [title]="'Observación'" [id]="'observations'" [disabled]="true"
+          [(inputModel)]="dataDelivery.observations"></app-observation>
+      </div>
+      <div class="col-12 mb-1" *ngIf="
+          dataDelivery.deliveryStatusId == StatesDeliveriesEnum.ACEPTADO ||
+          dataDelivery.deliveryStatusId == StatesDeliveriesEnum.RECHAZADO
+        ">
+        <app-observation [title]="'Comentarios finales'" [id]="'observationsFinal'" [disabled]="true"
+          [(inputModel)]="dataDelivery.finalComments"></app-observation>
+      </div>
+      <div class="col-12 col-md-8 mb-1" *ngIf="
+          dataProductsFromManager.length > 0 &&
+          isOperator &&
+          StatesDeliveriesEnum.BORRADOR == dataDelivery.deliveryStatusId
+        ">
+        <app-select [labelSelect]="'Agregar productos a la entrega'" [nameSelect]="'listProductsDelivery'"
+          [idSelect]="'listProductsDelivery'" [optionZero]="'Seleccione el producto'"
+          [listSelect]="listProductsDelivery" [key]="'option'" [(inputModel)]="selecProductsDelivery"></app-select>
+      </div>
+      <div class="col-12 col-md-4 mb-1" *ngIf="
+          dataProductsFromManager.length > 0 &&
+          isOperator &&
+          StatesDeliveriesEnum.BORRADOR == dataDelivery.deliveryStatusId
+        ">
+        <button type="button" name="agregar" id="agregar" class="btn btn-dark btn-sm btn-block"
+          [disabled]="selecProductsDelivery === '0' ? true : false" (click)="openAddProductToDelivery()">
+          Agregar
+        </button>
+      </div>
+      <div class="col-12">
+        <div class="card-header">
+          <div class="text-center">
+            <h3>Productos agregados a la entrega</h3>
+          </div>
+        </div>
+        <div class="table-inverse table-responsive text-center"
+          *ngIf="dataDelivery && listProductsFromDelivery.length > 0">
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>ID producto</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+                <th>Observación</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of listProductsFromDelivery; let index = index">
+                <td scope="row">
+                  {{ item.id }}
+                </td>
+                <td scope="row">
+                  {{ changeIdProduct(item.productId, "name") }}
+                </td>
+                <td scope="row">
+                  <span [innerHTML]="nameStateProduct(item.deliveryProductStatusId)"></span>
+                </td>
+                <td scope="row">
+                  <textarea [name]="'description' + index" [id]="'description' + index" rows="3" [disabled]="true">
+                    {{ changeIdProduct(item.productId, "description") }}
+                  </textarea>
+                </td>
+                <td scope="row">
+                  <app-observation [id]="'observationProduct' + index" [name]="'observationProduct' + index"
+                    [(inputModel)]="item.observations" [disabled]="true">
+                  </app-observation>
+                </td>
+                <td scope="row">
+                  <span [ngbTooltip]="
+                      isConnectManager ||
+                      StatesDeliveriesEnum.ACEPTADO ==
+                        dataDelivery.deliveryStatusId
+                        ? 'Ver detalle del producto'
+                        : 'Actualizar'
+                    " placement="top" show-delay="500">
+                    <i class="material-icons cursor" (click)="
+                        openModalUpdateProduct(
+                          modalUpdateProduct,
+                          item.productId,
+                          item.id
+                        )
+                      ">
+                      {{
+                      isConnectManager ||
+                      StatesDeliveriesEnum.ACEPTADO ==
+                      dataDelivery.deliveryStatusId ||
+                      StatesProductsEnum.ACEPTADO ==
+                      item.deliveryProductStatusId
+                      ? "visibility"
+                      : "edit"
+                      }}
+                    </i>
+                  </span>
+                  <span ngbTooltip="Eliminar" placement="top" show-delay="500" *ngIf="
+                      isOperator &&
+                      StatesDeliveriesEnum.BORRADOR ==
+                        dataDelivery.deliveryStatusId
+                    ">
+                    <i class="material-icons cursor" (click)="openModaldeleteProduct(item)">
+                      delete
+                    </i>
+                  </span>
+                  <span *ngIf="
+                      isConnectManager &&
+                      StatesDeliveriesEnum.EN_REVISION ==
+                        dataDelivery.deliveryStatusId &&
+                      item.deliveryProductStatusId ==
+                        StatesProductsEnum.PENDIENTE
+                    " ngbTooltip="Aceptar producto" placement="top" show-delay="500">
+                    <i class="material-icons cursor" (click)="openModalAcceptProduct(item.id, modalFeedback)">
+                      thumb_up_alt
+                    </i>
+                  </span>
+                  <span *ngIf="
+                      isConnectManager &&
+                      StatesDeliveriesEnum.EN_REVISION ==
+                        dataDelivery.deliveryStatusId &&
+                      item.deliveryProductStatusId ==
+                        StatesProductsEnum.PENDIENTE
+                    " ngbTooltip="Rechazar producto" placement="top" show-delay="500">
+                    <i class="material-icons cursor" (click)="openModalRejectProduct(item.id, modalFeedback)">
+                      thumb_down_alt
+                    </i>
+                  </span>
+                  <span *ngIf="
+                      StatesDeliveriesEnum.BORRADOR !=
+                        dataDelivery.deliveryStatusId &&
+                      StatesDeliveriesEnum.ENTREGADO !=
+                        dataDelivery.deliveryStatusId
+                    " [ngbTooltip]="
+                      isOperator ? 'Ver feedback' : 'Realizar feedback'
+                    " placement="top" show-delay="500">
+                    <i class="material-icons cursor" (click)="openModalFeedback(modalFeedback, item.id)">
+                      feedback
+                    </i>
+                  </span>
+                  <ng-template #modalFeedback let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title">Feedback</h4>
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body text-center" *ngIf="
+                        isConnectManager &&
+                        StatesDeliveriesEnum.EN_REVISION ==
+                          dataDelivery.deliveryStatusId
+                      ">
+                      <app-observation [id]="'observationfeedback'" [title]="'* Observaciones feedback'"
+                        [name]="'observationfeedback'" [(inputModel)]="observationfeedback"></app-observation>
+                      <div class="input-group mt-1">
+                        <div class="input-group-prepend input-group-text">
+                          <div>Adjunto feedback</div>
+                        </div>
+                        <input #documentFileRef accept=".zip" id="file-documement-feedback"
+                          name="file-documement-feedback" class="form-control" type="file"
+                          (change)="documentFeedback($event.target.files)" />
+                      </div>
+                    </div>
+                    <div class="modal-footer" *ngIf="
+                        isConnectManager &&
+                        StatesDeliveriesEnum.EN_REVISION ==
+                          dataDelivery.deliveryStatusId
+                      ">
+                      <button type="button" class="btn btn-dark btn-block" (click)="createFeedback(item.id)"
+                        [disabled]="observationfeedback == ''">
+                        Enviar
+                      </button>
+                    </div>
+                    <div class="modal-body text-center">
+                      <div class="table-inverse table-responsive" *ngIf="listFeedBacks.length > 0">
+                        <table class="table table-striped text-center">
+                          <thead class="thead-inverse">
+                            <tr>
+                              <th>ID</th>
+                              <th>Observaciones</th>
+                              <th>Fecha</th>
+                              <th>Opciones</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="
+                                let feedback of listFeedBacks;
+                                let index = index
+                              ">
+                              <td scope="row">{{ feedback.feedbackId }}</td>
+                              <td scope="row">
+                                <app-observation [id]="'feedback' + index" [name]="'feedback' + index"
+                                  [(inputModel)]="feedback.feedback" [disabled]="true">
+                                </app-observation>
+                              </td>
+                              <td scope="row">
+                                {{ formatDate(feedback.feedbackDate) }}
+                              </td>
+                              <td scope="row">
+                                <span *ngIf="feedback.hasAttachment" ngbTooltip="Descargar feedback" placement="top"
+                                  show-delay="500" (click)="
+                                    downloadFeedback(
+                                      item.id,
+                                      feedback.feedbackId
+                                    )
+                                  ">
+                                  <i class="material-icons cursor">
+                                    download
+                                  </i>
+                                </span>
+                                <span *ngIf="!feedback.hasAttachment">N/A</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div *ngIf="listFeedBacks.length == 0">
+                        <div class="alert alert-primary text-center" role="alert">
+                          No se han realizado feedbacks.
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                  <ng-template #modalUpdateProduct let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title">Información del producto</h4>
+                      <button [disabled]="isUpdateTableProduct" type="button" class="close" aria-label="Close"
+                        (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body text-center">
+                      <div class="row">
+                        <div class="col-12">
+                          <app-observation [title]="'* Observaciones del producto'" [name]="'observation' + index"
+                            [(inputModel)]="item.observations" [disabled]="
+                              selectTypeAttachment != '0' &&
+                              StatesDeliveriesEnum.BORRADOR ==
+                                dataDelivery.deliveryStatusId
+                                ? false
+                                : true
+                            " (change)="changeUpdaateInfoProduct(item)"></app-observation>
+                        </div>
+                        <div class="col-12 mt-1" *ngIf="
+                            isOperator &&
+                            StatesDeliveriesEnum.ACEPTADO !=
+                              dataDelivery.deliveryStatusId &&
+                            StatesProductsEnum.ACEPTADO !=
+                              item.deliveryProductStatusId
+                          ">
+                          <app-select [labelSelect]="
+                              '* Agregar archivo adjunto del producto'
+                            " [nameSelect]="'listTypeAttachmentProduct'" [idSelect]="'listTypeAttachmentProduct'"
+                            [optionZero]="'Seleccione el tipo de archivo'" [listSelect]="listTypeAttachmentProduct"
+                            [key]="'option'" [disableOptionZero]="false" [(inputModel)]="selectTypeAttachment"
+                            (change)="changeUpdaateInfoProduct(item)"></app-select>
+                        </div>
+                        <div class="col-6 mt-1" *ngIf="
+                            selectTypeAttachment ==
+                              typeAttachmentsProduct.DOCUMENTO ||
+                            selectTypeAttachment == typeAttachmentsProduct.XTF
+                          ">
+                          <div class="input-group">
+                            <div class="input-group-prepend input-group-text">
+                              <div>
+                                *
+                                {{
+                                selectTypeAttachment ==
+                                typeAttachmentsProduct.DOCUMENTO
+                                ? "Documento"
+                                : "XTF"
+                                }}
+                              </div>
+                            </div>
+                            <input #documentFileRef accept=".zip" id="file-documement" name="file-documement"
+                              class="form-control" type="file" (change)="
+                                documentProduct($event.target.files, item)
+                              " />
+                          </div>
+                        </div>
+                        <div class="col-6 mt-1" *ngIf="
+                            selectTypeAttachment == typeAttachmentsProduct.XTF
+                          ">
+                          <app-select [labelSelect]="'* Modelo'" [nameSelect]="'listTypeModel'"
+                            [idSelect]="'listTypeModel'" [optionZero]="'Seleccione la versión de modelo'"
+                            [listSelect]="listTypeModel" [key]="'option'" [(inputModel)]="modelVersionAttachment"
+                            (change)="changeUpdaateInfoProduct(item)"></app-select>
+                        </div>
+                        <div class="col-6 mt-1" *ngIf="
+                            selectTypeAttachment == typeAttachmentsProduct.FTP
+                          ">
+                          <app-input [title]="'* Dominio'" [id]="'domain'" [name]="'domain'"
+                            [(inputModel)]="dataFTP.domain" (change)="changeUpdaateInfoProduct(item)"></app-input>
+                        </div>
+                        <div class="col-6 mt-1" *ngIf="
+                            selectTypeAttachment == typeAttachmentsProduct.FTP
+                          ">
+                          <app-input [title]="'* Puerto'" [id]="'port'" [type]="'number'" [name]="'port'"
+                            [(inputModel)]="dataFTP.port" (change)="changeUpdaateInfoProduct(item)"></app-input>
+                        </div>
+                        <div class="col-6 mt-1" *ngIf="
+                            selectTypeAttachment == typeAttachmentsProduct.FTP
+                          ">
+                          <app-input [title]="'* Usuario'" [id]="'unsername'" [name]="'unsername'"
+                            [(inputModel)]="dataFTP.username" (change)="changeUpdaateInfoProduct(item)"></app-input>
+                        </div>
+                        <div class="col-6 mt-1" *ngIf="
+                            selectTypeAttachment == typeAttachmentsProduct.FTP
+                          ">
+                          <app-input [title]="'* Contraseña'" [id]="'password'" [name]="'password'" [type]="'password'"
+                            [(inputModel)]="dataFTP.password" (change)="changeUpdaateInfoProduct(item)"></app-input>
+                        </div>
+                        <div class="col-12 mt-1" *ngIf="selectTypeAttachment != '0'">
+                          <app-observation [id]="'observationAttachment'" [title]="'* Observaciones'"
+                            [name]="'observationAttachment'" [(inputModel)]="observationAttachment"
+                            (change)="changeUpdaateInfoProduct(item)"></app-observation>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <button type="button" class="btn btn-dark btn-block" *ngIf="selectTypeAttachment != '0'"
+                            (click)="addAttachmentToProduct(item.id, item)" [disabled]="disabledButtonAttachment">
+                            Guardar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card-header">
+                      <div class="text-center">
+                        <h3>Archivos del producto</h3>
+                      </div>
+                    </div>
+                    <small class="form-text text-muted text-center" *ngIf="isLoadAttachment">
+                      por favor espere cargando archivo
+                      <img class="load-spinner-size" src="/assets/Filled-fading-balls.gif" alt="Filled fading balls" />
+                    </small>
+                    <div class="modal-body text-center">
+                      <div class="col-12 mb-1" *ngIf="listAttachmentsDeliveryProduct.length > 0">
+                        <div class="table-inverse table-responsive text-center">
+                          <table class="table table-striped">
+                            <thead class="thead-inverse">
+                              <tr>
+                                <th>ID</th>
+                                <th>Tipo</th>
+                                <th>Información</th>
+                                <th>Fecha</th>
+                                <th>Observaciones</th>
+                                <th>Opciones</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="
+                                  let attachments of listAttachmentsDeliveryProduct;
+                                  let index = index
+                                ">
+                                <td scope="row">
+                                  {{ attachments.attachmentId }}
+                                </td>
+                                <td scope="row">
+                                  <div *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.DOCUMENTTitle
+                                    ">
+                                    Documento
+                                  </div>
+                                  <div *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.FTPTitle
+                                    ">
+                                    FTP
+                                  </div>
+                                  <div *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.XTFTitle
+                                    ">
+                                    XTF
+                                  </div>
+                                </td>
+                                <td scope="row">
+                                  <div *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.DOCUMENTTitle
+                                    ">
+                                    N/A
+                                  </div>
+                                  <div *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.FTPTitle
+                                    ">
+                                    <strong>Dominio:</strong>
+                                    {{ attachments.data.domain }}<br />
+                                    <strong>Puerto:</strong>
+                                    {{ attachments.data.port }}<br />
+                                    <strong>Usuario:</strong>
+                                    {{ attachments.data.username }}<br />
+                                    <strong>Contraseña:</strong>
+                                    {{ attachments.data.password }}
+                                  </div>
+                                  <div *ngIf="
+                                      attachments.type ==
+                                      typeAttachmentsProduct.XTFTitle
+                                    ">
+                                    <div *ngIf="
+                                        attachments.data.status ===
+                                        statusAttachmentsXTF.ACCEPTED
+                                      ">
+                                      <strong>Estado: </strong>
+                                      <span class="badge badge-success">
+                                        {{ statusAttachmentsXTF.ACCEPTED_TEXT }}
+                                      </span>
+                                      <br />
+                                      <strong>Versión modelo: </strong>{{ attachments.data.version }}
+                                      <br />
+                                      <strong>Fecha: </strong>
+                                      {{ attachments.deliveryStatusDate }}
+                                    </div>
+                                    <div *ngIf="
+                                        attachments.data.status ===
+                                        statusAttachmentsXTF.IN_VALIDATION
+                                      ">
+                                      <strong>Estado: </strong>
+                                      <span class="badge badge-info">
+                                        {{
+                                        statusAttachmentsXTF.IN_VALIDATION_TEXT
+                                        }}
+                                      </span>
+                                      <br />
+                                      <strong>Versión modelo: </strong>{{ attachments.data.version }}
+                                      <br />
+                                      <strong>Fecha: </strong>
+                                      {{ attachments.deliveryStatusDate }}
+                                    </div>
+                                    <div *ngIf="
+                                        attachments.data.status ===
+                                        statusAttachmentsXTF.REJECTED
+                                      ">
+                                      <strong>Estado: </strong>
+                                      <span class="badge badge-danger">
+                                        {{ statusAttachmentsXTF.REJECTED_TEXT }}
+                                      </span>
+                                    </div>
+                                    <div *ngIf="
+                                        attachments.data.status ===
+                                        statusAttachmentsXTF.EN_CONTROL_CALIDAD
+                                      ">
+                                      <strong>Estado: </strong>
+                                      <span class="badge badge-warning">
+                                        {{
+                                        statusAttachmentsXTF.EN_CONTROL_CALIDAD_TEXT
+                                        }}
+                                      </span>
+                                    </div>
+                                    <div *ngIf="
+                                        attachments.data.status ===
+                                        statusAttachmentsXTF.FINALIZADO_CALIDAD
+                                      ">
+                                      <strong>Estado: </strong>
+                                      <span class="badge badge-primary">
+                                        {{
+                                        statusAttachmentsXTF.FINALIZADO_CALIDAD_TEXT
+                                        }}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td scope="row">
+                                  {{ formatDate(attachments.attachmentDate) }}
+                                </td>
+                                <td scope="row">
+                                  <app-observation [id]="'observationAttachments' + index"
+                                    [name]="'observationAttachments' + index" [(inputModel)]="attachments.observations"
+                                    [disabled]="true">
+                                  </app-observation>
+                                </td>
+                                <td>
+                                  <span *ngIf="
+                                      StatesDeliveriesEnum.EN_REVISION ==
+                                        dataDelivery.deliveryStatusId &&
+                                      isConnectManager &&
+                                      attachments.data.status ===
+                                        statusAttachmentsXTF.ACCEPTED &&
+                                      attachments.type ==
+                                        typeAttachmentsProduct.XTFTitle &&
+                                      isEnabledControlQuality
+                                    " ngbTooltip="Crear tarea de calidad" placement="top" show-delay="500" (click)="
+                                      createTaskQualityAttachment(
+                                        attachments.deliveryProductId,
+                                        attachments.attachmentId
+                                      )
+                                    ">
+                                    <i class="material-icons cursor">
+                                      task_alt
+                                    </i>
+                                  </span>
+                                  <span *ngIf="
+                                      attachments.data.status ===
+                                        statusAttachmentsXTF.FINALIZADO_CALIDAD &&
+                                      attachments.type ==
+                                        typeAttachmentsProduct.XTFTitle
+                                    " ngbTooltip="Descargar reporte control de calidad" placement="top"
+                                    show-delay="500" (click)="
+                                      downloadReportQualityAttachment(
+                                        attachments.deliveryProductId,
+                                        attachments.attachmentId
+                                      )
+                                    ">
+                                    <i class="material-icons cursor">
+                                      summarize
+                                    </i>
+                                  </span>
+                                  <span *ngIf="
+                                      attachments.type !=
+                                      typeAttachmentsProduct.FTPTitle
+                                    " ngbTooltip="Descargar adjunto" placement="top" show-delay="500" (click)="
+                                      downloadAttachment(
+                                        attachments.deliveryProductId,
+                                        attachments.attachmentId
+                                      )
+                                    ">
+                                    <i class="material-icons cursor">
+                                      download
+                                    </i>
+                                  </span>
+                                  <span ngbTooltip="Eliminar" placement="top" show-delay="500" (click)="
+                                      deleteAttachment(
+                                        attachments.deliveryProductId,
+                                        attachments.attachmentId
+                                      )
+                                    " *ngIf="
+                                      isOperator &&
+                                      StatesDeliveriesEnum.ACEPTADO !=
+                                        dataDelivery.deliveryStatusId &&
+                                      item.deliveryProductStatusId !=
+                                        StatesProductsEnum.ACEPTADO
+                                    ">
+                                    <i class="material-icons cursor">
+                                      delete
+                                    </i>
+                                  </span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="col-12 mb-1" *ngIf="listAttachmentsDeliveryProduct.length === 0">
+                        <div class="alert alert-primary text-center" role="alert">
+                          No existen adjuntos asociados al producto.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="text-left">
+                        <button [disabled]="isUpdateTableProduct" type="button" ngbAutofocus
+                          class="btn btn-dark btn-block" (click)="closeModalProductDelivery()">
+                          Cerrar
+                        </button>
+                      </div>
+                    </div>
+                  </ng-template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-12 mb-1" *ngIf="listProductsFromDelivery.length === 0">
+          <div class="alert alert-primary text-center" role="alert">
+            No existen productos asociados a la entrega.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <button type="button" ngbAutofocus class="btn btn-dark btn-block" (click)="sendDeliveryToManager()" *ngIf="
+        StatesDeliveriesEnum.BORRADOR == dataDelivery.deliveryStatusId &&
+        listProductsFromDelivery.length != 0
+      ">
+      Entregar
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-dark btn-block" *ngIf="
+        StatesDeliveriesEnum.ENTREGADO == dataDelivery.deliveryStatusId &&
+        isConnectManager
+      " (click)="startReviewManager()">
+      Iniciar revisión
+    </button>
+    <div class="row">
+      <div class="col-6">
+        <button type="button" class="btn btn-dark btn-block" *ngIf="
+            StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
+          " (click)="acceptDelivery()" [disabled]="
+            statusOnlyProduct1(
+              StatesProductsEnum.PENDIENTE,
+              StatesProductsEnum.RECHAZADO
+            )
+          ">
+          Aceptar entrega
+        </button>
+      </div>
+      <div class="col-6">
+        <button type="button" class="btn btn-dark btn-block" *ngIf="
+            StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
+          " (click)="returnDeliveryToOperator()" [disabled]="statusOnlyProduct2(StatesProductsEnum.RECHAZADO)">
+          Enviar a corrección
+        </button>
+      </div>
+      <div class="col-6 mt-4">
+        <button type="button" class="btn btn-dark btn-block" *ngIf="
+            StatesDeliveriesEnum.EN_REVISION == dataDelivery.deliveryStatusId
+          " (click)="rejectedDelivery()" [disabled]="statusOnlyProduct3(StatesProductsEnum.ACEPTADO)">
+          Rechazar entrega
+        </button>
+      </div>
+      <div class="col-12">
+        <button type="button" class="btn btn-dark btn-block" *ngIf="
+            isOperator &&
+            StatesDeliveriesEnum.EN_CORRECCION == dataDelivery.deliveryStatusId
+          " (click)="returnDeliveryToManager()">
+          Entregar corrección
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner>
+  <p style="color: white">Cargando, por favor espere ...</p>
+</ngx-spinner>
