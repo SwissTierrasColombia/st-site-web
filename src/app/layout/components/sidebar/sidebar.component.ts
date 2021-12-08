@@ -25,6 +25,7 @@ export class SidebarComponent implements OnInit {
   isSnr: any;
   @Output() collapsedEvent = new EventEmitter<boolean>();
   administration: any;
+  sinic: any;
 
   constructor(public router: Router, private roles: RoleModel) {
     this.user = {
@@ -45,6 +46,7 @@ export class SidebarComponent implements OnInit {
       insumos: 'insumos',
       quality: 'quality',
       administrador: 'administrador',
+      sinic: 'sinic'
     };
     this.allroles = {};
     this.roleAdmin = {
@@ -93,6 +95,14 @@ export class SidebarComponent implements OnInit {
     });
     if (this.user.provider_sub_roles) {
       this.delegate = this.user.provider_sub_roles.find((elem: any) => {
+        return elem.id === 2;
+      });
+      if (this.user.entity.id === 8) {
+        this.isSnr = true;
+      }
+    }
+    if (this.user.manager_sub_roles) {
+      this.sinic = this.user.manager_sub_roles.find((elem: any) => {
         return elem.id === 2;
       });
       if (this.user.entity.id === 8) {

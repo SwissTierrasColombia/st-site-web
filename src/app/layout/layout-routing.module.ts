@@ -65,6 +65,12 @@ const routes: Routes = [
           ),
         canActivate: [RoleManagerOperatorGuard],
       },
+      {
+        path: 'sinic',
+        loadChildren: () =>
+          import('../sections/sinic/sinic.module').then((m) => m.SinicModule),
+        canActivate: [RoleAdminManagerGuard],
+      },
     ],
   },
 ];

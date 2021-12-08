@@ -1,0 +1,37 @@
+<app-page-header [heading]="'Búsqueda de Entregas'" [icon]="'fa-star'">
+</app-page-header>
+<div class="card">
+    <div class="card-header text-center">
+        <h3>Buscar entregas</h3>
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" *ngIf="isManager">
+                <a class="nav-link" [ngClass]="{ active: tab === 1 }" data-toggle="tab" role="tab" (click)="tab = 1"
+                    aria-controls="home">
+                    <i class="material-icons"> toc </i>Entregas en Borrador
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="isManager || isAdministrator">
+                <a class="nav-link" [ngClass]="{ active: tab === 2 }" data-toggle="tab" role="tab" (click)="tab = 2"
+                    aria-controls="home">
+                    <i class="material-icons"> pending_actions </i>
+                    {{ isManager ? "Entregas Enviadas" : "Entregas Recibidas" }}
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel" *ngIf="isManager">
+                <br />
+                <app-find-deliveries [tab]="tab"></app-find-deliveries>
+            </div>
+            <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel"
+                *ngIf="isManager || isAdministrator">
+                <br />
+                <app-find-deliveries [isManager]="isManager" [isAdministrator]="isAdministrator" [tab]="tab">
+                </app-find-deliveries>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer"></div>
+</div>
