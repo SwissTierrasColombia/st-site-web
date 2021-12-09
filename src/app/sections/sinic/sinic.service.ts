@@ -102,6 +102,6 @@ export class SinicService {
  * sendAuthority
  */
   public sendAuthority(deliveryId: number) {
-    return this.httpClient.patch(`${this.url}/sinic/v1/deliveries/${deliveryId}`, {});
+    return this.httpClient.patch(`${this.url}/sinic/v1/deliveries/${deliveryId}/status/delivered`, {});
   }
 }
