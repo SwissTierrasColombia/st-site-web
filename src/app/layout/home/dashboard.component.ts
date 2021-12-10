@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
   deliveryInPending: number = 0;
   deliveryInRevision: number = 0;
   isManager: any;
+  sinic: any;
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private roles: RoleModel,
@@ -107,6 +108,11 @@ export class DashboardComponent implements OnInit {
     this.isManager = this.user.roles.find((elem: any) => {
       return elem.id === this.roles.gestor;
     });
+    if (this.user.manager_sub_roles) {
+      this.sinic = this.user.manager_sub_roles.find((elem: any) => {
+        return elem.id === 2;
+      });
+    }
     if (this.user.provider_sub_roles) {
       this.delegate = this.user.provider_sub_roles.find((elem: any) => {
         return elem.id === 2;
@@ -139,12 +145,12 @@ export class DashboardComponent implements OnInit {
           this.numRevision = data.length;
         });
     }
-    if (this.isManager) {
+    if (this.isManager && !this.sinic) {
       this.findDeliveryReceptionLevCat(StatesDeliveriesEnum.ENTREGADO);
       this.findDeliveryReceptionLevCat(
         StatesDeliveriesEnum.EN_REVISION +
-          ',' +
-          StatesDeliveriesEnum.EN_CORRECCION
+        ',' +
+        StatesDeliveriesEnum.EN_CORRECCION
       );
     }
   }
@@ -164,8 +170,8 @@ export class DashboardComponent implements OnInit {
         if (
           status ==
           StatesDeliveriesEnum.EN_REVISION +
-            ',' +
-            StatesDeliveriesEnum.EN_CORRECCION
+          ',' +
+          StatesDeliveriesEnum.EN_CORRECCION
         ) {
           this.deliveryInRevision = response.totalElements;
         }

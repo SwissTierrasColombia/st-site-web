@@ -9,12 +9,7 @@
     <div class="col-md-12">
       <ngb-carousel>
         <ng-template ngbSlide *ngFor="let slider of sliders">
-          <img
-            class="img-fluid mx-auto d-block"
-            [src]="slider.imagePath"
-            alt="Random first slide"
-            width="100%"
-          />
+          <img class="img-fluid mx-auto d-block" [src]="slider.imagePath" alt="Random first slide" width="100%" />
           <div class="carousel-caption">
             <h3>{{ slider.label }}</h3>
             <p>{{ slider.text }}</p>
@@ -25,77 +20,39 @@
   </div>
   <hr />
   <div class="row justify-content-center justify-content-md-center">
-    <div
-      *ngIf="roleproveedor && !user.is_provider_director && !delegate"
-      class="mt-1 mb-1 col-8 col-md-4"
-    >
-      <app-stat
-        [bgClass]="'success'"
-        [icon]="'fa-tasks'"
-        [count]="taskProvider"
-        [label]="'SOLICITUDES PENDIENTES'"
-        [url]="'/insumos/solicitudes/pendientes'"
-      >
+    <div *ngIf="roleproveedor && !user.is_provider_director && !delegate" class="mt-1 mb-1 col-8 col-md-4">
+      <app-stat [bgClass]="'success'" [icon]="'fa-tasks'" [count]="taskProvider" [label]="'SOLICITUDES PENDIENTES'"
+        [url]="'/insumos/solicitudes/pendientes'">
       </app-stat>
     </div>
     <div *ngIf="roleoperator" class="mt-1 mb-1 col-8 col-md-4">
-      <app-stat
-        [bgClass]="'success'"
-        [icon]="'fa-tasks'"
-        [count]="taskOperator"
-        [label]="'INSUMOS RECIBIDOS'"
-        [url]="'/operador/descargas'"
-      >
+      <app-stat [bgClass]="'success'" [icon]="'fa-tasks'" [count]="taskOperator" [label]="'INSUMOS RECIBIDOS'"
+        [url]="'/operador/descargas'">
       </app-stat>
     </div>
     <div *ngIf="roleoperator" class="mt-1 mb-1 col-8 col-md-4">
-      <app-stat
-        [bgClass]="'info'"
-        [icon]="'fa-archive'"
-        [count]="deliveryInDraft"
-        [label]="'ENTREGAS EN BORRADOR'"
-        [url]="'/calidad/buscar-entregas/1'"
-      >
+      <app-stat [bgClass]="'info'" [icon]="'fa-archive'" [count]="deliveryInDraft" [label]="'ENTREGAS EN BORRADOR'"
+        [url]="'/calidad/buscar-entregas/1'">
       </app-stat>
     </div>
     <div *ngIf="roleoperator" class="mt-1 mb-1 col-8 col-md-4">
-      <app-stat
-        [bgClass]="'warning'"
-        [icon]="'fa-share-square'"
-        [count]="deliveryInCorrection"
-        [label]="'ENTREGAS EN CORRECCIÓN'"
-        [url]="'/calidad/buscar-entregas/4'"
-      >
+      <app-stat [bgClass]="'warning'" [icon]="'fa-share-square'" [count]="deliveryInCorrection"
+        [label]="'ENTREGAS EN CORRECCIÓN'" [url]="'/calidad/buscar-entregas/4'">
       </app-stat>
     </div>
     <div *ngIf="delegate" class="mt-1 mb-1 col-8 col-md-4">
-      <app-stat
-        [bgClass]="'info'"
-        [icon]="'fa-tasks'"
-        [count]="numRevision"
-        [label]="'REVISIONES'"
-        [url]="'/insumos/revisiones-pendientes'"
-      >
+      <app-stat [bgClass]="'info'" [icon]="'fa-tasks'" [count]="numRevision" [label]="'REVISIONES'"
+        [url]="'/insumos/revisiones-pendientes'">
       </app-stat>
     </div>
-    <div *ngIf="isManager" class="mt-1 mb-1 col-8 col-md-4">
-      <app-stat
-        [bgClass]="'info'"
-        [icon]="'fa-archive'"
-        [count]="deliveryInPending"
-        [label]="'ENTREGAS RECIBIDAS'"
-        [url]="'/calidad/buscar-entregas/2'"
-      >
+    <div *ngIf="isManager && !sinic" class="mt-1 mb-1 col-8 col-md-4">
+      <app-stat [bgClass]="'info'" [icon]="'fa-archive'" [count]="deliveryInPending" [label]="'ENTREGAS RECIBIDAS'"
+        [url]="'/calidad/buscar-entregas/2'">
       </app-stat>
     </div>
-    <div *ngIf="isManager" class="mt-1 mb-1 col-8 col-md-4">
-      <app-stat
-        [bgClass]="'warning'"
-        [icon]="'fa-share-square'"
-        [count]="deliveryInRevision"
-        [label]="'ENTREGAS EN REVISIÓN'"
-        [url]="'/calidad/buscar-entregas/3'"
-      >
+    <div *ngIf="isManager && !sinic" class="mt-1 mb-1 col-8 col-md-4">
+      <app-stat [bgClass]="'warning'" [icon]="'fa-share-square'" [count]="deliveryInRevision"
+        [label]="'ENTREGAS EN REVISIÓN'" [url]="'/calidad/buscar-entregas/3'">
       </app-stat>
     </div>
   </div>
