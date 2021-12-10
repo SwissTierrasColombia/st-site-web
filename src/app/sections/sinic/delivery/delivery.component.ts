@@ -77,6 +77,8 @@ export class DeliveryComponent implements OnInit {
   findDelivery(deliveryId: number) {
     this.sinicService.searchDelivery(deliveryId).subscribe(element => {
       this.delivery = element;
+      console.log(this.delivery);
+      
     });
     this.findFiles(deliveryId);
   }
@@ -141,7 +143,12 @@ export class DeliveryComponent implements OnInit {
     })
   }
   findSuccessFiles(): boolean {
-    let isValid = this.listFiles.find(item => item.isValid === false);
+    console.log(this.listFiles);
+    
+    if (this.listFiles.length === 0) {
+      return false;
+    }
+    let isValid = this.listFiles.find(item => item.isValid === false || item.isValid === null);
     if (isValid) {
       return false;
     } else {
@@ -149,9 +156,24 @@ export class DeliveryComponent implements OnInit {
     }
   }
   save() {
-    this.sinicService.sendAuthority(this.deliveryId).subscribe(_ => {
-      this.toastr.success('Se ha enviado correctamente ha autoridad catastral');
-      this.findDelivery(this.deliveryId);
+    this.optionModalRef = this.modalService.open(ModalComponent, {
+      centered: true,
+      scrollable: true,
+    });
+    this.optionModalRef.componentInstance.title =
+      'Usted va a REPORTAR la información del MUNICIPIO al SINIC.';
+    this.optionModalRef.componentInstance.description =
+      'Advertencia: ¿Está seguro de hacerlo?';
+    this.optionModalRef.result.then((result) => {
+      if (result) {
+        if (result.option) {
+          this.sinicService.sendAuthority(this.deliveryId).subscribe(_ => {
+            this.toastr.success('Se ha enviado correctamente a la autoridad catastral');
+            this.findDelivery(this.deliveryId);
+            this.sendAuthority = false;
+          });
+        }
+      }
     });
   }
   cancel() {

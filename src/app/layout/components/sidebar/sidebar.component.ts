@@ -71,6 +71,7 @@ export class SidebarComponent implements OnInit {
     this.showMenu = localStorage.getItem('showMenu');
     this.allroles = this.roles;
     this.user = JwtHelper.getUserPublicInformation();
+    
     this.roleAdmin = this.user.roles.find((elem) => {
       return elem.id === this.roles.administrador;
     });

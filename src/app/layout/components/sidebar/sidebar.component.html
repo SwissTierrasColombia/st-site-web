@@ -5,6 +5,9 @@
       <span>Página Principal</span>
     </a>
     <div class="nested-menu" *ngIf="
+    sinic
+          ? !sinic.id
+          : 0 === allroles.sinic ||
         roleAdmin
           ? roleAdmin.id
           : 0 === allroles.administrador || rolegestor
@@ -88,6 +91,9 @@
     <!-- END SINIC -->
 
     <div class="nested-menu" *ngIf="
+    sinic
+    ? !sinic.id
+    : 0 === allroles.sinic ||
         rolegestor
           ? rolegestor.id
           : 0 === allroles.gestor || roleproveedor
