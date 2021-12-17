@@ -29,7 +29,7 @@ export class SinicService {
     if (options.selectMunicipality !== '0') {
       url += `&municipality=${options.selectMunicipality}`;
     }
-    if (options.selectManagerId !== 0) {
+    if (options.selectManagerId !== '0') {
       url += `&manager=${options.selectManagerId}`;
     }
     return this.httpClient.get(url);

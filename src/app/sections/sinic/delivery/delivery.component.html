@@ -7,9 +7,7 @@
                     <i class="material-icons cursor m-2" (click)="goBack()">backspace</i>
                 </span>
             </div>
-            <div class="col-5">
-
-            </div>
+            <div class="col-5"></div>
             <div class="col-5">
                 <div class="text-left">
                     <div class="input-group">
@@ -69,13 +67,13 @@
                 </table>
             </div>
         </div>
-        <div class="card-header text-center" *ngIf="!isAdministrator">
+        <div class="card-header text-center" *ngIf="!isAdministrator && delivery.status ==='DRAFT'">
             <h2>
                 {{ id > 0 ? "Actualizar" : "Añadir" }} archivo XTF a la entrega
                 <span *ngIf="id > 0"><b>#{{ id }}</b></span>
             </h2>
         </div>
-        <form action="" method="post" *ngIf="!isAdministrator">
+        <form action="" method="post" *ngIf="!isAdministrator && delivery.status ==='DRAFT'">
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="input-group">
@@ -101,15 +99,9 @@
             </div>
         </form>
     </div>
-    <div class="card-footer text-muted text-center" *ngIf="!isAdministrator">
+    <div class="card-footer text-muted text-center" *ngIf="!isAdministrator && delivery.status ==='DRAFT'">
         <button type="button" [disabled]="!formOk" *ngIf="!editMode" class="btn btn-dark" (click)="create()">
             Adjuntar
-        </button>
-        <button type="button" [disabled]="!formOk" *ngIf="editMode" class="btn btn-dark" (click)="save()">
-            Guardar
-        </button>
-        <button type="button" style="margin-left: 10px" class="btn btn-dark" (click)="cancel()">
-            Limpiar
         </button>
     </div>
     <div class="card-header text-center">
@@ -123,21 +115,22 @@
                         <tr>
                             <th>ID</th>
                             <th>Fecha de cargue</th>
-                            <th>Estado</th>
-                            <th>Fecha de estado</th>
+                            <th>Información</th>
                             <th>Observación</th>
                             <!-- <th>Version</th> -->
-                            <th *ngIf="!isAdministrator">Opciones</th>
+                            <th *ngIf="!isAdministrator && delivery.status ==='DRAFT'">Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of listFiles; let index = index">
                             <td scope="row">{{ item.id }}</td>
-                            <td scope="row"> {{ formatDate(item.date) }}</td>
+                            <td scope="row">{{ formatDate(item.date) }}</td>
                             <td scope="row">
-                                <span [innerHTML]="changeNameStateFile(item.status)"></span>
+                                <strong>Estado: </strong> <span
+                                    [innerHTML]="changeNameStateFile(item.status)"></span><br>
+                                <strong>Versión del modelo: </strong>{{item.version}}<br>
+                                <strong>Fecha: </strong>{{ formatDate(item.dateStatus) }}
                             </td>
-                            <td scope="row">{{ formatDate(item.dateStatus) }}</td>
                             <td scope="row">
                                 <app-observation [name]="'observation'" [(inputModel)]="item.observations"
                                     [disabled]="true"></app-observation>
@@ -150,14 +143,15 @@
                                         file_download
                                     </i>
                                 </span>
-                                <span *ngIf="!isAdministrator && item.hasLog" ngbTooltip="Descargar log de errores"
-                                    placement="top" show-delay="500" (click)="downloadLog(item)">
+                                <span *ngIf="!isAdministrator && item.hasLog && delivery.status ==='DRAFT'"
+                                    ngbTooltip="Descargar log de errores" placement="top" show-delay="500"
+                                    (click)="downloadLog(item)">
                                     <i class="material-icons cursor">
                                         description
                                     </i>
                                 </span>
-                                <span ngbTooltip="Eliminar" placement="top" show-delay="500"
-                                    (click)="deleteAttachment(item)">
+                                <span *ngIf="delivery.status ==='DRAFT'" ngbTooltip="Eliminar" placement="top"
+                                    show-delay="500" (click)="deleteAttachment(item)">
                                     <i class="material-icons cursor">
                                         delete
                                     </i>
@@ -176,9 +170,9 @@
             </div>
         </div>
     </div>
-    <div class="card-footer text-muted text-center" *ngIf="!isAdministrator && this.delivery.status ==='DRAFT'">
+    <div class="card-footer text-muted text-center" *ngIf="!isAdministrator && delivery.status ==='DRAFT'">
         <button type="button" [disabled]="!sendAuthority" class="btn btn-dark" (click)="save()">
-            Enviar a autoridad catastral
+            Enviar a Autoridad Catastral
         </button>
     </div>
 </div>

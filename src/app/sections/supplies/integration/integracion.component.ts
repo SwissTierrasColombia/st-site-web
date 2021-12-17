@@ -433,7 +433,6 @@ export class IntegracionComponent implements OnInit {
           this.serviceWorkspaces
             .configureMap(integrationId)
             .subscribe((element) => {
-              console.log(element);
               this.toastr.success('Se a generado el mapa correctamente.');
             });
         }

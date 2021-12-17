@@ -1,4 +1,4 @@
-# Front-end sistema de transición
+# Front-end Sistema de Catastro Multipropósito
 
 Este proyecto se generó con [Angular CLI] (https://github.com/angular/angular-cli) versión 8.3.15.
 

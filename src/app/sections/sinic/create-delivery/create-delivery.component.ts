@@ -34,6 +34,7 @@ export class CreateDeliveryComponent implements OnInit {
   }
 
   changeDepartament() {
+    this.municipalities = []
     this.serviceWorkspaces
       .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
       .subscribe((data) => {

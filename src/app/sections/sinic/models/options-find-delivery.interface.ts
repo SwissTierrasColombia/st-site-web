@@ -4,5 +4,5 @@ export default interface IOptionsFindDeliveryInterface {
     selectStates: string,
     code: string,
     selectMunicipality: string,
-    selectManagerId: number,
+    selectManagerId: string,
 }

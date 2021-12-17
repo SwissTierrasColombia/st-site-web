@@ -618,7 +618,6 @@ export class AddProductDeliveryComponent implements OnInit {
             let data = {
               justification: result.field,
             };
-            console.log(data);
             this.levCatReceptionService
               .rejectedDelivery(this.deliveryId, data)
               .subscribe((_) => {

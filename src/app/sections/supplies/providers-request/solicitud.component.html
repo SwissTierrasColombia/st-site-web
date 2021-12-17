@@ -8,40 +8,19 @@
     <div class="card-body">
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a
-            class="nav-link"
-            [ngClass]="{ active: tab === 1 }"
-            data-toggle="tab"
-            role="tab"
-            (click)="tab1()"
-            aria-controls="home"
-          >
-            <i class="material-icons"> library_add_check </i>Solicitud</a
-          >
+          <a class="nav-link" [ngClass]="{ active: tab === 1 }" data-toggle="tab" role="tab" (click)="tab1()"
+            aria-controls="home">
+            <i class="material-icons"> library_add_check </i>Solicitud</a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link"
-            [ngClass]="{ active: tab === 2 }"
-            data-toggle="tab"
-            role="tab"
-            (click)="tab2()"
-            aria-controls="messages"
-          >
-            <i class="material-icons"> library_add </i>Realizar petición</a
-          >
+          <a class="nav-link" [ngClass]="{ active: tab === 2 }" data-toggle="tab" role="tab" (click)="tab2()"
+            aria-controls="messages">
+            <i class="material-icons"> library_add </i>Realizar petición</a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link"
-            [ngClass]="{ active: tab === 3 }"
-            data-toggle="tab"
-            role="tab"
-            (click)="tab3()"
-            aria-controls="messages"
-          >
-            <i class="material-icons"> done_all </i>Peticiones Realizadas</a
-          >
+          <a class="nav-link" [ngClass]="{ active: tab === 3 }" data-toggle="tab" role="tab" (click)="tab3()"
+            aria-controls="messages">
+            <i class="material-icons"> done_all </i>Peticiones Realizadas</a>
         </li>
       </ul>
       <div class="tab-content">
@@ -52,24 +31,14 @@
               <div class="col-12 col-sm-6 mb-1">
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text" aria-required="true"
-                      >* Departamento</label
-                    >
+                    <label class="input-group-text" aria-required="true">* Departamento</label>
                   </div>
-                  <select
-                    (change)="changeDepartament()"
-                    class="custom-select"
-                    name="departments"
-                    id="departments"
-                    [(ngModel)]="selectDepartment"
-                  >
+                  <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
+                    [(ngModel)]="selectDepartment">
                     <option value="0" selected>
                       Seleccione el Departamento
                     </option>
-                    <option
-                      [ngValue]="item.id"
-                      *ngFor="let item of departments"
-                    >
+                    <option [ngValue]="item.id" *ngFor="let item of departments">
                       {{ item.name }}
                     </option>
                   </select>
@@ -80,18 +49,10 @@
                   <div class="input-group-prepend">
                     <label class="input-group-text">* Municipio</label>
                   </div>
-                  <select
-                    (change)="changeMunucipality()"
-                    class="custom-select"
-                    name="municipalities"
-                    id="municipalities"
-                    [(ngModel)]="selectMunicipality"
-                  >
+                  <select (change)="changeMunucipality()" class="custom-select" name="municipalities"
+                    id="municipalities" [(ngModel)]="selectMunicipality">
                     <option value="0" selected>Seleccione el Municipio</option>
-                    <option
-                      [ngValue]="item.id"
-                      *ngFor="let item of municipalities"
-                    >
+                    <option [ngValue]="item.id" *ngFor="let item of municipalities">
                       {{ item.name }}
                     </option>
                   </select>
@@ -102,17 +63,10 @@
               <div class="col-12 col-sm-3 mb-1">
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text" aria-required="true"
-                      >* Entidad</label
-                    >
+                    <label class="input-group-text" aria-required="true">* Entidad</label>
                   </div>
-                  <select
-                    (change)="changeProvider()"
-                    class="custom-select"
-                    name="entidades"
-                    id="entidades"
-                    [(ngModel)]="selectProvider"
-                  >
+                  <select (change)="changeProvider()" class="custom-select" name="entidades" id="entidades"
+                    [(ngModel)]="selectProvider">
                     <option value="0" selected>Seleccione la entidad</option>
                     <option [ngValue]="item" *ngFor="let item of providers">
                       {{ item.alias }}
@@ -123,22 +77,12 @@
               <div class="col-12 col-sm-4 mb-1">
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text" aria-required="true"
-                      >* Insumos</label
-                    >
+                    <label class="input-group-text" aria-required="true">* Insumos</label>
                   </div>
-                  <select
-                    class="custom-select"
-                    name="insumos"
-                    id="insumos"
-                    [(ngModel)]="selectSupplies"
-                    (change)="change()"
-                  >
+                  <select class="custom-select" name="insumos" id="insumos" [(ngModel)]="selectSupplies"
+                    (change)="change()">
                     <option value="0" selected>Seleccione el insumo</option>
-                    <option
-                      [ngValue]="item"
-                      *ngFor="let item of dataSuppliesProvider"
-                    >
+                    <option [ngValue]="item" *ngFor="let item of dataSuppliesProvider">
                       {{ item.name }}
                     </option>
                   </select>
@@ -147,37 +91,21 @@
               <div class="col-12 col-sm-5 mb-1">
                 <div class="input-group">
                   <div class="input-group-prepend input-group-text">
-                    <div class="">* Alcance / Observaciones</div>
+                    <div class="">* Observaciones</div>
                   </div>
-                  <textarea
-                    maxlength="255"
-                    class="form-control"
-                    id="observations"
-                    rows="3"
-                    name="observaciones"
-                    [(ngModel)]="observations"
-                    (change)="change()"
-                  ></textarea>
+                  <textarea maxlength="255" class="form-control" id="observations" rows="3" name="observaciones"
+                    [(ngModel)]="observations" (change)="change()"></textarea>
                 </div>
               </div>
               <div class="col-12 offset-sm-5 col-sm-2 mt-2">
-                <button
-                  type="button"
-                  name="agregar"
-                  id="agregar"
-                  class="btn btn-dark btn-sm btn-block"
-                  [disabled]="!isActiveButtonAdd"
-                  (click)="agregar()"
-                >
+                <button type="button" name="agregar" id="agregar" class="btn btn-dark btn-sm btn-block"
+                  [disabled]="!isActiveButtonAdd" (click)="agregar()">
                   Agregar
                 </button>
               </div>
             </div>
           </form>
-          <div
-            class="table-responsive table-inverse"
-            *ngIf="tablesupplies.length > 0"
-          >
+          <div class="table-responsive table-inverse" *ngIf="tablesupplies.length > 0">
             <div class="text-center mt-2 mb-2">
               <h3>Selección de Insumos</h3>
             </div>
@@ -202,13 +130,8 @@
                     <strong>{{ item.perfil }}</strong>
                   </td>
                   <td scope="row">
-                    <textarea
-                      class="form-control"
-                      rows="3"
-                      maxlength="255"
-                      disabled="true"
-                      >{{ item.observacion }}</textarea
-                    >
+                    <textarea class="form-control" rows="3" maxlength="255"
+                      disabled="true">{{ item.observacion }}</textarea>
                   </td>
                   <td scope="row">
                     <i class="material-icons cursor" (click)="delete(item)">
@@ -219,23 +142,15 @@
               </tbody>
             </table>
           </div>
-          <div
-            class="card-footer text-muted text-center mb-2"
-            *ngIf="tablesupplies.length > 0"
-          >
+          <div class="card-footer text-muted text-center mb-2" *ngIf="tablesupplies.length > 0">
             <div class="row">
               <div class="col-12 col-sm-6 offset-sm-6 mt-2">
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <label class="input-group-text">* Fecha Límite</label>
                   </div>
-                  <input
-                    class="form-control"
-                    type="date"
-                    name="deadline"
-                    [min]="currentDate"
-                    [(ngModel)]="listsupplies.deadline"
-                  />
+                  <input class="form-control" type="date" name="deadline" [min]="currentDate"
+                    [(ngModel)]="listsupplies.deadline" />
                 </div>
               </div>
               <div class="col-12 mt-3">
@@ -244,11 +159,7 @@
                 </div>
               </div>
               <div class="col-12">
-                <button
-                  type="button"
-                  class="btn btn-dark"
-                  (click)="openModal(modalRegistrar)"
-                >
+                <button type="button" class="btn btn-dark" (click)="openModal(modalRegistrar)">
                   Enviar Solicitud
                 </button>
               </div>
@@ -257,12 +168,7 @@
           <ng-template #modalRegistrar let-modal>
             <div class="modal-header">
               <h4 class="modal-title">¿Está seguro de enviar la solicitud?</h4>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                (click)="modal.dismiss('Cross click')"
-              >
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -273,21 +179,13 @@
             </div>
             <div class="modal-footer">
               <div class="col-6">
-                <button
-                  type="button"
-                  class="btn btn-dark btn-block"
-                  (click)="closeModal(false)"
-                >
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">
                   No
                 </button>
               </div>
               <div class="col-6 text-right">
-                <button
-                  type="button"
-                  ngbAutofocus
-                  class="btn btn-success btn-block"
-                  (click)="closeModal(true, modalconfirmacion)"
-                >
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                  (click)="closeModal(true, modalconfirmacion)">
                   Si
                 </button>
               </div>
@@ -296,40 +194,24 @@
           <ng-template #modalconfirmacion let-modal>
             <div class="modal-header">
               <h4 class="modal-title">Solicitud enviada correctamente</h4>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                (click)="modal.dismiss('Cross click')"
-              >
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="alert alert-success text-center">
               <div class="modal-body text-center">
                 Código de Orden:
-                <span
-                  name="NumOrderPackageLabel"
-                  type="text"
-                  id="OrderPackageLabel"
-                  ><strong>{{ dataOrder[0].packageLabel }}</strong></span
-                >
+                <span name="NumOrderPackageLabel" type="text" id="OrderPackageLabel"><strong>{{
+                    dataOrder[0].packageLabel }}</strong></span>
                 <span ngbTooltip="Copiar" placement="top" show-delay="500">
-                  <span
-                    class="material-icons ml-2"
-                    (click)="myFunctionCopyOrder(dataOrder[0].packageLabel)"
-                  >
+                  <span class="material-icons ml-2" (click)="myFunctionCopyOrder(dataOrder[0].packageLabel)">
                     content_copy
                   </span>
                 </span>
               </div>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-light"
-                (click)="modal.close('Close click')"
-              >
+              <button type="button" class="btn btn-light" (click)="modal.close('Close click')">
                 Cerrar
               </button>
             </div>
@@ -348,27 +230,17 @@
             <div class="card-body">
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <label class="input-group-text" aria-required="true"
-                    >* Proveedor</label
-                  >
+                  <label class="input-group-text" aria-required="true">* Proveedor</label>
                 </div>
-                <select
-                  (change)="changeStateGetPetition()"
-                  class="custom-select"
-                  name="providerIdPetitions"
-                  id="providerIdPetitions"
-                  [(ngModel)]="providerIdPetition"
-                >
+                <select (change)="changeStateGetPetition()" class="custom-select" name="providerIdPetitions"
+                  id="providerIdPetitions" [(ngModel)]="providerIdPetition">
                   <option value="0" selected>Seleccione el proveedor</option>
                   <option [ngValue]="item.id" *ngFor="let item of providers">
                     {{ item.alias }}
                   </option>
                 </select>
               </div>
-              <div
-                class="table-inverse table-responsive mt-2"
-                *ngIf="petitionsForManager.length > 0"
-              >
+              <div class="table-inverse table-responsive mt-2" *ngIf="petitionsForManager.length > 0">
                 <table class="table table-striped text-center">
                   <thead class="thead-inverse">
                     <tr>
@@ -385,14 +257,8 @@
                       <td scope="row">{{ item.id }}</td>
                       <td scope="row">{{ item.provider.name }}</td>
                       <td scope="row">
-                        <textarea
-                          class="form-control"
-                          id="description"
-                          rows="3"
-                          name="description"
-                          disabled="true"
-                          >{{ item.observations }}</textarea
-                        >
+                        <textarea class="form-control" id="description" rows="3" name="description"
+                          disabled="true">{{ item.observations }}</textarea>
                       </td>
                       <td scope="row">{{ formatDate(item.createdAt) }}</td>
                       <td scope="row">
@@ -414,27 +280,17 @@
                         </div>
                       </td>
                       <td scope="row">
-                        <textarea
-                          class="form-control"
-                          id="justification"
-                          rows="3"
-                          name="justification"
-                          disabled="true"
-                          >{{
+                        <textarea class="form-control" id="justification" rows="3" name="justification" disabled="true">{{
                             item.justification ? item.justification : ""
-                          }}</textarea
-                        >
+                          }}</textarea>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div
-                *ngIf="
+              <div *ngIf="
                   petitionsForManager.length === 0 && providerIdPetition !== '0'
-                "
-                class="row mt-3"
-              >
+                " class="row mt-3">
                 <div class="col-12">
                   <div class="alert alert-primary text-center" role="alert">
                     No tiene peticiones para este proveedor.
