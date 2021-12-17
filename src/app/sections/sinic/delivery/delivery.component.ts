@@ -77,8 +77,6 @@ export class DeliveryComponent implements OnInit {
   findDelivery(deliveryId: number) {
     this.sinicService.searchDelivery(deliveryId).subscribe(element => {
       this.delivery = element;
-      console.log(this.delivery);
-      
     });
     this.findFiles(deliveryId);
   }
@@ -140,11 +138,13 @@ export class DeliveryComponent implements OnInit {
     this.sinicService.addFileToDelivery(this.deliveryId, data).subscribe(_ => {
       this.toastr.success('Adjunto añadido exitosamente');
       this.findFiles(this.deliveryId);
+      this.observations = '';
+      this.supportFile = '';
+      this.myInputVariable.nativeElement.value = '';
+      this.formOk = false;
     })
   }
   findSuccessFiles(): boolean {
-    console.log(this.listFiles);
-    
     if (this.listFiles.length === 0) {
       return false;
     }
@@ -201,6 +201,7 @@ export class DeliveryComponent implements OnInit {
             this.listFiles = this.listFiles.filter(
               (element) => element.id !== file.id
             );
+            this.sendAuthority = this.findSuccessFiles();
           });
         }
       }
@@ -208,8 +209,7 @@ export class DeliveryComponent implements OnInit {
   }
   downloadLog(item: any) {
     this.sinicService.downloadLog(this.deliveryId, item.id).subscribe(data => {
-      const nameFile = `archivo-${this.deliveryId}-${item.id}`
-      console.log(nameFile);
+      const nameFile = `archivo-${this.delivery.code}-${item.id}`
       FuntionsGlobalsHelper.downloadFile(data, nameFile, '.zip');
     });
   }

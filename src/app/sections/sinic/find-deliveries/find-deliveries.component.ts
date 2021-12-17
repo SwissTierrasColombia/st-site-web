@@ -30,12 +30,12 @@ export class FindDeliveriesComponent implements OnInit {
   optionModalRef: NgbModalRef;
   selectStates: string = '0';
   stateDeliveriesEnum = StateDeliveriesEnum;
-  selectDepartment: number = 0;
+  selectDepartment: string = '0';
   departments: DepartamentsInterface[] = [];
   munucipalities: MunicipalityInterface[] = [];
   selectMunicipality: string = '0';
   managers: any[] = [];
-  selectManagerId: number = 0;
+  selectManagerId: string = '0';
   code: string = '';
   statesList: any[] = [];
   statesTab1: string = this.stateDeliveriesEnum.DRAFT;
@@ -53,8 +53,6 @@ export class FindDeliveriesComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAdministrator) {
       this.isAdministrator = changes.isAdministrator.currentValue;
-      console.log(this.isAdministrator);
-
     }
     if (changes.isManager) {
       this.isManager = changes.isManager.currentValue;
@@ -117,6 +115,9 @@ export class FindDeliveriesComponent implements OnInit {
     if (this.isAdministrator) {
       this.getManagers();
     }
+    if (!this.isAdministrator) {
+      this.getDepartaments();
+    }
   }
   getManagers() {
     this.serviceManagers.getManagers().subscribe((data: any) => {
@@ -139,10 +140,10 @@ export class FindDeliveriesComponent implements OnInit {
     });
   }
   changeDepartament() {
-    if (this.selectDepartment == 0) {
+    if (this.selectDepartment == '0') {
       this.changePage();
       this.selectMunicipality = '0';
-      this.selectManagerId = 0;
+      this.selectManagerId = '0';
     }
     this.workspacesService
       .GetMunicipalitiesByDeparment(Number(this.selectDepartment))
@@ -171,6 +172,9 @@ export class FindDeliveriesComponent implements OnInit {
       }
     } else {
       state = this.selectStates
+    }
+    if (this.selectDepartment === '0') {
+      this.selectMunicipality = '0'
     }
     let options: IOptionsFindDeliveryInterface = {
       page: this.page,
@@ -202,6 +206,9 @@ export class FindDeliveriesComponent implements OnInit {
     }
     if (this.tab == 2) {
       state = this.statesTab2
+    }
+    if (this.selectDepartment === '0') {
+      this.selectMunicipality = '0'
     }
     let options: IOptionsFindDeliveryInterface = {
       page: this.page,

@@ -27,41 +27,20 @@
     <div class="card-body">
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a
-            class="nav-link"
-            [ngClass]="{ active: tab === 1 }"
-            data-toggle="tab"
-            role="tab"
-            (click)="tab1()"
-            aria-controls="home"
-          >
-            <i class="material-icons"> groups </i>Gestores</a
-          >
+          <a class="nav-link" [ngClass]="{ active: tab === 1 }" data-toggle="tab" role="tab" (click)="tab1()"
+            aria-controls="home">
+            <i class="material-icons"> groups </i>Gestores</a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link"
-            [ngClass]="{ active: tab === 3 }"
-            data-toggle="tab"
-            role="tab"
-            (click)="getOperator()"
-            aria-controls="messages"
-          >
-            <i class="material-icons"> people </i>Operadores</a
-          >
+          <a class="nav-link" [ngClass]="{ active: tab === 3 }" data-toggle="tab" role="tab" (click)="getOperator()"
+            aria-controls="messages">
+            <i class="material-icons"> people </i>Operadores</a>
         </li>
         <li class="nav-item" *ngIf="assingOperator">
-          <a
-            class="nav-link"
-            [ngClass]="{ active: tab === 5 }"
-            data-toggle="tab"
-            role="tab"
-            (click)="tab5()"
-            aria-controls="messages"
-          >
+          <a class="nav-link" [ngClass]="{ active: tab === 5 }" data-toggle="tab" role="tab" (click)="tab5()"
+            aria-controls="messages">
             <i class="material-icons"> view_list </i>Información -
-            <em>Habilitación Catastral</em></a
-          >
+            <em>Habilitación Catastral</em></a>
         </li>
       </ul>
       <div class="tab-content">
@@ -81,15 +60,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  [style.background-color]="
+                <tr [style.background-color]="
                     item.managerCode == idManagerUpdate ? '#3ada1273' : ''
-                  "
-                  [style.font-weight]="
+                  " [style.font-weight]="
                     item.managerCode == idManagerUpdate ? 'bold' : ''
-                  "
-                  *ngFor="let item of dataWorkSpace.managers; let index = index"
-                >
+                  " *ngFor="let item of dataWorkSpace.managers; let index = index">
                   <td scope="row">{{ item.manager.name }}</td>
                   <td scope="row">
                     {{ item.manager.taxIdentificationNumber }}
@@ -98,65 +73,32 @@
                     {{ formatDate(item.manager.createdAt) }}
                   </td>
                   <td scope="row">
-                    <span
-                      ngbTooltip="Ver soporte"
-                      placement="top"
-                      show-delay="500"
-                    >
-                      <i
-                        class="material-icons cursor"
-                        (click)="previewSupplies(item.managerCode, index)"
-                      >
+                    <span ngbTooltip="Ver soporte" placement="top" show-delay="500">
+                      <i class="material-icons cursor" (click)="previewSupplies(item.managerCode, index)">
                         preview
                       </i>
                     </span>
                   </td>
                   <td scope="row">
-                    <input
-                      class="form-control"
-                      type="date"
-                      name="startDate"
-                      [(ngModel)]="item.startDate"
-                      disabled="{{ !editForm[index]?.startDate }}"
-                      id="startDate{{ index }}"
-                    />
+                    <input class="form-control" type="date" name="startDate" [(ngModel)]="item.startDate"
+                      disabled="{{ !editForm[index]?.startDate }}" id="startDate{{ index }}" />
                   </td>
                   <td scope="row">
-                    <textarea
-                      id="observations{{ index }}"
-                      [(ngModel)]="item.observations"
-                      class="form-control"
-                      rows="3"
-                      maxlength="255"
-                      disabled="{{ !editForm[index]?.observations }}"
-                    ></textarea>
+                    <textarea id="observations{{ index }}" [(ngModel)]="item.observations" class="form-control" rows="3"
+                      maxlength="255" disabled="{{ !editForm[index]?.observations }}"></textarea>
                   </td>
                   <td scope="row">
                     <div *ngIf="updateInfoBasic">
-                      <button
-                        *ngIf="!editForm[index]?.observations"
-                        class="btn btn-dark btn-sm btn-block"
-                        (click)="changeUpdate(index, item.managerCode)"
-                        id="buttonEditar{{ index }}"
-                      >
+                      <button *ngIf="!editForm[index]?.observations" class="btn btn-dark btn-sm btn-block"
+                        (click)="changeUpdate(index, item.managerCode)" id="buttonEditar{{ index }}">
                         Editar
                       </button>
-                      <button
-                        *ngIf="editForm[index]?.observations"
-                        type="button"
-                        class="btn btn-dark btn-sm btn-block"
-                        (click)="openModalUpdate(modalRegistrar)"
-                        id="buttonActualizar{{ index }}"
-                      >
+                      <button *ngIf="editForm[index]?.observations" type="button" class="btn btn-dark btn-sm btn-block"
+                        (click)="openModalUpdate(modalRegistrar)" id="buttonActualizar{{ index }}">
                         Actualizar
                       </button>
-                      <button
-                        *ngIf="editForm[index]?.observations"
-                        type="button"
-                        class="btn btn-dark btn-sm btn-block"
-                        (click)="cancelarUpdate(index)"
-                        id="buttonCancelar{{ index }}"
-                      >
+                      <button *ngIf="editForm[index]?.observations" type="button" class="btn btn-dark btn-sm btn-block"
+                        (click)="cancelarUpdate(index)" id="buttonCancelar{{ index }}">
                         Cancelar
                       </button>
                     </div>
@@ -166,12 +108,7 @@
                       <h4 class="modal-title">
                         ¿Está seguro de actualizar la información?
                       </h4>
-                      <button
-                        type="button"
-                        class="close"
-                        aria-label="Close"
-                        (click)="modal.dismiss('Cross click')"
-                      >
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
@@ -183,21 +120,13 @@
                     </div>
                     <div class="modal-footer">
                       <div class="col-6">
-                        <button
-                          type="button"
-                          class="btn btn-dark btn-block"
-                          (click)="closeModalUpdate(false)"
-                        >
+                        <button type="button" class="btn btn-dark btn-block" (click)="closeModalUpdate(false)">
                           No
                         </button>
                       </div>
                       <div class="col-6 text-right">
-                        <button
-                          type="button"
-                          ngbAutofocus
-                          class="btn btn-success btn-block"
-                          (click)="closeModalUpdate(true, index)"
-                        >
+                        <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                          (click)="closeModalUpdate(true, index)">
                           Si
                         </button>
                       </div>
@@ -208,20 +137,13 @@
             </table>
           </div>
         </div>
-        <div
-          id="actionFormOperator"
-          class="tab-pane"
-          [ngClass]="{ active: tab === 3 }"
-          role="tabpanel"
-        >
+        <div id="actionFormOperator" class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel">
           <br />
           <div class="card" *ngIf="assingOperator">
             <div class="card-header text-center">
               <h3>
                 {{ idOperator > 0 ? "Actualizar" : "Asignar" }} Operador
-                <span *ngIf="idOperator > 0"
-                  ><b>#{{ idOperator }}</b></span
-                >
+                <span *ngIf="idOperator > 0"><b>#{{ idOperator }}</b></span>
               </h3>
             </div>
             <div class="card-body">
@@ -230,25 +152,15 @@
                   <div class="col-12">
                     <div class="input-group">
                       <div class="input-group-prepend">
-                        <label class="input-group-text" aria-required="true"
-                          >* Operador</label
-                        >
+                        <label class="input-group-text" aria-required="true">* Operador</label>
                       </div>
-                      <select
-                        (change)="changeDataOperator()"
-                        disabled="{{ !assingOperator || isUpdate }}"
-                        class="custom-select"
-                        name="operators"
-                        id="operators"
-                        [(ngModel)]="dataOperatorsWorkSpace.operatorCode"
-                      >
+                      <select (change)="changeDataOperator()" disabled="{{ !assingOperator || isUpdate }}"
+                        class="custom-select" name="operators" id="operators"
+                        [(ngModel)]="dataOperatorsWorkSpace.operatorCode">
                         <option value="0" selected>
                           Seleccione el Operador
                         </option>
-                        <option
-                          [ngValue]="item.id"
-                          *ngFor="let item of operators"
-                        >
+                        <option [ngValue]="item.id" *ngFor="let item of operators">
                           {{ item.alias }}
                         </option>
                       </select>
@@ -259,18 +171,11 @@
                   <div class="col-12 col-sm-6 mb-1">
                     <div class="input-group">
                       <div class="input-group-prepend">
-                        <label class="input-group-text"
-                          >* Fecha de Inicio</label
-                        >
+                        <label class="input-group-text">* Fecha de Inicio</label>
                       </div>
-                      <input
-                        disabled="{{ !assingOperator || isUpdate }}"
-                        class="form-control"
-                        type="date"
-                        name="FechaInicio"
-                        [(ngModel)]="dataOperatorsWorkSpace.startDate"
-                        (change)="changeDataOperator()"
-                      />
+                      <input disabled="{{ !assingOperator || isUpdate }}" class="form-control" type="date"
+                        name="FechaInicio" [(ngModel)]="dataOperatorsWorkSpace.startDate"
+                        (change)="changeDataOperator()" />
                     </div>
                   </div>
                   <div class="col-12 col-sm-6 mb-1">
@@ -278,14 +183,8 @@
                       <div class="input-group-prepend">
                         <label class="input-group-text">* Fecha Final</label>
                       </div>
-                      <input
-                        disabled="{{ !assingOperator }}"
-                        class="form-control"
-                        type="date"
-                        name="FechaFin"
-                        [(ngModel)]="dataOperatorsWorkSpace.endDate"
-                        (change)="changeDataOperator()"
-                      />
+                      <input disabled="{{ !assingOperator }}" class="form-control" type="date" name="FechaFin"
+                        [(ngModel)]="dataOperatorsWorkSpace.endDate" (change)="changeDataOperator()" />
                     </div>
                   </div>
                 </div>
@@ -294,22 +193,12 @@
                     <form [formGroup]="formGroup1">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <label class="input-group-text"
-                            >Número de Predios a Intervenir</label
-                          >
+                          <label class="input-group-text">Número de Predios a Intervenir</label>
                         </div>
-                        <input
-                          formControlName="number"
-                          disabled="{{ !assingOperator }}"
-                          class="form-control"
-                          type="text"
-                          name="numberParcelsExpected"
-                          [(ngModel)]="
+                        <input formControlName="number" disabled="{{ !assingOperator }}" class="form-control"
+                          type="text" name="numberParcelsExpected" [(ngModel)]="
                             dataOperatorsWorkSpace.numberParcelsExpected
-                          "
-                          (change)="changeDataOperator()"
-                          numbersOnly
-                        />
+                          " (change)="changeDataOperator()" numbersOnly />
                       </div>
                     </form>
                   </div>
@@ -317,20 +206,11 @@
                     <form [formGroup]="formGroup2">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <label class="input-group-text"
-                            >Área de Trabajo (km <sup>2</sup>)</label
-                          >
+                          <label class="input-group-text">Área de Trabajo (km <sup>2</sup>)</label>
                         </div>
-                        <input
-                          formControlName="number"
-                          disabled="{{ !assingOperator }}"
-                          class="form-control"
-                          type="text"
-                          name="workArea"
-                          [(ngModel)]="dataOperatorsWorkSpace.workArea"
-                          (change)="changeDataOperator()"
-                          appTwoDigitDecimaNumber
-                        />
+                        <input formControlName="number" disabled="{{ !assingOperator }}" class="form-control"
+                          type="text" name="workArea" [(ngModel)]="dataOperatorsWorkSpace.workArea"
+                          (change)="changeDataOperator()" appTwoDigitDecimaNumber />
                       </div>
                     </form>
                   </div>
@@ -339,18 +219,11 @@
                   <div class="col-12">
                     <div class="input-group">
                       <div class="input-group-prepend input-group-text">
-                        <div class="">* Alcance / Observaciones</div>
+                        <div class="">* Observaciones</div>
                       </div>
-                      <textarea
-                        maxlength="255"
-                        disabled="{{ !assingOperator }}"
-                        class="form-control"
-                        id="observations"
-                        rows="3"
-                        name="observaciones"
-                        [(ngModel)]="dataOperatorsWorkSpace.observations"
-                        (change)="changeDataOperator()"
-                      ></textarea>
+                      <textarea maxlength="255" disabled="{{ !assingOperator }}" class="form-control" id="observations"
+                        rows="3" name="observaciones" [(ngModel)]="dataOperatorsWorkSpace.observations"
+                        (change)="changeDataOperator()"></textarea>
                     </div>
                   </div>
                 </div>
@@ -358,18 +231,12 @@
                   <div class="col-12">
                     <div class="input-group">
                       <div class="input-group-prepend">
-                        <label class="input-group-text"
-                          >* Orden de Trabajo / Documento Soporte
+                        <label class="input-group-text">* Documento Soporte
                           <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                         </label>
                       </div>
-                      <input
-                        #myInputdocSoport
-                        class="form-control"
-                        type="file"
-                        (change)="docSoport($event.target.files)"
-                        multiple
-                      />
+                      <input #myInputdocSoport class="form-control" type="file"
+                        (change)="docSoport($event.target.files)" multiple />
                     </div>
                   </div>
                 </div>
@@ -383,30 +250,15 @@
               </form>
             </div>
             <div class="card-footer text-muted text-center">
-              <button
-                *ngIf="!isChangeDataOperator"
-                type="button"
-                class="btn btn-dark"
-                (click)="openModalCreateOperator(modalCreateOperator)"
-                [disabled]="!isActiveAssignOperator"
-              >
+              <button *ngIf="!isChangeDataOperator" type="button" class="btn btn-dark"
+                (click)="openModalCreateOperator(modalCreateOperator)" [disabled]="!isActiveAssignOperator">
                 Asignar Operador
               </button>
-              <button
-                *ngIf="isChangeDataOperator"
-                type="button"
-                class="btn btn-dark"
-                (click)="openModal(modalUpdateOperator)"
-                [disabled]="!isChangeDataOperator"
-              >
+              <button *ngIf="isChangeDataOperator" type="button" class="btn btn-dark"
+                (click)="openModal(modalUpdateOperator)" [disabled]="!isChangeDataOperator">
                 Actualizar operador
               </button>
-              <button
-                type="button"
-                style="margin-left: 10px"
-                class="btn btn-dark"
-                (click)="cancel()"
-              >
+              <button type="button" style="margin-left: 10px" class="btn btn-dark" (click)="cancel()">
                 Cancelar
               </button>
             </div>
@@ -416,12 +268,7 @@
               <h4 class="modal-title">
                 ¿Está seguro de modificar los datos del Operador?
               </h4>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                (click)="modal.dismiss('Cross click')"
-              >
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -433,21 +280,13 @@
             </div>
             <div class="modal-footer">
               <div class="col-6">
-                <button
-                  type="button"
-                  class="btn btn-dark btn-block"
-                  (click)="closeModalUpdateOperator(false)"
-                >
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModalUpdateOperator(false)">
                   No
                 </button>
               </div>
               <div class="col-6 text-right">
-                <button
-                  type="button"
-                  ngbAutofocus
-                  class="btn btn-success btn-block"
-                  (click)="closeModalUpdateOperator(true)"
-                >
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                  (click)="closeModalUpdateOperator(true)">
                   Si
                 </button>
               </div>
@@ -456,12 +295,7 @@
           <ng-template #modalCreateOperator let-modal>
             <div class="modal-header">
               <h4 class="modal-title">¿Está seguro de asignar el Operador?</h4>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                (click)="modal.dismiss('Cross click')"
-              >
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -472,30 +306,19 @@
             </div>
             <div class="modal-footer">
               <div class="col-6">
-                <button
-                  type="button"
-                  class="btn btn-dark btn-block"
-                  (click)="closeModalCreateOperator(false)"
-                >
+                <button type="button" class="btn btn-dark btn-block" (click)="closeModalCreateOperator(false)">
                   No
                 </button>
               </div>
               <div class="col-6 text-right">
-                <button
-                  type="button"
-                  ngbAutofocus
-                  class="btn btn-success btn-block"
-                  (click)="closeModalCreateOperator(true)"
-                >
+                <button type="button" ngbAutofocus class="btn btn-success btn-block"
+                  (click)="closeModalCreateOperator(true)">
                   Si
                 </button>
               </div>
             </div>
           </ng-template>
-          <div
-            class="card mt-1"
-            *ngIf="onlyOperatorAssignByWorkspace?.length > 0"
-          >
+          <div class="card mt-1" *ngIf="onlyOperatorAssignByWorkspace?.length > 0">
             <div class="card-header text-center">
               <h3>Operadores asignados</h3>
             </div>
@@ -517,16 +340,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      [style.background-color]="
+                    <tr [style.background-color]="
                         item.id == idOperator ? '#3ada1273' : ''
-                      "
-                      [style.font-weight]="item.id == idOperator ? 'bold' : ''"
-                      *ngFor="
+                      " [style.font-weight]="item.id == idOperator ? 'bold' : ''" *ngFor="
                         let item of onlyOperatorAssignByWorkspace;
                         let index = index
-                      "
-                    >
+                      ">
                       <td scope="row">{{ item.operator.id }}</td>
                       <td scope="row">{{ item.operator.name }}</td>
                       <td scope="row">{{ item.manager.name }}</td>
@@ -537,42 +356,21 @@
                         {{ replacePointByComma(item.workArea) }}
                       </td>
                       <td scope="row">
-                        <textarea
-                          maxlength="255"
-                          disabled="true"
-                          class="form-control"
-                          id="observationsOperator"
-                          rows="2"
-                          name="observacionesOperator"
-                          [(ngModel)]="item.observations"
-                        ></textarea>
+                        <textarea maxlength="255" disabled="true" class="form-control" id="observationsOperator"
+                          rows="2" name="observacionesOperator" [(ngModel)]="item.observations"></textarea>
                       </td>
                       <td scope="row">
-                        <span
-                          ngbTooltip="Ver soporte"
-                          placement="top"
-                          show-delay="500"
-                        >
-                          <i
-                            class="material-icons cursor"
-                            (click)="
+                        <span ngbTooltip="Ver soporte" placement="top" show-delay="500">
+                          <i class="material-icons cursor" (click)="
                               previewSupportOperator(item.operatorCode, index)
-                            "
-                          >
+                            ">
                             preview
                           </i>
                         </span>
                       </td>
                       <td scope="row" *ngIf="assingOperator">
-                        <span
-                          ngbTooltip="Editar operador"
-                          placement="top"
-                          show-delay="500"
-                        >
-                          <i
-                            class="material-icons cursor"
-                            (click)="updateOperator(item)"
-                          >
+                        <span ngbTooltip="Editar operador" placement="top" show-delay="500">
+                          <i class="material-icons cursor" (click)="updateOperator(item)">
                             edit
                           </i>
                         </span>
@@ -597,14 +395,8 @@
           <br />
           <div class="card-body">
             <div class="row text-center">
-              <div
-                class="table-inverse table-responsive"
-                *ngIf="suppliesAttachmentsData.length > 0"
-              >
-                <small
-                  id="perfil"
-                  class="form-text text-muted mb-4 ml-1 text-left"
-                >
+              <div class="table-inverse table-responsive" *ngIf="suppliesAttachmentsData.length > 0">
+                <small id="perfil" class="form-text text-muted mb-4 ml-1 text-left">
                   <h6>
                     Gestor, descargue o consulte la información suministrada por
                     la Autoridad Catastral para iniciar la Gestión Catastral del
@@ -623,39 +415,25 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      *ngFor="
+                    <tr *ngFor="
                         let item of suppliesAttachmentsData;
                         let index = index
-                      "
-                    >
+                      ">
                       <td scope="row">{{ index + 1 }}</td>
                       <td scope="row">AUTORIDAD CATASTRAL</td>
                       <td scope="row">{{ item.name }}</td>
                       <td scope="row">{{ formatDate(item.createdAt) }}</td>
                       <td scope="row">
-                        <textarea
-                          maxlength="255"
-                          rows="2"
-                          cols="50"
-                          readonly
-                          style="border: none; background: #dedede"
-                          >{{ item.observations }}</textarea
-                        >
+                        <textarea maxlength="255" rows="2" cols="50" readonly
+                          style="border: none; background: #dedede">{{ item.observations }}</textarea>
                       </td>
                       <td scope="row">
-                        <i
-                          alt="Descargar"
-                          title="Descargar archivo"
-                          class="material-icons cursor"
-                          (click)="
+                        <i alt="Descargar" title="Descargar archivo" class="material-icons cursor" (click)="
                             downloadSuppliesAutoridad(
                               item.id,
                               item.typeSupply ? item.typeSupply.name : 'insumo'
                             )
-                          "
-                          >cloud_download</i
-                        >
+                          ">cloud_download</i>
                       </td>
                     </tr>
                   </tbody>

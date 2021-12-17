@@ -1,8 +1,5 @@
 <div>
-  <app-page-header
-    [heading]="'Gestión de Municipio'"
-    [icon]="'fa-star'"
-  ></app-page-header>
+  <app-page-header [heading]="'Gestión de Municipio'" [icon]="'fa-star'"></app-page-header>
 
   <div class="card">
     <div class="card-header text-center">
@@ -12,121 +9,74 @@
       <form action="" method="post">
         <div class="row mb-2">
           <div class="col-12 col-sm-6 mb-2">
-            <app-select
-              [labelSelect]="'* Gestor'"
-              [nameSelect]="'managers'"
-              [idSelect]="'managers'"
-              [optionZero]="'Seleccione el Gestor'"
-              [listSelect]="activeManagers"
-              [key]="'alias'"
-              [(inputModel)]="dataCreateWorkSpace.managerCode"
-              (change)="changeDepartament()"
-            ></app-select>
+            <app-select [labelSelect]="'* Gestor'" [nameSelect]="'managers'" [idSelect]="'managers'"
+              [optionZero]="'Seleccione el Gestor'" [listSelect]="activeManagers" [key]="'alias'"
+              [(inputModel)]="dataCreateWorkSpace.managerCode" (change)="changeDepartament()"></app-select>
           </div>
           <div class="col-12 col-sm-6 mb-2">
             <div class="input-group">
               <div class="input-group-prepend">
                 <label class="input-group-text">* Fecha de Inicio</label>
               </div>
-              <input
-                class="form-control"
-                type="date"
-                name="FechaInicio"
-                [(ngModel)]="dataCreateWorkSpace.startDate"
-                (change)="changeData()"
-              />
+              <input class="form-control" type="date" name="FechaInicio" [(ngModel)]="dataCreateWorkSpace.startDate"
+                (change)="changeData()" />
             </div>
           </div>
           <div class="col-12 col-sm-6 mb-1">
-            <app-select
-              [labelSelect]="'* Departamento'"
-              [nameSelect]="'departments'"
-              [idSelect]="'departments'"
-              [optionZero]="'Seleccione el Departamento'"
-              [listSelect]="departments"
-              [key]="'name'"
-              [(inputModel)]="dataCreateWorkSpace.selectDepartment"
-              (change)="changeDepartament()"
-            ></app-select>
+            <app-select [labelSelect]="'* Departamento'" [nameSelect]="'departments'" [idSelect]="'departments'"
+              [optionZero]="'Seleccione el Departamento'" [listSelect]="departments" [key]="'name'"
+              [(inputModel)]="dataCreateWorkSpace.selectDepartment" (change)="changeDepartament()"></app-select>
           </div>
           <div class="col-12 col-md-5 mb-1">
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text" aria-required="true"
-                  >* Municipios</label
-                >
+                <label class="input-group-text" aria-required="true">* Municipios</label>
               </div>
-              <ng-select2
-                name="select2Munucipalities"
-                [data]="munucipalities"
-                [options]="options"
-                [(ngModel)]="dataCreateWorkSpace.municipalityId"
-                (change)="changeData()"
-              >
+              <ng-select2 name="select2Munucipalities" [data]="munucipalities" [options]="options"
+                [(ngModel)]="dataCreateWorkSpace.municipalityId" (change)="changeData()">
               </ng-select2>
             </div>
 
-            <small class="form-text text-muted"
-              >Seleccione los Municipios a los cuales les va a asignar un
+            <small class="form-text text-muted">Seleccione los Municipios a los cuales les va a asignar un
               Gestor.
             </small>
           </div>
           <div class="col-12 col-md-1 mb-1" *ngIf="viewSelectAllMunicipalities">
-            <label
-              class="switch"
-              [title]="
+            <label class="switch" [title]="
                 selectAllMunicipalities
                   ? 'Cancelar selección de municipios'
                   : 'Seleccione todos los municipios'
-              "
-            >
-              <input
-                [(ngModel)]="selectAllMunicipalities"
-                type="checkbox"
-                name="checkboxSelectAllMunicipalities"
-                (click)="clickCheckBox()"
-              />
+              ">
+              <input [(ngModel)]="selectAllMunicipalities" type="checkbox" name="checkboxSelectAllMunicipalities"
+                (click)="clickCheckBox()" />
               <span class="slider round"></span>
             </label>
             <small class="form-text text-muted">
               {{
-                selectAllMunicipalities
-                  ? "Cancelar selección de municipios"
-                  : "Seleccione todos los municipios"
+              selectAllMunicipalities
+              ? "Cancelar selección de municipios"
+              : "Seleccione todos los municipios"
               }}
             </small>
           </div>
           <div class="col-12 col-md-12 mb-1">
             <div class="input-group">
               <div class="input-group-prepend input-group-text">
-                <div class="">* Alcance / Observaciones</div>
+                <div class="">* Observaciones</div>
               </div>
-              <textarea
-                maxlength="255"
-                class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="3"
-                name="observaciones"
-                [(ngModel)]="dataCreateWorkSpace.observations"
-                (change)="changeData()"
-              ></textarea>
+              <textarea maxlength="255" class="form-control" id="exampleFormControlTextarea1" rows="3"
+                name="observaciones" [(ngModel)]="dataCreateWorkSpace.observations" (change)="changeData()"></textarea>
             </div>
           </div>
           <div class="col-12">
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text"
-                  >* Orden de Trabajo / Documento Soporte
+                <label class="input-group-text">* Documento Soporte
                   <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                 </label>
               </div>
-              <input
-                #myInput
-                class="form-control"
-                type="file"
-                (change)="docSoport($event.target.files)"
-                accept=".pdf"
-              />
+              <input #myInput class="form-control" type="file" (change)="docSoport($event.target.files)"
+                accept=".pdf" />
             </div>
           </div>
         </div>
@@ -162,15 +112,9 @@
                 </td>
                 <td scope="row">
                   <div class="input-group">
-                    <textarea
-                      maxlength="255"
-                      class="form-control"
-                      id="observations{{ index }}"
-                      rows="3"
-                      name="observaciones{{ index }}"
-                      [(ngModel)]="item.observation"
-                      (change)="validateWriteObservation()"
-                    ></textarea>
+                    <textarea maxlength="255" class="form-control" id="observations{{ index }}" rows="3"
+                      name="observaciones{{ index }}" [(ngModel)]="item.observation"
+                      (change)="validateWriteObservation()"></textarea>
                   </div>
                 </td>
               </tr>
@@ -180,22 +124,12 @@
       </div>
     </div>
     <div class="card-footer text-muted text-center">
-      <button
-        type="button"
-        class="btn btn-dark"
-        (click)="validateMunicipalities(modalRegistrar)"
-        [disabled]="!createActive"
-        *ngIf="viewBotton === false"
-      >
+      <button type="button" class="btn btn-dark" (click)="validateMunicipalities(modalRegistrar)"
+        [disabled]="!createActive" *ngIf="viewBotton === false">
         Asignar Gestor Catastral
       </button>
-      <button
-        type="button"
-        class="btn btn-dark"
-        (click)="openModal(modalRegistrar)"
-        [disabled]="!createActive2"
-        *ngIf="viewBotton === true"
-      >
+      <button type="button" class="btn btn-dark" (click)="openModal(modalRegistrar)" [disabled]="!createActive2"
+        *ngIf="viewBotton === true">
         Asignar Gestor Catastral
       </button>
     </div>
@@ -205,12 +139,7 @@
       <h4 class="modal-title">
         ¿Está seguro de asignar el(los) Municipio(s) a este gestor?
       </h4>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      >
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -223,21 +152,12 @@
     </div>
     <div class="modal-footer">
       <div class="col-6">
-        <button
-          type="button"
-          class="btn btn-dark btn-block"
-          (click)="closeModal(false)"
-        >
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">
           No
         </button>
       </div>
       <div class="col-6 text-right">
-        <button
-          type="button"
-          ngbAutofocus
-          class="btn btn-success btn-block"
-          (click)="closeModal(true)"
-        >
+        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true)">
           Si
         </button>
       </div>
