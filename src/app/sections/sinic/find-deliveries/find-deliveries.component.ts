@@ -115,9 +115,7 @@ export class FindDeliveriesComponent implements OnInit {
     if (this.isAdministrator) {
       this.getManagers();
     }
-    if (!this.isAdministrator) {
-      this.getDepartaments();
-    }
+    this.getDepartaments();
   }
   getManagers() {
     this.serviceManagers.getManagers().subscribe((data: any) => {
