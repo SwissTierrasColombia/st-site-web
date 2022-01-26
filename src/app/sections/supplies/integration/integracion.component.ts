@@ -1,4 +1,3 @@
-import { environment } from 'src/environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { WorkspacesService } from 'src/app/services/workspaces/workspaces.service';
 import { ToastrService } from 'ngx-toastr';
@@ -8,6 +7,7 @@ import { ViewportScroller } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SuppliesService } from 'src/app/services/supplies/supplies.service';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-integracion',
@@ -48,6 +48,7 @@ export class IntegracionComponent implements OnInit {
   municipalityCode: string;
   errorXTF: string;
   optionModalRef: NgbModalRef;
+  apiBaseUrl = environment.apiBaseUrl;
 
   constructor(
     private serviceWorkspaces: WorkspacesService,
@@ -439,28 +440,4 @@ export class IntegracionComponent implements OnInit {
       }
     });
   }
-  openMap(urlMap: string) {
-    let win = window.open();
-    win.localStorage.getItem(environment.nameTokenSession);
-    let url = `${environment.apiBaseUrl}/mapstore/${urlMap}`;
-    win.document.write(
-      `<iframe style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" src='${url}' frameborder="0" allowfullscreen>
-      <p>Tu navegador no soporta esta funcionalidad</p>
-      </iframe>`
-    );
-  }
-  // openMap(urlMap: string) {
-  //   let win = window.open();
-  //   this.serviceWorkspaces.viewMap(urlMap).subscribe((element) => {
-  //     let token = localStorage.getItem(environment.nameTokenSession);
-  //     win.localStorage.setItem(environment.nameTokenSession, token);
-  //     win.document.write(
-  //       `<iframe
-  //       style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"
-  //        src='${element}' frameborder="0" allowfullscreen sandbox>
-  //       <p>Tu navegador no soporta esta funcionalidad</p>
-  //       </iframe>`
-  //     );
-  //   });
-  // }
 }
