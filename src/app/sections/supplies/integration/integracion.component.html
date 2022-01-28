@@ -206,10 +206,7 @@
                       item.integrationState.name === 'PRODUCTO GENERADO'
                     ">
                     <span ngbTooltip="Ver mapa" placement="top" show-delay="500">
-                      <a class="material-icons cursor ml-4" [href]='apiBaseUrl+"/mapstore/"+item.urlMap'
-                        target="_blank">
-                        map
-                      </a>
+                      <i class="material-icons cursor ml-4" (click)="openMap(item.urlMap)">map</i>
                     </span>
                   </div>
                   <!-- <pre>{{ item | json }}</pre> -->
