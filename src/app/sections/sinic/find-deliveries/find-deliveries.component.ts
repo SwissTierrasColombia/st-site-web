@@ -70,6 +70,14 @@ export class FindDeliveriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.activedRoute.params.subscribe((params: Params) => {
+      if (params.tab == '0') {
+        if (this.isAdministrator) {
+          this.tab = 3
+        }
+        if (this.isManager) {
+          this.tab = 1
+        }
+      }
       if (params.selectDepartment && params.selectDepartment != '0') {
         this.getDepartaments();
         this.selectDepartment = params.selectDepartment;

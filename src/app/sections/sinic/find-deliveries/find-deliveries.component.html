@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-12 col-sm-6 mb-1">
+    <div class="col-12 col-sm-6 mb-1" *ngIf="(isAdministrator && tab == 3) || isManager">
         <div class="input-group">
             <div class="input-group-prepend">
                 <label class="input-group-text" aria-required="true">* Departamento</label>
@@ -13,7 +13,7 @@
             </select>
         </div>
     </div>
-    <div class="col-12 col-sm-6 mb-1">
+    <div class="col-12 col-sm-6 mb-1" *ngIf="(isAdministrator && tab == 3) || isManager">
         <div class="input-group">
             <div class="input-group-prepend">
                 <label class="input-group-text">* Municipio</label>
@@ -27,7 +27,7 @@
             </select>
         </div>
     </div>
-    <div class="col-12 col-sm-6 mb-1" *ngIf="isAdministrator">
+    <div class="col-12 col-sm-6 mb-1" *ngIf="isAdministrator && tab == 4">
         <div class="input-group">
             <div class="input-group-prepend">
                 <label class="input-group-text" aria-required="true">* Gestor</label>
@@ -41,7 +41,8 @@
             </select>
         </div>
     </div>
-    <div class="col-12 col-sm-6 mb-1" *ngIf="this.tab == 2">
+    <div class="col-12 col-sm-6 mb-1"
+        *ngIf="(tab === 1 || tab === 2 || tab === 3 || tab === 4)&&(isAdministrator || isManager)">
         <div class="input-group">
             <div class="input-group-prepend">
                 <label class="input-group-text" aria-required="true">* Estado</label>
@@ -55,7 +56,7 @@
             </select>
         </div>
     </div>
-    <div class="col-12 col-sm-6">
+    <div class="col-12 col-sm-6" *ngIf="(tab === 5 && isAdministrator) || isManager">
         <app-input [title]="'* Código de la entrega'" [id]="'codeDelivery'" [name]="'codeDelivery'" [type]="'text'"
             [placeholder]="'Digite el Código de la entrega'" [(inputModel)]="code" (change)="filterDelivery()">
         </app-input>
