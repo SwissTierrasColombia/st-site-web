@@ -44,7 +44,8 @@
         <div class="tab-content">
             <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel" *ngIf="isManager">
                 <br />
-                <app-find-deliveries [tab]="tab"></app-find-deliveries>
+                <app-find-deliveries [isManager]="isManager" [isAdministrator]="isAdministrator" [tab]="tab">
+                </app-find-deliveries>
             </div>
             <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel" *ngIf="isManager">
                 <br />
@@ -53,17 +54,17 @@
             </div>
             <div class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel" *ngIf="isAdministrator">
                 <br />
-                <app-find-deliveries [isAdministrator]="isAdministrator" [tab]="tab">
+                <app-find-deliveries [isManager]="isManager" [isAdministrator]="isAdministrator" [tab]="tab">
                 </app-find-deliveries>
             </div>
             <div class="tab-pane" [ngClass]="{ active: tab === 4 }" role="tabpanel" *ngIf="isAdministrator">
                 <br />
-                <app-find-deliveries [isAdministrator]="isAdministrator" [tab]="tab">
+                <app-find-deliveries [isManager]="isManager" [isAdministrator]="isAdministrator" [tab]="tab">
                 </app-find-deliveries>
             </div>
             <div class="tab-pane" [ngClass]="{ active: tab === 5 }" role="tabpanel" *ngIf="isAdministrator">
                 <br />
-                <app-find-deliveries [isAdministrator]="isAdministrator" [tab]="tab">
+                <app-find-deliveries [isManager]="isManager" [isAdministrator]="isAdministrator" [tab]="tab">
                 </app-find-deliveries>
             </div>
         </div>
