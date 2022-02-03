@@ -12,21 +12,57 @@
                     <i class="material-icons"> toc </i>Entregas en Borrador
                 </a>
             </li>
-            <li class="nav-item" *ngIf="isManager || isAdministrator">
+            <li class="nav-item" *ngIf="isManager">
                 <a class="nav-link" [ngClass]="{ active: tab === 2 }" data-toggle="tab" role="tab" (click)="tab = 2"
                     aria-controls="home">
                     <i class="material-icons"> pending_actions </i>
                     {{ isManager ? "Entregas Enviadas" : "Entregas Recibidas" }}
                 </a>
             </li>
+            <li class="nav-item" *ngIf="isAdministrator">
+                <a class="nav-link" [ngClass]="{ active: tab === 3 }" data-toggle="tab" role="tab" (click)="tab = 3"
+                    aria-controls="home">
+                    <i class="material-icons"> location_city </i>
+                    Por Municipio
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="isAdministrator">
+                <a class="nav-link" [ngClass]="{ active: tab === 4 }" data-toggle="tab" role="tab" (click)="tab = 4"
+                    aria-controls="home">
+                    <i class="material-icons"> work </i>
+                    Por Gestor
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="isAdministrator">
+                <a class="nav-link" [ngClass]="{ active: tab === 5 }" data-toggle="tab" role="tab" (click)="tab = 5"
+                    aria-controls="home">
+                    <i class="material-icons"> dialpad </i>
+                    Por Código de Entrega
+                </a>
+            </li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane" [ngClass]="{ active: tab === 1 }" role="tabpanel" *ngIf="isManager">
                 <br />
-                <app-find-deliveries [tab]="tab"></app-find-deliveries>
+                <app-find-deliveries [isManager]="isManager" [isAdministrator]="isAdministrator" [tab]="tab">
+                </app-find-deliveries>
             </div>
-            <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel"
-                *ngIf="isManager || isAdministrator">
+            <div class="tab-pane" [ngClass]="{ active: tab === 2 }" role="tabpanel" *ngIf="isManager">
+                <br />
+                <app-find-deliveries [isManager]="isManager" [isAdministrator]="isAdministrator" [tab]="tab">
+                </app-find-deliveries>
+            </div>
+            <div class="tab-pane" [ngClass]="{ active: tab === 3 }" role="tabpanel" *ngIf="isAdministrator">
+                <br />
+                <app-find-deliveries [isManager]="isManager" [isAdministrator]="isAdministrator" [tab]="tab">
+                </app-find-deliveries>
+            </div>
+            <div class="tab-pane" [ngClass]="{ active: tab === 4 }" role="tabpanel" *ngIf="isAdministrator">
+                <br />
+                <app-find-deliveries [isManager]="isManager" [isAdministrator]="isAdministrator" [tab]="tab">
+                </app-find-deliveries>
+            </div>
+            <div class="tab-pane" [ngClass]="{ active: tab === 5 }" role="tabpanel" *ngIf="isAdministrator">
                 <br />
                 <app-find-deliveries [isManager]="isManager" [isAdministrator]="isAdministrator" [tab]="tab">
                 </app-find-deliveries>

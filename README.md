@@ -47,7 +47,7 @@ Para obtener más ayuda sobre la CLI Angular, use `ng help` o visite el [Angular
 
 - git **2.20.1**
 - nodejs **> 10.15.0** 
-- angular **8**
+- angular **10**
 - nginx **1.14.2**
 
 ### Configuración
