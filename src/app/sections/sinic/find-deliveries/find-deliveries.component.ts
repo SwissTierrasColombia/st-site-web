@@ -51,8 +51,6 @@ export class FindDeliveriesComponent implements OnInit {
 
   ) { }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-
     if (changes.isAdministrator) {
       this.isAdministrator = changes.isAdministrator.currentValue;
     }
@@ -69,14 +67,10 @@ export class FindDeliveriesComponent implements OnInit {
       this.tab = changes.tab.currentValue;
 
     }
-    console.log("changes.tab.currentValue ", changes.tab.currentValue);
-
   }
 
   ngOnInit(): void {
     this.activedRoute.params.subscribe((params: Params) => {
-      console.log(params);
-
       if (params.tab == '0') {
         if (this.isAdministrator) {
           this.tab = 3
