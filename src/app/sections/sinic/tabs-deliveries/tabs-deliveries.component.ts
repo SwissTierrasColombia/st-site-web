@@ -25,7 +25,7 @@ export class TabsDeliveriesComponent implements OnInit {
       element.id === rolesEnum.gestor ? true : false
     );
     if (this.isAdministrator) {
-      this.tab = 2;
+      this.tab = 3;
     }
     if (this.isManager) {
       this.tab = 1;
