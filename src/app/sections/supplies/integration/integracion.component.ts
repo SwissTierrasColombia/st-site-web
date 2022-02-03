@@ -440,4 +440,10 @@ export class IntegracionComponent implements OnInit {
       }
     });
   }
+  openMap(urlMap: string) {
+    this.serviceWorkspaces.viewMap(urlMap).subscribe(response => {
+      const url = response as string;
+      window.open(url, '_blank');
+    });
+  }
 }

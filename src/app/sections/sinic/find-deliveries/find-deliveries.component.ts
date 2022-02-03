@@ -57,19 +57,28 @@ export class FindDeliveriesComponent implements OnInit {
     if (changes.isManager) {
       this.isManager = changes.isManager.currentValue;
     }
-    if (changes.tab.currentValue === 1) {
+    if (changes.tab.currentValue == 1) {
       this.changePage();
       this.statesTab1 = this.stateDeliveriesEnum.DRAFT;
     }
-    if (changes.tab.currentValue === 2) {
+    if (changes.tab.currentValue == 2 || changes.tab.currentValue == 3 || changes.tab.currentValue == 4 || changes.tab.currentValue == 5) {
       this.statesTab2 = `${this.stateDeliveriesEnum.FAILED_IMPORT},${this.stateDeliveriesEnum.IMPORTING},${this.stateDeliveriesEnum.IN_QUEUE_TO_IMPORT},${this.stateDeliveriesEnum.SENT_CADASTRAL_AUTHORITY},${this.stateDeliveriesEnum.SUCCESS_IMPORT}`
       this.changePage();
+      this.tab = changes.tab.currentValue;
+
     }
-    this.tab = changes.tab.currentValue;
   }
 
   ngOnInit(): void {
     this.activedRoute.params.subscribe((params: Params) => {
+      if (params.tab == '0') {
+        if (this.isAdministrator) {
+          this.tab = 3
+        }
+        if (this.isManager) {
+          this.tab = 1
+        }
+      }
       if (params.selectDepartment && params.selectDepartment != '0') {
         this.getDepartaments();
         this.selectDepartment = params.selectDepartment;
@@ -165,7 +174,7 @@ export class FindDeliveriesComponent implements OnInit {
       if (this.tab == 1) {
         state = this.statesTab1
       }
-      if (this.tab == 2) {
+      if (this.tab == 2 || this.tab == 3 || this.tab == 4 || this.tab == 5) {
         state = this.statesTab2
       }
     } else {
@@ -202,7 +211,7 @@ export class FindDeliveriesComponent implements OnInit {
     if (this.tab == 1) {
       state = this.statesTab1
     }
-    if (this.tab == 2) {
+    if (this.tab == 2 || this.tab == 3 || this.tab == 4 || this.tab == 5) {
       state = this.statesTab2
     }
     if (this.selectDepartment === '0') {
