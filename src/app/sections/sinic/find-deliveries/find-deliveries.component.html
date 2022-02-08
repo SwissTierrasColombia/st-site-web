@@ -2,7 +2,7 @@
     <div class="col-12 col-sm-6 mb-1" *ngIf="(isAdministrator && tab == 3) || isManager">
         <div class="input-group">
             <div class="input-group-prepend">
-                <label class="input-group-text" aria-required="true">* Departamento</label>
+                <label class="input-group-text" aria-required="true">Departamento</label>
             </div>
             <select (change)="changeDepartament()" class="custom-select" name="departments" id="departments"
                 [(ngModel)]="selectDepartment">
@@ -16,7 +16,7 @@
     <div class="col-12 col-sm-6 mb-1" *ngIf="(isAdministrator && tab == 3) || isManager">
         <div class="input-group">
             <div class="input-group-prepend">
-                <label class="input-group-text">* Municipio</label>
+                <label class="input-group-text">Municipio</label>
             </div>
             <select (change)="filterDelivery()" class="custom-select" name="munucipalities" id="munucipalities"
                 [(ngModel)]="selectMunicipality">
@@ -30,7 +30,7 @@
     <div class="col-12 col-sm-6 mb-1" *ngIf="isAdministrator && tab == 4">
         <div class="input-group">
             <div class="input-group-prepend">
-                <label class="input-group-text" aria-required="true">* Gestor</label>
+                <label class="input-group-text" aria-required="true">Gestor</label>
             </div>
             <select (change)="filterDelivery()" class="custom-select" name="managers" id="managers"
                 [(ngModel)]="selectManagerId">
@@ -41,15 +41,14 @@
             </select>
         </div>
     </div>
-    <div class="col-12 col-sm-6 mb-1"
-        *ngIf="tab != 5">
+    <div class="col-12 col-sm-6 mb-1" *ngIf="tab != 5">
         <div class="input-group">
             <div class="input-group-prepend">
-                <label class="input-group-text" aria-required="true">* Estado</label>
+                <label class="input-group-text" aria-required="true">Estado</label>
             </div>
             <select (change)="filterDelivery()" class="custom-select" name="states" id="states"
                 [(ngModel)]="selectStates">
-                <option [value]="'0'" selected disabled>Seleccione el Estado</option>
+                <option [value]="'0'" selected>Seleccione el Estado</option>
                 <option [ngValue]="item.id" *ngFor="let item of statesList">
                     {{ item.alias }}
                 </option>
@@ -57,17 +56,17 @@
         </div>
     </div>
     <div class="col-12 col-sm-6" *ngIf="tab === 5 || isManager">
-        <app-input [title]="'* Código de la entrega'" [id]="'codeDelivery'" [name]="'codeDelivery'" [type]="'text'"
+        <app-input [title]="'Código de la entrega'" [id]="'codeDelivery'" [name]="'codeDelivery'" [type]="'text'"
             [placeholder]="'Digite el Código de la entrega'" [(inputModel)]="code" (change)="filterDelivery()">
         </app-input>
     </div>
-    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
+    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0 && selectDepartmentBol == false && isTab5 == false">
         <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="page" [pageSize]="pageSize"
             [collectionSize]="totalElements" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
             (pageChange)="changePage($event)">
         </ngb-pagination>
     </div>
-    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
+    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0 && selectDepartmentBol == false && isTab5 == false">
         <div class="table-inverse table-responsive text-center">
             <table class="table table-striped">
                 <thead class="thead-inverse">
