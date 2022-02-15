@@ -40,6 +40,8 @@ export class FindDeliveriesComponent implements OnInit {
   statesList: any[] = [];
   statesTab1: string = this.stateDeliveriesEnum.DRAFT;
   statesTab2: string = `${this.stateDeliveriesEnum.FAILED_IMPORT},${this.stateDeliveriesEnum.IMPORTING},${this.stateDeliveriesEnum.IN_QUEUE_TO_IMPORT},${this.stateDeliveriesEnum.SENT_CADASTRAL_AUTHORITY},${this.stateDeliveriesEnum.SUCCESS_IMPORT}`;
+  selectDepartmentBol: boolean = false;
+  isTab5: boolean = false;
   constructor(
     private workspacesService: WorkspacesService,
     private router: Router,
@@ -65,7 +67,9 @@ export class FindDeliveriesComponent implements OnInit {
       this.statesTab2 = `${this.stateDeliveriesEnum.FAILED_IMPORT},${this.stateDeliveriesEnum.IMPORTING},${this.stateDeliveriesEnum.IN_QUEUE_TO_IMPORT},${this.stateDeliveriesEnum.SENT_CADASTRAL_AUTHORITY},${this.stateDeliveriesEnum.SUCCESS_IMPORT}`
       this.changePage();
       this.tab = changes.tab.currentValue;
-
+    }
+    if (changes.tab.currentValue == 5) {
+      this.isTab5 = true;
     }
   }
 
@@ -147,7 +151,10 @@ export class FindDeliveriesComponent implements OnInit {
     });
   }
   changeDepartament() {
+    this.selectDepartmentBol = true;
+
     if (this.selectDepartment == '0') {
+      this.selectDepartmentBol = false;
       this.changePage();
       this.selectMunicipality = '0';
       this.selectManagerId = '0';
@@ -169,7 +176,7 @@ export class FindDeliveriesComponent implements OnInit {
       });
   }
   filterDelivery() {
-    let state = ''
+    let state = '';
     if (this.selectStates === '0') {
       if (this.tab == 1) {
         state = this.statesTab1
@@ -181,7 +188,8 @@ export class FindDeliveriesComponent implements OnInit {
       state = this.selectStates
     }
     if (this.selectDepartment === '0') {
-      this.selectMunicipality = '0'
+      this.selectMunicipality = '0';
+      this.selectDepartmentBol = false;
     }
     let options: IOptionsFindDeliveryInterface = {
       page: this.page,
@@ -199,6 +207,10 @@ export class FindDeliveriesComponent implements OnInit {
         this.totalElements = this.findDeliveries.totalElements;
         this.pageSize = this.findDeliveries.size;
         this.itemsDelivery = this.findDeliveries.items;
+        this.selectDepartmentBol = false;
+        if (this.code != '') {
+          this.isTab5 = false;
+        }
       });
   }
   changePage(event?: number) {
@@ -235,6 +247,9 @@ export class FindDeliveriesComponent implements OnInit {
         this.totalElements = this.findDeliveries.totalElements;
         this.pageSize = this.findDeliveries.size;
         this.itemsDelivery = this.findDeliveries.items;
+        if (this.tab != 5) {
+          this.isTab5 = false;
+        }
       });
   }
   formatDate(date: string) {

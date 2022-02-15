@@ -26,36 +26,9 @@ export class SolicitudesComponent implements OnInit {
     private router: Router,
     private providersService: ProvidersService,
     private serviceWorkspaces: WorkspacesService
-  ) {}
+  ) { }
 
-  async ngOnInit() {
-    if (
-      localStorage.getItem('selectDepartment') !== '0' &&
-      localStorage.getItem('selectDepartment') !== 'NaN' &&
-      localStorage.getItem('selectDepartment') != null &&
-      localStorage.getItem('selectDepartment') != undefined
-    ) {
-      this.selectDepartment = parseInt(
-        localStorage.getItem('selectDepartment')
-      );
-      await this.changeDepartament();
-      if (
-        localStorage.getItem('selectMunicipality') !== '0' &&
-        localStorage.getItem('selectMunicipality') !== 'NaN' &&
-        localStorage.getItem('selectMunicipality') != null &&
-        localStorage.getItem('selectMunicipality') != undefined
-      ) {
-        this.selectMunicipality = localStorage.getItem('selectMunicipality');
-      }
-    }
-    if (
-      localStorage.getItem('selectOrder') !== '' &&
-      localStorage.getItem('selectOrder') !== 'null' &&
-      localStorage.getItem('selectOrder') != null &&
-      localStorage.getItem('selectOrder') != undefined
-    ) {
-      this.selectOrder = localStorage.getItem('selectOrder');
-    }
+  ngOnInit() {
     if (this.selectMunicipality !== '0' || this.selectOrder !== '') {
       this.filter();
     } else {
@@ -101,8 +74,10 @@ export class SolicitudesComponent implements OnInit {
         this.page = data.currentPage;
       });
   }
-  async changeDepartament() {
-    await this.serviceWorkspaces
+  changeDepartament() {
+    this.selectMunicipality = '0';
+    this.filter();
+    this.serviceWorkspaces
       .GetMunicipalitiesByDeparment(this.selectDepartment)
       .subscribe((data) => {
         this.listMunicipalities = data;

@@ -41,15 +41,14 @@
             </select>
         </div>
     </div>
-    <div class="col-12 col-sm-6 mb-1"
-        *ngIf="tab != 5">
+    <div class="col-12 col-sm-6 mb-1" *ngIf="tab != 5">
         <div class="input-group">
             <div class="input-group-prepend">
-                <label class="input-group-text" aria-required="true">* Estado</label>
+                <label class="input-group-text" aria-required="true">Estado</label>
             </div>
             <select (change)="filterDelivery()" class="custom-select" name="states" id="states"
                 [(ngModel)]="selectStates">
-                <option [value]="'0'" selected disabled>Seleccione el Estado</option>
+                <option [value]="'0'" selected>Seleccione el Estado</option>
                 <option [ngValue]="item.id" *ngFor="let item of statesList">
                     {{ item.alias }}
                 </option>
@@ -61,13 +60,18 @@
             [placeholder]="'Digite el Código de la entrega'" [(inputModel)]="code" (change)="filterDelivery()">
         </app-input>
     </div>
-    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
+    <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+            Recuerde que los campos marcados con * son obligatorios.
+        </div>
+    </div>
+    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0 && selectDepartmentBol == false && isTab5 == false">
         <ngb-pagination class="d-flex justify-content-center" id="serverSupplies" [(page)]="page" [pageSize]="pageSize"
             [collectionSize]="totalElements" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
             (pageChange)="changePage($event)">
         </ngb-pagination>
     </div>
-    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0">
+    <div class="col-12 mb-1" *ngIf="itemsDelivery.length > 0 && selectDepartmentBol == false && isTab5 == false">
         <div class="table-inverse table-responsive text-center">
             <table class="table table-striped">
                 <thead class="thead-inverse">

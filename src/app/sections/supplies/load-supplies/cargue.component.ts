@@ -98,87 +98,89 @@ export class CargueComponent implements OnInit, AfterViewInit {
           }
         }
       );
-      this.closeRequestButtonArray =
-        this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
-          if (item.state.id === 1 || item.state.id === 5) {
-            return item.state;
-          }
-        });
-      if (
-        this.dataRequestPending[0].suppliesRequested.length ===
-        this.closeRequestButtonArray.length
-      ) {
-        this.closeRequestButton = false;
-      }
-      // tslint:disable-next-line: prefer-for-of
-      for (let index = 0; index < this.dataRequestPending.length; index++) {
-        // tslint:disable-next-line:prefer-for-of
-        for (
-          let index2 = 0;
-          index2 < this.dataRequestPending[index].suppliesRequested.length;
-          index2++
+      if (this.dataRequestPending.length > 0) {
+        this.closeRequestButtonArray =
+          this.dataRequestPending[0].suppliesRequested.filter((item: any) => {
+            if (item.state.id === 1 || item.state.id === 5) {
+              return item.state;
+            }
+          });
+        if (
+          this.dataRequestPending[0].suppliesRequested.length ===
+          this.closeRequestButtonArray.length
         ) {
-          this.dataRequestPending[index].suppliesRequested[index2].type =
-            this.clone(this.type);
-          this.dataRequestPending[index].suppliesRequested[index2].button =
-            this.clone(this.button);
-          this.dataRequestPending[index].suppliesRequested[index2].preview =
-            false;
+          this.closeRequestButton = false;
+        }
+        // tslint:disable-next-line: prefer-for-of
+        for (let index = 0; index < this.dataRequestPending.length; index++) {
           // tslint:disable-next-line:prefer-for-of
           for (
-            let index3 = 0;
-            index3 <
-            this.dataRequestPending[index].suppliesRequested[index2].typeSupply
-              .extensions.length;
-            index3++
+            let index2 = 0;
+            index2 < this.dataRequestPending[index].suppliesRequested.length;
+            index2++
           ) {
-            this.dataRequestPending[index].suppliesRequested[index2].format =
-              this.dataRequestPending[index].suppliesRequested[
-                index2
-              ].typeSupply.extensions
-                .map(
-                  // tslint:disable-next-line:only-arrow-functions
-                  function (elem: any) {
-                    return '.' + elem.name;
-                  }
-                )
-                .join(',');
-            this.dataRequestPending[index].suppliesRequested[index2].format =
-              this.dataRequestPending[index].suppliesRequested[index2].format +
-              ',.zip';
-
-            if (
-              this.dataRequestPending[index].suppliesRequested[index2]
-                .typeSupply.extensions[index3].name === 'xtf'
+            this.dataRequestPending[index].suppliesRequested[index2].type =
+              this.clone(this.type);
+            this.dataRequestPending[index].suppliesRequested[index2].button =
+              this.clone(this.button);
+            this.dataRequestPending[index].suppliesRequested[index2].preview =
+              false;
+            // tslint:disable-next-line:prefer-for-of
+            for (
+              let index3 = 0;
+              index3 <
+              this.dataRequestPending[index].suppliesRequested[index2].typeSupply
+                .extensions.length;
+              index3++
             ) {
-              this.dataRequestPending[index].suppliesRequested[index2].xtf =
-                this.clone(this.xtf);
-              this.dataRequestPending[index].suppliesRequested[index2].type = [
-                {
-                  name: 'Archivo',
-                  file: 'file',
-                },
-                {
-                  name: 'No disponible',
-                  file: 'none',
-                },
-              ];
-            }
+              this.dataRequestPending[index].suppliesRequested[index2].format =
+                this.dataRequestPending[index].suppliesRequested[
+                  index2
+                ].typeSupply.extensions
+                  .map(
+                    // tslint:disable-next-line:only-arrow-functions
+                    function (elem: any) {
+                      return '.' + elem.name;
+                    }
+                  )
+                  .join(',');
+              this.dataRequestPending[index].suppliesRequested[index2].format =
+                this.dataRequestPending[index].suppliesRequested[index2].format +
+                ',.zip';
 
-            if (
-              this.dataRequestPending[index].suppliesRequested[index2].state
-                .id === 1
-            ) {
-              this.dataRequestPending[index].suppliesRequested[index2].preview =
-                true;
+              if (
+                this.dataRequestPending[index].suppliesRequested[index2]
+                  .typeSupply.extensions[index3].name === 'xtf'
+              ) {
+                this.dataRequestPending[index].suppliesRequested[index2].xtf =
+                  this.clone(this.xtf);
+                this.dataRequestPending[index].suppliesRequested[index2].type = [
+                  {
+                    name: 'Archivo',
+                    file: 'file',
+                  },
+                  {
+                    name: 'No disponible',
+                    file: 'none',
+                  },
+                ];
+              }
+
+              if (
+                this.dataRequestPending[index].suppliesRequested[index2].state
+                  .id === 1
+              ) {
+                this.dataRequestPending[index].suppliesRequested[index2].preview =
+                  true;
+              }
             }
           }
         }
+        this.dataRequestPending[0].suppliesRequested =
+          this.dataRequestPending[0].suppliesRequested.sort(
+            (a, b) => a.id - b.id
+          );
       }
-      this.dataRequestPending[0].suppliesRequested =
-        this.dataRequestPending[0].suppliesRequested.sort(
-          (a, b) => a.id - b.id
-        );
     });
   }
   formatDate(date: string) {
@@ -244,7 +246,7 @@ export class CargueComponent implements OnInit, AfterViewInit {
           ].button.status = true;
           this.toastr.error(
             'El formato no es valido, por favor subir en: ' +
-              this.dataRequestPending[idOut].suppliesRequested[idInt].format
+            this.dataRequestPending[idOut].suppliesRequested[idInt].format
           );
         }
       } else {
@@ -279,7 +281,7 @@ export class CargueComponent implements OnInit, AfterViewInit {
             ].button.status = true;
             this.toastr.error(
               'El formato no es valido, por favor subir en: ' +
-                this.dataRequestPending[idOut].suppliesRequested[idInt].format
+              this.dataRequestPending[idOut].suppliesRequested[idInt].format
             );
           }
         }
@@ -300,7 +302,7 @@ export class CargueComponent implements OnInit, AfterViewInit {
       } else {
         this.toastr.error(
           'Por favor sube el archivo en alguno de los siguientes formatos: ' +
-            this.dataRequestPending[idOut].suppliesRequested[idInt].format
+          this.dataRequestPending[idOut].suppliesRequested[idInt].format
         );
       }
     } else {
