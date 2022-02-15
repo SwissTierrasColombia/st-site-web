@@ -12,7 +12,14 @@
         <h3>Cargue de Insumos</h3>
       </div>
     </div>
-    <div class="card-body">
+    <div class="row mt-3" *ngIf="dataRequestPending.length == 0">
+      <div class="col-12">
+        <div class="alert alert-info text-center" role="alert">
+          El Insumo se encuentra en estado de <strong>Pendiente de Revisión</strong> por parte del área encargada.
+        </div>
+      </div>
+    </div>
+    <div class="card-body" *ngIf="dataRequestPending.length > 0">
       <div class="row justify-content-center">
         <div class="col-12 table-inverse table-responsive">
           <table class="table table-striped text-center">
@@ -53,16 +60,8 @@
                     <div>Observación GESTOR</div>
                   </div>
                   <div class="form-control">
-                    <textarea
-                      style="width: 100%"
-                      maxlength="255"
-                      class="form-control"
-                      id="observations"
-                      rows="1"
-                      [(ngModel)]="supp.description"
-                      name="typeSupplyDescription"
-                      disabled="true"
-                    ></textarea>
+                    <textarea style="width: 100%" maxlength="255" class="form-control" id="observations" rows="1"
+                      [(ngModel)]="supp.description" name="typeSupplyDescription" disabled="true"></textarea>
                   </div>
                 </div>
               </div>
@@ -70,35 +69,21 @@
                 <div class="input-group-prepend input-group-text">
                   <div>Insumo</div>
                 </div>
-                <div
-                  class="form-control"
-                  [ngClass]="{ uploadSupply: !supp.canUpload }"
-                >
+                <div class="form-control" [ngClass]="{ uploadSupply: !supp.canUpload }">
                   {{ supp.typeSupply.name }} <br />
                   <strong>{{ supp.typeSupply.providerProfile.name }}</strong>
                 </div>
               </div>
               <div class="input-group col-12 col-lg-3 mb-2">
-                <div
-                  class="input-group-prepend input-group-text"
-                  *ngIf="supp.canUpload"
-                >
+                <div class="input-group-prepend input-group-text" *ngIf="supp.canUpload">
                   <div>* Tipo</div>
                 </div>
                 <div class="form-control" *ngIf="supp.canUpload">
-                  <select
-                    style="width: 100%"
-                    (change)="modelChanged(supp, idOut, idInt)"
-                    [(ngModel)]="supp.typeSupplyId"
-                    name="tipos{{ idOut }}{{ idInt }}"
-                    id="tipo{{ idOut }}{{ idInt }}"
-                    [disabled]="!supp.canUpload"
-                  >
+                  <select style="width: 100%" (change)="modelChanged(supp, idOut, idInt)"
+                    [(ngModel)]="supp.typeSupplyId" name="tipos{{ idOut }}{{ idInt }}" id="tipo{{ idOut }}{{ idInt }}"
+                    [disabled]="!supp.canUpload">
                     <option value="0" selected>Seleccione el tipo</option>
-                    <option
-                      [ngValue]="tipo.file"
-                      *ngFor="let tipo of supp.type"
-                    >
+                    <option [ngValue]="tipo.file" *ngFor="let tipo of supp.type">
                       {{ tipo.name }}
                     </option>
                   </select>
@@ -109,35 +94,18 @@
                   <div [ngSwitch]="supp.typeSupplyId">
                     <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
                       <div class="input-group">
-                        <input
-                          #myInput
-                          [accept]="supp.format"
-                          id="file{{ idOut }}{{ idInt }}"
-                          name="file{{ idOut }}{{ idInt }}"
-                          class="form-control"
-                          type="file"
-                          (change)="
+                        <input #myInput [accept]="supp.format" id="file{{ idOut }}{{ idInt }}"
+                          name="file{{ idOut }}{{ idInt }}" class="form-control" type="file" (change)="
                             docSoport($event.target.files, idOut, idInt)
-                          "
-                          multiple
-                        />
+                          " multiple />
                       </div>
-                      <div
-                        *ngIf="supp.modelVersion"
-                        class="alert alert-info text-center"
-                        role="alert"
-                      >
+                      <div *ngIf="supp.modelVersion" class="alert alert-info text-center" role="alert">
                         <!-- <strong>Modelo {{supp.modelVersion}}</strong> -->
                         <strong>Submodelo Insumos V1.0</strong>
                       </div>
                       <div *ngIf="supp.typeSupply.id === 2">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="skipValidation"
-                          [(ngModel)]="skipValidation"
-                          (change)="openModalSkipValidated(modalskipValidated)"
-                        />
+                        <input class="form-check-input" type="checkbox" id="skipValidation" [(ngModel)]="skipValidation"
+                          (change)="openModalSkipValidated(modalskipValidated)" />
                         <label class="form-check-label" for="skipValidation">
                           Omitir errores
                         </label>
@@ -145,33 +113,19 @@
                           <div class="input-group-prepend input-group-text">
                             <div>Reporte</div>
                           </div>
-                          <input
-                            #myInputFileExtra
-                            accept=".zip"
-                            id="file{{ idOut }}{{ idInt }}-extra"
-                            name="file{{ idOut }}{{ idInt }}-extra"
-                            class="form-control"
-                            type="file"
-                            (change)="
+                          <input #myInputFileExtra accept=".zip" id="file{{ idOut }}{{ idInt }}-extra"
+                            name="file{{ idOut }}{{ idInt }}-extra" class="form-control" type="file" (change)="
                               documentsExtra($event.target.files, idOut, idInt)
-                            "
-                          />
+                            " />
                         </div>
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend input-group-text">
                           <div>* Observación</div>
                         </div>
-                        <textarea
-                          maxlength="255"
-                          (change)="validsendFile(idOut, idInt)"
-                          class="form-control"
-                          id="observations{{ idOut }}{{ idInt }}"
-                          type="text"
-                          name="observations{{ idOut }}{{ idInt }}"
-                          [(ngModel)]="supp.observations"
-                          rows="2"
-                        ></textarea>
+                        <textarea maxlength="255" (change)="validsendFile(idOut, idInt)" class="form-control"
+                          id="observations{{ idOut }}{{ idInt }}" type="text" name="observations{{ idOut }}{{ idInt }}"
+                          [(ngModel)]="supp.observations" rows="2"></textarea>
                       </div>
                     </div>
                     <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
@@ -179,29 +133,16 @@
                         <div class="input-group-prepend input-group-text">
                           <div>* URL</div>
                         </div>
-                        <input
-                          (change)="intoValidURL(idOut, idInt)"
-                          class="form-control"
-                          id="url{{ idOut }}{{ idInt }}"
-                          type="url"
-                          name="url{{ idOut }}{{ idInt }}"
-                          [(ngModel)]="supp.url"
-                        />
+                        <input (change)="intoValidURL(idOut, idInt)" class="form-control" id="url{{ idOut }}{{ idInt }}"
+                          type="url" name="url{{ idOut }}{{ idInt }}" [(ngModel)]="supp.url" />
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend input-group-text">
                           <div>* Observación</div>
                         </div>
-                        <textarea
-                          maxlength="255"
-                          (change)="intoValidURL(idOut, idInt)"
-                          class="form-control"
-                          id="observations{{ idOut }}{{ idInt }}"
-                          type="text"
-                          name="observations{{ idOut }}{{ idInt }}"
-                          [(ngModel)]="supp.observations"
-                          rows="2"
-                        ></textarea>
+                        <textarea maxlength="255" (change)="intoValidURL(idOut, idInt)" class="form-control"
+                          id="observations{{ idOut }}{{ idInt }}" type="text" name="observations{{ idOut }}{{ idInt }}"
+                          [(ngModel)]="supp.observations" rows="2"></textarea>
                       </div>
                     </div>
                     <div *ngSwitchCase="typeDataFieldModel.typeDataNone">
@@ -209,26 +150,17 @@
                         <div class="input-group-prepend input-group-text">
                           <div>* Justificación</div>
                         </div>
-                        <textarea
-                          maxlength="255"
-                          (change)="intoValidJustification(idOut, idInt)"
-                          class="form-control"
-                          id="justificationNone{{ idOut }}{{ idInt }}"
-                          type="text"
-                          name="justificationNone{{ idOut }}{{ idInt }}"
-                          [(ngModel)]="supp.justification"
-                          rows="2"
-                        ></textarea>
+                        <textarea maxlength="255" (change)="intoValidJustification(idOut, idInt)" class="form-control"
+                          id="justificationNone{{ idOut }}{{ idInt }}" type="text"
+                          name="justificationNone{{ idOut }}{{ idInt }}" [(ngModel)]="supp.justification"
+                          rows="2"></textarea>
                       </div>
                     </div>
                     <div *ngSwitchDefault>
                       <h6 *ngIf="supp.canUpload">
                         No hay ningún campo seleccionado.
                       </h6>
-                      <h5
-                        *ngIf="supp.canUpload === false"
-                        style="font-style: oblique"
-                      >
+                      <h5 *ngIf="supp.canUpload === false" style="font-style: oblique">
                         <strong>Este insumo no es de su perfil.</strong>
                       </h5>
                     </div>
@@ -236,18 +168,11 @@
                 </div>
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 1">
-                <button
-                  type="button"
-                  class="btn"
-                  id="boton{{ idOut }}{{ idInt }}"
-                  [ngClass]="
+                <button type="button" class="btn" id="boton{{ idOut }}{{ idInt }}" [ngClass]="
                     supp.button.status
                       ? 'btn-success btn-block'
                       : 'btn-warning btn-block'
-                  "
-                  (click)="send(item.id, supp, idOut, idInt)"
-                  [disabled]="supp.button.status"
-                >
+                  " (click)="send(item.id, supp, idOut, idInt)" [disabled]="supp.button.status">
                   {{ supp.button.status ? "Insumo Cargado" : "Reenviar" }}
                 </button>
                 <div *ngIf="supp.valid !== null && !supp.valid">
@@ -255,102 +180,56 @@
                     Validado con errores
                   </span>
                 </div>
-                <div
-                  *ngIf="supp.errors !== null"
-                  id="logsXTF{{ idOut }}{{ idInt }}"
-                  class="logsXTF"
-                  (click)="openModalErrorXTF(modalError, supp)"
-                >
+                <div *ngIf="supp.errors !== null" id="logsXTF{{ idOut }}{{ idInt }}" class="logsXTF"
+                  (click)="openModalErrorXTF(modalError, supp)">
                   <small><u> Ver log </u></small>
                 </div>
                 <!-- <app-preview *ngIf="supp.preview" [url]="supp.url" [version]="supp.modelVersion?supp.modelVersion:''">
                 </app-preview> -->
               </div>
-              <div
-                class="col-12 col-sm-2 col-lg-2 mb-2"
-                *ngIf="supp.state.id === 2"
-              >
-                <button
-                  type="button"
-                  class="btn"
-                  id="boton{{ idOut }}{{ idInt }}"
-                  [ngClass]="
+              <div class="col-12 col-sm-2 col-lg-2 mb-2" *ngIf="supp.state.id === 2">
+                <button type="button" class="btn" id="boton{{ idOut }}{{ idInt }}" [ngClass]="
                     supp.button.status
                       ? 'btn-danger btn-block'
                       : 'btn-dark btn-block'
-                  "
-                  (click)="send(item.id, supp, idOut, idInt)"
-                  [disabled]="supp.button.status"
-                >
+                  " (click)="send(item.id, supp, idOut, idInt)" [disabled]="supp.button.status">
                   {{ supp.button.status ? "Rechazado" : "Reenviar" }}
                 </button>
-                <div
-                  *ngIf="supp.errors !== null"
-                  id="logsXTF{{ idOut }}{{ idInt }}"
-                  class="logsXTF"
-                  (click)="openModalErrorXTF(modalError, supp)"
-                >
+                <div *ngIf="supp.errors !== null" id="logsXTF{{ idOut }}{{ idInt }}" class="logsXTF"
+                  (click)="openModalErrorXTF(modalError, supp)">
                   <small><u> Ver log </u></small>
                 </div>
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 3">
-                <button
-                  type="button"
-                  class="btn"
-                  id="boton{{ idOut }}{{ idInt }}"
-                  [ngClass]="'btn-info btn-block'"
-                  (click)="send(item.id, supp, idOut, idInt)"
-                  [disabled]="true"
-                >
+                <button type="button" class="btn" id="boton{{ idOut }}{{ idInt }}" [ngClass]="'btn-info btn-block'"
+                  (click)="send(item.id, supp, idOut, idInt)" [disabled]="true">
                   {{ supp.button.status ? "Validando" : "" }}
                 </button>
                 {{
-                  supp.button.status
-                    ? ""
-                    : "En este momento no es posible subir el archivo, porque hay una validación en curso."
+                supp.button.status
+                ? ""
+                : "En este momento no es posible subir el archivo, porque hay una validación en curso."
                 }}
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 4">
-                <button
-                  type="button"
-                  class="btn"
-                  id="boton{{ idOut }}{{ idInt }}"
-                  [ngClass]="'btn-dark btn-block'"
-                  (click)="send(item.id, supp, idOut, idInt)"
-                  [disabled]="supp.button.status"
-                >
+                <button type="button" class="btn" id="boton{{ idOut }}{{ idInt }}" [ngClass]="'btn-dark btn-block'"
+                  (click)="send(item.id, supp, idOut, idInt)" [disabled]="supp.button.status">
                   Enviar
                 </button>
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 5">
-                <button
-                  type="button"
-                  class="btn"
-                  id="boton{{ idOut }}{{ idInt }}"
-                  [ngClass]="'btn-warning'"
-                  (click)="send(item.id, supp, idOut, idInt)"
-                  [disabled]="supp.button.status"
-                >
+                <button type="button" class="btn" id="boton{{ idOut }}{{ idInt }}" [ngClass]="'btn-warning'"
+                  (click)="send(item.id, supp, idOut, idInt)" [disabled]="supp.button.status">
                   {{ supp.button.status ? "Justificación enviada" : "Enviar" }}
                 </button>
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 6">
-                <button
-                  type="button"
-                  class="btn btn-info btn-block"
-                  id="boton{{ idOut }}{{ idInt }}"
-                  disabled="true"
-                >
+                <button type="button" class="btn btn-info btn-block" id="boton{{ idOut }}{{ idInt }}" disabled="true">
                   Pendiente de revisión
                 </button>
               </div>
               <div class="col-12 col-lg-2 mb-2" *ngIf="supp.state.id === 8">
-                <button
-                  type="button"
-                  class="btn btn-info btn-block"
-                  id="boton{{ idOut }}{{ idInt }}"
-                  disabled="true"
-                >
+                <button type="button" class="btn btn-info btn-block" id="boton{{ idOut }}{{ idInt }}" disabled="true">
                   En revisión
                 </button>
               </div>
@@ -360,14 +239,9 @@
                     <div class="input-group-prepend input-group-text">
                       <div>Entregado</div>
                     </div>
-                    <div
-                      class="form-control"
-                      style="background-color: lightsteelblue"
-                    >
-                      <strong
-                        >{{ supp.userDeliveryBy.firstName }}
-                        {{ supp.userDeliveryBy.lastName }}</strong
-                      >
+                    <div class="form-control" style="background-color: lightsteelblue">
+                      <strong>{{ supp.userDeliveryBy.firstName }}
+                        {{ supp.userDeliveryBy.lastName }}</strong>
                     </div>
                   </div>
                 </div>
@@ -378,24 +252,18 @@
         </div>
       </div>
     </div>
-    <div class="row mt-3">
+    <div class="row mt-3" *ngIf="dataRequestPending.length > 0">
       <div class="col-12">
         <div class="alert alert-warning text-center" role="alert">
           Se puede cargar más de una versión de un insumo,
-          <strong
-            >pero recuerde que esta solicitud se vinculará al último archivo
-            cargado.</strong
-          >
+          <strong>pero recuerde que esta solicitud se vinculará al último archivo
+            cargado.</strong>
         </div>
       </div>
     </div>
-    <div class="card-footer text-muted">
-      <button
-        type="button"
-        class="btn btn-dark"
-        [disabled]="closeRequestButton"
-        (click)="openModal(nameButton() ? modalRevision : modalRegistrar)"
-      >
+    <div class="card-footer text-muted" *ngIf="dataRequestPending.length > 0">
+      <button type="button" class="btn btn-dark" [disabled]="closeRequestButton"
+        (click)="openModal(nameButton() ? modalRevision : modalRegistrar)">
         {{ nameButton() ? "Enviar a Revisión" : "Cerrar Solicitud" }}
       </button>
     </div>
@@ -403,12 +271,7 @@
   <ng-template #modalRegistrar let-modal>
     <div class="modal-header">
       <h4 class="modal-title">¿Está seguro de cerrar la solicitud?</h4>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      >
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -419,21 +282,12 @@
     </div>
     <div class="modal-footer">
       <div class="col-6">
-        <button
-          type="button"
-          class="btn btn-dark btn-block"
-          (click)="closeModal(false)"
-        >
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">
           No
         </button>
       </div>
       <div class="col-6 text-right">
-        <button
-          type="button"
-          ngbAutofocus
-          class="btn btn-success btn-block"
-          (click)="closeModal(true)"
-        >
+        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true)">
           Si
         </button>
       </div>
@@ -442,12 +296,7 @@
   <ng-template #modalRevision let-modal>
     <div class="modal-header">
       <h4 class="modal-title">¿Está seguro de enviar la solicitud?</h4>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      >
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -458,21 +307,12 @@
     </div>
     <div class="modal-footer">
       <div class="col-6">
-        <button
-          type="button"
-          class="btn btn-dark btn-block"
-          (click)="closeModal(false)"
-        >
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">
           No
         </button>
       </div>
       <div class="col-6 text-right">
-        <button
-          type="button"
-          ngbAutofocus
-          class="btn btn-success btn-block"
-          (click)="closeModal(true)"
-        >
+        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true)">
           Si
         </button>
       </div>
@@ -488,12 +328,7 @@
           </span>
         </span>
       </h4>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      >
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -505,12 +340,7 @@
   <ng-template #modalskipValidated let-modal>
     <div class="modal-header">
       <h4 class="modal-title">¿Está seguro de omitir la validación?</h4>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="closeModalSkipValidation(false)"
-      >
+      <button type="button" class="close" aria-label="Close" (click)="closeModalSkipValidation(false)">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -523,21 +353,12 @@
     </div>
     <div class="modal-footer">
       <div class="col-6">
-        <button
-          type="button"
-          class="btn btn-dark btn-block"
-          (click)="closeModalSkipValidation(false)"
-        >
+        <button type="button" class="btn btn-dark btn-block" (click)="closeModalSkipValidation(false)">
           No
         </button>
       </div>
       <div class="col-6 text-right">
-        <button
-          type="button"
-          ngbAutofocus
-          class="btn btn-success btn-block"
-          (click)="closeModalSkipValidation(true)"
-        >
+        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModalSkipValidation(true)">
           Si
         </button>
       </div>
