@@ -48,8 +48,6 @@ export class IntegracionComponent implements OnInit {
   municipalityCode: string;
   errorXTF: string;
   optionModalRef: NgbModalRef;
-  apiBaseUrl = environment.apiBaseUrl;
-
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private toastr: ToastrService,
@@ -434,16 +432,14 @@ export class IntegracionComponent implements OnInit {
           this.serviceWorkspaces
             .configureMap(integrationId)
             .subscribe((element) => {
-              this.toastr.success('Se a generado el mapa correctamente.');
+              this.toastr.success('Se ha generado el mapa correctamente.');
             });
         }
       }
     });
   }
   openMap(urlMap: string) {
-    this.serviceWorkspaces.viewMap(urlMap).subscribe(response => {
-      const url = response as string;
-      window.open(url, '_blank');
-    });
+    const url = `${environment.apiBaseUrl}/mapstore/${urlMap}`
+    window.open(url, '_blank');
   }
 }
