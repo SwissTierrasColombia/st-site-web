@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { LoginService } from '../services/auth/login.service';
+import { JwtHelper } from '../shared/helpers/jwt';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit {
   confirmationNewPassword: string;
   buttonReset: boolean;
   username: string;
+  dataUser: any;
   constructor(
     public router: Router,
     private serviceAUTH: LoginService,
@@ -36,19 +38,30 @@ export class LoginComponent implements OnInit {
     this.confirmationNewPassword = '';
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  onLoggedin() {
+  onLoggedin(modal: any) {
     this.serviceAUTH
       .login(this.loginData.username.toLowerCase(), this.loginData.password)
       .subscribe((data) => {
         localStorage.setItem(environment.nameTokenSession, data.access_token);
-        this.router.navigate(['inicio']);
+        this.dataUser = JwtHelper.getUserPublicInformation();
+        if (this.dataUser.first_login) {
+          this.emailByRecover = this.dataUser.email;
+          this.serviceAUTH
+            .recoverPassword(this.emailByRecover)
+            .subscribe((_: any) => {
+              this.toast.success('Se ha enviado un código a su correo registrado para que cambie la contraseña');
+              this.recoverPassword(modal);
+            });
+        } else {
+          this.router.navigate(['inicio']);
+        }
       });
   }
-  public onKey(event: any) {
+  public onKey(event: any, modal: any) {
     if (event.key === 'Enter') {
-      this.onLoggedin();
+      this.onLoggedin(modal);
     }
   }
   recoverPassword(modal: any) {
@@ -60,7 +73,7 @@ export class LoginComponent implements OnInit {
         .recoverPassword(this.emailByRecover)
         .subscribe((response: any) => {
           this.toast.success(response.message);
-          this.modalService.open(modal, { centered: true, scrollable: true });
+          this.recoverPassword(modal)
         });
     }
     this.modalService.dismissAll();
