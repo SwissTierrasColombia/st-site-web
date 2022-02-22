@@ -157,10 +157,9 @@
             </a>
           </li>
           <li *ngIf="
-              ((roleproveedor
+              (roleproveedor
                 ? roleproveedor.id && user.is_provider_director === false
-                : 0 === allroles.proveedor) &&
-                !isSnr) ||
+                : 0 === allroles.proveedor) ||
               delegate
             ">
             <a [routerLink]="['/insumos/solicitudes/atendidas']" (click)="isCollapsed(listMenu.insumos)">

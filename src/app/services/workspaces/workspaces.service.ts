@@ -31,9 +31,9 @@ export class WorkspacesService {
   public GetMunicipalitiesByDeparment(idDepartament: number) {
     return this.httpClient.get<MunicipalityInterface[]>(
       this.url +
-        '/workspaces/v1/departments/' +
-        idDepartament +
-        '/municipalities'
+      '/workspaces/v1/departments/' +
+      idDepartament +
+      '/municipalities'
     );
   }
   /**
@@ -98,9 +98,9 @@ export class WorkspacesService {
   public getWorkSpaceActiveByMunicipality(idMunicipality: number) {
     return this.httpClient.get<WorkspaceActiveByMunicipalityInterface>(
       this.url +
-        '/workspaces/v1/workspaces/municipalities/' +
-        idMunicipality +
-        '/active'
+      '/workspaces/v1/workspaces/municipalities/' +
+      idMunicipality +
+      '/active'
     );
   }
   /**
@@ -109,9 +109,9 @@ export class WorkspacesService {
   public createRequest(idMunicipality: number, data: any) {
     return this.httpClient.post(
       this.url +
-        '/workspaces/v1/providers/municipalities/' +
-        idMunicipality +
-        '/requests',
+      '/workspaces/v1/providers/municipalities/' +
+      idMunicipality +
+      '/requests',
       data
     );
   }
@@ -149,9 +149,9 @@ export class WorkspacesService {
   public GetSuppliesByMunicipalityXTF(idMunicipality: number) {
     return this.httpClient.get(
       this.url +
-        '/workspaces/v1/supplies/' +
-        idMunicipality +
-        '?extensions=xtf&active=true'
+      '/workspaces/v1/supplies/' +
+      idMunicipality +
+      '?extensions=xtf&active=true'
     );
   }
   /**
@@ -177,11 +177,11 @@ export class WorkspacesService {
   public StartIntegrationAssited(idWorkspace: number, idIntegration: number) {
     return this.httpClient.post(
       this.url +
-        '/workspaces/v1/workspaces/' +
-        idWorkspace +
-        '/integrations/' +
-        idIntegration +
-        '',
+      '/workspaces/v1/workspaces/' +
+      idWorkspace +
+      '/integrations/' +
+      idIntegration +
+      '',
       {}
     );
   }
@@ -194,11 +194,11 @@ export class WorkspacesService {
   ) {
     return this.httpClient.post(
       this.url +
-        '/workspaces/v1/workspaces/' +
-        idWorkspace +
-        '/integrations/' +
-        idIntegration +
-        '/export',
+      '/workspaces/v1/workspaces/' +
+      idWorkspace +
+      '/integrations/' +
+      idIntegration +
+      '/export',
       {}
     );
   }
@@ -220,10 +220,10 @@ export class WorkspacesService {
   public deleteIntegration(idWorkspace: number, idIntegration: number) {
     return this.httpClient.delete(
       this.url +
-        '/workspaces/v1/workspaces/' +
-        idWorkspace +
-        '/integrations/' +
-        idIntegration
+      '/workspaces/v1/workspaces/' +
+      idWorkspace +
+      '/integrations/' +
+      idIntegration
     );
   }
   /**
@@ -246,24 +246,24 @@ export class WorkspacesService {
     if (operatorId) {
       return this.httpClient.get(
         this.url +
-          '/workspaces/v1/supplies/' +
-          idMunicipality +
-          '?page=' +
-          page +
-          '&active=' +
-          active +
-          '&operator=' +
-          operatorId
-      );
-    }
-    return this.httpClient.get(
-      this.url +
         '/workspaces/v1/supplies/' +
         idMunicipality +
         '?page=' +
         page +
         '&active=' +
-        active
+        active +
+        '&operator=' +
+        operatorId
+      );
+    }
+    return this.httpClient.get(
+      this.url +
+      '/workspaces/v1/supplies/' +
+      idMunicipality +
+      '?page=' +
+      page +
+      '&active=' +
+      active
     );
   }
   /**
@@ -278,10 +278,10 @@ export class WorkspacesService {
   public deleteSupplies(idMunicipality: number, supplyId: number) {
     return this.httpClient.delete(
       this.url +
-        '/workspaces/v1/workspaces/' +
-        idMunicipality +
-        '/supplies/' +
-        supplyId
+      '/workspaces/v1/workspaces/' +
+      idMunicipality +
+      '/supplies/' +
+      supplyId
     );
   }
   /**
@@ -299,9 +299,9 @@ export class WorkspacesService {
   public deliveriesSupplies(idWorkspace: number, data: any) {
     return this.httpClient.post(
       this.url +
-        '/workspaces/v1/workspaces/' +
-        idWorkspace +
-        '/operators/deliveries',
+      '/workspaces/v1/workspaces/' +
+      idWorkspace +
+      '/operators/deliveries',
       data
     );
   }
@@ -319,9 +319,9 @@ export class WorkspacesService {
   public CloseDelivery(idDelivery) {
     return this.httpClient.put(
       this.url +
-        '/workspaces/v1/operators/deliveries/' +
-        idDelivery +
-        '/disable',
+      '/workspaces/v1/operators/deliveries/' +
+      idDelivery +
+      '/disable',
       {}
     );
   }
@@ -331,10 +331,10 @@ export class WorkspacesService {
   public downloadSupport(workspaceId: number, supportId: number) {
     return this.httpClient.get(
       this.url +
-        '/workspaces/v1/workspaces/' +
-        workspaceId +
-        '/download-support/' +
-        supportId,
+      '/workspaces/v1/workspaces/' +
+      workspaceId +
+      '/download-support/' +
+      supportId,
       { responseType: 'arraybuffer', observe: 'response' }
     );
   }
@@ -498,10 +498,10 @@ export class WorkspacesService {
   public searchSuppliesProviders(page: string, idProvider: string) {
     return this.httpClient.get(
       this.url +
-        '/workspaces/v1/providers/requests/provider?page=' +
-        page +
-        '&provider=' +
-        idProvider
+      '/workspaces/v1/providers/requests/provider?page=' +
+      page +
+      '&provider=' +
+      idProvider
     );
   }
   /**
@@ -511,8 +511,8 @@ export class WorkspacesService {
     if (idPackage !== '') {
       return this.httpClient.get(
         this.url +
-          '/workspaces/v1/providers/requests/package?package=' +
-          idPackage
+        '/workspaces/v1/providers/requests/package?package=' +
+        idPackage
       );
     }
     return this.httpClient.get(
@@ -525,10 +525,10 @@ export class WorkspacesService {
   public DownloadReportIndividual(idDelivery: number, idSupply: string) {
     return this.httpClient.get(
       this.url +
-        '/workspaces/v1/operators/deliveries/' +
-        idDelivery +
-        '/reports-individual/' +
-        idSupply,
+      '/workspaces/v1/operators/deliveries/' +
+      idDelivery +
+      '/reports-individual/' +
+      idSupply,
       { responseType: 'arraybuffer', observe: 'response' }
     );
   }
@@ -538,9 +538,9 @@ export class WorkspacesService {
   public DownloadReportGeneral(idDelivery: number) {
     return this.httpClient.get(
       this.url +
-        '/workspaces/v1/operators/deliveries/' +
-        idDelivery +
-        '/reports-total',
+      '/workspaces/v1/operators/deliveries/' +
+      idDelivery +
+      '/reports-total',
       { responseType: 'arraybuffer', observe: 'response' }
     );
   }
@@ -582,9 +582,9 @@ export class WorkspacesService {
   public StartRevision(supplyRequestedId: number) {
     return this.httpClient.post(
       this.url +
-        '/workspaces/v1/providers/supplies-review/' +
-        supplyRequestedId +
-        '/start',
+      '/workspaces/v1/providers/supplies-review/' +
+      supplyRequestedId +
+      '/start',
       {}
     );
   }
@@ -594,10 +594,10 @@ export class WorkspacesService {
   public GetRecordsFromXTF(supplyRequestedId: number, page: number) {
     return this.httpClient.get(
       this.url +
-        '/workspaces/v1/providers/supplies-review/' +
-        supplyRequestedId +
-        '/records?page=' +
-        page
+      '/workspaces/v1/providers/supplies-review/' +
+      supplyRequestedId +
+      '/records?page=' +
+      page
     );
   }
   /**
@@ -612,10 +612,10 @@ export class WorkspacesService {
     form.append('file', file);
     return this.httpClient.post(
       this.url +
-        '/workspaces/v1/providers/supplies-review/' +
-        supplyRequestedId +
-        '/update/' +
-        boundarySpaceId,
+      '/workspaces/v1/providers/supplies-review/' +
+      supplyRequestedId +
+      '/update/' +
+      boundarySpaceId,
       form
     );
   }
@@ -625,9 +625,9 @@ export class WorkspacesService {
   public closeRevisionRecord(supplyRequestedId: number) {
     return this.httpClient.post(
       this.url +
-        '/workspaces/v1/providers/supplies-review/' +
-        supplyRequestedId +
-        '/close',
+      '/workspaces/v1/providers/supplies-review/' +
+      supplyRequestedId +
+      '/close',
       {}
     );
   }
@@ -637,9 +637,9 @@ export class WorkspacesService {
   public skipRevision(supplyRequestedId: number) {
     return this.httpClient.post(
       this.url +
-        '/workspaces/v1/providers/supplies-review/' +
-        supplyRequestedId +
-        '/skip',
+      '/workspaces/v1/providers/supplies-review/' +
+      supplyRequestedId +
+      '/skip',
       {}
     );
   }
@@ -718,8 +718,8 @@ export class WorkspacesService {
   public createAttachmentsSupply(municipalityId: number, data: any) {
     return this.httpClient.post(
       this.url +
-        '/workspaces/v1/cadastral-authority/supplies/' +
-        municipalityId,
+      '/workspaces/v1/cadastral-authority/supplies/' +
+      municipalityId,
       data
     );
   }
@@ -730,10 +730,10 @@ export class WorkspacesService {
     if (managerId) {
       return this.httpClient.get(
         this.url +
-          '/workspaces/v1/supplies/' +
-          municipalityId +
-          '?active=false&manager=' +
-          managerId
+        '/workspaces/v1/supplies/' +
+        municipalityId +
+        '?active=false&manager=' +
+        managerId
       );
     }
     return this.httpClient.get(
@@ -746,9 +746,9 @@ export class WorkspacesService {
   public enableTypeSupply(typeSupplyId: number) {
     return this.httpClient.put(
       this.url +
-        '/workspaces/v1/providers/types-supplies/' +
-        typeSupplyId +
-        '/enable',
+      '/workspaces/v1/providers/types-supplies/' +
+      typeSupplyId +
+      '/enable',
       {}
     );
   }
@@ -758,9 +758,9 @@ export class WorkspacesService {
   public disableTypeSupply(typeSupplyId: number) {
     return this.httpClient.put(
       this.url +
-        '/workspaces/v1/providers/types-supplies/' +
-        typeSupplyId +
-        '/disable',
+      '/workspaces/v1/providers/types-supplies/' +
+      typeSupplyId +
+      '/disable',
       {}
     );
   }
@@ -770,10 +770,10 @@ export class WorkspacesService {
   public getReportAuthority(municipalityId: number, managerId: number) {
     return this.httpClient.get(
       this.url +
-        '/workspaces/v1/cadastral-authority/report/' +
-        municipalityId +
-        '?manager=' +
-        managerId,
+      '/workspaces/v1/cadastral-authority/report/' +
+      municipalityId +
+      '?manager=' +
+      managerId,
       { responseType: 'arraybuffer', observe: 'response' }
     );
   }
@@ -787,16 +787,16 @@ export class WorkspacesService {
     if (municipalityId) {
       return this.httpClient.get(
         this.url +
-          '/workspaces/v1/workspaces/location?department=' +
-          departamentId +
-          '&municipality=' +
-          municipalityId
+        '/workspaces/v1/workspaces/location?department=' +
+        departamentId +
+        '&municipality=' +
+        municipalityId
       );
     } else {
       return this.httpClient.get(
         this.url +
-          '/workspaces/v1/workspaces/location?department=' +
-          departamentId
+        '/workspaces/v1/workspaces/location?department=' +
+        departamentId
       );
     }
   }
@@ -806,8 +806,8 @@ export class WorkspacesService {
   public getMunicipalitiesThatNotHasWorkspaces(departmentId: number) {
     return this.httpClient.get(
       this.url +
-        '/workspaces/v1/municipalities/not-workspace/departments/' +
-        departmentId
+      '/workspaces/v1/municipalities/not-workspace/departments/' +
+      departmentId
     );
   }
   /**
@@ -873,11 +873,5 @@ export class WorkspacesService {
       `${this.url}/workspaces/v1/integrations/${integrationId}/configure-view`,
       {}
     );
-  }
-  /**
-   * viewMap
-   */
-  public viewMap(urlMap: string) {
-    return this.httpClient.get(`${this.url}/mapstore/${urlMap}`);
   }
 }

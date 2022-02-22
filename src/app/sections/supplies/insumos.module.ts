@@ -29,6 +29,7 @@ import { DeliveriesManagerComponent } from './deliveries-manager/deliveries-mana
 import { DeliveryManagerComponent } from './delivery-manager/delivery-manager.component';
 import { ReportSnrComponent } from './report-snr/report-snr.component';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+
 @NgModule({
   declarations: [
     CargueComponent,
@@ -67,4 +68,4 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
   bootstrap: [IntegracionComponent],
   providers: [TypeDataSuppliesModel],
 })
-export class InsumosModule {}
+export class InsumosModule { }
