@@ -4,7 +4,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import Commons from '../commons/commons';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
-import { environment } from 'src/environments/environment';
 import { ViewportScroller } from '@angular/common';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { SinicFileUploadComponent } from '../sinic-file-upload/sinic-file-upload.component';

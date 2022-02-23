@@ -10,7 +10,7 @@ import { ModalComponent } from 'src/app/shared/components/modal/modal.component'
 @Component({
   selector: 'sinic-file-upload',
   templateUrl: './sinic-file-upload.component.html',
-  styleUrls: ['./sinic-file-upload.component.css']
+  styleUrls: ['./sinic-file-upload.component.scss']
 })
 export class SinicFileUploadComponent implements OnInit {
 
