@@ -19,11 +19,11 @@ export class CreateDeliveryComponent implements OnInit {
   createActive: boolean = false;
   optionModalRef: NgbModalRef;
   listDeliveryFormat = [{
-    id: 1,
+    id: 'XTF',
     name: 'Archivo XTF'
   },
   {
-    id: 2,
+    id: 'FLAT',
     name: 'Archivos Planos'
   }];
   deliveryFormat = '0';
@@ -69,7 +69,7 @@ export class CreateDeliveryComponent implements OnInit {
     if (
       this.selectDepartment !== '0' &&
       this.selectMunicipality !== '0' &&
-      // this.deliveryFormat !== '0' &&
+      this.deliveryFormat !== '0' &&
       this.observations !== ''
     ) {
       this.createActive = true;
@@ -91,6 +91,7 @@ export class CreateDeliveryComponent implements OnInit {
           let data = {
             municipalityCode: this.selectMunicipality,
             observations: this.observations,
+            type: this.deliveryFormat
           };
           this.sinicService.createDelivery(data).subscribe((_) => {
             this.municipalities = [];
