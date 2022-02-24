@@ -161,7 +161,7 @@ export class DeliveryComponent implements OnInit {
       scrollable: true,
     });
     this.optionModalRef.componentInstance.title =
-      'Usted va a REPORTAR la información del MUNICIPIO al SINIC.';
+      'Usted va a REPORTAR la información Catastral del MUNICIPIO en formato XTF a la Autoridad Catastral';
     this.optionModalRef.componentInstance.description =
       'Advertencia: ¿Está seguro de hacerlo?';
     this.optionModalRef.result.then((result) => {
