@@ -83,6 +83,7 @@
                         <th>Municipio</th>
                         <th>Observación</th>
                         <th>Estado</th>
+                        <th>Tipo</th>
                         <th>Fecha de estado</th>
                         <th>Opciones</th>
                     </tr>
@@ -101,6 +102,7 @@
                                 [disabled]="true"></app-observation>
                         </td>
                         <td scope="row"> <span [innerHTML]="nameStateDelivery(item.status)"></span></td>
+                        <td scope="row">{{item.type=='XTF'?'Archivo XTF':'Archivos planos'}}</td>
                         <td scope="row">
                             {{ formatDate(item.dateStatus) }}
                         </td>

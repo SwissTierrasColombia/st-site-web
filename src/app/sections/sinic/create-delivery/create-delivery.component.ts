@@ -18,7 +18,15 @@ export class CreateDeliveryComponent implements OnInit {
   observations: string = '';
   createActive: boolean = false;
   optionModalRef: NgbModalRef;
-
+  listDeliveryFormat = [{
+    id: 'XTF',
+    name: 'Archivo XTF'
+  },
+  {
+    id: 'FLAT',
+    name: 'Archivos Planos'
+  }];
+  deliveryFormat = '0';
   constructor(
     private serviceWorkspaces: WorkspacesService,
     private sinicService: SinicService,
@@ -61,6 +69,7 @@ export class CreateDeliveryComponent implements OnInit {
     if (
       this.selectDepartment !== '0' &&
       this.selectMunicipality !== '0' &&
+      this.deliveryFormat !== '0' &&
       this.observations !== ''
     ) {
       this.createActive = true;
@@ -74,18 +83,21 @@ export class CreateDeliveryComponent implements OnInit {
     this.optionModalRef.componentInstance.title =
       '¿Desea crear un borrador de entrega?';
     this.optionModalRef.componentInstance.description =
-      'Advertencia: Va a preparar una entrega para la autoridad catastral.';
+      `Advertencia: Una vez seleccionado el formato de entrega ${this.deliveryFormat == '1' ? '[Archivo XTF]' : '[Archivo Planos]'} no podrá ser modificado.`;
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
+          // add deliveryFormat
           let data = {
             municipalityCode: this.selectMunicipality,
             observations: this.observations,
+            type: this.deliveryFormat
           };
           this.sinicService.createDelivery(data).subscribe((_) => {
             this.municipalities = [];
             this.selectMunicipality = '0';
             this.selectDepartment = '0';
+            this.deliveryFormat = '0';
             this.observations = '';
             this.toastr.success('Ha creado una entrega');
             this.createActive = false;
