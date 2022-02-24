@@ -17,15 +17,15 @@ import { SinicService } from '../sinic.service';
   styleUrls: ['./flat-file-delivery.component.scss']
 })
 export class FlatFileDeliveryComponent implements OnInit {
-  
-  
+
+
   @ViewChild("interesados", { static: false }) interesados: SinicFileUploadComponent;
   @ViewChild("predios", { static: false }) predios: SinicFileUploadComponent;
   @ViewChild("tramites", { static: false }) tramites: SinicFileUploadComponent;
   @ViewChild("terrenos", { static: false }) terrenos: SinicFileUploadComponent;
   @ViewChild("construcciones", { static: false }) construcciones: SinicFileUploadComponent;
-  
-  
+
+
   /* parametros de entrada */
   deliveryId: number;
   selectDepartment: string;
@@ -47,7 +47,7 @@ export class FlatFileDeliveryComponent implements OnInit {
     date: '',
     dateStatus: ''
   };
-  
+
   tab: number;
   id: number = 0;
   supportFile: string = '';
@@ -60,8 +60,8 @@ export class FlatFileDeliveryComponent implements OnInit {
 
   code: string;
 
-  
-  verBotonEnviar:boolean = false;
+
+  verBotonEnviar: boolean = false;
   verBotonLogs: boolean = false;
 
   constructor(
@@ -77,7 +77,7 @@ export class FlatFileDeliveryComponent implements OnInit {
 
   ngOnInit(): void {
     this._activedRoute.params.subscribe((params: Params) => {
-      
+
       const isAdmin = params.isAdministrator;
       this.isAdministrator = (isAdmin == "true");
       this.deliveryId = Number(params.deliveryId);
@@ -94,47 +94,47 @@ export class FlatFileDeliveryComponent implements OnInit {
   }
 
   findDelivery(deliveryId: number) {
-    
+
     this._sinicService.searchDelivery(deliveryId).subscribe(element => {
       this.delivery = element;
 
       console.log(this.delivery);
     });
-  
+
 
     this.findProcess(deliveryId);
     this.findFiles(deliveryId);
 
   }
 
-  findProcess(deliveryId: number){
-    this._sinicIgacService.obtenerProcesoPorEntrega(deliveryId).subscribe(proceso=>{
-      if(proceso){
+  findProcess(deliveryId: number) {
+    this._sinicIgacService.obtenerProcesoPorEntrega(deliveryId).subscribe(proceso => {
+      if (proceso) {
         this.verBotonEnviar = false;
-      }else{
+      } else {
         this.verBotonEnviar = true;
       }
     });
   }
 
   findFiles(deliveryId: number) {
-    this._sinicIgacService.obtenerDocumentosPorEntrega(deliveryId).subscribe(files=>{
-      this.interesados.filesIGAC = files.filter(f=> f.categoria==Categoria.INTERESADOS);
-      this.predios.filesIGAC = files.filter(f=>f.categoria==Categoria.PREDIO);
-      this.tramites.filesIGAC = files.filter(f=>f.categoria==Categoria.TRAMITECATASTRAL);
-      this.construcciones.filesIGAC = files.filter(f=>f.categoria==Categoria.CONSTRUCCION);
-      this.terrenos.filesIGAC =  files.filter(f=>f.categoria==Categoria.TERRENO);
+    this._sinicIgacService.obtenerDocumentosPorEntrega(deliveryId).subscribe(files => {
+      this.interesados.filesIGAC = files.filter(f => f.categoria == Categoria.INTERESADOS);
+      this.predios.filesIGAC = files.filter(f => f.categoria == Categoria.PREDIO);
+      this.tramites.filesIGAC = files.filter(f => f.categoria == Categoria.TRAMITECATASTRAL);
+      this.construcciones.filesIGAC = files.filter(f => f.categoria == Categoria.CONSTRUCCION);
+      this.terrenos.filesIGAC = files.filter(f => f.categoria == Categoria.TERRENO);
     });
   }
-  
+
   nameStateDelivery(deliveryStatusId: string): string {
     return Commons.nameStateDelivery(deliveryStatusId);
   }
-  
+
   formatDate(date: string) {
     return FuntionsGlobalsHelper.formatDate(date);
   }
-  
+
   goBack() {
     this._router.navigate(['/sinic/listar-entregas/' + this.tab,
     {
@@ -153,48 +153,48 @@ export class FlatFileDeliveryComponent implements OnInit {
   save() {
 
     let validado: boolean = true;
-    let request:any = {};
+    let request: any = {};
 
-    if(this.interesados.filesIGAC.length==0){
+    if (this.interesados.filesIGAC.length == 0) {
       this._toastr.error("Debe cargar al menos un documento en interesados");
       validado = false;
-    }else{
+    } else {
       request.interesados = this.interesados.filesIGAC;
     }
 
-    if(this.predios.filesIGAC.length==0){
+    if (this.predios.filesIGAC.length == 0) {
       this._toastr.error("Debe cargar al menos un documento en predios");
       validado = false;
-    }else{      
+    } else {
       request.predios = this.predios.filesIGAC;
     }
 
-    if(this.tramites.filesIGAC.length==0){
+    if (this.tramites.filesIGAC.length == 0) {
       this._toastr.error("Debe cargar al menos un documento en tramites");
       validado = false;
-    }else{      
+    } else {
       request.tramites = this.tramites.filesIGAC;
     }
 
-    if(this.terrenos.filesIGAC.length==0){
+    if (this.terrenos.filesIGAC.length == 0) {
       this._toastr.error("Debe cargar al menos un documento en terrenos");
       validado = false;
-    }else{      
+    } else {
       request.terrenos = this.terrenos.filesIGAC;
     }
 
-    if(this.construcciones.filesIGAC.length==0){
+    if (this.construcciones.filesIGAC.length == 0) {
       this._toastr.error("Debe cargar al menos un documento en construcciones");
       validado = false;
-    }else{      
+    } else {
       request.construcciones = this.construcciones.filesIGAC;
     }
 
-    request.gestor = this.selectManagerId;
-    request.municipio = this.selectMunicipality;
+    request.gestor = this.delivery.manager.code;
+    request.municipio = this.delivery.locality.code;
     request.entrega = this.deliveryId;
 
-    if(validado){
+    if (validado) {
       this.optionModalRef = this._modalService.open(ModalComponent, {
         centered: true,
         scrollable: true,
@@ -226,7 +226,7 @@ export class FlatFileDeliveryComponent implements OnInit {
     this.formOk = false;
     this.supportFile = '';
   }
-  
+
   downloadLog(item: any) {
     /*
     this.sinicService.downloadLog(this.deliveryId, item.id).subscribe(data => {
