@@ -10,7 +10,8 @@ export const environment = {
   clientUsername: 'CLIENT-SERVER',
   clientPassword: 'PASSWORK-CLIENT',
   sizeFile: NUMBER,
-  sizeFileUnZip: NUMBER
+  sizeFileUnZip: NUMBER,
+  apiIGACUrl:''
 };
 
 /*
