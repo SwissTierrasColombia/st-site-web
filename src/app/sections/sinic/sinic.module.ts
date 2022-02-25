@@ -10,8 +10,17 @@ import { SinicRoutingModule } from './SinicRoutingModule';
 import { FindDeliveriesComponent } from './find-deliveries/find-deliveries.component';
 import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.component';
 import { DeliveryComponent } from './delivery/delivery.component';
+import { SinicFileUploadComponent } from './sinic-file-upload/sinic-file-upload.component';
+import { FlatFileDeliveryComponent } from './flat-file-delivery/flat-file-delivery.component';
 @NgModule({
-  declarations: [CreateDeliveryComponent, FindDeliveriesComponent, TabsDeliveriesComponent, DeliveryComponent],
+  declarations: [
+    CreateDeliveryComponent,
+    FindDeliveriesComponent,
+    TabsDeliveriesComponent,
+    DeliveryComponent,
+    FlatFileDeliveryComponent,
+    SinicFileUploadComponent
+  ],
   imports: [
     CommonModule,
     SinicRoutingModule,

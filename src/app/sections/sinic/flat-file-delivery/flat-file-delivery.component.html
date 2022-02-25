@@ -1,0 +1,156 @@
+<app-page-header [heading]="'Entrega'" [icon]="'fa-star'"> </app-page-header>
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-2">
+                <span ngbTooltip="Volver" placement="bottom" show-delay="500">
+                    <i class="material-icons cursor m-2" (click)="goBack()">backspace</i>
+                </span>
+            </div>
+            <div class="col-10"></div>
+            <div class="col-12">
+                <div class="text-center">
+                    <h3>Entrega</h3>
+                    Estado de la entrega:
+                    <span [innerHTML]="nameStateDelivery(delivery.status)"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="col-12 mb-1">
+            <div class="table-inverse table-responsive text-center">
+                <table class="table table-striped">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th *ngIf="isAdministrator">Gestor</th>
+                            <th>Código de la entrega</th>
+                            <th>Fecha</th>
+                            <th>Departamento</th>
+                            <th>Municipio</th>
+                            <th>Observación</th>
+                            <th>Fecha de estado <span [innerHTML]="nameStateDelivery(delivery.status)"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td scope="row" *ngIf="isAdministrator">{{ delivery.manager.name }}</td>
+                            <td scope="row">{{ delivery.code }}</td>
+                            <td scope="row">
+                                {{ formatDate(delivery.date) }}
+                            </td>
+                            <td scope="row">{{ delivery.locality.department }}</td>
+                            <td scope="row">{{ delivery.locality.municipality}}</td>
+                            <td scope="row">
+                                <app-observation [name]="'observation'" [(inputModel)]="delivery.observations"
+                                    [disabled]="true"></app-observation>
+                            </td>
+                            <td scope="row">
+                                <span style="color: red;">{{ formatDate(delivery.dateStatus) }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-header text-center" *ngIf="!isAdministrator && delivery.status ==='DRAFT' && verBotonEnviar">
+            <h2>
+                {{ id > 0 ? "Actualizar" : "Añadir" }} archivos planos a la entrega
+                <span *ngIf="id > 0"><b>#{{ id }}</b></span>
+            </h2>
+
+            <div class="row" *ngIf="!isAdministrator && delivery.status ==='DRAFT' && verBotonEnviar">
+                <div class="col-12">
+                    <div class="alert alert-primary text-center" role="alert">
+                        Recuerde que los campos marcados con * son obligatorios.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="p-grid">
+        <div class="col-12">
+            <div class="card-body">
+                <div class="row card-header text-center" *ngIf="verBotonEnviar">
+                    <div class="col-12">
+                        Por favor seleccione y cargue por cada categoria los archivos planos que se requieran
+                    </div>
+                </div>
+
+                <div class="row card-header text-center" *ngIf="!verBotonEnviar">
+                    <div class="col-12">
+                        Los archivos cargados para el número de orden {{ delivery.code }} fueron los siguientes:
+                    </div>
+                </div>
+
+                <div class="row">
+                        <div class="col-6">
+                            <div class="card-body">
+                                <sinic-file-upload titulo="Interesados" #interesados categoria="INTERESADOS"
+                                [selectManagerId]="delivery.manager.id" [selectMunicipality]="delivery.locality.code"
+                                [deliveryId]="deliveryId" [renderDeleteButton]="verBotonEnviar"
+                                extension="rep"></sinic-file-upload>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="card-body">
+                                <sinic-file-upload titulo="Predio" #predios categoria="PREDIO" 
+                                [selectManagerId]="delivery.manager.id" [selectMunicipality]="delivery.locality.code"
+                                [deliveryId]="deliveryId" [renderDeleteButton]="verBotonEnviar"
+                                extension="rep">
+                                </sinic-file-upload>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="card-body">
+                                <sinic-file-upload titulo="Trámite Catastral" #tramites
+                                    categoria="TRAMITECATASTRAL" [renderDeleteButton]="verBotonEnviar"
+                                    [selectManagerId]="delivery.manager.id" [selectMunicipality]="delivery.locality.code"
+                                    [deliveryId]="deliveryId"
+                                    extension="rep"></sinic-file-upload>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="card-body">
+                                <sinic-file-upload titulo="Terreno" #terrenos categoria="TERRENO"
+                                    [selectManagerId]="delivery.manager.id" [selectMunicipality]="delivery.locality.code"
+                                    [deliveryId]="deliveryId" [renderDeleteButton]="verBotonEnviar"   
+                                    extension="gpkg">
+                                </sinic-file-upload>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="card-body">
+                                <sinic-file-upload titulo="Construcción" #construcciones categoria="CONSTRUCCION"
+                                    [selectManagerId]="delivery.manager.id" [selectMunicipality]="delivery.locality.code"
+                                    [deliveryId]="deliveryId" [renderDeleteButton]="verBotonEnviar"
+                                    extension="gpkg"></sinic-file-upload>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card-footer text-muted text-center" *ngIf="!isAdministrator && verBotonEnviar">
+                <button type="button" class="btn btn-dark" (click)="save()">
+                    Enviar a Autoridad Catastral
+                </button>
+            </div>
+            <div class="card-footer text-muted text-center" *ngIf="!isAdministrator && verBotonLogs">
+                <button type="button" class="btn btn-dark" (click)="save()">
+                    Descargar Logs
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

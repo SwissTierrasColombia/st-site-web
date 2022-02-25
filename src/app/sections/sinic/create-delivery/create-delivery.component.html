@@ -7,46 +7,28 @@
   <div class="card-body">
     <div class="row">
       <div class="col-12 col-sm-6 mb-1">
-        <app-select
-          [labelSelect]="'* Departamento'"
-          [nameSelect]="'departments'"
-          [idSelect]="'departments'"
-          [optionZero]="'Seleccione el Departamento'"
-          [listSelect]="departments"
-          [key]="'name'"
-          [(inputModel)]="selectDepartment"
-          (change)="changeDepartament()"
-        ></app-select>
+        <app-select [labelSelect]="'* Departamento'" [nameSelect]="'departments'" [idSelect]="'departments'"
+          [optionZero]="'Seleccione el Departamento'" [listSelect]="departments" [key]="'name'"
+          [(inputModel)]="selectDepartment" (change)="changeDepartament()"></app-select>
       </div>
       <div class="col-12 col-sm-6 mb-1">
-        <app-select
-          [labelSelect]="'* Municipio'"
-          [nameSelect]="'departments'"
-          [idSelect]="'departments'"
-          [optionZero]="'Seleccione el Municipio'"
-          [listSelect]="municipalities"
-          [key]="'name'"
-          [(inputModel)]="selectMunicipality"
-          (change)="change()"
-        ></app-select>
+        <app-select [labelSelect]="'* Municipio'" [nameSelect]="'departments'" [idSelect]="'departments'"
+          [optionZero]="'Seleccione el Municipio'" [listSelect]="municipalities" [key]="'name'"
+          [(inputModel)]="selectMunicipality" (change)="change()"></app-select>
+      </div>
+      <div class="col-12 col-sm-6 mb-1">
+        <app-select [labelSelect]="'* Formato de entrega'" [nameSelect]="'deliveryFormat'" [idSelect]="'deliveryFormat'"
+          [optionZero]="'Seleccione el tipo'" [listSelect]="listDeliveryFormat" [key]="'name'"
+          [(inputModel)]="deliveryFormat" (change)="change()"></app-select>
       </div>
       <div class="col-12 mb-1">
-        <app-observation
-          [title]="'* Observaciones'"
-          [id]="'observation'"
-          [(inputModel)]="observations"
-          (change)="change()"
-        ></app-observation>
+        <app-observation [title]="'* Observaciones'" [id]="'observation'" [(inputModel)]="observations"
+          (change)="change()"></app-observation>
       </div>
     </div>
   </div>
   <div class="card-footer text-center">
-    <button
-      type="button"
-      class="btn btn-dark"
-      (click)="openModalCreateDelivery()"
-      [disabled]="!createActive"
-    >
+    <button type="button" class="btn btn-dark" (click)="openModalCreateDelivery()" [disabled]="!createActive">
       Crear entrega
     </button>
   </div>

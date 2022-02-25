@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="p-field">
+        <label for="modelo">{{titulo}} (.{{extension}}): <span class="p-error">*</span></label>
+
+        <div class="input-group" *ngIf="renderDeleteButton">
+            <div class="input-group-prepend">
+                <label class="input-group-text">* Adjunto
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                </label>
+            </div>
+            <input #fileUploadArchivo class="form-control" type="file" (change)="docSoport($event.target.files)"
+                accept=".zip" />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 mb-1" *ngIf="filesIGAC.length > 0">
+        <div class="table-inverse table-responsive text-center">
+            <table class="table table-striped">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th style="width: 60%;">Archivo</th>
+                        <th *ngIf="renderDeleteButton"></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of filesIGAC; let index = index">
+                        <td scope="row">{{ item.nombre }}</td>
+                        
+                        <td scope="row" *ngIf="renderDeleteButton">
+                            <span ngbTooltip="Eliminar archivo" placement="top" show-delay="500">
+                                <i class="material-icons cursor" (click)="abrirModalEliminarArchivo(item)">
+                                    delete
+                                </i>
+                            </span>
+                        </td>
+                        <td scope="row">
+                            <span ngbTooltip="Descargar archivo" placement="top" show-delay="500">
+                                <i class="material-icons cursor" (click)="descargar(item)">
+                                    download
+                                </i>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

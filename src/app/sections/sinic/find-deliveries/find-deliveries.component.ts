@@ -256,18 +256,33 @@ export class FindDeliveriesComponent implements OnInit {
     return FuntionsGlobalsHelper.formatDate(date);
   }
   viewDetailDelivery(item: any) {
-    this.router.navigate([
-      `sinic/listar-entregas/${this.tab}/entrega/${item.id}`,
-      {
-        isAdministrator: this.isAdministrator,
-        isManager: this.isManager,
-        selectDepartment: this.selectDepartment,
-        selectMunicipality: this.selectMunicipality,
-        selectManagerId: this.selectManagerId,
-        selectStates: this.selectStates,
-        code: this.code,
-      },
-    ]);
+    if (item.type === 'FLAT') {
+      this.router.navigate([
+        `sinic/listar-entregas/${this.tab}/entrega-archivo-plano/${item.id}`,
+        {
+          isAdministrator: this.isAdministrator,
+          isManager: this.isManager,
+          selectDepartment: this.selectDepartment,
+          selectMunicipality: this.selectMunicipality,
+          selectManagerId: this.selectManagerId,
+          selectStates: this.selectStates,
+          code: this.code,
+        },
+      ]);
+    } else {
+      this.router.navigate([
+        `sinic/listar-entregas/${this.tab}/entrega/${item.id}`,
+        {
+          isAdministrator: this.isAdministrator,
+          isManager: this.isManager,
+          selectDepartment: this.selectDepartment,
+          selectMunicipality: this.selectMunicipality,
+          selectManagerId: this.selectManagerId,
+          selectStates: this.selectStates,
+          code: this.code,
+        },
+      ]);
+    }
   }
   openModalDeleteDelivery(item: any) {
     this.optionModalRef = this.modalService.open(ModalComponent, {
