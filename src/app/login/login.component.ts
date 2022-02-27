@@ -40,28 +40,23 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() { }
 
-  onLoggedin(modal: any) {
+  onLoggedin() {
     this.serviceAUTH
       .login(this.loginData.username.toLowerCase(), this.loginData.password)
       .subscribe((data) => {
         localStorage.setItem(environment.nameTokenSession, data.access_token);
         this.dataUser = JwtHelper.getUserPublicInformation();
+        this.emailByRecover = this.dataUser.email;
         if (this.dataUser.first_login) {
-          this.emailByRecover = this.dataUser.email;
-          this.serviceAUTH
-            .recoverPassword(this.emailByRecover)
-            .subscribe((_: any) => {
-              this.toast.success('Se ha enviado un código a su correo registrado para que cambie la contraseña');
-              this.recoverPassword(modal);
-            });
+          this.router.navigate(['cuenta/perfil']);
         } else {
           this.router.navigate(['inicio']);
         }
       });
   }
-  public onKey(event: any, modal: any) {
+  public onKey(event: any) {
     if (event.key === 'Enter') {
-      this.onLoggedin(modal);
+      this.onLoggedin();
     }
   }
   recoverPassword(modal: any) {
