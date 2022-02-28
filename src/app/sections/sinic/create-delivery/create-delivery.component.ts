@@ -83,7 +83,7 @@ export class CreateDeliveryComponent implements OnInit {
     this.optionModalRef.componentInstance.title =
       '¿Desea crear un borrador de entrega?';
     this.optionModalRef.componentInstance.description =
-      `Advertencia: Una vez seleccionado el formato de entrega ${this.deliveryFormat == '1' ? '[Archivo XTF]' : '[Archivo Planos]'} no podrá ser modificado.`;
+      `Advertencia: Una vez seleccionado el formato de entrega ${this.deliveryFormat == 'XTF' ? '[Archivo XTF]' : '[Archivo Planos]'} no podrá ser modificado.`;
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
