@@ -347,6 +347,13 @@ export class ListUserComponent implements OnInit {
       .getProviderUser(this.providerId)
       .subscribe((response) => {
         this.usersProviders = response;
+        console.log(this.usersProviders);
+        this.usersProviders = this.usersProviders.filter(element => {
+          if (element.roles.length == 0) {
+            return element;
+          }
+          return element.roles.find(item => item.name !== 'REVISOR')
+        })
         this.usersProviders.sort(function (a, b) {
           if (a.provider.name > b.provider.name) {
             return 1;

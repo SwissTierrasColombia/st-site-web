@@ -16,13 +16,11 @@ import { IntegracionComponent } from './integration/integracion.component';
 import { IntegrationsPossiblesComponent } from './integrations-possibles/integrations-possibles.component';
 import { IntegrationsRunningComponent } from './integrations-running/integrations-running.component';
 import { CargueComponent } from './load-supplies/cargue.component';
-import { RevisionesPendientesComponent } from './pending-reviews/revisiones-pendientes.component';
 import { SolicitudComponent } from './providers-request/solicitud.component';
 import { PeticionComponent } from './request-manager/peticion.component';
 import { PeticionesProveedorComponent } from './request-providers/peticiones-proveedor.component';
 import { SolicitudesAtendidasComponent } from './requests-attended-provider/solicitudes-atendidas.component';
 import { SolicitudesComponent } from './requests-manager/solicitudes.component';
-import { RevisionPendienteComponent } from './review-pending/revision-pendiente.component';
 import { SearchComponent } from './search/search.component';
 import { BuscarSolicitudComponent } from './search-request/buscar-solicitud.component';
 import { DeliveriesManagerComponent } from './deliveries-manager/deliveries-manager.component';
@@ -44,8 +42,6 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
     BuscarSolicitudComponent,
     IntegrationsRunningComponent,
     IntegrationsPossiblesComponent,
-    RevisionesPendientesComponent,
-    RevisionPendienteComponent,
     PeticionComponent,
     PeticionesProveedorComponent,
     DeliveriesManagerComponent,

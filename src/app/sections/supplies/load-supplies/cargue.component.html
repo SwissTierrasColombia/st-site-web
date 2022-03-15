@@ -262,9 +262,8 @@
       </div>
     </div>
     <div class="card-footer text-muted" *ngIf="dataRequestPending.length > 0">
-      <button type="button" class="btn btn-dark" [disabled]="closeRequestButton"
-        (click)="openModal(nameButton() ? modalRevision : modalRegistrar)">
-        {{ nameButton() ? "Enviar a Revisión" : "Cerrar Solicitud" }}
+      <button type="button" class="btn btn-dark" [disabled]="closeRequestButton" (click)="openModal(modalRegistrar)">
+        Cerrar Solicitud
       </button>
     </div>
   </div>
@@ -278,31 +277,6 @@
     <div class="modal-body">
       <h5 class="alert alert-warning text-center">
         Advertencia: Va a cerrar la solicitud.
-      </h5>
-    </div>
-    <div class="modal-footer">
-      <div class="col-6">
-        <button type="button" class="btn btn-dark btn-block" (click)="closeModal(false)">
-          No
-        </button>
-      </div>
-      <div class="col-6 text-right">
-        <button type="button" ngbAutofocus class="btn btn-success btn-block" (click)="closeModal(true)">
-          Si
-        </button>
-      </div>
-    </div>
-  </ng-template>
-  <ng-template #modalRevision let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title">¿Está seguro de enviar la solicitud?</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <h5 class="alert alert-warning text-center">
-        Advertencia: Va a enviar la solicitud a revisión.
       </h5>
     </div>
     <div class="modal-footer">

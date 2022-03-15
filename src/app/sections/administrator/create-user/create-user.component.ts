@@ -224,10 +224,6 @@ export class CreateUserComponent implements OnInit {
             id: 4,
             name: 'Técnico',
           },
-          {
-            id: 5,
-            name: 'Revisor',
-          },
         ];
       } else {
         this.selectROL = 4;
@@ -441,10 +437,6 @@ export class CreateUserComponent implements OnInit {
                 {
                   id: 4,
                   name: 'Técnico',
-                },
-                {
-                  id: 5,
-                  name: 'Revisor',
                 },
               ];
             } else {

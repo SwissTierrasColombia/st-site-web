@@ -18,7 +18,6 @@ import { RoleProviderGuard } from '../shared/guard/role-provider-guard.service';
 import { RoleOperatorGuard } from '../shared/guard/role-operator-guard.service';
 import { AdministrationGuard } from '../shared/guard/administration-guard.service';
 import { RoleProviderDirectorGuard } from '../shared/guard/role-providerDirector-guard.service';
-import { RoleRevisorGuard } from '../shared/guard/role-revisor-guard.service';
 
 @NgModule({
   imports: [
@@ -45,7 +44,6 @@ import { RoleRevisorGuard } from '../shared/guard/role-revisor-guard.service';
     RoleAdminManagerGuard,
     AdministrationGuard,
     RoleProviderDirectorGuard,
-    RoleRevisorGuard,
     RoleManagerOperatorGuard,
     RoleOperatorSnrGuard,
   ],
