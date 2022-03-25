@@ -2,12 +2,11 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { SinicService } from '../sinic.service';
-import Commons from '../commons/commons';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { FuntionsGlobalsHelper } from 'src/app/shared/helpers/funtionsGlobals';
 import { environment } from 'src/environments/environment';
-import { ViewportScroller } from '@angular/common';
-import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
+import Commons from '../commons/commons';
+import { SinicService } from '../sinic.service';
 
 @Component({
   selector: 'app-delivery',
@@ -53,8 +52,6 @@ export class DeliveryComponent implements OnInit {
     private sinicService: SinicService,
     private modalService: NgbModal,
     private toastr: ToastrService,
-    private scroll: ViewportScroller
-
   ) { }
 
   ngOnInit(): void {
