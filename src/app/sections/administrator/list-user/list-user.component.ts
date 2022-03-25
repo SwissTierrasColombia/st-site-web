@@ -98,6 +98,21 @@ export class ListUserComponent implements OnInit {
     });
     this.serviceWorkspace.getUsers().subscribe((arg: any) => {
       this.dataListUser = arg;
+      this.dataListUser = this.dataListUser.filter(element => {
+        if (element.rolesProvider) {
+          if (element.rolesProvider.length > 0) {
+            for (const item of element.rolesProvider) {
+              if (item.name != 'REVISOR') {
+                return element;
+              }
+            }
+          } else {
+            return element;
+          }
+        } else {
+          return element;
+        }
+      });
       this.dataListUser = this.dataListUser.filter((element: any) => {
         return element.username !== this.dataUserLogger.user_name;
       });
