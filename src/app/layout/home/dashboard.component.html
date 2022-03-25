@@ -40,11 +40,6 @@
         [label]="'ENTREGAS EN CORRECCIÓN'" [url]="'/calidad/buscar-entregas/4'">
       </app-stat>
     </div>
-    <div *ngIf="delegate" class="mt-1 mb-1 col-8 col-md-4">
-      <app-stat [bgClass]="'info'" [icon]="'fa-tasks'" [count]="numRevision" [label]="'REVISIONES'"
-        [url]="'/insumos/revisiones-pendientes'">
-      </app-stat>
-    </div>
     <div *ngIf="isManager && !sinic" class="mt-1 mb-1 col-8 col-md-4">
       <app-stat [bgClass]="'info'" [icon]="'fa-archive'" [count]="deliveryInPending" [label]="'ENTREGAS RECIBIDAS'"
         [url]="'/calidad/buscar-entregas/2'">
