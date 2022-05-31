@@ -20,6 +20,7 @@ export class GestorComponent implements OnInit {
   formOk: boolean;
   id: number;
   optionModalRef: NgbModalRef;
+  managerGroups = [];
   constructor(
     private serviceManager: ManagersService,
     private toast: ToastrService,
@@ -32,6 +33,7 @@ export class GestorComponent implements OnInit {
       alias: '',
       taxIdentificationNumber: '',
       providerCategoryId: 0,
+      managerGroup: 0,
     };
     this.idProfileDelete = {};
     this.categoriesProviders = [];
@@ -61,7 +63,8 @@ export class GestorComponent implements OnInit {
     if (
       this.data.name !== '' &&
       this.data.taxIdentificationNumber !== '' &&
-      this.data.alias !== ''
+      this.data.alias !== '' &&
+      this.data.managerGroup !== 0
     ) {
       this.data.taxIdentificationNumber.trim();
       this.formOk = true;
@@ -163,6 +166,7 @@ export class GestorComponent implements OnInit {
       alias: '',
       taxIdentificationNumber: '',
       providerCategoryId: 0,
+      managerGroup: 0,
     };
   }
   create() {
@@ -175,6 +179,7 @@ export class GestorComponent implements OnInit {
           alias: '',
           taxIdentificationNumber: '',
           providerCategoryId: 0,
+          managerGroup: 0,
         };
         this.toast.success('Se ha creado el gestor correctamente.');
         this.editMode = false;

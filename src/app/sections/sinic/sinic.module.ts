@@ -12,6 +12,7 @@ import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.compo
 import { DeliveryComponent } from './delivery/delivery.component';
 import { SinicFileUploadComponent } from './sinic-file-upload/sinic-file-upload.component';
 import { FlatFileDeliveryComponent } from './flat-file-delivery/flat-file-delivery.component';
+import { CreateGroupComponent } from './create-group/create-group.component';
 @NgModule({
   declarations: [
     CreateDeliveryComponent,
@@ -19,7 +20,8 @@ import { FlatFileDeliveryComponent } from './flat-file-delivery/flat-file-delive
     TabsDeliveriesComponent,
     DeliveryComponent,
     FlatFileDeliveryComponent,
-    SinicFileUploadComponent
+    SinicFileUploadComponent,
+    CreateGroupComponent
   ],
   imports: [
     CommonModule,

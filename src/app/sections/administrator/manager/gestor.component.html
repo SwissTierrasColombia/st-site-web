@@ -5,46 +5,40 @@
     <div class="card-header text-center">
       <h2>
         {{ id > 0 ? "Actualizar" : "Crear" }} Gestor
-        <span *ngIf="id > 0"
-          ><b>#{{ id }}</b></span
-        >
+        <span *ngIf="id > 0"><b>#{{ id }}</b></span>
       </h2>
     </div>
     <div class="card-body">
       <form action="" method="post">
         <div class="row">
           <div class="col-12 col-md-6">
-            <app-input
-              [id]="'name'"
-              [title]="'* Nombre Completo'"
-              [name]="'name'"
-              [type]="'text'"
-              [placeholder]="'Nombre Completo'"
-              (change)="changeState()"
-              [(inputModel)]="data.name"
-            ></app-input>
+            <app-input [id]="'name'" [title]="'* Nombre Completo'" [name]="'name'" [type]="'text'"
+              [placeholder]="'Nombre Completo'" (change)="changeState()" [(inputModel)]="data.name"></app-input>
           </div>
           <div class="col-12 col-md-6">
-            <app-input
-              [id]="'taxIdentificationNumber'"
-              [title]="'* NIT'"
-              [name]="'taxIdentificationNumber'"
-              [type]="'text'"
-              [placeholder]="'XXXXXXXXX-Y'"
-              (change)="changeState()"
-              [(inputModel)]="data.taxIdentificationNumber"
-            ></app-input>
+            <app-input [id]="'taxIdentificationNumber'" [title]="'* NIT'" [name]="'taxIdentificationNumber'"
+              [type]="'text'" [placeholder]="'XXXXXXXXX-Y'" (change)="changeState()"
+              [(inputModel)]="data.taxIdentificationNumber"></app-input>
           </div>
           <div class="col-12 col-md-6">
-            <app-input
-              [id]="'alias'"
-              [title]="'* Alias'"
-              [name]="'alias'"
-              [type]="'text'"
-              [placeholder]="'Alias'"
-              (change)="changeState()"
-              [(inputModel)]="data.alias"
-            ></app-input>
+            <app-input [id]="'alias'" [title]="'* Alias'" [name]="'alias'" [type]="'text'" [placeholder]="'Alias'"
+              (change)="changeState()" [(inputModel)]="data.alias"></app-input>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" aria-required="true">* Grupo</label>
+              </div>
+              <select (change)="changeState()" class="custom-select" name="managerGroup" id="managerGroup"
+                [(ngModel)]="data.managerGroup">
+                <option value="0" selected [disabled]="true">
+                  Seleccione el grupo al que pertenecerá el gestor para las entregas de RIC.
+                </option>
+                <option [ngValue]="item.id" *ngFor="let item of managerGroups">
+                  {{ item.name }}
+                </option>
+              </select>
+            </div>
           </div>
           <div class="col-12">
             <div class="alert alert-primary text-center" role="alert">
@@ -55,30 +49,13 @@
       </form>
     </div>
     <div class="card-footer text-muted text-center">
-      <button
-        type="button"
-        [disabled]="!formOk"
-        *ngIf="!editMode"
-        class="btn btn-dark"
-        (click)="create()"
-      >
+      <button type="button" [disabled]="!formOk" *ngIf="!editMode" class="btn btn-dark" (click)="create()">
         Crear
       </button>
-      <button
-        type="button"
-        [disabled]="!formOk"
-        *ngIf="editMode"
-        class="btn btn-dark"
-        (click)="save()"
-      >
+      <button type="button" [disabled]="!formOk" *ngIf="editMode" class="btn btn-dark" (click)="save()">
         Guardar
       </button>
-      <button
-        type="button"
-        style="margin-left: 10px"
-        class="btn btn-dark"
-        (click)="cancel()"
-      >
+      <button type="button" style="margin-left: 10px" class="btn btn-dark" (click)="cancel()">
         Cancelar
       </button>
     </div>
@@ -96,44 +73,31 @@
               <th>Nombre</th>
               <th>Alias</th>
               <th>NIT</th>
+              <th>Grupo RIC</th>
               <th>Editar</th>
               <th>Activar/Desactivar</th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              [style.background-color]="item.id == id ? '#3ada1273' : ''"
-              [style.font-weight]="item.id == id ? 'bold' : ''"
-              *ngFor="let item of dataProfile; let i = index"
-            >
+            <tr [style.background-color]="item.id == id ? '#3ada1273' : ''"
+              [style.font-weight]="item.id == id ? 'bold' : ''" *ngFor="let item of dataProfile; let i = index">
               <td scope="row">{{ i + 1 }}</td>
               <td scope="row">{{ item.name }}</td>
               <td scope="row">{{ item.alias }}</td>
               <td scope="row">{{ item.taxIdentificationNumber }}</td>
+              <td scope="row">grupo </td>
               <td scope="row">
-                <span
-                  ngbTooltip="Modificar gestor"
-                  placement="bottom"
-                  show-delay="500"
-                >
+                <span ngbTooltip="Modificar gestor" placement="bottom" show-delay="500">
                   <i class="material-icons mr-2" (click)="updateProfile(item)">
                     edit
                   </i>
                 </span>
               </td>
               <td scope="row">
-                <label
-                  class="switch"
-                  [title]="item.state ? 'Desactivar' : 'Activar'"
-                  (click)="
+                <label class="switch" [title]="item.state ? 'Desactivar' : 'Activar'" (click)="
                     item.state ? deleteProfile(item) : activeManager(item)
-                  "
-                >
-                  <input
-                    (click)="clickCheckBox($event)"
-                    [(ngModel)]="item.state"
-                    type="checkbox"
-                  />
+                  ">
+                  <input (click)="clickCheckBox($event)" [(ngModel)]="item.state" type="checkbox" />
                   <span class="slider round"></span>
                 </label>
               </td>

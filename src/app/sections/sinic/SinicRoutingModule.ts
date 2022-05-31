@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateDeliveryComponent } from './create-delivery/create-delivery.component';
+import { CreateGroupComponent } from './create-group/create-group.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { FlatFileDeliveryComponent } from './flat-file-delivery/flat-file-delivery.component';
 import { TabsDeliveriesComponent } from './tabs-deliveries/tabs-deliveries.component';
@@ -25,7 +26,17 @@ const routes: Routes = [
     path: 'listar-entregas/:tab/entrega-archivo-plano/:deliveryId',
     component: FlatFileDeliveryComponent,
     canActivate: [],
-  }
+  },
+  {
+    path:'crear-grupos',
+    component: CreateGroupComponent,
+    canActivate: [],
+  },
+  // {
+  //   path:'crear-grupos',
+  //   component: CreateGroupComponent,
+  //   canActivate: [],
+  // }
 ];
 
 @NgModule({
