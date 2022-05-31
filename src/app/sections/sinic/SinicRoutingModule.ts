@@ -1,3 +1,4 @@
+import { CreatePeriodsComponent } from './create-periods/create-periods.component';
 import { ListPeriodsComponent } from './list-periods/list-periods.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -36,6 +37,11 @@ const routes: Routes = [
   {
     path: 'listar-periodos',
     component: ListPeriodsComponent,
+    canActivate: [],
+  },
+  {
+    path: 'crear-periodos',
+    component: CreatePeriodsComponent,
     canActivate: [],
   },
 ];

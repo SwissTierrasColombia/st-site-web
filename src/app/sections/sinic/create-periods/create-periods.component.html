@@ -1,0 +1,67 @@
+<app-page-header [heading]="'Crear Períodos'" [icon]="'fa-star'">
+</app-page-header>
+<div class="card">
+  <div class="card-header">
+    <div class="text-center">
+      <h3>Crear Períodos</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-sm-6">
+        <app-select
+          [disableOptionZero]="false"
+          [labelSelect]="'año'"
+          [nameSelect]="'year'"
+          [idSelect]="'listYears'"
+          [optionZero]="'Seleccione el año'"
+          [listSelect]="listYears"
+          [key]="'option'"
+          [(inputModel)]="selectYear"
+          [disable]="true"
+        ></app-select>
+      </div>
+      <div class="col-12 col-sm-6">
+        <app-input
+          [title]="'* Número de Períodos'"
+          [id]="'numGroup'"
+          [name]="'numGroup'"
+          [disabled]="false"
+          [(inputModel)]="numPeriod"
+          [type]="'number'"
+        ></app-input>
+      </div>
+      <div class="col-12">
+        <app-observation
+          [title]="'* Observaciones'"
+          [id]="'observations'"
+          [disabled]="false"
+          [(inputModel)]="observations"
+        ></app-observation>
+      </div>
+      <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          Recuerde que los campos marcados con * son obligatorios.
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button
+        type="button"
+        class="btn btn-dark"
+        (click)="save()"
+        disabled="true"
+      >
+        Guardar
+      </button>
+      <button
+        type="button"
+        style="margin-left: 10px"
+        class="btn btn-dark"
+        (click)="cancel()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>

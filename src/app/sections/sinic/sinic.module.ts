@@ -14,6 +14,7 @@ import { SinicFileUploadComponent } from './sinic-file-upload/sinic-file-upload.
 import { FlatFileDeliveryComponent } from './flat-file-delivery/flat-file-delivery.component';
 import { CreateGroupComponent } from './create-group/create-group.component';
 import { ListPeriodsComponent } from './list-periods/list-periods.component';
+import { CreatePeriodsComponent } from './create-periods/create-periods.component';
 @NgModule({
   declarations: [
     CreateDeliveryComponent,
@@ -23,7 +24,8 @@ import { ListPeriodsComponent } from './list-periods/list-periods.component';
     FlatFileDeliveryComponent,
     SinicFileUploadComponent,
     CreateGroupComponent,
-    ListPeriodsComponent
+    ListPeriodsComponent,
+    CreatePeriodsComponent
   ],
   imports: [
     CommonModule,
