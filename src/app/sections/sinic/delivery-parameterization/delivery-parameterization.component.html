@@ -1,0 +1,181 @@
+<app-page-header [heading]="'Parametrización de Entregas'" [icon]="'fa-star'">
+</app-page-header>
+<div class="card">
+  <div class="card-header">
+    <div class="text-center">
+      <h3>Parametrización de Entregas</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-sm-2">
+        <app-input
+          [title]="'año'"
+          [id]="'year'"
+          [name]="'year'"
+          [disabled]="true"
+          [type]="'number'"
+          [(inputModel)]="year"
+        ></app-input>
+      </div>
+      <div class="col-12 col-sm-5">
+        <app-input
+          [title]="'Número de Períodos'"
+          [id]="'numPeriods'"
+          [name]="'numPeriods'"
+          [disabled]="true"
+          [type]="'number'"
+          [(inputModel)]="numPeriods"
+        ></app-input>
+      </div>
+    </div>
+    <div
+      class="row mt-1"
+      *ngFor="let item of arrayNumGroups; let index1 = index"
+    >
+      <div class="col-12">
+        <app-input
+          [title]="'Período'"
+          [id]="'namePeriod'"
+          [name]="'namePeriod'"
+          [disabled]="false"
+          [(inputModel)]="namePeriod"
+        ></app-input>
+      </div>
+      <div class="col-12 col-sm-6">
+        <app-input
+          [title]="'* Fecha de Inicio'"
+          [id]="'dateStart'"
+          [name]="'dateStart'"
+          [disabled]="false"
+          [type]="'date'"
+          [(inputModel)]="dateStart"
+        ></app-input>
+      </div>
+      <div class="col-12 col-sm-6">
+        <app-input
+          [title]="'* Fecha Final'"
+          [id]="'dateEnd'"
+          [name]="'dateEnd'"
+          [disabled]="false"
+          [type]="'date'"
+          [(inputModel)]="dateEnd"
+        ></app-input>
+      </div>
+      <div class="col-12 col-sm-8">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" aria-required="true">
+              * Grupos Asignados
+            </label>
+          </div>
+          <ng-select2
+            name="select2Groups"
+            [data]="listGroupsData[index1]"
+            [options]="options"
+            [(ngModel)]="selectGroups[index1]"
+            (click)="changeData()"
+          >
+          </ng-select2>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4">
+        <label
+          class="switch"
+          [title]="
+            selectAllGroups[index1]
+              ? 'Cancelar selección de grupos'
+              : 'Seleccione todos los grupos'
+          "
+        >
+          <input
+            [(ngModel)]="selectAllGroups[index1]"
+            type="checkbox"
+            name="checkboxselectAllGroups"
+            (click)="clickCheckBox(index1)"
+          />
+          <span class="slider round"></span>
+        </label>
+        <small class="form-text text-muted">
+          {{
+            selectAllGroups[index1]
+              ? "Cancelar selección de grupos"
+              : "Seleccione todos los grupos"
+          }}
+        </small>
+      </div>
+      <div class="col-12">
+        <small class="form-text text-muted"
+          >Seleccione los grupos que entregan infromación en el período.
+        </small>
+      </div>
+
+      <div class="col-12 mt-2">
+        <p>Ingrese las fechas de entrega para cada grupo en el período.</p>
+      </div>
+      <div *ngIf="selectGroups[index1][0] != '0'">
+        <div
+          class="row mt-1"
+          *ngFor="let group of selectGroups[index1]; let index2 = index"
+        >
+          <!-- <pre>{{index1}}</pre>
+        <pre>{{index2}}</pre> -->
+          <div class="col-2">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  {{ getGroup(index1, group) }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-5">
+            <app-input
+              [title]="'* Inicio'"
+              [id]="'dateStart'"
+              [name]="'dateStart'"
+              [disabled]="false"
+              [type]="'date'"
+              [(inputModel)]="dateStart"
+            ></app-input>
+          </div>
+          <div class="col-5">
+            <app-input
+              [title]="'* Fin'"
+              [id]="'dateEnd'"
+              [name]="'dateEnd'"
+              [disabled]="false"
+              [type]="'date'"
+              [(inputModel)]="dateEnd"
+            ></app-input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-1">
+      <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          Recuerde que los campos marcados con * son obligatorios.
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button
+        type="button"
+        class="btn btn-dark"
+        (click)="save()"
+        disabled="true"
+      >
+        Guardar
+      </button>
+      <button
+        type="button"
+        style="margin-left: 10px"
+        class="btn btn-dark"
+        (click)="cancel()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>

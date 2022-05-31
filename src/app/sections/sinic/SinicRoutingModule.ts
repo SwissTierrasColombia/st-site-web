@@ -1,3 +1,4 @@
+import { DeliveryParameterizationComponent } from './delivery-parameterization/delivery-parameterization.component';
 import { CreatePeriodsComponent } from './create-periods/create-periods.component';
 import { ListPeriodsComponent } from './list-periods/list-periods.component';
 import { NgModule } from '@angular/core';
@@ -42,6 +43,11 @@ const routes: Routes = [
   {
     path: 'crear-periodos',
     component: CreatePeriodsComponent,
+    canActivate: [],
+  },
+  {
+    path: 'parametrizar-entregas',
+    component: DeliveryParameterizationComponent,
     canActivate: [],
   },
 ];

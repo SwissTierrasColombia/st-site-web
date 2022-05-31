@@ -1,3 +1,4 @@
+import { NgSelect2Module } from 'ng-select2';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +16,7 @@ import { FlatFileDeliveryComponent } from './flat-file-delivery/flat-file-delive
 import { CreateGroupComponent } from './create-group/create-group.component';
 import { ListPeriodsComponent } from './list-periods/list-periods.component';
 import { CreatePeriodsComponent } from './create-periods/create-periods.component';
+import { DeliveryParameterizationComponent } from './delivery-parameterization/delivery-parameterization.component';
 @NgModule({
   declarations: [
     CreateDeliveryComponent,
@@ -25,7 +27,8 @@ import { CreatePeriodsComponent } from './create-periods/create-periods.componen
     SinicFileUploadComponent,
     CreateGroupComponent,
     ListPeriodsComponent,
-    CreatePeriodsComponent
+    CreatePeriodsComponent,
+    DeliveryParameterizationComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +39,7 @@ import { CreatePeriodsComponent } from './create-periods/create-periods.componen
     ComponentsModule,
     FormsModule,
     NgxSpinnerModule,
+    NgSelect2Module,
   ],
 })
-export class SinicModule { }
+export class SinicModule {}
