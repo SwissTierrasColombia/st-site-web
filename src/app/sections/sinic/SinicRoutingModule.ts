@@ -1,3 +1,4 @@
+import { ListPeriodsComponent } from './list-periods/list-periods.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateDeliveryComponent } from './create-delivery/create-delivery.component';
@@ -28,21 +29,19 @@ const routes: Routes = [
     canActivate: [],
   },
   {
-    path:'crear-grupos',
+    path: 'crear-grupos',
     component: CreateGroupComponent,
     canActivate: [],
   },
-  // {
-  //   path:'crear-grupos',
-  //   component: CreateGroupComponent,
-  //   canActivate: [],
-  // }
+  {
+    path: 'listar-periodos',
+    component: ListPeriodsComponent,
+    canActivate: [],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [
-    RouterModule
-  ],
+  exports: [RouterModule],
 })
-export class SinicRoutingModule { }
+export class SinicRoutingModule {}

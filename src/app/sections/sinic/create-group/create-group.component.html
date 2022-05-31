@@ -9,7 +9,9 @@
   <div class="card-body">
     <div class="row">
       <div class="col-12">
-        <p>Cree el número de grupos y asigne los nombres según necesidad.</p>
+        <small class="form-text text-muted"
+          >Cree el número de grupos y asigne los nombres según necesidad.
+        </small>
       </div>
       <div class="col-12">
         <app-input
@@ -23,7 +25,10 @@
         ></app-input>
       </div>
     </div>
-    <div class="row" *ngFor="let item of arrayNumGroups; let index = index">
+    <div
+      class="row mt-1"
+      *ngFor="let item of arrayNumGroups; let index = index"
+    >
       <div class="col-11">
         <app-input
           [title]="'* Grupo ' + (index + 1)"
@@ -45,7 +50,7 @@
         </span>
       </div>
     </div>
-    <div class="row">
+    <div class="row mt-1">
       <div class="col-12">
         <div class="alert alert-primary text-center" role="alert">
           Recuerde que los campos marcados con * son obligatorios.
