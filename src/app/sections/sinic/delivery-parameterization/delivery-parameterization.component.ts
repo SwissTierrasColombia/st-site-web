@@ -19,6 +19,8 @@ export class DeliveryParameterizationComponent implements OnInit {
   selectAllGroups: boolean = false;
   dateStart: Date[];
   dateEnd: Date[];
+  dateStartGroup = [[''], ['']];
+  dateEndGroup = [[''], ['']];
   constructor() {
     this.listGroupsData = [
       [
