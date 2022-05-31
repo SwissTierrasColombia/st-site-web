@@ -1,0 +1,74 @@
+<app-page-header [heading]="'Crear grupo'" [icon]="'fa-star'">
+</app-page-header>
+<div class="card">
+  <div class="card-header">
+    <div class="text-center">
+      <h3>Crear Grupos</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <p>Cree el número de grupos y asigne los nombres según necesidad.</p>
+      </div>
+      <div class="col-12">
+        <app-input
+          [title]="'Número de Grupos a crear'"
+          [id]="'numGroup'"
+          [name]="'numGroup'"
+          [disabled]="false"
+          [(inputModel)]="numGroup"
+          [type]="'number'"
+          (change)="changeNumberGroup()"
+        ></app-input>
+      </div>
+    </div>
+    <div class="row" *ngFor="let item of arrayNumGroups; let index = index">
+      <div class="col-11">
+        <app-input
+          [title]="'* Grupo ' + (index + 1)"
+          [id]="'numGroup' + (index + 1)"
+          [name]="'numGroup' + index + 1"
+          [disabled]="false"
+          [(inputModel)]="nameGroups[index]"
+        ></app-input>
+      </div>
+      <div class="col-1">
+        <span
+          ngbTooltip="Eliminar grupo {{ index + 1 }}"
+          placement="top"
+          show-delay="500"
+        >
+          <i class="material-icons cursor" (click)="deleteGroup(index)">
+            delete
+          </i>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          Recuerde que los campos marcados con * son obligatorios.
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button
+        type="button"
+        class="btn btn-dark"
+        (click)="save()"
+        disabled="true"
+      >
+        Guardar
+      </button>
+      <button
+        type="button"
+        style="margin-left: 10px"
+        class="btn btn-dark"
+        (click)="cancel()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
