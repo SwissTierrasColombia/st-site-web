@@ -11,7 +11,7 @@ import { SinicService } from '../sinic.service';
 @Component({
   selector: 'app-delivery',
   templateUrl: './delivery.component.html',
-  styleUrls: ['./delivery.component.scss']
+  styleUrls: ['./delivery.component.scss'],
 })
 export class DeliveryComponent implements OnInit {
   deliveryId: number;
@@ -19,13 +19,13 @@ export class DeliveryComponent implements OnInit {
     code: '',
     locality: {
       department: '',
-      municipality: ''
+      municipality: '',
     },
     manager: {
-      name: ''
+      name: '',
     },
     date: '',
-    dateStatus: ''
+    dateStatus: '',
   };
   isAdministrator: boolean = false;
   tab: number;
@@ -51,17 +51,17 @@ export class DeliveryComponent implements OnInit {
     private activedRoute: ActivatedRoute,
     private sinicService: SinicService,
     private modalService: NgbModal,
-    private toastr: ToastrService,
-  ) { }
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.activedRoute.params.subscribe((params: Params) => {
       const isAdmin = params.isAdministrator;
-      this.isAdministrator = (isAdmin == "true");
+      this.isAdministrator = isAdmin == 'true';
       this.deliveryId = Number(params.deliveryId);
       this.tab = params.tab;
       const isManager = params.isAdministrator;
-      this.isManager = (isManager == "true");;
+      this.isManager = isManager == 'true';
       this.selectDepartment = params.selectDepartment;
       this.selectMunicipality = params.selectMunicipality;
       this.selectManagerId = params.selectManagerId;
@@ -72,16 +72,16 @@ export class DeliveryComponent implements OnInit {
   }
 
   findDelivery(deliveryId: number) {
-    this.sinicService.searchDelivery(deliveryId).subscribe(element => {
+    this.sinicService.searchDelivery(deliveryId).subscribe((element) => {
       this.delivery = element;
     });
     this.findFiles(deliveryId);
   }
   findFiles(deliveryId: number) {
-    this.sinicService.findFilesFromDelivery(deliveryId).subscribe(element => {
+    this.sinicService.findFilesFromDelivery(deliveryId).subscribe((element) => {
       this.listFiles = element;
       this.sendAuthority = this.findSuccessFiles();
-    })
+    });
   }
   nameStateDelivery(deliveryStatusId: string): string {
     return Commons.nameStateDelivery(deliveryStatusId);
@@ -90,17 +90,18 @@ export class DeliveryComponent implements OnInit {
     return FuntionsGlobalsHelper.formatDate(date);
   }
   goBack() {
-    this.router.navigate(['/sinic/listar-entregas/' + this.tab,
-    {
-      isAdministrator: this.isAdministrator,
-      isManager: this.isManager,
-      selectDepartment: this.selectDepartment,
-      selectMunicipality: this.selectMunicipality,
-      selectManagerId: this.selectManagerId,
-      selectStates: this.selectStates,
-      code: this.code,
-    }]);
-
+    this.router.navigate([
+      '/sinic/listar-entregas/' + this.tab,
+      {
+        isAdministrator: this.isAdministrator,
+        isManager: this.isManager,
+        selectDepartment: this.selectDepartment,
+        selectMunicipality: this.selectMunicipality,
+        selectManagerId: this.selectManagerId,
+        selectStates: this.selectStates,
+        code: this.code,
+      },
+    ]);
   }
   docSoport(file: File) {
     this.changeData();
@@ -132,20 +133,24 @@ export class DeliveryComponent implements OnInit {
     let data = new FormData();
     data.append('observations', this.observations);
     data.append('attachment', this.supportFile);
-    this.sinicService.addFileToDelivery(this.deliveryId, data).subscribe(_ => {
-      this.toastr.success('Adjunto añadido exitosamente');
-      this.findFiles(this.deliveryId);
-      this.observations = '';
-      this.supportFile = '';
-      this.myInputVariable.nativeElement.value = '';
-      this.formOk = false;
-    })
+    this.sinicService
+      .addFileToDelivery(this.deliveryId, data)
+      .subscribe((_) => {
+        this.toastr.success('Adjunto añadido exitosamente');
+        this.findFiles(this.deliveryId);
+        this.observations = '';
+        this.supportFile = '';
+        this.myInputVariable.nativeElement.value = '';
+        this.formOk = false;
+      });
   }
   findSuccessFiles(): boolean {
     if (this.listFiles.length === 0) {
       return false;
     }
-    let isValid = this.listFiles.find(item => item.isValid === false || item.isValid === null);
+    let isValid = this.listFiles.find(
+      (item) => item.isValid === false || item.isValid === null
+    );
     if (isValid) {
       return false;
     } else {
@@ -164,8 +169,10 @@ export class DeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.sinicService.sendAuthority(this.deliveryId).subscribe(_ => {
-            this.toastr.success('Se ha enviado correctamente a la autoridad catastral');
+          this.sinicService.sendAuthority(this.deliveryId).subscribe((_) => {
+            this.toastr.success(
+              'Se ha enviado correctamente a la autoridad catastral'
+            );
             this.findDelivery(this.deliveryId);
             this.sendAuthority = false;
           });
@@ -193,32 +200,37 @@ export class DeliveryComponent implements OnInit {
     this.optionModalRef.result.then((result) => {
       if (result) {
         if (result.option) {
-          this.sinicService.removeFile(this.deliveryId, file.id).subscribe((_) => {
-            this.toastr.success('Ha eliminado el adjunto');
-            this.listFiles = this.listFiles.filter(
-              (element) => element.id !== file.id
-            );
-            this.sendAuthority = this.findSuccessFiles();
-          });
+          this.sinicService
+            .removeFile(this.deliveryId, file.id)
+            .subscribe((_) => {
+              this.toastr.success('Ha eliminado el adjunto');
+              this.listFiles = this.listFiles.filter(
+                (element) => element.id !== file.id
+              );
+              this.sendAuthority = this.findSuccessFiles();
+            });
         }
       }
     });
   }
   downloadLog(item: any) {
-    this.sinicService.downloadLog(this.deliveryId, item.id).subscribe(data => {
-      const nameFile = `archivo-${this.delivery.code}-${item.id}`
-      FuntionsGlobalsHelper.downloadFile(data, nameFile, '.zip');
-    });
+    this.sinicService
+      .downloadLog(this.deliveryId, item.id)
+      .subscribe((data) => {
+        const nameFile = `archivo-${this.delivery.code}-${item.id}`;
+        FuntionsGlobalsHelper.downloadFile(data, nameFile, '.zip');
+      });
   }
 
   downloadFile(item: any) {
-    this.sinicService.downloadFile(this.deliveryId, item.id).subscribe(data => {
-      const nameFile = `archivo-${this.deliveryId}-${item.id}`
-      FuntionsGlobalsHelper.downloadFile(data, nameFile, '.zip');
-    });
+    this.sinicService
+      .downloadFile(this.deliveryId, item.id)
+      .subscribe((data) => {
+        const nameFile = `archivo-${this.deliveryId}-${item.id}`;
+        FuntionsGlobalsHelper.downloadFile(data, nameFile, '.zip');
+      });
   }
   changeNameStateFile(state: string) {
     return Commons.nameStateFile(state);
   }
-
 }

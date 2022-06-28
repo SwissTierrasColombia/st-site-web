@@ -257,18 +257,19 @@ export class FindDeliveriesComponent implements OnInit {
   }
   viewDetailDelivery(item: any) {
     if (item.type === 'FLAT') {
-      this.router.navigate([
-        `sinic/listar-entregas/${this.tab}/entrega-archivo-plano/${item.id}`,
-        {
-          isAdministrator: this.isAdministrator,
-          isManager: this.isManager,
-          selectDepartment: this.selectDepartment,
-          selectMunicipality: this.selectMunicipality,
-          selectManagerId: this.selectManagerId,
-          selectStates: this.selectStates,
-          code: this.code,
-        },
-      ]);
+      this.toastr.warning("Esta opción está deshabilitada según lo definido en la resolución 315 de 2022");
+      // this.router.navigate([
+      //   `sinic/listar-entregas/${this.tab}/entrega-archivo-plano/${item.id}`,
+      //   {
+      //     isAdministrator: this.isAdministrator,
+      //     isManager: this.isManager,
+      //     selectDepartment: this.selectDepartment,
+      //     selectMunicipality: this.selectMunicipality,
+      //     selectManagerId: this.selectManagerId,
+      //     selectStates: this.selectStates,
+      //     code: this.code,
+      //   },
+      // ]);
     } else {
       this.router.navigate([
         `sinic/listar-entregas/${this.tab}/entrega/${item.id}`,
