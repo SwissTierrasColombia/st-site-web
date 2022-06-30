@@ -56,8 +56,6 @@ export class ErrorInterceptorService implements HttpInterceptor {
               this.router.navigate(['/login']);
             }
             break;
-          case 504:
-            this.toastrService.success('Adjunto añadido exitosamente');
           default:
             this.toastrService.error(
               'No se ha podido conectar con el servidor, espere unos minutos he intentelo de nuevo.',

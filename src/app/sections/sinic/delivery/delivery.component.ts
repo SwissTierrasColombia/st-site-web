@@ -133,16 +133,21 @@ export class DeliveryComponent implements OnInit {
     let data = new FormData();
     data.append('observations', this.observations);
     data.append('attachment', this.supportFile);
-    this.sinicService
-      .addFileToDelivery(this.deliveryId, data)
-      .subscribe((_) => {
+    this.sinicService.addFileToDelivery(this.deliveryId, data).subscribe(
+      (_) => {
         this.toastr.success('Adjunto añadido exitosamente');
         this.findFiles(this.deliveryId);
         this.observations = '';
         this.supportFile = '';
         this.myInputVariable.nativeElement.value = '';
         this.formOk = false;
-      });
+      },
+      (error: any) => {
+        if (error.status == 504 || error.statusCode == 504) {
+          this.toastr.success('Adjunto añadido exitosamente');
+        }
+      }
+    );
   }
   findSuccessFiles(): boolean {
     if (this.listFiles.length === 0) {
