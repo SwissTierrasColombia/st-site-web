@@ -4,6 +4,7 @@ import { ManagersService } from 'src/app/services/managers/managers.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ViewportScroller } from '@angular/common';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
+import { SinicPeriodService } from 'src/app/sections/sinic/sinic-period.service';
 
 @Component({
   selector: 'app-gestor',
@@ -20,20 +21,22 @@ export class GestorComponent implements OnInit {
   formOk: boolean;
   id: number;
   optionModalRef: NgbModalRef;
-  managerGroups = [];
+  managerGroups: Array<any>;
   constructor(
     private serviceManager: ManagersService,
     private toast: ToastrService,
     private modalService: NgbModal,
-    private scroll: ViewportScroller
+    private scroll: ViewportScroller,
+    private sinicService: SinicPeriodService,
   ) {
+    this.managerGroups = [];
     this.dataProfile = [];
     this.data = {
       name: '',
       alias: '',
       taxIdentificationNumber: '',
       providerCategoryId: 0,
-      managerGroup: 0,
+      groupId: '',
     };
     this.idProfileDelete = {};
     this.categoriesProviders = [];
@@ -43,6 +46,7 @@ export class GestorComponent implements OnInit {
     this.id = 0;
   }
   ngOnInit(): void {
+    this.getGroups();
     this.serviceManager.getAllManagers().subscribe((element) => {
       this.dataProfile = element;
       this.dataProfile.sort((a, b) => a.id - b.id);
@@ -64,7 +68,7 @@ export class GestorComponent implements OnInit {
       this.data.name !== '' &&
       this.data.taxIdentificationNumber !== '' &&
       this.data.alias !== '' &&
-      this.data.managerGroup !== 0
+      this.data.groupId !== ''
     ) {
       this.data.taxIdentificationNumber.trim();
       this.formOk = true;
@@ -81,6 +85,7 @@ export class GestorComponent implements OnInit {
       name: entity.name,
       alias: entity.alias,
       taxIdentificationNumber: entity.taxIdentificationNumber,
+      groupId: item.groupId
     };
     this.scroll.scrollToAnchor('actionForm');
     this.editMode = true;
@@ -166,7 +171,7 @@ export class GestorComponent implements OnInit {
       alias: '',
       taxIdentificationNumber: '',
       providerCategoryId: 0,
-      managerGroup: 0,
+      groupId: '',
     };
   }
   create() {
@@ -179,7 +184,7 @@ export class GestorComponent implements OnInit {
           alias: '',
           taxIdentificationNumber: '',
           providerCategoryId: 0,
-          managerGroup: 0,
+          groupId: '',
         };
         this.toast.success('Se ha creado el gestor correctamente.');
         this.editMode = false;
@@ -228,5 +233,16 @@ export class GestorComponent implements OnInit {
       );
       this.formOk = false;
     }
+  }
+  getGroups() {
+    this.sinicService.findGroups().subscribe((data: any) => {
+      this.managerGroups = data;
+    });
+  }
+  getGroupName(groupId: string): string {
+    const groupFound = this.managerGroups.find(element => {
+      return element.id === groupId;
+    });
+    return groupFound ? groupFound.name : '';
   }
 }

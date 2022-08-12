@@ -1,43 +1,25 @@
-<app-page-header [heading]="'Crear Períodos'" [icon]="'fa-star'">
+<app-page-header [heading]="'Ciclos'" [icon]="'fa-star'">
 </app-page-header>
 <div class="card">
   <div class="card-header">
     <div class="text-center">
-      <h3>Crear Períodos</h3>
+      <h3>Crear Ciclo</h3>
     </div>
   </div>
   <div class="card-body">
     <div class="row">
       <div class="col-12 col-sm-6">
-        <app-select
-          [disableOptionZero]="false"
-          [labelSelect]="'año'"
-          [nameSelect]="'year'"
-          [idSelect]="'listYears'"
-          [optionZero]="'Seleccione el año'"
-          [listSelect]="listYears"
-          [key]="'option'"
-          [(inputModel)]="selectYear"
-          [disable]="true"
-        ></app-select>
+        <app-select (change)="verifyForm()" [disableOptionZero]="false" [labelSelect]="'* Año'" [nameSelect]="'year'"
+          [idSelect]="'listYears'" [optionZero]="'Seleccione el año'" [listSelect]="listYears" [key]="'year'"
+          [(inputModel)]="selectYear" [disable]="false"></app-select>
       </div>
       <div class="col-12 col-sm-6">
-        <app-input
-          [title]="'* Número de Períodos'"
-          [id]="'numGroup'"
-          [name]="'numGroup'"
-          [disabled]="false"
-          [(inputModel)]="numPeriod"
-          [type]="'number'"
-        ></app-input>
+        <app-input (change)="verifyForm()" [title]="'* Número de Períodos'" [id]="'numGroup'" [name]="'numGroup'"
+          [disabled]="false" [(inputModel)]="numPeriod" [type]="'number'"></app-input>
       </div>
       <div class="col-12">
-        <app-observation
-          [title]="'* Observaciones'"
-          [id]="'observations'"
-          [disabled]="false"
-          [(inputModel)]="observations"
-        ></app-observation>
+        <app-observation (change)="verifyForm()" [title]="'* Observaciones'" [id]="'observations'" [disabled]="false"
+          [(inputModel)]="observations"></app-observation>
       </div>
       <div class="col-12">
         <div class="alert alert-primary text-center" role="alert">
@@ -46,22 +28,155 @@
       </div>
     </div>
     <div class="card-footer text-muted text-center">
-      <button
-        type="button"
-        class="btn btn-dark"
-        (click)="save()"
-        disabled="true"
-      >
+      <button type="button" class="btn btn-dark" (click)="save()" [disabled]="!formOk">
         Guardar
       </button>
-      <button
-        type="button"
-        style="margin-left: 10px"
-        class="btn btn-dark"
-        (click)="cancel()"
-      >
+      <button type="button" style="margin-left: 10px" class="btn btn-dark" (click)="cancel()">
         Cancelar
       </button>
+    </div>
+  </div>
+</div>
+
+<div>
+
+  <div class="justify-content-center text-center">
+    <div class="card text-center">
+      <div class="card-header">
+        <h3>
+          Listado de Ciclos
+          <h4 style="color: green">({{ numPeriods }})</h4>
+        </h3>
+      </div>
+      <div class="card-body">
+        <div class="table-inverse table-responsive">
+          <table *ngIf="listPeriods.length > 0" class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Año</th>
+                <th>Número de períodos</th>
+                <th>Estado</th>
+                <th>Observaciones</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of listPeriods; let i = index">
+                <td scope="row">{{ item.year }}</td>
+                <td scope="row">{{ item.amountPeriods }}</td>
+                <td scope="row"><label class="badge"
+                    [ngClass]="item.status ? 'badge-success' : 'badge-danger'">Activo</label>
+                </td>
+                <td scope="row">
+                  <textarea class="form-control" rows="3" maxlength="255" disabled="true">{{ item.observations }}
+                    </textarea>
+                </td>
+                <td scope="row">
+
+                  <span ngbTooltip="Ver parametrización" placement="top" show-delay="500">
+                    <i class="material-icons cursor" (click)="viewCycleDetail(item.id)">
+                      input
+                    </i>
+                  </span>
+
+                  <span ngbTooltip="editar" placement="top" show-delay="500">
+                    <i class="material-icons cursor" (click)="openModalUpdateGroup(modalUpdateCycle, item)">
+                      edit
+                    </i>
+                  </span>
+
+                  <span ngbTooltip="Eliminar" placement="top" show-delay="500">
+                    <i class="material-icons cursor" (click)="openModalRemoveCycle(modalRemoveCycle, item)">
+                      delete
+                    </i>
+                  </span>
+
+                  <ng-template #modalUpdateCycle let-modal>
+                    <div class="modal-header text-center">
+                      <h4 class="modal-title">
+                        Actualizar información del ciclo correspondiente al año {{yearToEdit}}
+                      </h4>
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="col-12">
+                        <div class="alert alert-warning text-center" role="alert">
+                          Recuerde que si modifica la cantidad de períodos del ciclo, la configuración de períodos del
+                          ciclo será restablecida y se necesitará configurar de nuevo.
+                        </div>
+                        <div class="alert alert-warning text-center" role="alert">
+                          Recuerde que sólo puede haber un ciclo activo por lo tanto sí se activa un ciclo los demas se
+                          inactivaran.
+                        </div>
+                      </div>
+
+                      <app-observation [title]="'*Observaciones del ciclo'" (change)="verifyFormToEdit()"
+                        [name]="'cycle-observations-update-' + index" [(inputModel)]="observationsToEdit">
+                      </app-observation>
+
+                      <app-input [title]="'* Número de Períodos'" [name]="'cycle-amount-periods'"
+                        (change)="verifyFormToEdit()" [(inputModel)]="numPeriodToEdit" [type]="'number'"></app-input>
+
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" [(ngModel)]="statusToEdit"
+                          id="defaultCheck1" (change)="verifyFormToEdit()">
+                        <label class="form-check-label" for="defaultCheck1">
+                          Ciclo Activo / Inactivo
+                        </label>
+                      </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-12 text-center">
+                        <button type="button" ngbAutofocus class="btn btn-dark btn-block" [disabled]="!formOkToEdit"
+                          (click)="updateCycle()">
+                          Guardar
+                        </button>
+                      </div>
+                    </div>
+                  </ng-template>
+
+                  <ng-template #modalRemoveCycle let-modal>
+                    <div class="modal-header text-center">
+                      <h4 class="modal-title">
+                        Eliminar el ciclo correspondiente al año {{yearToRemove}}
+                      </h4>
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="col-12">
+                        <div class="alert alert-warning text-center" role="alert">
+                          Esta seguro que desea eliminar el ciclo que corresponde al año {{yearToRemove}}?
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <div class="col-12 text-center">
+                        <button type="button" ngbAutofocus class="btn btn-dark btn-block" (click)="deleteCycle()">
+                          Eliminar Ciclo
+                        </button>
+                      </div>
+                    </div>
+                  </ng-template>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="listPeriods.length === 0" class="row mt-3">
+          <div class="col-12">
+            <div class="alert alert-primary text-center" role="alert">
+              No tiene ciclos registrados.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,55 +1,19 @@
-<app-page-header [heading]="'Crear grupo'" [icon]="'fa-star'">
+<app-page-header [heading]="'Grupos'" [icon]="'fa-star'">
 </app-page-header>
 <div class="card">
   <div class="card-header">
-    <div class="text-center">
-      <h3>Crear Grupos</h3>
+    <div class="card-header text-center">
+      <h2>Crear Grupo</h2>
     </div>
   </div>
   <div class="card-body">
     <div class="row">
       <div class="col-12">
-        <small class="form-text text-muted"
-          >Cree el número de grupos y asigne los nombres según necesidad.
-        </small>
-      </div>
-      <div class="col-12">
-        <app-input
-          [title]="'Número de Grupos a crear'"
-          [id]="'numGroup'"
-          [name]="'numGroup'"
-          [disabled]="false"
-          [(inputModel)]="numGroup"
-          [type]="'number'"
-          (change)="changeNumberGroup()"
-        ></app-input>
+        <app-input [title]="'* Nombre del grupo'" [id]="'groupName'" [name]="'groupName'" [disabled]="false"
+          [(inputModel)]="groupName" [type]="'text'" (change)="verifyForm()"></app-input>
       </div>
     </div>
-    <div
-      class="row mt-1"
-      *ngFor="let item of arrayNumGroups; let index = index"
-    >
-      <div class="col-11">
-        <app-input
-          [title]="'* Grupo ' + (index + 1)"
-          [id]="'numGroup' + (index + 1)"
-          [name]="'numGroup' + index + 1"
-          [disabled]="false"
-          [(inputModel)]="nameGroups[index]"
-        ></app-input>
-      </div>
-      <div class="col-1">
-        <span
-          ngbTooltip="Eliminar grupo {{ index + 1 }}"
-          placement="top"
-          show-delay="500"
-        >
-          <i class="material-icons cursor" (click)="deleteGroup(index)">
-            delete
-          </i>
-        </span>
-      </div>
-    </div>
+
     <div class="row mt-1">
       <div class="col-12">
         <div class="alert alert-primary text-center" role="alert">
@@ -58,22 +22,72 @@
       </div>
     </div>
     <div class="card-footer text-muted text-center">
-      <button
-        type="button"
-        class="btn btn-dark"
-        (click)="save()"
-        disabled="true"
-      >
+      <button type="button" [disabled]="!formOk" class="btn btn-dark" (click)="saveGroup()">
         Guardar
       </button>
-      <button
-        type="button"
-        style="margin-left: 10px"
-        class="btn btn-dark"
-        (click)="cancel()"
-      >
+      <button type="button" style="margin-left: 10px" class="btn btn-dark" (click)="cancel()">
         Cancelar
       </button>
+    </div>
+  </div>
+</div>
+
+<div class="card mt-2">
+  <div class="card-header text-center">
+    <h2>Listado de Grupos</h2>
+  </div>
+  <div class="card-body">
+    <div class="table-inverse table-responsive">
+      <table *ngIf="groups.length > 0" class="table table-striped">
+        <thead class="thead-inverse">
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of groups; let i = index">
+            <td scope="row">{{ i + 1 }}</td>
+            <td scope="row">{{ item.name }}</td>
+            <td scope="row">
+              <span ngbTooltip="editar" placement="top" show-delay="500">
+                <i class="material-icons cursor" (click)="openModalUpdateGroup(modalUpdateGroup, item.id)">
+                  edit
+                </i>
+              </span>
+              <ng-template #modalUpdateGroup let-modal>
+                <div class="modal-header">
+                  <h4 class="modal-title">
+                    Actualizar información del grupo
+                  </h4>
+                  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <app-observation [title]="'*Nombre del grupo'" [name]="'grop-name' + index"
+                    [(inputModel)]="groupNameToEdit"></app-observation>
+                </div>
+                <div class="modal-footer">
+                  <div class="col-12 text-center">
+                    <button type="button" ngbAutofocus class="btn btn-dark btn-block" (click)="updateGroup()">
+                      Guardar
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="groups.length === 0" class="row mt-3">
+      <div class="col-12">
+        <div class="alert alert-primary text-center" role="alert">
+          No se han encontrado grupos
+        </div>
+      </div>
     </div>
   </div>
 </div>

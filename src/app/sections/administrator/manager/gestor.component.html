@@ -29,8 +29,8 @@
               <div class="input-group-prepend">
                 <label class="input-group-text" aria-required="true">* Grupo</label>
               </div>
-              <select (change)="changeState()" class="custom-select" name="managerGroup" id="managerGroup"
-                [(ngModel)]="data.managerGroup">
+              <select (change)="changeState()" class="custom-select" name="groupId" id="groupId"
+                [(ngModel)]="data.groupId">
                 <option value="0" selected [disabled]="true">
                   Seleccione el grupo al que pertenecerá el gestor para las entregas de RIC.
                 </option>
@@ -85,7 +85,7 @@
               <td scope="row">{{ item.name }}</td>
               <td scope="row">{{ item.alias }}</td>
               <td scope="row">{{ item.taxIdentificationNumber }}</td>
-              <td scope="row">grupo </td>
+              <td scope="row">{{ getGroupName(item.groupId) }} </td>
               <td scope="row">
                 <span ngbTooltip="Modificar gestor" placement="bottom" show-delay="500">
                   <i class="material-icons mr-2" (click)="updateProfile(item)">

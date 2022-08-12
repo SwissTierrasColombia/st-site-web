@@ -14,7 +14,6 @@ import { DeliveryComponent } from './delivery/delivery.component';
 import { SinicFileUploadComponent } from './sinic-file-upload/sinic-file-upload.component';
 import { FlatFileDeliveryComponent } from './flat-file-delivery/flat-file-delivery.component';
 import { CreateGroupComponent } from './create-group/create-group.component';
-import { ListPeriodsComponent } from './list-periods/list-periods.component';
 import { CreatePeriodsComponent } from './create-periods/create-periods.component';
 import { DeliveryParameterizationComponent } from './delivery-parameterization/delivery-parameterization.component';
 @NgModule({
@@ -26,7 +25,6 @@ import { DeliveryParameterizationComponent } from './delivery-parameterization/d
     FlatFileDeliveryComponent,
     SinicFileUploadComponent,
     CreateGroupComponent,
-    ListPeriodsComponent,
     CreatePeriodsComponent,
     DeliveryParameterizationComponent,
   ],

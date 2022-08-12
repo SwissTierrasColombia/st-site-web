@@ -1,5 +1,19 @@
-<app-page-header [heading]="'Parametrización de Entregas'" [icon]="'fa-star'">
-</app-page-header>
+<div class="row">
+  <div class="col-xl-12">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <i class="fa fa-dashboard"></i> <a href="Javascript:void(0)" [routerLink]="['/inicio']"> Inicio</a>
+      </li>
+      <li class="breadcrumb-item">
+        <i class="fa fa-dashboard"></i> <a href="Javascript:void(0)" [routerLink]="['/sinic/ciclos']"> Ciclos</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <i class="fa fa-star"></i> Parametrización de Entregas
+      </li>
+    </ol>
+  </div>
+</div>
+
 <div class="card">
   <div class="card-header">
     <div class="text-center">
@@ -8,59 +22,27 @@
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="col-12 col-sm-2">
-        <app-input
-          [title]="'año'"
-          [id]="'year'"
-          [name]="'year'"
-          [disabled]="true"
-          [type]="'number'"
-          [(inputModel)]="year"
-        ></app-input>
+      <div class="col-12 col-sm-4">
+        <app-input [title]="'Año'" [id]="'year'" [name]="'year'" [disabled]="true" [type]="'number'"
+          [(inputModel)]="year"></app-input>
       </div>
-      <div class="col-12 col-sm-5">
-        <app-input
-          [title]="'Número de Períodos'"
-          [id]="'numPeriods'"
-          [name]="'numPeriods'"
-          [disabled]="true"
-          [type]="'number'"
-          [(inputModel)]="numPeriods"
-        ></app-input>
+      <div class="col-12 col-sm-8">
+        <app-input [title]="'Número de Períodos'" [id]="'numPeriods'" [name]="'numPeriods'" [disabled]="true"
+          [type]="'number'" [(inputModel)]="numPeriods"></app-input>
       </div>
     </div>
-    <div
-      class="row mt-1"
-      *ngFor="let item of arrayNumGroups; let index1 = index"
-    >
-      <div class="col-12">
-        <app-input
-          [title]="'Período'"
-          [id]="'namePeriod'"
-          [name]="'namePeriod'"
-          [disabled]="false"
-          [(inputModel)]="namePeriod"
-        ></app-input>
+
+    <div class="row mt-3" *ngFor="let item of arrayNumGroups; let index1 = index">
+      <div class="col-12 mt-3">
+        <h2>Periodo # {{item.periodNumber}}</h2>
       </div>
       <div class="col-12 col-sm-6">
-        <app-input
-          [title]="'* Fecha de Inicio'"
-          [id]="'dateStart'"
-          [name]="'dateStart'"
-          [disabled]="false"
-          [type]="'date'"
-          [(inputModel)]="dateStart"
-        ></app-input>
+        <app-input [title]="'* Fecha de Inicio'" [id]="'dateStart'" [name]="'dateStart'" [disabled]="false"
+          [type]="'date'" [(inputModel)]="item.startDate" (change)="verifyForm()"></app-input>
       </div>
       <div class="col-12 col-sm-6">
-        <app-input
-          [title]="'* Fecha Final'"
-          [id]="'dateEnd'"
-          [name]="'dateEnd'"
-          [disabled]="false"
-          [type]="'date'"
-          [(inputModel)]="dateEnd"
-        ></app-input>
+        <app-input [title]="'* Fecha Final'" [id]="'dateEnd'" [name]="'dateEnd'" [disabled]="false" [type]="'date'"
+          [(inputModel)]="item.finishDate" (change)="verifyForm()"></app-input>
       </div>
       <div class="col-12 col-sm-8">
         <div class="input-group">
@@ -69,89 +51,66 @@
               * Grupos Asignados
             </label>
           </div>
-          <ng-select2
-            name="select2Groups"
-            [data]="listGroupsData[index1]"
-            [options]="options"
-            [(ngModel)]="selectGroups[index1]"
-            (click)="changeData()"
-          >
+          <ng-select2 name="select2Groups" [data]="listGroupsData[index1]" [options]="options"
+            [(ngModel)]="item.groupsSelected" (valueChanged)="verifyForm($event)">
           </ng-select2>
         </div>
       </div>
       <div class="col-12 col-sm-4">
-        <label
-          class="switch"
-          [title]="
-            selectAllGroups[index1]
+        <label class="switch" [title]="
+            item.selectAllGroups
               ? 'Cancelar selección de grupos'
               : 'Seleccione todos los grupos'
-          "
-        >
-          <input
-            [(ngModel)]="selectAllGroups[index1]"
-            type="checkbox"
-            name="checkboxselectAllGroups"
-            (click)="clickCheckBox(index1)"
-          />
+          ">
+          <input [(ngModel)]="item.selectAllGroups" type="checkbox" name="checkboxselectAllGroups"
+            (click)="selectAllGroupsForPeriod(item)" />
           <span class="slider round"></span>
         </label>
         <small class="form-text text-muted">
           {{
-            selectAllGroups[index1]
-              ? "Cancelar selección de grupos"
-              : "Seleccione todos los grupos"
+          item.selectAllGroups
+          ? "Cancelar selección de grupos"
+          : "Seleccione todos los grupos"
           }}
         </small>
       </div>
       <div class="col-12">
-        <small class="form-text text-muted"
-          >Seleccione los grupos que entregan infromación en el período.
+        <small class="form-text text-muted">Seleccione los grupos que entregan infromación en el período.
         </small>
       </div>
 
       <div class="col-12 mt-2">
         <p>Ingrese las fechas de entrega para cada grupo en el período.</p>
       </div>
-      <div *ngIf="selectGroups[index1][0] != '0'">
-        <div
-          class="row mt-1"
-          *ngFor="let group of selectGroups[index1]; let index2 = index"
-        >
-          <!-- <pre>{{index1}}</pre>
-        <pre>{{index2}}</pre> -->
+
+      <div *ngIf="item.groupsSelected.length > 0">
+        <div class="row ml-3" *ngFor="let group of item.groupsSelected; let index2 = index">
           <div class="col-2">
-            <div class="input-group">
+            <div class="input-group mt-1 mb-1">
               <div class="input-group-prepend">
                 <span class="input-group-text">
-                  {{ getGroup(index1, group) }}
+                  {{ getGroupName(group) }}
                 </span>
               </div>
             </div>
           </div>
           <div class="col-5">
-            <app-input
-              [title]="'* Inicio'"
-              [id]="'dateStart'"
-              [name]="'dateStart'"
-              [disabled]="false"
-              [type]="'date'"
-              [(inputModel)]="dateStartGroup[index1][index2]"
-            ></app-input>
+            <app-input [title]="'* Inicio'" [id]="'dateStart'" [name]="'dateStart'" [disabled]="false" [type]="'date'"
+              [(inputModel)]="dateStartGroup[index1][group]" (change)="verifyForm()"></app-input>
           </div>
           <div class="col-5">
-            <app-input
-              [title]="'* Fin'"
-              [id]="'dateEnd'"
-              [name]="'dateEnd'"
-              [disabled]="false"
-              [type]="'date'"
-              [(inputModel)]="dateEndGroup[index1][index2]"
-            ></app-input>
+            <app-input [title]="'* Fin'" [id]="'dateEnd'" [name]="'dateEnd'" [disabled]="false" [type]="'date'"
+              [(inputModel)]="dateEndGroup[index1][group]" (change)="verifyForm()"></app-input>
           </div>
         </div>
       </div>
+
+      <div class="mb-3">
+
+      </div>
+
     </div>
+
     <div class="row mt-1">
       <div class="col-12">
         <div class="alert alert-primary text-center" role="alert">
@@ -160,20 +119,10 @@
       </div>
     </div>
     <div class="card-footer text-muted text-center">
-      <button
-        type="button"
-        class="btn btn-dark"
-        (click)="save()"
-        disabled="true"
-      >
+      <button type="button" class="btn btn-dark" (click)="save()" [disabled]="!formOk">
         Guardar
       </button>
-      <button
-        type="button"
-        style="margin-left: 10px"
-        class="btn btn-dark"
-        (click)="cancel()"
-      >
+      <button type="button" style="margin-left: 10px" class="btn btn-dark" (click)="cancel()">
         Cancelar
       </button>
     </div>

@@ -1,6 +1,5 @@
 import { DeliveryParameterizationComponent } from './delivery-parameterization/delivery-parameterization.component';
 import { CreatePeriodsComponent } from './create-periods/create-periods.component';
-import { ListPeriodsComponent } from './list-periods/list-periods.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateDeliveryComponent } from './create-delivery/create-delivery.component';
@@ -31,22 +30,17 @@ const routes: Routes = [
     canActivate: [],
   },
   {
-    path: 'crear-grupos',
+    path: 'grupos',
     component: CreateGroupComponent,
     canActivate: [],
   },
   {
-    path: 'listar-periodos',
-    component: ListPeriodsComponent,
-    canActivate: [],
-  },
-  {
-    path: 'crear-periodos',
+    path: 'ciclos',
     component: CreatePeriodsComponent,
     canActivate: [],
   },
   {
-    path: 'parametrizar-entregas',
+    path: 'ciclos/:cycleId/periodos',
     component: DeliveryParameterizationComponent,
     canActivate: [],
   },
@@ -56,4 +50,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SinicRoutingModule {}
+export class SinicRoutingModule { }

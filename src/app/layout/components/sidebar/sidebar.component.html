@@ -87,31 +87,15 @@
             </a>
           </li>
           <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador">
-            <a href="" [routerLink]="['/sinic/crear-grupos']" (click)="isCollapsed(listMenu.sinic)">
+            <a href="" [routerLink]="['/sinic/grupos']" (click)="isCollapsed(listMenu.sinic)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Crear</span><br />
-              <span class="ml-4">Grupos</span>
+              <span>Grupos</span>
             </a>
           </li>
           <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador">
-            <a href="" [routerLink]="['/sinic/listar-periodos']" (click)="isCollapsed(listMenu.sinic)">
+            <a href="" [routerLink]="['/sinic/ciclos']" (click)="isCollapsed(listMenu.sinic)">
               <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Listar</span><br />
-              <span class="ml-4">Periodos</span>
-            </a>
-          </li>
-          <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador">
-            <a href="" [routerLink]="['/sinic/crear-periodos']" (click)="isCollapsed(listMenu.sinic)">
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Crear</span><br />
-              <span class="ml-4">Periodos</span>
-            </a>
-          </li>
-          <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador">
-            <a href="" [routerLink]="['/sinic/parametrizar-entregas']" (click)="isCollapsed(listMenu.sinic)">
-              <i class="fa fa-fw fa-angle-double-right"></i>&nbsp;
-              <span>Parametrización</span><br />
-              <span class="ml-4">de Entregas</span>
+              <span>Ciclos</span>
             </a>
           </li>
           <li *ngIf="roleAdmin ? roleAdmin.id : 0 === allroles.administrador">
